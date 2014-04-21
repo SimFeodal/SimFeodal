@@ -1,0 +1,74 @@
+abc <- vectorParam[1]
+def <- vectorParam[2]
+ghi <- vectorParam[3]
+setwd(dir="/data/Dropbox/1 - Thèse/Modélisation/gama_workspace/transition8/includes")
+##### Variables #####
+
+N_Foyers_Paysans <- vectorParam[1] #1000
+N_Agglos_Antiques <- vectorParam[2] #3
+N_Villages <- vectorParam[3] #20
+N_FP_Villages <- vectorParam[4] #10
+N_Chateaux <- vectorParam[5] #20
+N_Eglises <- vectorParam[6] #600
+
+##### Dépendances #####
+require(rgdal)
+require(spatstat)
+require(rgeos)
+require(maptools)
+##### Import du shape d'emprise #####
+spatialExtent <- readOGR(dsn="Emprise_territoire.shp", layer="Emprise_territoire", stringsAsFactors=FALSE, encoding="utf8")  
+
+##### Foyers Paysans #####
+
+  #### Agglomérations antiques ####
+  ## Tirage des centres aléatoires
+  centres_agglos_antiques <- as.SpatialPoints.ppp(rpoint(N_Agglos_Antiques, win=gBuffer(spgeom=spatialExtent, width=(-1000))))
+  ## On crée les buffers autour de chaque centre
+  buffers_centres_agglos_antiques <- gBuffer(centres_agglos_antiques, width=300, byid=TRUE)
+  ## On tire 30 points aléatoires dans chaque buffer
+  FP_agglos_antiques <- do.call('rbind', sapply(buffers_centres_agglos_antiques@polygons, function(x) {
+    as.SpatialPoints.ppp(rpoint(30, win=SpatialPolygons(list(x))))
+  }))
+  FP_agglos_antiques <- SpatialPointsDataFrame(FP_agglos_antiques, data=data.frame(Type=rep(x="Agglomération antique", times=length(FP_agglos_antiques))))
+  
+  #### Villages ####
+  ## Tirage des centres aléatoires
+  centres_villages <- as.SpatialPoints.ppp(rpoint(N_Villages, win=gBuffer(spgeom=spatialExtent, width=(-1000))))
+  ## On crée les buffers autour de chaque centre
+  buffers_centres_villages <- gBuffer(centres_villages, width=(10*N_FP_Villages), byid=TRUE)
+  ## On tire N_FP_Villages points aléatoires dans chaque buffer
+  FP_villages <- do.call('rbind', sapply(buffers_centres_villages@polygons, function(x) {
+    as.SpatialPoints.ppp(rpoint(N_FP_Villages, win=SpatialPolygons(list(x))))
+  }))
+  FP_villages <- SpatialPointsDataFrame(FP_villages, data=data.frame(Type=rep("Village", times=length(FP_villages))))
+
+  #### Foyers dispersés ####
+  ## Tirage aléatoire des FP restants
+  Nb_FP_disperses <- N_Foyers_Paysans - ((N_Agglos_Antiques * 30) + (N_Villages * N_FP_Villages))
+  FP_disperses <- as.SpatialPoints.ppp(rpoint(Nb_FP_disperses, win=spatialExtent))
+  FP_disperses <- SpatialPointsDataFrame(FP_disperses, data=data.frame(Type=rep("Dispersé", times=length(FP_disperses))))
+
+## Assemblage et export
+LambertI <- CRS("+proj=lcc +lat_1=49.50000000000001 +lat_0=49.50000000000001 +lon_0=0 +k_0=0.999877341 +x_0=600000 +y_0=1200000 +a=6378249.2 +b=6356515 +towgs84=-168,-60,320,0,0,0,0 +pm=paris +units=m +no_defs ")
+Foyers_Paysans <- do.call('rbind', list(FP_disperses, FP_villages, FP_agglos_antiques))
+proj4string(Foyers_Paysans) <- LambertI
+writeOGR(obj=Foyers_Paysans, dsn="model_layers/Foyers_Paysans.shp", layer="Foyers_Paysans", driver="ESRI Shapefile", overwrite_layer=TRUE, check_exists=TRUE)
+
+##### Châteaux #####
+Chateaux <- as.SpatialPoints.ppp(rpoint(N_Chateaux, win=spatialExtent))
+Chateaux <- SpatialPointsDataFrame(Chateaux, data=data.frame(Type=rep("Chateau", times=length(Chateaux))))
+proj4string(Chateaux) <- LambertI
+writeOGR(obj=Chateaux, dsn="model_layers/Chateaux.shp", layer="Chateaux", driver="ESRI Shapefile", overwrite_layer=TRUE, check_exists=TRUE)
+##### églises #####
+
+Eglises <- as.SpatialPoints.ppp(rpoint(N_Eglises, win=spatialExtent))
+Eglises <- SpatialPointsDataFrame(Eglises, data=data.frame(Type=rep("eglises", times=length(Eglises)), DroitsPar=rep(0, times=length(Eglises))))
+## Il y a 10 fois plus d'églises sans aucun droit paroissial qu'avec.
+Eglises@data[sample(x=nrow(Eglises@data), size=round((10/11) * length(Eglises))),"DroitsPar"] <- 1
+proj4string(Eglises) <- LambertI
+writeOGR(obj=Eglises, dsn="model_layers/Eglises.shp", layer="Eglises", driver="ESRI Shapefile", overwrite_layer=TRUE, check_exists=TRUE)
+
+## Nettoyage
+rm(list=ls())
+abcd <- "Tout a été créé"
