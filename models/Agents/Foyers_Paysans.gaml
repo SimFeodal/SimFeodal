@@ -43,8 +43,8 @@ entities {
 		float update_satisfaction_protection {
 			// Protection seigneur = f(Nb_FP)
 			if (length(self.mesSeigneurs) > 0){
-			write "Local : " + string(sum(mesSeigneurs collect length(each.FP_controlles)));
-			write "Global : " + string(sum(Seigneurs collect length(each.FP_controlles)));
+			//write "Local : " + string(sum(mesSeigneurs collect length(each.FP_controlles)));
+			//write "Global : " + string(sum(Seigneurs collect length(each.FP_controlles)));
 			}
 
 			float ratio_fp_seigneurs <- sum(mesSeigneurs collect length(each.FP_controlles)) / sum(Seigneurs collect length(each.FP_controlles));
@@ -58,12 +58,24 @@ entities {
 		
 		
 		reflex demenagement {
-			if (Satisfaction < 0.1) {
-				//do die;
-			} else if (Satisfaction < 0.2) {
-				//do demenagement_lointain;
-			} else {
-				do demenagement_local;
+			if (Satisfaction < 0.2) {
+				// Déménagement local
+				if (monAgglo != nil){
+				set location <- any_location_in(200 around one_of(monAgglo.fp_agglo).location);
+					// -> Dans agglo
+					// -> Doit minimiser distance église, distance chateau, distance prieuré et distance agglo.
+				// Si pas possible
+				} else {
+					// Déménagement global
+					Agglomerations meilleure_agglo <- Agglomerations with_max_of (each.attractivite / ((self distance_to each) + 1));
+					// (+1 pour éviter div / 0)
+					set location <- any_location_in(200 around one_of(meilleure_agglo.fp_agglo).location);
+					set monAgglo <- meilleure_agglo;
+					ask monAgglo {
+						fp_agglo << myself;
+					}
+				}
+				
 			}
 		}
 				
