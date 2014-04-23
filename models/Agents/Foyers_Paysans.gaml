@@ -61,7 +61,16 @@ entities {
 			if (Satisfaction < 0.2) {
 				// Déménagement local
 				if (monAgglo != nil){
-				set location <- any_location_in(200 around one_of(monAgglo.fp_agglo).location);
+					
+					if (monAgglo.Communaute_agraire) {
+						// Si comm_agraire, on se déplace vers les FP de comm_agraire
+						set location <- any_location_in(200 around one_of(monAgglo.fp_agglo where comm_agraire));
+					} else {
+						// Sinon, minimisation distance eglise, chateau et prieuré
+						list<agent> amenites_a_proximite <- Eglises at_distance 3000 + Chateaux at_distance 3000;
+						point pointMoyen <- point([mean(amenites_a_proximite collect each.location.x), mean(amenites_a_proximite collect each.location.y)]);
+						set location <- (200 around monAgglo.fp_agglo) closest_points_with(pointMoyen) at 0;
+					}
 					// -> Dans agglo
 					// -> Doit minimiser distance église, distance chateau, distance prieuré et distance agglo.
 				// Si pas possible

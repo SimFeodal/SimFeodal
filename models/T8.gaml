@@ -31,17 +31,17 @@ experiment base_experiment type: gui {
 	parameter "Nombre d'églises:" var: nombre_eglises category: "Initialisation";
 
 	output {
-		monitor "Nombre de Foyers paysans" value: Foyers_Paysans count each;
-		monitor "Nombre FP dans agglos" value: (Foyers_Paysans where (each.monAgglo != nil)) count each;
-		monitor "Nombre d'agglomération rurales" value: Agglomerations count each;
-		monitor "Nombre Agglos CP" value: (Agglomerations where (each.Communaute_agraire)) count each;
-		monitor "Nombre FP CP" value: (Foyers_Paysans where (each.comm_agraire) count each);
-		monitor "Nombre Seigneurs" value: Seigneurs count each;
-		monitor "Nombre Eglises" value: Eglises count each;
-		monitor "Nombre Chateaux" value: Chateaux count each;
+		monitor "Nombre de Foyers paysans" value: length(Foyers_Paysans);
+		monitor "Nombre FP dans agglos" value: length(Foyers_Paysans where (each.monAgglo != nil));
+		monitor "Nombre d'agglomération rurales" value: length(Agglomerations);
+		monitor "Nombre Agglos CP" value: length(Agglomerations where (each.Communaute_agraire));
+		monitor "Nombre FP CP" value: length(Foyers_Paysans where (each.comm_agraire));
+		monitor "Nombre Seigneurs" value: length(Seigneurs);
+		monitor "Nombre Eglises" value: length(Eglises);
+		monitor "Nombre Chateaux" value: length(Chateaux);
 		display world_display {
 			//species Foyers_Paysans aspect: base ;
-			species Eglises  aspect: base ;
+			species Eglises aspect: base ;
 			species Chateaux aspect: base ;
 			species Agglomerations ;
 		}
