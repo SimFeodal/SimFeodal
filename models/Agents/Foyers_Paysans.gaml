@@ -32,7 +32,11 @@ entities {
 		
 		float update_satisfaction_materielle {
 			//f(Droits paroissiaux) + f(Droits seigneuriaux) + f(Comm agraire)
-			return rnd(100) / 100;
+			if (self.comm_agraire){
+				return (0.5 + (rnd(50) / 100));
+			} else {
+				return rnd(100) / 100;
+			}	
 		}
 		
 		float update_satisfaction_spirituelle {
@@ -59,6 +63,14 @@ entities {
 		
 		reflex demenagement {
 			if (Satisfaction < 0.2) {
+				if (Satisfaction < 0.05) {
+					if (monAgglo != nil){
+						ask monAgglo {
+							fp_agglo >> myself;
+						}
+					}
+					do die;
+				}
 				// Déménagement local
 				if (monAgglo != nil){
 					
@@ -67,8 +79,8 @@ entities {
 						set location <- any_location_in(200 around one_of(monAgglo.fp_agglo where comm_agraire));
 					} else {
 						// Sinon, minimisation distance eglise, chateau et prieuré
-						list<agent> amenites_a_proximite <- Eglises at_distance 3000 + Chateaux at_distance 3000;
-						point pointMoyen <- point([mean(amenites_a_proximite collect each.location.x), mean(amenites_a_proximite collect each.location.y)]);
+						list<agent> plus_proches_amenites <- [Eglises closest_to self, Chateaux closest_to self];
+						point pointMoyen <- point([mean(plus_proches_amenites collect each.location.x), mean(plus_proches_amenites collect each.location.y)]);
 						set location <- (200 around monAgglo.fp_agglo) closest_points_with(pointMoyen) at 0;
 					}
 					// -> Dans agglo

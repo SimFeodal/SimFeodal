@@ -61,6 +61,7 @@ global {
 
 	action generer_eglises {
 		create Eglises number: nombre_eglises {
+			set droits_paroissiaux <- flip(10/11) ? 0 : 1;
 			set location <- any_location_in(reduced_worldextent);
 		}
 	}

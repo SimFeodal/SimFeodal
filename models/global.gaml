@@ -19,7 +19,7 @@ global {
 	int nombre_villages <- 20 ;
 	int nombre_foyers_villages <- 10 ;
 	int nombre_chateaux <- 20 ;
-	int nombre_eglises <- 200 ; // 600
+	int nombre_eglises <- 600 ;
 	float Seuil_satisfaction <- 0.8 ;
 	
 	file shape_file_bounds <- file("../includes/Emprise_territoire.shp");

@@ -28,6 +28,16 @@ entities {
 			set attractivite <- length(fonctions_possedees);
 		}
 		
+		reflex update_agglo {
+			loop agglo over: Agglomerations {
+				if (agglo.shape intersects self)
+				{
+					set monAgglo <- agglo;
+					break;	
+				}
+			}
+		}
+		
 		rgb color <- rgb('red') ;
 	aspect base {
 		draw circle(500) color: color ;
