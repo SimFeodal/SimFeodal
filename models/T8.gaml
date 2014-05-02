@@ -29,6 +29,8 @@ experiment base_experiment type: gui {
 	parameter "Nombre de Foyers Paysans par village:" var: nombre_foyers_villages category: "Initialisation";
 	parameter "Nombre de Châteaux:" var: nombre_chateaux category: "Initialisation";
 	parameter "Nombre d'églises:" var: nombre_eglises category: "Initialisation";
+	
+	parameter "Taux renouvellement" var: taux_renouvellement category: "Modèle";
 
 	output {
 		monitor "Nombre de Foyers paysans" value: length(Foyers_Paysans);
@@ -39,12 +41,13 @@ experiment base_experiment type: gui {
 		monitor "Nombre Seigneurs" value: length(Seigneurs);
 		monitor "Nombre Eglises" value: length(Eglises);
 		monitor "Nombre Chateaux" value: length(Chateaux);
+		monitor "Attractivité globale" value: length(Foyers_Paysans) + sum(Chateaux collect each.attractivite);
+		monitor "Attractivité agglos" value: sum(Agglomerations where (!each.fake_agglo) collect each.attractivite);
 		display world_display {
 			//species Foyers_Paysans aspect: base ;
 			species Eglises aspect: base ;
 			species Chateaux aspect: base ;
 			species Agglomerations ;
 		}
-
 	}
 }

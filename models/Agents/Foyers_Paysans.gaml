@@ -14,13 +14,56 @@ import "Chateaux.gaml"
 import "Eglises.gaml"
 import "Seigneurs.gaml"
 
+global {
+	reflex renouvellement_FP when: (time > 0) {
+		int attractivite_totale <- length(Foyers_Paysans) + sum(Chateaux collect each.attractivite);
+
+		int nb_FP_impactes <- int(taux_renouvellement * length(Foyers_Paysans));
+		ask nb_FP_impactes among Foyers_Paysans {
+			if (monAgglo != nil){
+				ask monAgglo {
+					fp_agglo >> myself;
+				}
+			}
+			do die;
+		}
+		create Agglomerations number: 1 {
+			set fake_agglo <- true;
+			set attractivite <- attractivite_totale - sum(Agglomerations collect each.attractivite);
+		}
+		create Foyers_Paysans number: nb_FP_impactes {
+			int attractivite_cagnotte <- attractivite_totale;
+			point FPlocation <- nil;
+			loop agglo over: shuffle(Agglomerations) {
+				if (agglo.attractivite >= attractivite_cagnotte){
+					if (length(agglo.fp_agglo) > 0) {
+						set FPlocation <- any_location_in(200 around one_of(agglo.fp_agglo).location);
+					} else {
+						set FPlocation <- any_location_in(worldextent);
+					}
+					break;
+				} else {
+					set attractivite_cagnotte <- attractivite_cagnotte - agglo.attractivite;
+				}
+			}
+			set location <- FPlocation;
+			
+		}
+		
+		ask Agglomerations where each.fake_agglo {
+			do die;
+		}
+	}
+	
+}
+
 entities {
 	species Foyers_Paysans {
-		string type;
 		bool comm_agraire <- false;
 		Agglomerations monAgglo <- nil;
 		float Satisfaction ;
 		list<Seigneurs> mesSeigneurs ;
+		
 		
 		reflex update_comm_agraire {
 			if (monAgglo = nil){
@@ -69,7 +112,7 @@ entities {
 							fp_agglo >> myself;
 						}
 					}
-					do die;
+					//do die;
 				}
 				// Déménagement local
 				if (monAgglo != nil){

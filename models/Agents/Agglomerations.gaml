@@ -60,6 +60,7 @@ global {
 entities {
 
 	species Agglomerations {
+		bool fake_agglo <- false;
 		float attractivite;
 		list<Foyers_Paysans> fp_agglo ;
 		bool Communaute_agraire <- false;

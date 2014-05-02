@@ -21,6 +21,7 @@ global {
 	int nombre_chateaux <- 20 ;
 	int nombre_eglises <- 600 ;
 	float Seuil_satisfaction <- 0.8 ;
+	float taux_renouvellement <- 0.05 ;
 	
 	file shape_file_bounds <- file("../includes/Emprise_territoire.shp");
 
