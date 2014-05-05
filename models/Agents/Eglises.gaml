@@ -19,8 +19,14 @@ entities {
 	
 	species Eglises {
 		string type;
-		int droits_paroissiaux;
+		list droits_paroissiaux;
+		int attractivite;
 		rgb color <- rgb('blue') ;
+		
+		reflex update_attractivite {
+			set attractivite <- length(droits_paroissiaux);
+		}
+		
 		aspect base {
 			draw circle(200) color: color ;
 		}

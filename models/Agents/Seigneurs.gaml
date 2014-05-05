@@ -17,7 +17,7 @@ import "Eglises.gaml"
 entities {
 	species Seigneurs {
 		string type;
-		float richesse <- 5;
+		float richesse <- 5.0;
 		float pouvoir_armee;
 		list<Foyers_Paysans> FP_controlles;
 		list<Chateaux> chateaux_controlles;
@@ -32,7 +32,7 @@ entities {
 		}
 		
 		reflex MaJ_pouvoir_armee {
-			set pouvoir_armee <- (FP_controlles count each) + sum(vassaux collect each.richesse);
+			set pouvoir_armee <- length(FP_controlles) + sum(vassaux collect each.richesse);
 		}
 		reflex disparition when: (richesse = 0){
 			do die;

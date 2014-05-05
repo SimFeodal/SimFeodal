@@ -21,7 +21,7 @@ entities {
 		list<string> fonctions_possedees;
 		float aire_attraction;
 		Agglomerations monAgglo;
-		float attractivite ;
+		int attractivite ;
 		Seigneurs monSeigneur;
 		
 		reflex update_attractivite {
