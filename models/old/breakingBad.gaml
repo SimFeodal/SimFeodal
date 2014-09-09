@@ -22,7 +22,7 @@ experiment test type: gui {
 	user_command breakingTest {
 	ask Heisenbergs {
 		if (flip(0.3)){
-			break;
+			//do break;
 		}
 		write "not my turn";
 	}
@@ -35,4 +35,5 @@ experiment test type: gui {
 	write 'show must go on !';
 	}
 }
+
 

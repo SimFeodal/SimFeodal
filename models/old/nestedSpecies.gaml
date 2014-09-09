@@ -42,13 +42,13 @@ global{
 			}
 			
 		}
-		write length(ABC accumulate (each.DEF where (each.testvalue != 0)));
+		write string(length(ABC accumulate (each.DEF where (each.testvalue != 0))));
 	}
 }
 
 entities {
 	species ABC {
-		bool test <- false;
+		bool test  <- false;
 		species DEF {
 			int testvalue <- 0;
 		}

@@ -13,6 +13,7 @@ import "Foyers_Paysans.gaml"
 import "Chateaux.gaml"
 import "Eglises.gaml"
 import "Seigneurs.gaml"
+import "Amenites.gaml"
 
 global {
 	    reflex update_agglomerations {
@@ -35,6 +36,8 @@ global {
 	   						ask fp_agglo {
 	   							set monAgglo <- myself ;
 	   						}
+   						do update_shape;
+   						do update_comm_agraire;
 	   					}
    						agglos_detectees >> j;
    						set encore_agglo <- true;
@@ -47,11 +50,13 @@ global {
 	   			}
 	   		}
 	   		loop nouvelle_agglo over: agglos_detectees{
-	   			create Agglomerations number: 1 {
+	   			create Agglomerations {
 	   				set fp_agglo <- list<Foyers_Paysans>(nouvelle_agglo);
 	   				ask fp_agglo {
 	   					set monAgglo <- myself;
 	   				}
+	   				do update_shape;
+	   				do update_comm_agraire;
 	   			}
 	   		}
 	    }
@@ -59,13 +64,13 @@ global {
 
 entities {
 
-	species Agglomerations {
+	species Agglomerations parent: Amenites{
 		bool fake_agglo <- false;
-		float attractivite;
+		int attractivite <- 0;
 		list<Foyers_Paysans> fp_agglo ;
-		bool Communaute_agraire <- false;
+		bool communaute_agraire <- false;
 		
-		reflex update_shape {
+		action update_shape {
 			set shape <- convex_hull(polygon(fp_agglo collect each.location));
 		}
 		
@@ -73,22 +78,25 @@ entities {
 			set attractivite <- length(fp_agglo) +  sum(Chateaux where (self = each.monAgglo) collect each.attractivite);
 		}
 		
-		reflex update_comm_agraire {
-			if (!Communaute_agraire) {
+		action update_comm_agraire {
+			if (!self.communaute_agraire) {
 				if (rnd(100) > 80) {
-					set Communaute_agraire <- true;
-					ask 5 among fp_agglo {
-						set comm_agraire <- true ;
+					set communaute_agraire <- true;
+					ask self.fp_agglo {
+						set comm_agraire <- true;
+					}
+				} else {
+					ask self.fp_agglo {
+						set comm_agraire <- false;
 					}
 				}
 			} else {
-				int nbCommAgraire <- (fp_agglo where (each.comm_agraire) count each);
-				if (nbCommAgraire < 5) {
-					ask (5 - nbCommAgraire) among fp_agglo where (!each.comm_agraire) {
-						set comm_agraire <- true ;
-					}
+				ask self.fp_agglo {
+					set comm_agraire <- true;
 				}
 			}
 		}
+		
+		
 	}
 }

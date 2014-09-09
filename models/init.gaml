@@ -8,11 +8,13 @@ model t8
 
 import "global.gaml"
 import "T8.gaml"
-import "Agents/Foyers_Paysans.gaml"
 import "Agents/Agglomerations.gaml"
+import "Agents/Foyers_Paysans.gaml"
+
 import "Agents/Chateaux.gaml"
 import "Agents/Eglises.gaml"
 import "Agents/Seigneurs.gaml"
+import "Agents/Amenites.gaml"
 
 global {
 	action generer_foyers_paysans {
@@ -42,6 +44,62 @@ global {
 		}
 	}
 	
+	action generer_foyers_paysans_grappe {
+		// Agglos antiques
+		create Foyers_Paysans number: nombre_agglos_antiques {
+			set location <- any_location_in(reduced_worldextent);
+			set mobile <- flip (taux_mobilite);
+			set mesSeigneurs <- (rnd(3) + 1) among Seigneurs;
+			ask mesSeigneurs {
+				FP_controlles <+ myself;
+			}
+			//FP_controlles
+			list<Foyers_Paysans> pool_FP <- [self];
+			create Foyers_Paysans number: (30 - 1) {
+				pool_FP <+ self ;
+				// On choisit un des FP de la même agglo
+				agent myFP <- one_of(pool_FP);
+				set location <- any_location_in(199 around myFP.location);
+				set mobile <- flip (taux_mobilite);
+				set mesSeigneurs <- (rnd(3) + 1) among Seigneurs;
+				ask mesSeigneurs {
+					FP_controlles <+ myself;
+				}
+			}
+		}
+		// Villages
+		create Foyers_Paysans number: nombre_villages {
+			set location <- any_location_in(reduced_worldextent);
+			set mobile <- flip (taux_mobilite);
+			set mesSeigneurs <- (rnd(3) + 1) among Seigneurs;
+			ask mesSeigneurs {
+				FP_controlles <+ myself;
+			}
+			list<Foyers_Paysans> pool_FP <- [self];
+			create Foyers_Paysans number: (nombre_foyers_villages - 1) {
+				pool_FP <+ self ;
+				// On choisit un des FP de la même agglo
+				agent myFP <- one_of(pool_FP);
+				set location <- any_location_in(199 around myFP.location);
+				set mobile <- flip (taux_mobilite);
+				set mesSeigneurs <- (rnd(3) + 1) among Seigneurs;
+				ask mesSeigneurs {
+					FP_controlles <+ myself;
+				}
+			}
+		}
+		// FP isolés
+		int nb_FP_isoles <- nombre_foyers_paysans - (nombre_agglos_antiques * 30) - (nombre_villages * nombre_foyers_villages);
+		create Foyers_Paysans number: nb_FP_isoles {
+			set location <- any_location_in(worldextent);
+			set mobile <- flip (taux_mobilite);
+			set mesSeigneurs <- (rnd(3) + 1) among Seigneurs;
+			ask mesSeigneurs {
+					FP_controlles <+ myself;
+			}
+		}
+	}
+	
 	action generer_chateaux {
 		create Chateaux number: nombre_chateaux {
 			set location <- any_location_in(reduced_worldextent);
@@ -50,13 +108,12 @@ global {
 	}
 	
 	action generer_seigneurs {
-		create Seigneurs number: nombre_chateaux {
-			set FP_controlles <- 2 among Foyers_Paysans;
-			set chateaux_controlles <- 1 among Chateaux where (each.monSeigneur = nil);
-			ask chateaux_controlles {
-				set monSeigneur <- myself;
-			}
+		create Seigneurs number: nombre_seigneurs {
+			set taux_prelevement <- rnd(100) / 100;
+			set type <- "Grand Seigneur";
 		}
+		
+		
 	}
 
 	action generer_eglises {
@@ -67,9 +124,10 @@ global {
 	}
 	
 	action generer_monde {
-		do generer_foyers_paysans;
-		do generer_chateaux;
+		//do generer_foyers_paysans;
 		do generer_seigneurs;
+		do generer_foyers_paysans_grappe;
+		do generer_chateaux;
 		do generer_eglises;
 	}
 	
