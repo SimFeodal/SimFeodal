@@ -148,7 +148,7 @@ entities {
 		float attractivite ;
 		
 		reflex update_attractivite {
-			set attractivite <- length(fonctions_possedees);
+			set attractivite <- float(length(fonctions_possedees));
 		}
 	}
 	
@@ -183,7 +183,7 @@ entities {
 		float richesse_autorite_centrale;
 		
 		reflex MaJ_pouvoir_armee {
-			set pouvoir_armee <- (FP_controlles count each) + sum(vassaux collect each.richesse);
+			set pouvoir_armee <- (length(FP_controlles)) + sum(vassaux collect each.richesse);
 		}
 		reflex disparition when: (richesse = 0){
 			do die;
@@ -210,8 +210,8 @@ experiment base_experiment type: gui {
 			species Eglises;
 			species Chateaux;
 		}
-		monitor "Nombre de Foyers paysans" value: Foyers_Paysans count each;
-		monitor "Nombre d'agglomération rurales" value: Agglomerations count each;
+		monitor "Nombre de Foyers paysans" value: length(Foyers_Paysans);
+		monitor "Nombre d'agglomération rurales" value: length(Agglomerations);
 	}
 }
 

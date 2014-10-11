@@ -8,7 +8,7 @@ model t8
 
 import "global.gaml"
 import "T8.gaml"
-import "Agents/Agglomerations.gaml"
+import "Agents/Agregats.gaml"
 import "Agents/Foyers_Paysans.gaml"
 
 import "Agents/Chateaux.gaml"
@@ -118,7 +118,7 @@ global {
 
 	action generer_eglises {
 		create Eglises number: nombre_eglises {
-			set droits_paroissiaux <- flip(10/11) ? 0 : 1;
+			set droits_paroissiaux <- flip(1/3) ? ["Baptême"] : [];
 			set location <- any_location_in(reduced_worldextent);
 		}
 	}

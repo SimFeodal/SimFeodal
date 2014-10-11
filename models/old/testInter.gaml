@@ -17,7 +17,7 @@ global {
 entities {
 	species testAgent {
 		aspect base {
-			draw circle(1) color: 'red' ;
+			draw circle(1) color: #red ;
 		}
 	}
 }
@@ -34,7 +34,7 @@ experiment testInter type: gui {
 	ask one_of(testAgent){
 		testAgent other_agent <- one_of(testAgent at_distance 100);
 		float goDist <- self distance_to other_agent;
-		point abc <- line([self.location, other_agent.location]) inter ((goDist/2) around self);
+		point abc <- point(line([self.location, other_agent.location]) inter ((goDist/2) around self));
 		geometry testPoint <- (line([self.location, other_agent.location]) inter ((goDist/2) around self));
 
 		write testPoint.points;

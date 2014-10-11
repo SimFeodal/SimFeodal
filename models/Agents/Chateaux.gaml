@@ -10,7 +10,7 @@ import "../init.gaml"
 import "../T8.gaml"
 import "../global.gaml"
 import "Foyers_Paysans.gaml"
-import "Agglomerations.gaml"
+import "Agregats.gaml"
 import "Eglises.gaml"
 import "Seigneurs.gaml"
 import "Amenites.gaml"
@@ -21,7 +21,7 @@ entities {
 		string type;
 		list<string> fonctions_possedees;
 		float aire_attraction;
-		Agglomerations monAgglo;
+		Agregats monAgregat;
 		int attractivite <- 0;
 		Seigneurs monSeigneur;
 		
@@ -31,12 +31,12 @@ entities {
 		
 		
 		reflex update_agglo {
-			list<Agglomerations> agglos_proches <- Agglomerations at_distance 1000;
+			list<Agregats> agregats_proches <- Agregats at_distance 1000;
 			// Si une agglo intersecte mon shape
-			if (agglos_proches != nil){
-				set monAgglo <- agglos_proches closest_to self;
+			if (agregats_proches != nil){
+				set monAgregat <- agregats_proches closest_to self;
 			} else {
-				set monAgglo <- nil;
+				set monAgregat <- nil;
 			}
 			//Sinon, on cherche à 1000m et on prend la plus proche
 			

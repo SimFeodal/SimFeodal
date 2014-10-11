@@ -9,7 +9,7 @@ model t8
 import "../init.gaml"
 import "../T8.gaml"
 import "../global.gaml"
-import "Agglomerations.gaml"
+import "Agregats.gaml"
 import "Chateaux.gaml"
 import "Eglises.gaml"
 import "Seigneurs.gaml"
@@ -21,9 +21,9 @@ global {
 
 		int nb_FP_impactes <- int(taux_renouvellement * length(Foyers_Paysans));
 		ask nb_FP_impactes among Foyers_Paysans {
-			if (monAgglo != nil){
-				ask monAgglo {
-					fp_agglo >- myself;
+			if (monAgregat != nil){
+				ask monAgregat {
+					fp_agregat >- myself;
 				}
 			}
 			ask mesSeigneurs {
@@ -31,23 +31,23 @@ global {
 			}
 			do die;
 		}
-		create Agglomerations number: 1 {
-			set fake_agglo <- true;
-			set attractivite <- attractivite_totale - sum(Agglomerations collect each.attractivite);
+		create Agregats number: 1 {
+			set fake_agregat <- true;
+			set attractivite <- attractivite_totale - sum(Agregats collect each.attractivite);
 		}
 		create Foyers_Paysans number: nb_FP_impactes {
 			int attractivite_cagnotte <- attractivite_totale;
 			point FPlocation <- nil;
-			loop agglo over: shuffle(Agglomerations) {
-				if (agglo.attractivite >= attractivite_cagnotte){
-					if (length(agglo.fp_agglo) > 0) {
-						set FPlocation <- any_location_in(200 around one_of(agglo.fp_agglo).location);
+			loop agregat over: shuffle(Agregats) {
+				if (agregat.attractivite >= attractivite_cagnotte){
+					if (length(agregat.fp_agregat) > 0) {
+						set FPlocation <- any_location_in(200 around one_of(agregat.fp_agregat).location);
 					} else {
 						set FPlocation <- any_location_in(worldextent);
 					}
 					break;
 				} else {
-					set attractivite_cagnotte <- attractivite_cagnotte - agglo.attractivite;
+					set attractivite_cagnotte <- attractivite_cagnotte - agregat.attractivite;
 				}
 			}
 			set location <- FPlocation;
@@ -59,7 +59,7 @@ global {
 			
 		}
 		
-		ask Agglomerations where each.fake_agglo {
+		ask Agregats where each.fake_agregat {
 			do die;
 		}
 	}
@@ -70,9 +70,9 @@ global {
 entities {
 	species Foyers_Paysans {
 		bool comm_agraire <- false;
-		Agglomerations monAgglo <- nil;
+		Agregats monAgregat <- nil;
 		float satisfaction_materielle;
-		float satisfaction_spirituelle ;
+		float satisfaction_religieuse ;
 		float satisfaction_protection;
 		
 		float Satisfaction ;
@@ -81,7 +81,7 @@ entities {
 		bool mobile; // Si true : ce FP peut se déplacer / si false, serf/esclave, pas de déplacement
 		
 		reflex devenir_seigneur {
-			if (self.monAgglo != nil){
+			if (self.monAgregat != nil){
 				if (rnd(1000) / 1000 <= proba_devenir_seigneur){
 					create Seigneurs number: 1{
 						set taux_prelevement <- rnd(100) / 100;
@@ -133,12 +133,13 @@ entities {
 			return Satisfaction_materielle;
 		}
 		
-		float update_satisfaction_spirituelle {
+		float update_satisfaction_religieuse {
 			// f(Frequentation eglise) + f(distance église)
 			return rnd(100) / 100 ;
 		}
 		
 		float update_satisfaction_protection {
+			// dépend du pouvoir_armee de mesSeigneurs
 			int mon_nombre_chateaux <- length(mesChateaux);
 			int max_chateaux <- max([1, max(Foyers_Paysans collect length(each.mesChateaux))]);
 			float ma_satisfaction_protection <-  mon_nombre_chateaux / max_chateaux ;
@@ -151,11 +152,11 @@ entities {
 		
 		action update_satisfaction {
 			set satisfaction_materielle <- update_satisfaction_materielle();
-			set satisfaction_spirituelle <- update_satisfaction_spirituelle();
+			set satisfaction_religieuse <- update_satisfaction_religieuse();
 			set satisfaction_protection <- update_satisfaction_protection();
 			
 			set Satisfaction <- min([0.33 * satisfaction_materielle,
-				0.33 * satisfaction_spirituelle,
+				0.33 * satisfaction_religieuse,
 				0.33 * satisfaction_protection]);
 		}
 		
@@ -197,7 +198,7 @@ entities {
 				
 		point demenagement_local {
 			// Modèle gravitaire local, dans un rayon de 5km
-			// Amenités : Chateaux / Églises / Agglomerations
+			// Amenités : Chateaux / Églises / Agregats
 			int rayon_local <- 5000 ;
 			//list<Foyers_Paysans> meilleure_ca <- [1,2];
 			list<Amenites> amenites_proches <- Amenites at_distance rayon_local;
@@ -220,19 +221,19 @@ entities {
 		
 		point demenagement_lointain {
 			
-			int attractivite_cagnotte <- sum(Agglomerations collect each.attractivite);
+			int attractivite_cagnotte <- sum(Agregats collect each.attractivite);
 			
 			point FPlocation <- nil;
-			loop agglo over: shuffle(Agglomerations) {
-				if (agglo.attractivite >= attractivite_cagnotte){
-					if (length(agglo.fp_agglo) > 0) {
-						set FPlocation <- any_location_in(200 around one_of(agglo.fp_agglo).location);
+			loop agregat over: shuffle(Agregats) {
+				if (agregat.attractivite >= attractivite_cagnotte){
+					if (length(agregat.fp_agregat) > 0) {
+						set FPlocation <- any_location_in(200 around one_of(agregat.fp_agregat).location);
 					} else {
 						set FPlocation <- any_location_in(worldextent);
 					}
 					break;
 				} else {
-					set attractivite_cagnotte <- attractivite_cagnotte - agglo.attractivite;
+					set attractivite_cagnotte <- attractivite_cagnotte - agregat.attractivite;
 				}
 			}
 			return FPlocation;

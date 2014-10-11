@@ -10,7 +10,7 @@ import "../init.gaml"
 import "../T8.gaml"
 import "../global.gaml"
 import "Foyers_Paysans.gaml"
-import "Agglomerations.gaml"
+import "Agregats.gaml"
 import "Chateaux.gaml"
 import "Eglises.gaml"
 import "Amenites.gaml"
@@ -18,7 +18,7 @@ import "Amenites.gaml"
 entities {
 	species Seigneurs {
 		string type <- "Petit Seigneur"; // Grand Seigneur / Chatelain / Petit Seigneur 
-		float richesse <- 1.0;
+		float puissance <- 1.0;
 		float pouvoir_armee <- 0.0;
 		float taux_prelevement <- 1.0;
 		list<Foyers_Paysans> FP_controlles <- [];
@@ -26,11 +26,11 @@ entities {
 		list<Seigneurs> vassaux <- [];
 		float richesse_autorite_centrale;
 		
-		reflex MaJ_richesse {
-			set richesse <- richesse + (length(FP_controlles) * taux_prelevement);
+		reflex MaJ_puissance {
+			set puissance <- puissance + (length(FP_controlles) * taux_prelevement);
 		}
 		
-		reflex construction_chateau when: (richesse > 2000){
+		reflex construction_chateau when: (puissance > 2000){
 			if (rnd(100) / 100 > 0.7) {
 				Chateaux nouveauChateau <- nil;
 				Seigneurs proprio <- nil;
@@ -41,8 +41,8 @@ entities {
 				}
 				create Chateaux number: 1 {
 					set monSeigneur <- proprio;
-					set monAgglo <- one_of(Agglomerations);
-					set location <- any_location_in(500 around monAgglo.location);
+					set monAgregat <- one_of(Agregats);
+					set location <- any_location_in(500 around monAgregat.location);
 					set nouveauChateau <- self;
 				}
 				if (proprio != self) {
@@ -54,7 +54,7 @@ entities {
 					chateaux_controlles <+ nouveauChateau;
 				}
 
-				set richesse <- self.richesse - 2000;		
+				set puissance <- self.puissance - 2000;		
 			}
 		}
 		
@@ -65,10 +65,29 @@ entities {
 		}
 		
 		reflex MaJ_pouvoir_armee {
-			set pouvoir_armee <- length(FP_controlles) + sum(vassaux collect each.richesse);
+			set pouvoir_armee <- length(FP_controlles) + sum(vassaux collect each.puissance);
 		}
-		reflex disparition when: (richesse = 0){
+		reflex disparition when: (puissance = 0){
 			do die;
 		}
 	}
+	
 }
+
+	species Grand_Seigneur parent: Seigneurs {
+		// Peut construire châteaux
+		// Récolte droits haute justice
+		// 
+	}
+	
+	species Seigneur_Chatelain parent: Seigneurs {
+		
+	}
+	
+	species Petit_Seigneur parent: Seigneurs{
+		
+		
+		action devenir_chatelain {
+			
+		}
+	}
