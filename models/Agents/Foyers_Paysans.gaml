@@ -7,13 +7,13 @@
 model t8
 
 import "../init.gaml"
-import "../T8.gaml"
+import "../GUI.gaml"
 import "../global.gaml"
 import "Agregats.gaml"
 import "Chateaux.gaml"
 import "Eglises.gaml"
 import "Seigneurs.gaml"
-import "Amenites.gaml"
+import "Attracteurs.gaml"
 
 global {
 	reflex renouvellement_FP when: (time > 0) {
@@ -25,9 +25,6 @@ global {
 				ask monAgregat {
 					fp_agregat >- myself;
 				}
-			}
-			ask mesSeigneurs {
-				FP_controlles >- myself;
 			}
 			do die;
 		}
@@ -52,10 +49,6 @@ global {
 			}
 			set location <- FPlocation;
 			set mobile <- flip (taux_mobilite);
-			set mesSeigneurs <- (rnd(3) + 1) among Seigneurs;
-			ask mesSeigneurs {
-				FP_controlles <+ myself;
-			}
 			
 		}
 		
@@ -68,7 +61,7 @@ global {
 }
 
 entities {
-	species Foyers_Paysans {
+	species Foyers_Paysans schedules: shuffle(Foyers_Paysans){
 		bool comm_agraire <- false;
 		Agregats monAgregat <- nil;
 		float satisfaction_materielle;
@@ -76,60 +69,49 @@ entities {
 		float satisfaction_protection;
 		
 		float Satisfaction ;
-		list<Seigneurs> mesSeigneurs;
 		list<Chateaux> mesChateaux <- [];
 		bool mobile; // Si true : ce FP peut se déplacer / si false, serf/esclave, pas de déplacement
+		Seigneurs seigneur_loyer <- nil;
+		Seigneurs seigneur_hauteJustice <- nil;
+		list<Seigneurs> seigneurs_banaux <- [];
+		list<Seigneurs> seigneurs_basseMoyenneJustice <- [];
 		
+		/*
+		// Désactivé pour l'instant
 		reflex devenir_seigneur {
-			if (self.monAgregat != nil){
+			if (Annee >= 1050 and self.monAgregat != nil){
 				if (rnd(1000) / 1000 <= proba_devenir_seigneur){
 					create Seigneurs number: 1{
 						set taux_prelevement <- rnd(100) / 100;
+						set type <- "Petit Seigneur";
+						set location <- myself.location;
+						set rayon_captation <- min_rayon_captation_petits_seigneurs + rnd(max_rayon_captation_petits_seigneurs - min_rayon_captation_petits_seigneurs);
 					}
 				}
 			}
 		}
+		*/
 		
-		reflex maj_protecteur {
-			do update_protecteur;
-		}
-		
-		action update_protecteur {
-			
-			if (!empty(Chateaux at_distance 20000)){
-				mesChateaux <- Chateaux at_distance 20000;
-				Chateaux plus_proche_chateau <- Chateaux closest_to(self);
-				mesSeigneurs <+ plus_proche_chateau.monSeigneur;
-				ask (plus_proche_chateau.monSeigneur) {
-					FP_controlles <+ myself;
-				}
-			}
-		}
-		
-		action update_seigneurs {
-			// supression anciens seigneurs
-			ask mesSeigneurs {
-				FP_controlles >- myself;
-			}
-			// ré-assignation nouveaux seigneurs
-			set mesSeigneurs <- (rnd(3) + 1) among Seigneurs;
-			ask mesSeigneurs {
-				FP_controlles <+ myself;
-			}
-			
-		}
 		
 		float update_satisfaction_materielle {
-			// float: 0 -> 1
-			//f(Droits paroissiaux) + f(Droits seigneuriaux) + f(Comm agraire)
+			int loyer <- (self.seigneur_loyer != nil ? 1 : 0);
+			int hauteJustice <- (self.seigneur_hauteJustice != nil ? 1 : 0);
+			int banaux <- length(self.seigneurs_banaux);
+			int basseMoyenneJustice <- length(self.seigneurs_basseMoyenneJustice);
 			
-			// Max 4 seigneurs, donc (4 - droits)/4 pour avoir droits [0; 1] (0 si 4 seigneurs et taux = 1)
-			Foyers_Paysans tempA <- one_of(list<Foyers_Paysans>(Foyers_Paysans with_max_of length(each.mesSeigneurs)));
-			int max_nb_seigneurs <- length(tempA.mesSeigneurs);
-			float Droits_seigneuriaux <- (max_nb_seigneurs - sum(mesSeigneurs collect each.taux_prelevement)) / max_nb_seigneurs;
-			// O ou 1 si comm agraire
-			int Satisfaction_comm_agraire <- (self.comm_agraire ? 1 : 0);
-			float Satisfaction_materielle <- (Droits_seigneuriaux + Satisfaction_comm_agraire) / 2;
+			int nb_seigneurs <- loyer + hauteJustice + banaux + basseMoyenneJustice;
+			
+			
+			float S_redevances <- max([1 - (nb_seigneurs * 0.2), 0.0]);
+			float S_contributions <- 0.0;
+			if (self.monAgregat = nil){
+				set S_contributions <- 0.0;
+			} else {
+				set S_contributions <- (self.comm_agraire ? puissance_comm_agraire : 0) + (self.monAgregat.marche ? 0.25 : 0);
+			}
+			
+
+			float Satisfaction_materielle <- (S_redevances)^(1 - S_contributions);
 			return Satisfaction_materielle;
 		}
 		
@@ -139,11 +121,20 @@ entities {
 		}
 		
 		float update_satisfaction_protection {
-			// dépend du pouvoir_armee de mesSeigneurs
-			int mon_nombre_chateaux <- length(mesChateaux);
-			int max_chateaux <- max([1, max(Foyers_Paysans collect length(each.mesChateaux))]);
-			float ma_satisfaction_protection <-  mon_nombre_chateaux / max_chateaux ;
-			return ma_satisfaction_protection;
+			if (Annee < debut_besoin_protection){
+				return(1.0);
+			} else {
+				Chateaux plusProcheChateau <- Chateaux closest_to self;
+				if (self distance_to plusProcheChateau <= 5000) {
+					float protection_seigneur <- plusProcheChateau.monSeigneur.pouvoir_armee ;
+					float S_protection <- max([protection_seigneur / 300 , 1.0]);
+					
+					return(S_protection);
+				} else {
+					return(0.0);
+				}
+			}
+			return(0.0);
 		}
 		
 		reflex maj_satisfaction {
@@ -155,9 +146,7 @@ entities {
 			set satisfaction_religieuse <- update_satisfaction_religieuse();
 			set satisfaction_protection <- update_satisfaction_protection();
 			
-			set Satisfaction <- min([0.33 * satisfaction_materielle,
-				0.33 * satisfaction_religieuse,
-				0.33 * satisfaction_protection]);
+			set Satisfaction <- min([satisfaction_materielle, satisfaction_religieuse, satisfaction_protection]);
 		}
 		
 		reflex demenagement {
@@ -167,8 +156,6 @@ entities {
 				point localLoc <- nil;
 				float localSat <- nil;
 				
-				// On tente le local
-				
 				set location <- demenagement_local();
 				do update_satisfaction();
 				set localLoc <- self.location;
@@ -177,21 +164,8 @@ entities {
 					set nb_demenagement_local <- nb_demenagement_local + 1;
 				} else {
 					set location <- demenagement_lointain();
-					list<Seigneurs> oldSeigneurs <- self.mesSeigneurs;
-					do update_protecteur;
-					do update_seigneurs;
 					do update_satisfaction();
-					if (Satisfaction > localSat) {
-						set nb_demenagement_lointain <- nb_demenagement_lointain + 1;
-					} else {
-						set location <- baseLoc ;
-						set Satisfaction <- baseSat;
-						set nb_non_demenagement <- nb_non_demenagement + 1;
-						ask mesSeigneurs { FP_controlles >- myself; }
-						set mesSeigneurs <- oldSeigneurs ;
-						ask mesSeigneurs {FP_controlles <+ myself;}
-						do update_protecteur;
-					}
+					nb_demenagement_lointain <- nb_demenagement_lointain + 1;
 				}
 			}
 		}
@@ -200,22 +174,35 @@ entities {
 			// Modèle gravitaire local, dans un rayon de 5km
 			// Amenités : Chateaux / Églises / Agregats
 			int rayon_local <- 5000 ;
-			//list<Foyers_Paysans> meilleure_ca <- [1,2];
-			list<Amenites> amenites_proches <- Amenites at_distance rayon_local;
-			Amenites meilleureAmenite <- amenites_proches with_max_of (each.attractivite /max([self distance_to each, 1]));
+			list<Attracteurs> attracteurs_proches <- Attracteurs at_distance rayon_local;
 			
-			if (meilleureAmenite = nil) {
+			/*
+			// On supprime cette logique, FP se dirige maintenant vers barycentre des attracteurs à proximité
+			Attracteurs meilleurAttracteur <- attracteurs_proches with_max_of (each.attractivite /max([self distance_to each, 1]));
+			if (meilleurAttracteur = nil) {
 				return location;
 			} else {
 				point bestPoint <- nil;
-			if ((self distance_to meilleureAmenite) <= 1000) {
-				point bestPoint <- any_location_in(100 around meilleureAmenite.location);
+			if ((self distance_to meilleurAttracteur) <= 1000) {
+				point bestPoint <- any_location_in(100 around meilleurAttracteur.location);
 			} else {
 				//point bestPoint <- (lmostAttractive) inter (1000 around self);
-				point bestPoint <- (line([self.location, meilleureAmenite.location]) inter (1000 around self)).points[1];
+				point bestPoint <- (line([self.location, meilleurAttracteur.location]) inter (1000 around self)).points[1];
 			}
 			//point bestPoint <- any_location_in(100 around self.location);
 			return bestPoint;
+			}
+			*/
+			if (empty(attracteurs_proches)) {
+				return(location);
+			} else {
+				point centre_gravite <- mean(attracteurs_proches collect each.location);
+				if (self distance_to centre_gravite <= 1000){
+					return(any_location_in(100 around centre_gravite));
+				} else {
+					point pointEtape <- (line([self.location, centre_gravite]) inter (1000 around self)).points[1];
+					return(pointEtape);
+				}
 			}
 		}
 		

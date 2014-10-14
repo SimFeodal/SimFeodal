@@ -14,9 +14,9 @@ import "Agents/Foyers_Paysans.gaml"
 import "Agents/Chateaux.gaml"
 import "Agents/Eglises.gaml"
 import "Agents/Seigneurs.gaml"
-import "Agents/Amenites.gaml"
+import "Agents/Attracteurs.gaml"
 
-global schedules: list(world) + list(Amenites) + list(Agregats) + list(Foyers_Paysans) + list(Chateaux) + list(Eglises) + list(Seigneurs){
+global schedules: list(world) + list(Attracteurs) + list(Agregats) + list(Foyers_Paysans) + list(Chateaux) + list(Eglises) + list(Seigneurs){
 	init {
 		do generer_monde;
     }
@@ -24,18 +24,38 @@ global schedules: list(world) + list(Amenites) + list(Agregats) + list(Foyers_Pa
 	
 experiment base_experiment type: gui {
 	
+	parameter "Année début simulation" var: debut_simulation category: "Simulation";
+	parameter "Année fin simulation" var: fin_simulation category: "Simulation";
+	
 	parameter "Nombre de Foyers Paysans:" var: nombre_foyers_paysans category: "Foyers Paysans";
 	parameter "Taux renouvellement" var: taux_renouvellement category: "Foyers Paysans";
 	parameter "Taux mobilité des FP" var: taux_mobilite category: "Foyers Paysans";
+	parameter "Année début besoin protection" var: debut_besoin_protection category: "Foyers Paysans";
 	
 	parameter "Nombre d'agglomérations secondaires antiques:" var: nombre_agglos_antiques category: "Agrégats";
 	parameter "Nombre de villages:" var: nombre_villages category: "Agrégats";
 	parameter "Nombre de Foyers Paysans par village:" var: nombre_foyers_villages category: "Agrégats";
+	parameter "Puissance Communautés Agraires" var: puissance_comm_agraire min: 0.0 max: 0.75 category: "Agrégats";
 	
-	parameter "Nombre de Seigneurs:" var: nombre_seigneurs category: "Seigneurs";
-	parameter "Nombre grands seigneurs" var: nombre_grands_seigneurs category: "Seigneurs";
-	parameter "Nombre petits seigneurs" var: nombre_petits_seigneurs category: "Seigneurs";
-	parameter "Probabilité (FP) de devenir seigneur" var: proba_devenir_seigneur category: "Seigneurs";
+	parameter "Nombre grands seigneurs" var: nombre_grands_seigneurs category: "Seigneurs - Init" min: 1 max: 2;
+	parameter "Nombre petits seigneurs" var: nombre_petits_seigneurs category: "Seigneurs - Init";
+	
+	parameter "Puissance Grand Seigneur 1" var: puissance_grand_seigneur1 category: "Grands Seigneurs";
+	parameter "Puissance Grand Seigneur 2" var: puissance_grand_seigneur2 category: "Grands Seigneurs";
+	
+	//parameter "Probabilité (FP) de devenir seigneur" var: proba_devenir_seigneur category: "Seigneurs";
+	parameter "Châtelain peut créer château" var: chatelain_cree_chateau category: "Seigneurs";
+	parameter "Probabilité créer château" var: proba_creer_chateau category: "Seigneurs";
+	parameter "Probabilité don château" var: proba_don_chateau category: "Seigneurs";
+	
+	parameter "Nombre visé de petits seigneurs en fin de simulation" var: nombre_seigneurs_objectif category: "Petits Seigneurs";
+	parameter "%FP payant un loyer (Petit Seigneur initial) - Borne Min" var: min_fourchette_loyers_PS_init category: "Petits Seigneurs" min: 0.0 max: 1.0;
+	parameter "%FP payant un loyer (Petit Seigneur initial) - Borne Min" var: max_fourchette_loyers_PS_init category: "Petits Seigneurs" min: 0.0 max: 1.0;
+	
+	parameter "Nombre visé de seigneurs en fin de simulation" var: nombre_seigneurs_objectif category: "Petits Seigneurs";
+	parameter "Proba d'obtenir un loyer pour la terre (Petit Seigneur nouveau)" var: proba_collecter_loyer category: "Petits Seigneurs";
+	parameter "%FP payant un loyer (Petit Seigneur nouveau) - Borne Min" var: min_fourchette_loyers_PS_nouveau category: "Petits Seigneurs" min: 0.0 max: 1.0;
+	parameter "%FP payant un loyer (Petit Seigneur nouveau) - Borne Min" var: max_fourchette_loyers_PS_nouveau category: "Petits Seigneurs" min: 0.0 max: 1.0;
 	
 	parameter "Nombre d'églises:" var: nombre_eglises category: "Eglises";
 		
@@ -45,7 +65,7 @@ experiment base_experiment type: gui {
 		monitor "Nombre de Foyers paysans" value: length(Foyers_Paysans);
 		monitor "Nombre FP dans agrégat" value: length(Foyers_Paysans where (each.monAgregat != nil));
 		monitor "Nombre d'agrégats" value: length(Agregats);
-		//monitor "Nombre Agglos CP" value: length(Agglomerations where (length(each.Communaute_Agraire)  > 0));
+
 		monitor "Nombre FP CP" value: length(Foyers_Paysans where (each.comm_agraire));
 		monitor "Nombre Seigneurs" value: length(Seigneurs);
 		monitor "Nombre Grands Seigneurs" value: length(Seigneurs where (each.type = "Grand Seigneur"));
@@ -78,8 +98,8 @@ experiment base_experiment type: gui {
 	        }
     	}
     	
-    	display richesses_seigneurs {
-    		chart "Richesse seigneurs" type:series {
+    	display puissance_seigneurs {
+    		chart "Puissance des seigneurs" type:series {
     			data "Min" value: min(Seigneurs collect each.puissance) color: #green;
     			data "Mean" value: mean(Seigneurs collect each.puissance) color: #blue;
     			data "Max" value: max(Seigneurs collect each.puissance) color: #red;
@@ -92,6 +112,14 @@ experiment base_experiment type: gui {
     			data "Satisfaction Spirituelle" value: mean(Foyers_Paysans collect each.satisfaction_religieuse) color: #green;
     			data "Satisfaction Protection" value: mean(Foyers_Paysans collect each.satisfaction_protection) color: #red;
     			data "Satisfaction" value: mean(Foyers_Paysans collect each.Satisfaction) color: #black;
+    		}
+    	}
+    	
+    	display puissance_armee_seigneurs {
+    		chart "Puissance armée des seigneurs" type:series {
+    			data "Min" value: min(Seigneurs collect each.pouvoir_armee) color: #green;
+    			data "Mean" value: mean(Seigneurs collect each.pouvoir_armee) color: #blue;
+    			data "Max" value: max(Seigneurs collect each.pouvoir_armee) color: #red;
     		}
     	}
 	}

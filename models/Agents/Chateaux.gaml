@@ -7,23 +7,24 @@
 model t8
 
 import "../init.gaml"
-import "../T8.gaml"
+import "../GUI.gaml"
 import "../global.gaml"
 import "Foyers_Paysans.gaml"
 import "Agregats.gaml"
 import "Eglises.gaml"
 import "Seigneurs.gaml"
-import "Amenites.gaml"
+import "Attracteurs.gaml"
 
 
 entities {
-	species Chateaux parent: Amenites{
+	species Chateaux parent: Attracteurs  schedules: shuffle(Chateaux){
 		string type;
 		list<string> fonctions_possedees;
 		float aire_attraction;
 		Agregats monAgregat;
 		int attractivite <- 0;
 		Seigneurs monSeigneur;
+		Seigneurs monGardien;
 		
 		reflex update_attractivite {
 			set attractivite <- length(fonctions_possedees);

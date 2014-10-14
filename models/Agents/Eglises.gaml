@@ -7,18 +7,18 @@
 model t8
 
 import "../init.gaml"
-import "../T8.gaml"
+import "../GUI.gaml"
 import "../global.gaml"
 import "Foyers_Paysans.gaml"
 import "Agregats.gaml"
 import "Chateaux.gaml"
 import "Seigneurs.gaml"
-import "Amenites.gaml"
+import "Attracteurs.gaml"
 
 
 entities {
 	
-	species Eglises parent: Amenites{
+	species Eglises parent: Attracteurs schedules: shuffle(Eglises) {
 		string type;
 		list<string> droits_paroissiaux <- []; // ["Baptême" / "Inhumation" / "Eucharistie"]
 		int attractivite <- 0;

@@ -7,7 +7,7 @@
 model t8
 
 import "../init.gaml"
-import "../T8.gaml"
+import "../GUI.gaml"
 import "../global.gaml"
 import "Foyers_Paysans.gaml"
 import "Agregats.gaml"
@@ -18,7 +18,7 @@ import "Seigneurs.gaml"
 
 entities {
 	
-	species Amenites {
+	species Attracteurs schedules: shuffle(Attracteurs) {
 		int attractivite <- 0;
 	}
 	

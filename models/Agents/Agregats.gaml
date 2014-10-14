@@ -7,16 +7,20 @@
 model t8
 
 import "../init.gaml"
-import "../T8.gaml"
+import "../GUI.gaml"
 import "../global.gaml"
 import "Foyers_Paysans.gaml"
 import "Chateaux.gaml"
 import "Eglises.gaml"
 import "Seigneurs.gaml"
-import "Amenites.gaml"
+import "Attracteurs.gaml"
 
 global {
-	    reflex update_agregats {
+	
+		reflex update_agregats {
+			do update_agregats; 
+		}
+	    action update_agregats {
 	    	
 	    	// 1 - On crée une liste des nouvelles agglos
 	    	list agregats_detectees <- connected_components_of(list(Foyers_Paysans) as_distance_graph 200) where (length(each) >= 5) ;
@@ -64,18 +68,21 @@ global {
 
 entities {
 
-	species Agregats parent: Amenites{
+	species Agregats parent: Attracteurs schedules: shuffle(Agregats){
 		bool fake_agregat <- false;
 		int attractivite <- 0;
 		list<Foyers_Paysans> fp_agregat ;
 		bool communaute_agraire <- false;
+		bool marche <- false;
 		
 		action update_shape {
 			set shape <- convex_hull(polygon(fp_agregat collect each.location));
 		}
 		
 		reflex update_attractivite {
-			set attractivite <- length(fp_agregat) +  sum(Chateaux where (self = each.monAgregat) collect each.attractivite);
+			// Temporairement désactivé
+			//set attractivite <- length(fp_agregat) +  sum(Chateaux where (self = each.monAgregat) collect each.attractivite);
+			set attractivite <- length(fp_agregat);
 		}
 		
 		action update_comm_agraire {
