@@ -14,51 +14,8 @@ import "Chateaux.gaml"
 import "Eglises.gaml"
 import "Seigneurs.gaml"
 import "Attracteurs.gaml"
+import "Zones_Prelevement.gaml"
 
-global {
-	reflex renouvellement_FP when: (time > 0) {
-		int attractivite_totale <- length(Foyers_Paysans) + sum(Chateaux collect each.attractivite);
-
-		int nb_FP_impactes <- int(taux_renouvellement * length(Foyers_Paysans));
-		ask nb_FP_impactes among Foyers_Paysans {
-			if (monAgregat != nil){
-				ask monAgregat {
-					fp_agregat >- myself;
-				}
-			}
-			do die;
-		}
-		create Agregats number: 1 {
-			set fake_agregat <- true;
-			set attractivite <- attractivite_totale - sum(Agregats collect each.attractivite);
-		}
-		create Foyers_Paysans number: nb_FP_impactes {
-			int attractivite_cagnotte <- attractivite_totale;
-			point FPlocation <- nil;
-			loop agregat over: shuffle(Agregats) {
-				if (agregat.attractivite >= attractivite_cagnotte){
-					if (length(agregat.fp_agregat) > 0) {
-						set FPlocation <- any_location_in(200 around one_of(agregat.fp_agregat).location);
-					} else {
-						set FPlocation <- any_location_in(worldextent);
-					}
-					break;
-				} else {
-					set attractivite_cagnotte <- attractivite_cagnotte - agregat.attractivite;
-				}
-			}
-			set location <- FPlocation;
-			set mobile <- flip (taux_mobilite);
-			
-		}
-		
-		ask Agregats where each.fake_agregat {
-			do die;
-		}
-	}
-	
-	
-}
 
 entities {
 	species Foyers_Paysans schedules: shuffle(Foyers_Paysans){
@@ -69,8 +26,8 @@ entities {
 		float satisfaction_protection;
 		
 		float Satisfaction ;
-		list<Chateaux> mesChateaux <- [];
 		bool mobile; // Si true : ce FP peut se déplacer / si false, serf/esclave, pas de déplacement
+		
 		Seigneurs seigneur_loyer <- nil;
 		Seigneurs seigneur_hauteJustice <- nil;
 		list<Seigneurs> seigneurs_banaux <- [];
@@ -125,8 +82,9 @@ entities {
 				return(1.0);
 			} else {
 				Chateaux plusProcheChateau <- Chateaux closest_to self;
+				if (plusProcheChateau = nil) {return(0.0);}
 				if (self distance_to plusProcheChateau <= 5000) {
-					float protection_seigneur <- plusProcheChateau.monSeigneur.pouvoir_armee ;
+					int protection_seigneur <- plusProcheChateau.monSeigneur.puissance_armee ;
 					float S_protection <- max([protection_seigneur / 300 , 1.0]);
 					
 					return(S_protection);
@@ -137,9 +95,6 @@ entities {
 			return(0.0);
 		}
 		
-		reflex maj_satisfaction {
-			do update_satisfaction;
-		}
 		
 		action update_satisfaction {
 			set satisfaction_materielle <- update_satisfaction_materielle();
@@ -149,7 +104,7 @@ entities {
 			set Satisfaction <- min([satisfaction_materielle, satisfaction_religieuse, satisfaction_protection]);
 		}
 		
-		reflex demenagement {
+		action demenagement {
 			if (rnd(100) / 100 > Satisfaction){
 				point baseLoc <- self.location;
 				float baseSat <- self.Satisfaction;
@@ -160,7 +115,7 @@ entities {
 				do update_satisfaction();
 				set localLoc <- self.location;
 				set localSat <- self.Satisfaction;
-				if (Satisfaction >= baseSat){
+				if (Satisfaction > baseSat){
 					set nb_demenagement_local <- nb_demenagement_local + 1;
 				} else {
 					set location <- demenagement_lointain();
@@ -223,6 +178,13 @@ entities {
 					set attractivite_cagnotte <- attractivite_cagnotte - agregat.attractivite;
 				}
 			}
+			
+			// reset variables
+			set seigneur_loyer <- nil;
+			set seigneur_hauteJustice <- nil;
+			set seigneurs_banaux <- [];
+			set seigneurs_basseMoyenneJustice <- [];
+			
 			return FPlocation;
 		}
 		

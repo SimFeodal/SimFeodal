@@ -14,57 +14,8 @@ import "Chateaux.gaml"
 import "Eglises.gaml"
 import "Seigneurs.gaml"
 import "Attracteurs.gaml"
+import "Zones_Prelevement.gaml"
 
-global {
-	
-		reflex update_agregats {
-			do update_agregats; 
-		}
-	    action update_agregats {
-	    	
-	    	// 1 - On crée une liste des nouvelles agglos
-	    	list agregats_detectees <- connected_components_of(list(Foyers_Paysans) as_distance_graph 200) where (length(each) >= 5) ;
-	    	ask Foyers_Paysans {
-	    		set monAgregat <- nil ;
-	    	}
-	   		// 2 - On parcourt la liste des anciennes agglos
-	   		list<geometry> agregats_existantes <- Agregats collect each.shape;
-	   		loop i over: Agregats {
-	   			bool encore_agregat <- false;
-	   			loop j over: agregats_detectees {
-	   				list<Foyers_Paysans>FP_inclus <- list<Foyers_Paysans>(j);
-	   				geometry geom_agregat <- convex_hull(polygon(FP_inclus collect each.location));
-	   				if (i.shape intersects geom_agregat){
-	   					ask i {
-	   						set fp_agregat <- FP_inclus;
-	   						ask fp_agregat {
-	   							set monAgregat <- myself ;
-	   						}
-   						do update_shape;
-   						do update_comm_agraire;
-	   					}
-   						agregats_detectees >> j;
-   						set encore_agregat <- true;
-   						// sortir de la boucle j
-   						break;
-	   				}
-	   			}
-	   			if (!encore_agregat) {
-					ask i { do die;}	   				
-	   			}
-	   		}
-	   		loop nouvel_agregat over: agregats_detectees{
-	   			create Agregats {
-	   				set fp_agregat <- list<Foyers_Paysans>(nouvel_agregat);
-	   				ask fp_agregat {
-	   					set monAgregat <- myself;
-	   				}
-	   				do update_shape;
-	   				do update_comm_agraire;
-	   			}
-	   		}
-	    }
-}
 
 entities {
 
@@ -79,7 +30,7 @@ entities {
 			set shape <- convex_hull(polygon(fp_agregat collect each.location));
 		}
 		
-		reflex update_attractivite {
+		action update_attractivite {
 			// Temporairement désactivé
 			//set attractivite <- length(fp_agregat) +  sum(Chateaux where (self = each.monAgregat) collect each.attractivite);
 			set attractivite <- length(fp_agregat);

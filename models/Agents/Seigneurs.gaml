@@ -14,88 +14,96 @@ import "Agregats.gaml"
 import "Chateaux.gaml"
 import "Eglises.gaml"
 import "Attracteurs.gaml"
+import "Zones_Prelevement.gaml"
+
 
 entities {
 	species Seigneurs schedules: shuffle(Seigneurs) {
+		
 		string type <- "Petit Seigneur";
 		bool initialement_present <- false;
-		float puissance <- 1.0;
-		float pouvoir_armee <- 0.0;
 		float taux_prelevement <- 1.0;
-		int rayon_captation ;
-		list<Foyers_Paysans> FP_controlles <- [];
-		list<Chateaux> chateaux_controlles <- [];
-		list<Seigneurs> vassaux <- [];
-		Seigneurs suzerain <- nil;
-		float richesse_autorite_centrale;
-		list<Foyers_Paysans> FP_hauteJustice <- [];
-		list<Foyers_Paysans> FP_banaux <- [];
-		list<Foyers_Paysans> FP_basseMoyenneJustice <- [];
-		Seigneurs suzerain_loyer <- nil;
-		Seigneurs suzerain_hauteJustice <- nil ;
-		Seigneurs suzerain_banaux <- nil;
-		Seigneurs suzerain_basseMoyenneJustice <- nil;
 		
-
+		float puissance_init;
+		float puissance <- 0.0;
+		int puissance_armee <- 0;
 		
-		reflex MaJ_puissance {
-			float loyers_propres <- length(Foyers_Paysans where (each.seigneur_loyer = self)) * 1.0;
-			list<Seigneurs> mes_seigneurs_loyer <- Seigneurs where (each.suzerain_loyer = self);
-			float loyers_garde <- length(Foyers_Paysans where (mes_seigneurs_loyer contains each.seigneur_loyer)) * 1.25;
-			float loyers_total <- loyers_propres + loyers_garde;
-			
-			float hauteJustice_propre <- length(Foyers_Paysans where (each.seigneur_hauteJustice = self)) * 1.0;
-			list<Seigneurs> mes_seigneurs_hauteJustice <- Seigneurs where (each.suzerain_loyer = self);
-			float hauteJustice_garde <- length(Foyers_Paysans where (mes_seigneurs_hauteJustice contains each.seigneur_hauteJustice)) * 1.25;
-			float hauteJustice_total <- hauteJustice_propre + hauteJustice_garde;
-			
-			set puissance <- puissance + loyers_total + hauteJustice_total;
-		}
+		bool droits_loyer <- false;
+		bool droits_hauteJustice <- false ;
+		bool droits_banaux <- false;
+		bool droits_moyenneBasseJustice <- false;
 		
-		reflex construction_chateau when: (puissance > 2000 and (type = "Grand Seigneur" or (type = "Chatelain" and chatelain_cree_chateau))){
-			if (rnd(100) / 100 >= proba_creer_chateau) {
-				Chateaux nvxChateau <- nil;
-				create Chateaux number: 1 {
-					set nvxChateau <- self;
-					set monSeigneur <- myself;
-					set monAgregat <- one_of(Agregats);
-					set location <- any_location_in(500 around monAgregat.location);
-				}
-				chateaux_controlles <+ nvxChateau;
-				puissance <- puissance - 2000;
+		list<Foyers_Paysans> FP_assujettis <- [];
+		
+		init {
+			if (type = "Chatelain") {
+				int rayon_zone <- 20000;
+				float txPrelev <- 1.0;
+				do creer_zone_prelevement(self.location, rayon_zone, self, "Loyer", txPrelev);
 			}
 		}
 		
-		reflex don_chateaux when: (length(chateaux_controlles) > 1 and Annee > 950) {
-			loop chateau over: (chateaux_controlles - one_of(chateaux_controlles)) {
-				if (rnd(100) / 100 >= proba_don_chateau) {
-					Seigneurs monNouveauSeigneur <- nil ;
-					ask chateau {
-						set monNouveauSeigneur <- one_of(Seigneurs where (each.type != "Grand Seigneur" and (each.suzerain_loyer = nil or each.suzerain_loyer = myself)));
-						set monSeigneur <- monNouveauSeigneur;
-					}
-					ask monNouveauSeigneur {
-						set suzerain_loyer <- myself;
-						chateaux_controlles <+ chateau;
-					}
-					chateaux_controlles >- chateau;
-				}
+		action creer_zone_prelevement (point centre_zone, int rayon, Seigneurs proprio, string typeDroit, float txPrelev) {
+			create Zones_Prelevement number: 1 {
+				set proprietaire <- proprio;
+				set type_droit <- typeDroit ;
+				set rayon_captation <- rayon;
+				set taux_captation <- txPrelev;
+				set preleveurs <- [proprio::txPrelev];
 			}
+		}
+		
+		action reset_variables {
+			set FP_assujettis <- [];
+		}
+		
+		float MaJ_loyers {
+			list<Foyers_Paysans> mesLocataires <- Foyers_Paysans where (each.seigneur_loyer = self);
+			float mesLoyers <- length(mesLocataires) * taux_prelevement;
+			FP_assujettis << mesLocataires;
+			return(mesLoyers);
+		}
+		
+		float MaJ_hauteJustice {
+			// On collecte les droits de haute justice et on attribue les FP à soi-même.
+			return(1);
+		}
+		
+		float MaJ_banaux {
+			// On collecte les droits banaux et on s'ajoute à la liste des seigneurs des FP.
+			return(1);
+		}
+		
+		float MaJ_moyenneBasseJustice {
+			// On collecte les droits de moyenne/basse justice et on s'ajoute à la liste des seigneurs des FP.
+			return(1);
+		}
+		
+		action MaJ_puissance {
+			set puissance <- puissance + MaJ_loyers() + MaJ_hauteJustice() + MaJ_banaux() + MaJ_moyenneBasseJustice();
+		}
+		
+		
+		action don_chateaux {
+			// On donne ses châteaux...
+		}
+		
+		action construction_chateau {
+			// on construit un château...
 		}
 		
 	
-		reflex MaJ_type {
-			if (self.type != "Grand Seigneur") {
-				set type <- (length(self.chateaux_controlles) > 0) ? "Chatelain" : "Petit Seigneur";
+		action MaJ_type {
+			if (self.type = "Petit Seigneur") {
+				set type <- (!empty(Chateaux where ( (each.proprietaire = self) or (each.gardien = self) ))) ? "Chatelain" : "Petit Seigneur";
 			}			
 		}
 		
-		reflex MaJ_pouvoir_armee {
-			set pouvoir_armee <- length(FP_controlles) + sum(vassaux collect each.puissance);
+		action MaJ_puissance_armee {
+			// C'est le nombre (unique) de FP qui versent des droits à ce seigneur.
+			set puissance_armee <- length(FP_assujettis);
 		}
-		reflex disparition when: (puissance = 0){
-			do die;
-		}
+		
 	}
 	
 }

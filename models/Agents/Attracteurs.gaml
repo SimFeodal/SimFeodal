@@ -14,6 +14,7 @@ import "Agregats.gaml"
 import "Eglises.gaml"
 import "Chateaux.gaml"
 import "Seigneurs.gaml"
+import "Zones_Prelevement.gaml"
 
 
 entities {

@@ -14,6 +14,7 @@ import "Agregats.gaml"
 import "Eglises.gaml"
 import "Seigneurs.gaml"
 import "Attracteurs.gaml"
+import "Zones_Prelevement.gaml"
 
 
 entities {
@@ -25,13 +26,15 @@ entities {
 		int attractivite <- 0;
 		Seigneurs monSeigneur;
 		Seigneurs monGardien;
+		Seigneurs proprietaire <- nil;
+		Seigneurs gardien <- nil;
 		
-		reflex update_attractivite {
+		action update_attractivite {
 			set attractivite <- length(fonctions_possedees);
 		}
 		
 		
-		reflex update_agglo {
+		action update_agglo {
 			list<Agregats> agregats_proches <- Agregats at_distance 1000;
 			// Si une agglo intersecte mon shape
 			if (agregats_proches != nil){

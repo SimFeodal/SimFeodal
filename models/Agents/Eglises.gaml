@@ -14,6 +14,7 @@ import "Agregats.gaml"
 import "Chateaux.gaml"
 import "Seigneurs.gaml"
 import "Attracteurs.gaml"
+import "Zones_Prelevement.gaml"
 
 
 entities {
@@ -24,7 +25,7 @@ entities {
 		int attractivite <- 0;
 		rgb color <- #blue ;
 		
-		reflex update_attractivite {
+		action update_attractivite {
 			set attractivite <- length(droits_paroissiaux);
 		}
 		

@@ -15,11 +15,56 @@ import "Agents/Chateaux.gaml"
 import "Agents/Eglises.gaml"
 import "Agents/Seigneurs.gaml"
 import "Agents/Attracteurs.gaml"
+import "Agents/Zones_Prelevement.gaml"
 
 global schedules: list(world) + list(Attracteurs) + list(Agregats) + list(Foyers_Paysans) + list(Chateaux) + list(Eglises) + list(Seigneurs){
+    
 	init {
 		do generer_monde;
-    }
+		int nb_seigneurs_a_creer <- nombre_seigneurs_objectif - (nombre_grands_seigneurs + nombre_petits_seigneurs);
+		set nb_moyen_petits_seigneurs_par_tour <- round(nb_seigneurs_a_creer / ((fin_simulation - debut_simulation) / 20));
+	}
+	
+	reflex MaJ_globale {
+		do update_year;
+		do reset_globals;
+		if (time > 0) {do renouvellement_FP;}
+		do update_agregats;
+		do creation_nouveaux_seigneurs;
+	}
+	
+	reflex MaJ_Agregats{
+		ask Agregats {do update_attractivite;}
+	}
+	
+	reflex MaJ_FP {
+		ask Foyers_Paysans{ do update_satisfaction;}
+		ask Foyers_Paysans {do demenagement;}
+	}
+	
+	reflex MaJ_Chateaux {
+		ask Chateaux {do update_attractivite;}
+		ask Chateaux {do update_agglo;}
+	}
+	
+	reflex MaJ_Eglises {
+		ask Eglises {do update_attractivite;}
+	}
+	
+	reflex MaJ_Seigneurs {
+		do attribution_loyers_FP;
+		ask Seigneurs {
+			do reset_variables;
+			do MaJ_puissance;
+		}
+		if (Annee > 950) {ask Seigneurs {do don_chateaux;}}
+		ask Seigneurs where (each.puissance > 2000){do construction_chateau;}
+		ask Seigneurs {do MaJ_puissance_armee;}
+	}
+	reflex MaJ_Zones_Prelevement {
+		ask Zones_Prelevement {do update_shape;}
+	}
+	
 }
 	
 experiment base_experiment type: gui {
@@ -50,12 +95,16 @@ experiment base_experiment type: gui {
 	
 	parameter "Nombre visé de petits seigneurs en fin de simulation" var: nombre_seigneurs_objectif category: "Petits Seigneurs";
 	parameter "%FP payant un loyer (Petit Seigneur initial) - Borne Min" var: min_fourchette_loyers_PS_init category: "Petits Seigneurs" min: 0.0 max: 1.0;
-	parameter "%FP payant un loyer (Petit Seigneur initial) - Borne Min" var: max_fourchette_loyers_PS_init category: "Petits Seigneurs" min: 0.0 max: 1.0;
+	parameter "%FP payant un loyer (Petit Seigneur initial) - Borne Max" var: max_fourchette_loyers_PS_init category: "Petits Seigneurs" min: 0.0 max: 1.0;
+	parameter "Rayon min Zone Prélevement - Petits Seigneurs Init" var: rayon_min_PS_init category: "Petits Seigneurs" min: 100 max: 2000;
+	parameter "Rayon max Zone Prélevement - Petits Seigneurs Init" var: rayon_max_PS_init category: "Petits Seigneurs" min: 100 max: 10000;
 	
 	parameter "Nombre visé de seigneurs en fin de simulation" var: nombre_seigneurs_objectif category: "Petits Seigneurs";
 	parameter "Proba d'obtenir un loyer pour la terre (Petit Seigneur nouveau)" var: proba_collecter_loyer category: "Petits Seigneurs";
 	parameter "%FP payant un loyer (Petit Seigneur nouveau) - Borne Min" var: min_fourchette_loyers_PS_nouveau category: "Petits Seigneurs" min: 0.0 max: 1.0;
-	parameter "%FP payant un loyer (Petit Seigneur nouveau) - Borne Min" var: max_fourchette_loyers_PS_nouveau category: "Petits Seigneurs" min: 0.0 max: 1.0;
+	parameter "%FP payant un loyer (Petit Seigneur nouveau) - Borne Max" var: max_fourchette_loyers_PS_nouveau category: "Petits Seigneurs" min: 0.0 max: 1.0;
+	parameter "Rayon min Zone Prélevement - Petits Seigneurs nouveau" var: rayon_min_PS_nouveau category: "Petits Seigneurs" min: 100 max: 2000;
+	parameter "Rayon max Zone Prélevement - Petits Seigneurs nouveau" var: rayon_max_PS_nouveau category: "Petits Seigneurs" min: 100 max: 10000;
 	
 	parameter "Nombre d'églises:" var: nombre_eglises category: "Eglises";
 		
@@ -76,11 +125,11 @@ experiment base_experiment type: gui {
 		monitor "Attractivité globale" value: length(Foyers_Paysans) + sum(Chateaux collect each.attractivite);
 		monitor "Attractivité agrégats" value: sum(Agregats where (!each.fake_agregat) collect each.attractivite);
 		display world_display {
-			
-			species Agregats;
-			//species Foyers_Paysans aspect: base ;
+			species Zones_Prelevement transparency: 0.9;
 			species Eglises aspect: base ;
 			species Chateaux aspect: base ;
+			species Agregats transparency: 0.3;
+			//species Foyers_Paysans aspect: base ;	
 		}
 		
 	    display demenagements {
@@ -117,10 +166,19 @@ experiment base_experiment type: gui {
     	
     	display puissance_armee_seigneurs {
     		chart "Puissance armée des seigneurs" type:series {
-    			data "Min" value: min(Seigneurs collect each.pouvoir_armee) color: #green;
-    			data "Mean" value: mean(Seigneurs collect each.pouvoir_armee) color: #blue;
-    			data "Max" value: max(Seigneurs collect each.pouvoir_armee) color: #red;
+    			data "Min" value: min(Seigneurs collect each.puissance_armee) color: #green;
+    			data "Mean" value: mean(Seigneurs collect each.puissance_armee) color: #blue;
+    			data "Max" value: max(Seigneurs collect each.puissance_armee) color: #red;
     		}
     	}
+    	
+    	display dependance_FPS {
+    		chart "Dépendance (loyer) des FP" type:series {
+    			data "FP payant un loyer à un GS" value: length(Foyers_Paysans where (each.seigneur_loyer != nil and each.seigneur_loyer.type = "Grand Seigneur")) color: #green;
+    			data "FP payant un loyer à un PS initial" value: length(Foyers_Paysans where (each.seigneur_loyer != nil and each.seigneur_loyer.type = "Petit Seigneur" and each.seigneur_loyer.initialement_present)) color: #blue;
+    			data "FP payant un loyer à un PS nouveau" value: length(Foyers_Paysans where (each.seigneur_loyer != nil and each.seigneur_loyer.type = "Petit Seigneur" and !each.seigneur_loyer.initialement_present)) color: #red;
+    		}
+    	}
+    	
 	}
 }
