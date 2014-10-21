@@ -84,7 +84,7 @@ entities {
 				set type_droit <- typeDroit ;
 				set rayon_captation <- rayon;
 				set taux_captation <- txPrelev;
-				set preleveurs <- [proprio::txPrelev];
+				set preleveurs <- map([proprio::txPrelev]);
 			}
 		}
 		
@@ -95,7 +95,7 @@ entities {
 		float MaJ_loyers {
 			list<Foyers_Paysans> mesLocataires <- Foyers_Paysans where (each.seigneur_loyer = self);
 			float mesLoyers <- length(mesLocataires) * taux_prelevement;
-			FP_assujettis << mesLocataires;
+			set FP_assujettis <- FP_assujettis + mesLocataires;
 			return(mesLoyers);
 		}
 		
