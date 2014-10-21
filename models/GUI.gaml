@@ -21,8 +21,6 @@ global schedules: list(world) + list(Attracteurs) + list(Agregats) + list(Foyers
     
 	init {
 		do generer_monde;
-		int nb_seigneurs_a_creer <- nombre_seigneurs_objectif - (nombre_grands_seigneurs + nombre_petits_seigneurs);
-		set nb_moyen_petits_seigneurs_par_tour <- round(nb_seigneurs_a_creer / ((fin_simulation - debut_simulation) / 20));
 	}
 	
 	reflex MaJ_globale {
@@ -49,22 +47,50 @@ global schedules: list(world) + list(Attracteurs) + list(Agregats) + list(Foyers
 	
 	reflex MaJ_Eglises {
 		ask Eglises {do update_attractivite;}
+		ask Eglises where (!each.eglise_paroissiale) {do update_droits_paroissiaux;}
 	}
 	
-	reflex MaJ_Seigneurs {
+	reflex MaJ_Seigneurs1 {
 		do attribution_loyers_FP;
+
+		// TODO : Maj  Droits (sauf Loyers)-> Creation de nouvelles ZP
+		ask Seigneurs where (each.type="Grand Seigneur"){do MaJ_droits_Grands_Seigneurs;} // FIXME
+		ask Seigneurs where (each.type="Petit Seigneur"){do MaJ_droits_Petits_Seigneurs;} // FIXME
+		ask Seigneurs where (each.type="Chatelain"){do MaJ_droits_Chatelains;} // FIXME
+		// TODO : MaJ Droits châteaux
+	}
+		
+		reflex MaJ_Zones_Prelevement {
+			ask Zones_Prelevement {do update_shape;}
+		}
+		
+	reflex MaJ_Seigneurs2 {
+		// TODO : Cession de droits sur les ZP (cf. feuille A1b) 
+
+		// TODO : Cession droits châteaux
+
+
+		if (Annee > 950) {ask Seigneurs {do don_chateaux;}} // TODO
+		
 		ask Seigneurs {
 			do reset_variables;
-			do MaJ_puissance;
+			do MaJ_puissance; // TODO
 		}
-		if (Annee > 950) {ask Seigneurs {do don_chateaux;}}
-		ask Seigneurs where (each.puissance > 2000){do construction_chateau;}
-		ask Seigneurs {do MaJ_puissance_armee;}
-	}
-	reflex MaJ_Zones_Prelevement {
-		ask Zones_Prelevement {do update_shape;}
+		
+		ask Seigneurs {do MaJ_puissance_armee;} // TODO
+
+		ask Seigneurs where (each.type = "Grand Seigneur" and each.puissance > 2000) {
+			// do construction_châteaux_GS; //TODO
+		}
+		ask Seigneurs where (each.type != "Grand Seigneur" and each.puissance > 2000){
+			do construction_chateau; // TODO
+			// Peut créer n châteaux, avec n = floor(puissance / 2000)
+			// Pour chaque n, proba de créer château
+		}
+		
 	}
 	
+
 }
 	
 experiment base_experiment type: gui {
@@ -96,8 +122,8 @@ experiment base_experiment type: gui {
 	parameter "Nombre visé de petits seigneurs en fin de simulation" var: nombre_seigneurs_objectif category: "Petits Seigneurs";
 	parameter "%FP payant un loyer (Petit Seigneur initial) - Borne Min" var: min_fourchette_loyers_PS_init category: "Petits Seigneurs" min: 0.0 max: 1.0;
 	parameter "%FP payant un loyer (Petit Seigneur initial) - Borne Max" var: max_fourchette_loyers_PS_init category: "Petits Seigneurs" min: 0.0 max: 1.0;
-	parameter "Rayon min Zone Prélevement - Petits Seigneurs Init" var: rayon_min_PS_init category: "Petits Seigneurs" min: 100 max: 2000;
-	parameter "Rayon max Zone Prélevement - Petits Seigneurs Init" var: rayon_max_PS_init category: "Petits Seigneurs" min: 100 max: 10000;
+	parameter "Rayon min Zone Prélevement - Petits Seigneurs Init" var: rayon_min_PS_init category: "Petits Seigneurs" min: 100 max: 20000;
+	parameter "Rayon max Zone Prélevement - Petits Seigneurs Init" var: rayon_max_PS_init category: "Petits Seigneurs" min: 100 max: 25000;
 	
 	parameter "Nombre visé de seigneurs en fin de simulation" var: nombre_seigneurs_objectif category: "Petits Seigneurs";
 	parameter "Proba d'obtenir un loyer pour la terre (Petit Seigneur nouveau)" var: proba_collecter_loyer category: "Petits Seigneurs";
@@ -107,6 +133,7 @@ experiment base_experiment type: gui {
 	parameter "Rayon max Zone Prélevement - Petits Seigneurs nouveau" var: rayon_max_PS_nouveau category: "Petits Seigneurs" min: 100 max: 10000;
 	
 	parameter "Nombre d'églises:" var: nombre_eglises category: "Eglises";
+	parameter "Probabilité gain des droits paroissiaux" var: proba_gain_droits_paroissiaux category: "Eglises";
 		
 
 	output {
@@ -121,6 +148,7 @@ experiment base_experiment type: gui {
 		monitor "Nombre Chatelains" value: length(Seigneurs where (each.type = "Chatelain"));
 		monitor "Nombre Petits Seigneurs" value: length(Seigneurs where (each.type = "Petit Seigneur"));
 		monitor "Nombre Eglises" value: length(Eglises);
+		monitor "Nombre Eglises Paroissiales" value: length(Eglises where each.eglise_paroissiale);
 		monitor "Nombre Chateaux" value: length(Chateaux);
 		monitor "Attractivité globale" value: length(Foyers_Paysans) + sum(Chateaux collect each.attractivite);
 		monitor "Attractivité agrégats" value: sum(Agregats where (!each.fake_agregat) collect each.attractivite);

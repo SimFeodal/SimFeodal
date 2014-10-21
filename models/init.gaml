@@ -106,8 +106,9 @@ global {
 
 	action generer_eglises {
 		create Eglises number: nombre_eglises {
-			set droits_paroissiaux <- flip(1/3) ? ["Baptême"] : [];
-			set location <- any_location_in(reduced_worldextent);
+			//set droits_paroissiaux <- flip(1/3) ? ["Baptême"] : [];
+			set eglise_paroissiale <- flip(1/3);
+			set location <- any_location_in(20000 around one_of(Agregats));
 		}
 	}
 	

@@ -43,6 +43,41 @@ entities {
 			}
 		}
 		
+		
+		action gains_droits_banaux {
+			// 1 seul seigneur aussi	
+		}
+		
+		action MaJ_droits_Grands_Seigneurs {
+			if (Annee < 900){
+					if (!droits_hauteJustice) {
+						set droits_hauteJustice <- flip(0.1);
+						if (droits_hauteJustice){
+							set droits_banaux <- true;
+							set droits_moyenneBasseJustice <- true;
+							// MaJ des FP assujettis : lesquels ? ou ?
+						}
+					}
+					
+					if (!droits_banaux) {set droits_banaux <- flip(0.1);}
+					if (!droits_moyenneBasseJustice){set droits_moyenneBasseJustice <- flip(0.1);}
+					
+					
+				} else if (Annee = 900) {
+					set droits_hauteJustice <-true;
+					set droits_banaux <- true;
+					set droits_moyenneBasseJustice <- true;
+				}
+		}
+		
+		action MaJ_droits_Petits_Seigneurs {
+			
+		}
+		
+		action MaJ_droits_Chatelains {
+			
+		}
+		
 		action creer_zone_prelevement (point centre_zone, int rayon, Seigneurs proprio, string typeDroit, float txPrelev) {
 			create Zones_Prelevement number: 1 {
 				set proprietaire <- proprio;
@@ -65,6 +100,9 @@ entities {
 		}
 		
 		float MaJ_hauteJustice {
+			if (type = "Grand Seigneur" and droits_hauteJustice){
+				list<Foyers_Paysans> mesLocataires <- Foyers_Paysans where (each.seigneur_loyer = self);
+			}
 			// On collecte les droits de haute justice et on attribue les FP à soi-même.
 			return(1);
 		}

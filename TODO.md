@@ -71,10 +71,10 @@ Qui fait attribution seigneurs ?
  1. Eglises
 -------------------------------------------------------------
 
-- [ ] À l'initialisation, toutes les églises sont créées dans une rayon de 20-30km des agrégats.
-- [ ] Donner un %proba aux églises de devenir paroissiales
+- [x] À l'initialisation, toutes les églises sont créées dans une rayon de 20-30km des agrégats.
+- [x] Donner un %proba aux églises de devenir paroissiales
 	-> À la fin, toutes doivent être paroissiales
-- [ ] Implémenter règles satisfaction religieuse
+- [x] Implémenter règles satisfaction religieuse
 
 
  2. Grands Seigneurs

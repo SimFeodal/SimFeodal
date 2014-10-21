@@ -54,7 +54,12 @@ global {
 	int rayon_min_PS_nouveau <- 300;
 	int rayon_max_PS_nouveau <- 2000;
 	
-	int nb_moyen_petits_seigneurs_par_tour <- 10;
+	float proba_gain_droits_banaux <- 0.1;
+	
+	float proba_gain_droits_paroissiaux <- 0.05;
+	
+	int nb_seigneurs_a_creer_total <- nombre_seigneurs_objectif - (nombre_grands_seigneurs + nombre_petits_seigneurs);
+	int nb_moyen_petits_seigneurs_par_tour <- round(nb_seigneurs_a_creer_total / ((fin_simulation - debut_simulation) / 20));
 	
 	file shape_file_bounds <- file("../includes/Emprise_territoire.shp");
 

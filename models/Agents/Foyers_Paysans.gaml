@@ -22,7 +22,7 @@ entities {
 		bool comm_agraire <- false;
 		Agregats monAgregat <- nil;
 		float satisfaction_materielle;
-		float satisfaction_religieuse ;
+		float satisfaction_religieuse;
 		float satisfaction_protection;
 		
 		float Satisfaction ;
@@ -50,7 +50,7 @@ entities {
 		*/
 		
 		
-		float update_satisfaction_materielle {
+		action update_satisfaction_materielle {
 			int loyer <- (self.seigneur_loyer != nil ? 1 : 0);
 			int hauteJustice <- (self.seigneur_hauteJustice != nil ? 1 : 0);
 			int banaux <- length(self.seigneurs_banaux);
@@ -69,37 +69,63 @@ entities {
 			
 
 			float Satisfaction_materielle <- (S_redevances)^(1 - S_contributions);
-			return Satisfaction_materielle;
+			set satisfaction_materielle <-  Satisfaction_materielle;
 		}
 		
-		float update_satisfaction_religieuse {
-			// f(Frequentation eglise) + f(distance église)
-			return rnd(100) / 100 ;
+		action update_satisfaction_religieuse {
+			Eglises eglise_paroissiale_proche <- (Eglises where (each.eglise_paroissiale)) closest_to self;
+			float distance_eglise <- self distance_to eglise_paroissiale_proche;
+
+			if (Annee < 950) {
+				if (distance_eglise < 5000){
+					set satisfaction_religieuse <- 1.0;
+				} else if (distance_eglise < 8000) {
+					set satisfaction_religieuse <- -(1/3 * (distance_eglise / 1000)) + (8/3);
+				} else {
+					set satisfaction_religieuse <- 0.0;
+				}
+			} else if (Annee < 1050) {
+				if (distance_eglise < 3000){
+					set satisfaction_religieuse <- 1.0;
+				} else if (distance_eglise < 5000) {
+					set satisfaction_religieuse <- -(1/2 * (distance_eglise / 1000)) + (2.5);
+				} else {
+					set satisfaction_religieuse <- 0.0;
+				}	
+			} else {
+				if (distance_eglise < 1500){
+					set satisfaction_religieuse <- 1.0;
+				} else if (distance_eglise < 3000) {
+					set satisfaction_religieuse <- -(2/3 * (distance_eglise / 1000)) + (2);
+				} else {
+					set satisfaction_religieuse <- 0.0;
+				}	
+			}
 		}
 		
-		float update_satisfaction_protection {
+		action update_satisfaction_protection {
 			if (Annee < debut_besoin_protection){
-				return(1.0);
+				set satisfaction_protection <- 1.0;
 			} else {
 				Chateaux plusProcheChateau <- Chateaux closest_to self;
 				if (plusProcheChateau = nil) {return(0.0);}
 				if (self distance_to plusProcheChateau <= 5000) {
 					int protection_seigneur <- plusProcheChateau.monSeigneur.puissance_armee ;
-					float S_protection <- max([protection_seigneur / 300 , 1.0]);
-					
-					return(S_protection);
+					set satisfaction_protection <- max([protection_seigneur / 300 , 1.0]);
 				} else {
-					return(0.0);
+					set satisfaction_protection <- 0.0;
 				}
 			}
-			return(0.0);
 		}
 		
 		
 		action update_satisfaction {
-			set satisfaction_materielle <- update_satisfaction_materielle();
-			set satisfaction_religieuse <- update_satisfaction_religieuse();
-			set satisfaction_protection <- update_satisfaction_protection();
+			do update_satisfaction_materielle;
+			do update_satisfaction_religieuse;
+			do update_satisfaction_protection;
+			//set satisfaction_materielle <- update_satisfaction_materielle();
+			//set satisfaction_religieuse <- update_satisfaction_religieuse();
+			//set satisfaction_protection <- update_satisfaction_protection();
 			
 			set Satisfaction <- min([satisfaction_materielle, satisfaction_religieuse, satisfaction_protection]);
 		}

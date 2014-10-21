@@ -21,12 +21,19 @@ entities {
 	
 	species Eglises parent: Attracteurs schedules: shuffle(Eglises) {
 		string type;
-		list<string> droits_paroissiaux <- []; // ["Baptême" / "Inhumation" / "Eucharistie"]
+		//list<string> droits_paroissiaux <- []; // ["Baptême" / "Inhumation" / "Eucharistie"]
+		bool eglise_paroissiale <- false;
 		int attractivite <- 0;
 		rgb color <- #blue ;
 		
 		action update_attractivite {
-			set attractivite <- length(droits_paroissiaux);
+			//set attractivite <- length(droits_paroissiaux);
+		}
+		
+		action update_droits_paroissiaux {
+			if (!eglise_paroissiale) {
+				set eglise_paroissiale <- flip(proba_gain_droits_paroissiaux);
+			}
 		}
 		
 		aspect base {
