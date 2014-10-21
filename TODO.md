@@ -66,3 +66,61 @@ Chaque FP a 4 seigneurs (NB: Ça peut être 4 fois le même...):
 
 
 Qui fait attribution seigneurs ?
+
+
+ 1. Eglises
+-------------------------------------------------------------
+
+- [ ] À l'initialisation, toutes les églises sont créées dans une rayon de 20-30km des agrégats.
+- [ ] Donner un %proba aux églises de devenir paroissiales
+	-> À la fin, toutes doivent être paroissiales
+- [ ] Implémenter règles satisfaction religieuse
+
+
+ 2. Grands Seigneurs
+-------------------------------------------------------------
+
+- [ ] Création châteaux
+- [ ] Création ZP châteaux
+	- [ ] ZP loyers
+	- [ ] ZP haute justice
+	- [ ] ZP droits banaux
+	- [ ] ZP droits basse et moyenne justice
+- [ ] Gains de droits
+	-> Nouvelles ZP
+- [ ] Dons de châteaux
+	- [ ] Don ZP loyer
+	- [ ] Don ZP haute justice
+	- [ ] Don ZP banaux
+	- [ ] Don ZP basse et moyenne justice
+- [ ] Calcul puissance
+	- [ ] Revenus propres
+		- [ ] Loyers
+		- [ ] Haute-justice
+		- [ ] Banaux propres
+		- [ ] Basse et Moyenne justice
+	- [ ] Revenus garde
+		- [ ] Loyers
+		- [ ] Haute-justice
+		- [ ] Banaux propres
+		- [ ] Basse et Moyenne justice
+- [ ] Calcul puissance armée
+	- [ ] FP propres
+	- [ ] FP garde
+
+
+ 3. Petits Seigneurs
+-------------------------------------------------------------
+
+- [ ] Différencier Initiaux/Nouveaux
+- [ ] Ajouter suzerain
+- [ ] Apparition
+- [ ] Gains de droits
+	- [ ] Création nouvelles ZP (banaux & moyenne et basse Justice)
+- [ ] Création ZP châteaux
+	- [ ] ZP loyers
+	- [ ] ZP haute justice
+	- [ ] ZP droits banaux
+	- [ ] ZP droits basse et moyenne justice
+-	[ ] Cession droits
+	- [ ] ZP toutes
