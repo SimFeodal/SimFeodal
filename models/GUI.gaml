@@ -24,7 +24,7 @@ global schedules: list(world) + list(Attracteurs) + list(Agregats) + list(Foyers
 	}
 	
 	reflex MaJ_globale {
-		do update_year;
+		if (Annee > fin_simulation) {ask world {do pause;}}
 		do reset_globals;
 		if (time > 0) {do renouvellement_FP;}
 		do update_agregats;
@@ -42,7 +42,7 @@ global schedules: list(world) + list(Attracteurs) + list(Agregats) + list(Foyers
 	
 	reflex MaJ_Chateaux {
 		ask Chateaux {do update_attractivite;}
-		ask Chateaux {do update_agglo;}
+		//ask Chateaux {do update_agglo;}
 	}
 	
 	reflex MaJ_Eglises {
@@ -80,7 +80,7 @@ global schedules: list(world) + list(Attracteurs) + list(Agregats) + list(Foyers
 		ask Seigneurs {do MaJ_puissance_armee;} // TODO
 
 		ask Seigneurs where (each.type = "Grand Seigneur" and each.puissance > 2000) {
-			// do construction_châteaux_GS; //TODO
+			do construction_chateau_GS; //TODO
 		}
 		ask Seigneurs where (each.type != "Grand Seigneur" and each.puissance > 2000){
 			do construction_chateau; // TODO
@@ -94,6 +94,17 @@ global schedules: list(world) + list(Attracteurs) + list(Agregats) + list(Foyers
 }
 	
 experiment base_experiment type: gui {
+	user_command changeColors { 
+		ask Zones_Prelevement {
+			if (flip(0.25)){
+				set color <- #green;
+			} else if (flip(0.25)) {
+				set color <- #yellow;
+			} else if (flip(0.25)) {
+				set color <- #orange;
+			}
+		}
+	}
 	
 	parameter "Année début simulation" var: debut_simulation category: "Simulation";
 	parameter "Année fin simulation" var: fin_simulation category: "Simulation";
@@ -152,39 +163,27 @@ experiment base_experiment type: gui {
 		monitor "Nombre Chateaux" value: length(Chateaux);
 		monitor "Attractivité globale" value: length(Foyers_Paysans) + sum(Chateaux collect each.attractivite);
 		monitor "Attractivité agrégats" value: sum(Agregats where (!each.fake_agregat) collect each.attractivite);
-		display world_display {
+		
+		display "Carte" {
 			species Zones_Prelevement transparency: 0.9;
 			species Eglises aspect: base ;
 			species Chateaux aspect: base ;
 			species Agregats transparency: 0.3;
 			//species Foyers_Paysans aspect: base ;	
+		 	text string(Annee) size: 10000 position: {0, 1} color: rgb("black");
 		}
 		
-	    display demenagements {
-	        chart "Déménagements" type: series  {
+	    display "Foyers Paysans" {
+	        chart "Déménagements" type: series position: {0,0} size: {0.5,0.5}{
 	            data "Local" value: nb_demenagement_local color: #blue; 
 	            data "Lointain" value: nb_demenagement_lointain color: #red;
 	            data "Non" value: nb_non_demenagement color: #black;
 	        }
-    	}
-    	
-    	display comm_agraires {
-			chart "FP" type: series  {
+			chart "FP" type: series position: {0.0,0.5} size: {0.5,0.5}{
 	            data "Hors CA" value: length(Foyers_Paysans where !each.comm_agraire) color: #blue; 
 	            data "Dans CA" value: length(Foyers_Paysans where each.comm_agraire)  color: #red;
 	        }
-    	}
-    	
-    	display puissance_seigneurs {
-    		chart "Puissance des seigneurs" type:series {
-    			data "Min" value: min(Seigneurs collect each.puissance) color: #green;
-    			data "Mean" value: mean(Seigneurs collect each.puissance) color: #blue;
-    			data "Max" value: max(Seigneurs collect each.puissance) color: #red;
-    		}
-    	}
-    	
-    	display satisfaction_FP {
-    		chart "Satisfaction_FP" type:series {
+    		chart "Satisfaction_FP" type:series position: {0.5,0} size: {0.5,1}{
     			data "Satisfaction Materielle" value: mean(Foyers_Paysans collect each.satisfaction_materielle) color: #blue;
     			data "Satisfaction Spirituelle" value: mean(Foyers_Paysans collect each.satisfaction_religieuse) color: #green;
     			data "Satisfaction Protection" value: mean(Foyers_Paysans collect each.satisfaction_protection) color: #red;
@@ -192,21 +191,24 @@ experiment base_experiment type: gui {
     		}
     	}
     	
-    	display puissance_armee_seigneurs {
-    		chart "Puissance armée des seigneurs" type:series {
+    	
+    	display "Seigneurs" {
+    		chart "Puissance des seigneurs" type:series position: {0,0} size: {0.33,1}{
+    			data "Min" value: min(Seigneurs collect each.puissance) color: #green;
+    			data "Mean" value: mean(Seigneurs collect each.puissance) color: #blue;
+    			data "Max" value: max(Seigneurs collect each.puissance) color: #red;
+    		}
+    		
+    		chart "Puissance armée des seigneurs" type:series position: {0.33,0} size: {0.33,1}{
     			data "Min" value: min(Seigneurs collect each.puissance_armee) color: #green;
     			data "Mean" value: mean(Seigneurs collect each.puissance_armee) color: #blue;
     			data "Max" value: max(Seigneurs collect each.puissance_armee) color: #red;
     		}
-    	}
-    	
-    	display dependance_FPS {
-    		chart "Dépendance (loyer) des FP" type:series {
+    		chart "Dépendance (loyer) des FP" type:series position: {0.66,0} size: {0.33,1}{
     			data "FP payant un loyer à un GS" value: length(Foyers_Paysans where (each.seigneur_loyer != nil and each.seigneur_loyer.type = "Grand Seigneur")) color: #green;
     			data "FP payant un loyer à un PS initial" value: length(Foyers_Paysans where (each.seigneur_loyer != nil and each.seigneur_loyer.type = "Petit Seigneur" and each.seigneur_loyer.initialement_present)) color: #blue;
     			data "FP payant un loyer à un PS nouveau" value: length(Foyers_Paysans where (each.seigneur_loyer != nil and each.seigneur_loyer.type = "Petit Seigneur" and !each.seigneur_loyer.initialement_present)) color: #red;
     		}
-    	}
-    	
+    	}	
 	}
 }
