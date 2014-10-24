@@ -35,9 +35,7 @@ global schedules: list(world) + list(Attracteurs) + list(Agregats) + list(Foyers
 	} 
 	
 	reflex MaJ_Agregats{
-		ask Agregats {
-			do update_attractivite;
-		}
+		ask Agregats {do update_attractivite;}
 	}
 	
 	reflex MaJ_FP {
@@ -70,14 +68,8 @@ global schedules: list(world) + list(Attracteurs) + list(Agregats) + list(Foyers
 	}
 	
 	reflex MaJ_preleveurs {
-		
-		ask Foyers_Paysans {
-			do reset_preleveurs;
-		}
-				
-		ask Seigneurs {
-			do reset_variables;
-		}
+		ask Foyers_Paysans {do reset_preleveurs;}
+		ask Seigneurs {do reset_variables;}
 		do attribution_loyers_FP;
 		ask Zones_Prelevement where (each.type_droit != "Loyer"){ do update_taxes_FP;}
 	}
@@ -112,17 +104,6 @@ global schedules: list(world) + list(Attracteurs) + list(Agregats) + list(Foyers
 }
 	
 experiment base_experiment type: gui {
-	user_command changeColors { 
-		ask Zones_Prelevement {
-			if (flip(0.25)){
-				set color <- #green;
-			} else if (flip(0.25)) {
-				set color <- #yellow;
-			} else if (flip(0.25)) {
-				set color <- #orange;
-			}
-		}
-	}
 	
 	parameter "Année début simulation" var: debut_simulation category: "Simulation";
 	parameter "Année fin simulation" var: fin_simulation category: "Simulation";
