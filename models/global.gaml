@@ -57,6 +57,9 @@ global {
 	float proba_gain_droits_banaux_chateau <- 0.1;
 	float proba_gain_droits_basseMoyenneJustice_chateau <- 0.1;
 	
+	float proba_creation_ZP_banaux <- 0.05;
+	float proba_creation_ZP_basseMoyenneJustice <- 0.05;
+	
 	float proba_gain_droits_paroissiaux <- 0.05;
 	
 	int nb_seigneurs_a_creer_total <- nombre_seigneurs_objectif - (nombre_grands_seigneurs + nombre_petits_seigneurs);

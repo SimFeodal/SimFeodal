@@ -27,6 +27,23 @@ entities {
 		bool marche <- false;
 		Chateaux monChateau <- nil;
 		
+		action update_chateau {
+			// FIXME : Chateaux trop proches sinon
+			if (monChateau != nil) {
+				if (self distance_to monChateau > 3000) {
+					if (self distance_to (Chateaux closest_to self) > 3000){
+						set monChateau <- nil;
+					} else {
+						set monChateau <- Chateaux closest_to self;
+					}
+				}
+			} else {
+				if (self distance_to (Chateaux closest_to self) > 3000){
+					set monChateau <- Chateaux closest_to self;
+				}
+			}
+		}
+		
 		action update_shape {
 			set shape <- convex_hull(polygon(fp_agregat collect each.location));
 		}

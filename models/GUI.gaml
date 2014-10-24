@@ -24,15 +24,20 @@ global schedules: list(world) + list(Attracteurs) + list(Agregats) + list(Foyers
 	}
 	
 	reflex MaJ_globale {
-		if (Annee > fin_simulation) {ask world {do pause;}}
 		do reset_globals;
 		if (time > 0) {do renouvellement_FP;}
 		do update_agregats;
 		do creation_nouveaux_seigneurs;
 	}
 	
+	reflex MaJ_Agregats1 when: (length(Chateaux) > 0){
+		ask Agregats {do update_chateau;}
+	} 
+	
 	reflex MaJ_Agregats{
-		ask Agregats {do update_attractivite;}
+		ask Agregats {
+			do update_attractivite;
+		}
 	}
 	
 	reflex MaJ_FP {
@@ -51,18 +56,31 @@ global schedules: list(world) + list(Attracteurs) + list(Agregats) + list(Foyers
 	}
 	
 	reflex MaJ_Seigneurs1 {
-		do attribution_loyers_FP;
-
 		// TODO : Maj  Droits (sauf Loyers)-> Creation de nouvelles ZP
 		ask Seigneurs where (each.type="Grand Seigneur"){do MaJ_droits_Grands_Seigneurs;} // MaJ droits chateaux
-		ask Seigneurs where (each.type != "Grand Seigneur") {do MaJ_droits_Petits_Seigneurs;} MaJ droits chateaux
+		ask Seigneurs where (each.type != "Grand Seigneur") {do MaJ_droits_Petits_Seigneurs;} //MaJ droits chateaux
+		
+		ask Seigneurs where (each.type != "Grand Seigneur"){do gains_droits_PS;}
 		//ask Seigneurs where (each.type="Petit Seigneur"){do MaJ_droits_Petits_Seigneurs;} // FIXME
 		//ask Seigneurs where (each.type="Chatelain"){do MaJ_droits_Chatelains;} // FIXME
 	}
 		
-		reflex MaJ_Zones_Prelevement {
-			ask Zones_Prelevement {do update_shape;}
+	reflex MaJ_Zones_Prelevement {
+		ask Zones_Prelevement {do update_shape;}
+	}
+	
+	reflex MaJ_preleveurs {
+		
+		ask Foyers_Paysans {
+			do reset_preleveurs;
 		}
+				
+		ask Seigneurs {
+			do reset_variables;
+		}
+		do attribution_loyers_FP;
+		ask Zones_Prelevement where (each.type_droit != "Loyer"){ do update_taxes_FP;}
+	}
 		
 	reflex MaJ_Seigneurs2 {
 		// TODO : Cession de droits sur les ZP (cf. feuille A1b) 
@@ -73,11 +91,9 @@ global schedules: list(world) + list(Attracteurs) + list(Agregats) + list(Foyers
 		if (Annee > 950) {ask Seigneurs {do don_chateaux;}} // TODO
 		
 		ask Seigneurs {
-			do reset_variables;
 			do MaJ_puissance; // TODO
+			do MaJ_puissance_armee;
 		}
-		
-		ask Seigneurs {do MaJ_puissance_armee;} // TODO
 
 		ask Seigneurs where (each.type = "Grand Seigneur" and each.puissance > 2000) {
 			do construction_chateau_GS;
@@ -90,7 +106,9 @@ global schedules: list(world) + list(Attracteurs) + list(Agregats) + list(Foyers
 		
 	}
 	
-
+	reflex fin_simulation {
+		if (Annee >= fin_simulation) {ask world {do pause;}}
+	}
 }
 	
 experiment base_experiment type: gui {
@@ -138,6 +156,10 @@ experiment base_experiment type: gui {
 	parameter "%FP payant un loyer (Petit Seigneur initial) - Borne Max" var: max_fourchette_loyers_PS_init category: "Petits Seigneurs" min: 0.0 max: 1.0;
 	parameter "Rayon min Zone Prélevement - Petits Seigneurs Init" var: rayon_min_PS_init category: "Petits Seigneurs" min: 100 max: 20000;
 	parameter "Rayon max Zone Prélevement - Petits Seigneurs Init" var: rayon_max_PS_init category: "Petits Seigneurs" min: 100 max: 25000;
+	
+	parameter "Proba gain nouveaux droits banaux"	var: proba_creation_ZP_banaux category: "Petis Seigneurs";
+	parameter "Proba gain nouveaux droits BM justice"	var: proba_creation_ZP_basseMoyenneJustice category: "Petis Seigneurs";
+
 	
 	
 	parameter "Nombre visé de seigneurs en fin de simulation" var: nombre_seigneurs_objectif category: "Petits Seigneurs";
@@ -192,6 +214,14 @@ experiment base_experiment type: gui {
     			data "Satisfaction Spirituelle" value: mean(Foyers_Paysans collect each.satisfaction_religieuse) color: #green;
     			data "Satisfaction Protection" value: mean(Foyers_Paysans collect each.satisfaction_protection) color: #red;
     			data "Satisfaction" value: mean(Foyers_Paysans collect each.Satisfaction) color: #black;
+    		}
+    	}
+    	
+	    display "FP2" {
+    		chart "Nombre de Seigneurs Preleveurs" type:series position: {0,0} size: {1,1}{
+    			data "Nb Seigneurs Max" value: max(Foyers_Paysans collect each.nb_preleveurs) color: #blue;
+    			data "Nb Seigneurs Mean" value: mean(Foyers_Paysans collect each.nb_preleveurs) color: #green;
+    			data "Nb Seigneurs Min" value: min(Foyers_Paysans collect each.nb_preleveurs) color: #red;
     		}
     	}
     	

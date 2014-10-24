@@ -59,8 +59,18 @@ entities {
 		}
 		
 		
-		action gains_droits_banaux {
-			// 1 seul seigneur aussi	
+		action gains_droits_PS {
+			if (flip(proba_creation_ZP_banaux)){				
+				int rayon_ZP <- (self.initialement_present) ? (rayon_min_PS_init + rnd(rayon_max_PS_init - rayon_min_PS_init)) : (rayon_min_PS_nouveau + rnd(rayon_max_PS_nouveau - rayon_min_PS_nouveau));
+				float taux_ZP <- (self.initialement_present) ? (min_fourchette_loyers_PS_init + rnd(max_fourchette_loyers_PS_init - min_fourchette_loyers_PS_init)) : (min_fourchette_loyers_PS_nouveau + rnd(max_fourchette_loyers_PS_nouveau - min_fourchette_loyers_PS_nouveau));
+				do creer_zone_prelevement(any_location_in(3000 around self.location), rayon_ZP, self, "Banaux", taux_ZP);
+			}
+			
+			if flip(proba_creation_ZP_basseMoyenneJustice){
+				int rayon_ZP <- (self.initialement_present) ? (rayon_min_PS_init + rnd(rayon_max_PS_init - rayon_min_PS_init)) : (rayon_min_PS_nouveau + rnd(rayon_max_PS_nouveau - rayon_min_PS_nouveau));
+				float taux_ZP <- (self.initialement_present) ? (min_fourchette_loyers_PS_init + rnd(max_fourchette_loyers_PS_init - min_fourchette_loyers_PS_init)) : (min_fourchette_loyers_PS_nouveau + rnd(max_fourchette_loyers_PS_nouveau - min_fourchette_loyers_PS_nouveau));
+				do creer_zone_prelevement(any_location_in(3000 around self.location), rayon_ZP, self, "basseMoyenne_Justice", taux_ZP);
+			}
 		}
 		
 		action MaJ_droits_Grands_Seigneurs {
@@ -165,31 +175,46 @@ entities {
 		
 		action reset_variables {
 			set FP_assujettis <- [];
+			
+			set FP_loyer <- [];
+			set FP_loyer_garde <- [];
+		
+			set FP_hauteJustice <- [];
+			set FP_hauteJustice_garde <- [];
+			
+			set FP_banaux <- [];
+			set FP_banaux_garde <- [];
+			
+			set FP_basseMoyenneJustice <- [];
+			set FP_basseMoyenneJustice_garde <- [];
 		}
 		
 		float MaJ_loyers {
-			list<Foyers_Paysans> mesLocataires <- Foyers_Paysans where (each.seigneur_loyer = self);
-			float mesLoyers <- length(mesLocataires) * taux_prelevement;
-			set FP_assujettis <- FP_assujettis + mesLocataires;
-			return(mesLoyers);
+			set FP_loyer <- Foyers_Paysans where (each.seigneur_loyer = self);
+			float Loyers <- length(FP_loyer) * taux_prelevement * 1.0;
+			set FP_assujettis <- remove_duplicates(FP_assujettis + FP_loyer);
+			return(Loyers);
 		}
 		
 		float MaJ_hauteJustice {
-			if (type = "Grand Seigneur" and droits_hauteJustice){
-				list<Foyers_Paysans> mesLocataires <- Foyers_Paysans where (each.seigneur_loyer = self);
-			}
-			// On collecte les droits de haute justice et on attribue les FP à soi-même.
-			return(1);
+			set FP_hauteJustice <- Foyers_Paysans where (each.seigneur_hauteJustice = self);
+			float HteJustice <- length(FP_hauteJustice) * taux_prelevement * 1.0;
+			set FP_assujettis <- remove_duplicates(FP_assujettis + FP_hauteJustice);
+			return(HteJustice);
 		}
 		
 		float MaJ_banaux {
-			// On collecte les droits banaux et on s'ajoute à la liste des seigneurs des FP.
-			return(1);
+			set FP_banaux <- Foyers_Paysans where (each.seigneurs_banaux contains self);
+			float Banaux <- length(FP_banaux) * taux_prelevement * 0.25;
+			set FP_assujettis <- remove_duplicates(FP_assujettis + FP_banaux);
+			return(Banaux);
 		}
 		
 		float MaJ_moyenneBasseJustice {
-			// On collecte les droits de moyenne/basse justice et on s'ajoute à la liste des seigneurs des FP.
-			return(1);
+			set FP_basseMoyenneJustice <- Foyers_Paysans where (each.seigneurs_banaux contains self);
+			float moyenneBasseJustice <- length(FP_basseMoyenneJustice) * taux_prelevement * 0.25;
+			set FP_assujettis <- remove_duplicates(FP_assujettis + FP_basseMoyenneJustice);
+			return(moyenneBasseJustice);
 		}
 		
 		action MaJ_puissance {
@@ -201,9 +226,6 @@ entities {
 			// On donne ses châteaux...
 		}
 		
-		action construction_chateau {
-			// on construit un château...
-		}
 		
 		action construction_chateau_GS {
 			int nbChateauxPotentiel <- int(floor(self.puissance / 2000));
@@ -215,6 +237,8 @@ entities {
 				set proprietaire <- myself;
 				set gardien <- myself;
 				Agregats choixAgregat <- one_of(agregatsPotentiel where (each.monChateau = nil));
+				// FIXME : Chateaux trop proches sinon
+				if (choixAgregat distance_to (Chateaux closest_to choixAgregat) < 3000) {do die;}
 				ask choixAgregat {
 					set monChateau <- myself;
 				}
@@ -240,9 +264,12 @@ entities {
 			Agregats agregatPotentiel <- Agregats closest_to self;
 			set agregatPotentiel <- (agregatPotentiel.monChateau = nil) ? agregatPotentiel : nil ;
 			if (agregatPotentiel != nil) {
+				// FIXME : Chateaux trop proches sinon
+				if (agregatPotentiel distance_to (Chateaux closest_to agregatPotentiel) < 3000) {return();}
 				create Chateaux number: 1 {
 					set proprietaire <- myself;
 					set gardien <- myself;
+					do die;
 					ask agregatPotentiel {
 						set monChateau <- myself;
 					}

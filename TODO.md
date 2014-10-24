@@ -31,18 +31,18 @@ TODO
 		- [ ] Don ZP banaux
 		- [ ] Don ZP basse et moyenne justice
 	- [ ] Calcul puissance
-		- [ ] Revenus propres
-			- [ ] Loyers
-			- [ ] Haute-justice
-			- [ ] Banaux propres
-			- [ ] Basse et Moyenne justice
+		- [x] Revenus propres
+			- [x] Loyers
+			- [x] Haute-justice
+			- [x] Banaux propres
+			- [x] Basse et Moyenne justice
 		- [ ] Revenus garde
 			- [ ] Loyers
 			- [ ] Haute-justice
 			- [ ] Banaux propres
 			- [ ] Basse et Moyenne justice
 	- [ ] Calcul puissance armée
-		- [ ] FP propres
+		- [x] FP propres
 		- [ ] FP garde
 
 
@@ -52,13 +52,24 @@ TODO
 	- [ ] Différencier Initiaux/Nouveaux -> Châtelain par don GS : uniquement intialement_presents
 	- [ ] Ajouter suzerain -> Don GS -> PS : Seulement ceux dont suzerain != autre grand seigneur
 	- [x] Apparition
-	- [ ] Gains de droits
-		- [ ] Création nouvelles ZP (banaux & moyenne et basse Justice)
+	- [x] Gains de droits
+		- [x] Création nouvelles ZP (banaux & moyenne et basse Justice)
 	- [x] Création ZP châteaux
 		- [x] ZP loyers
 		- [ ] ZP haute justice -> N'ont jamais haute justice avec château
 		- [x] ZP droits banaux
 		- [x] ZP droits basse et moyenne justice
+	- [ ] Calcul puissance
+		- [x] Revenus propres
+			- [x] Loyers
+			- [x] Haute-justice
+			- [x] Banaux propres
+			- [x] Basse et Moyenne justice
+		- [ ] Revenus garde
+			- [ ] Loyers
+			- [ ] Haute-justice
+			- [ ] Banaux propres
+			- [ ] Basse et Moyenne justice
 	-	[ ] Cession droits
 		- [ ] ZP toutes
 

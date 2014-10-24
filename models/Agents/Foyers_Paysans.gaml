@@ -32,6 +32,7 @@ entities {
 		Seigneurs seigneur_hauteJustice <- nil;
 		list<Seigneurs> seigneurs_banaux <- [];
 		list<Seigneurs> seigneurs_basseMoyenneJustice <- [];
+		int nb_preleveurs <- 0;
 		
 		/*
 		// Désactivé pour l'instant
@@ -49,6 +50,12 @@ entities {
 		}
 		*/
 		
+		action reset_preleveurs {
+			set seigneur_loyer <- nil;
+			set seigneur_hauteJustice <- nil;
+			set seigneurs_banaux <- [];
+			set seigneurs_basseMoyenneJustice <- [];
+		}
 		
 		action update_satisfaction_materielle {
 			int loyer <- (self.seigneur_loyer != nil ? 1 : 0);
@@ -57,7 +64,7 @@ entities {
 			int basseMoyenneJustice <- length(self.seigneurs_basseMoyenneJustice);
 			
 			int nb_seigneurs <- loyer + hauteJustice + banaux + basseMoyenneJustice;
-			
+			set nb_preleveurs <- nb_seigneurs;
 			
 			float S_redevances <- max([1 - (nb_seigneurs * 0.2), 0.0]);
 			float S_contributions <- 0.0;
@@ -111,7 +118,7 @@ entities {
 				if (plusProcheChateau = nil) {return(0.0);}
 				if (self distance_to plusProcheChateau <= 5000) {
 					int protection_seigneur <- plusProcheChateau.gardien.puissance_armee ;
-					set satisfaction_protection <- max([protection_seigneur / 600 , 1.0]);
+					set satisfaction_protection <- max([protection_seigneur / 1000 , 1.0]);
 				} else {
 					set satisfaction_protection <- 0.0;
 				}
