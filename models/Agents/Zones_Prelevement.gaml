@@ -18,6 +18,7 @@ import "Attracteurs.gaml"
 
 entities {
 	species Zones_Prelevement schedules: shuffle(Zones_Prelevement) {
+		bool ZP_chateau;
 		Seigneurs proprietaire <- nil;
 		string type_droit <- nil ;
 		int rayon_captation;
@@ -26,6 +27,8 @@ entities {
 		// Avec map.keys = Seigneurs et map.values = taux_prelev
 		// Avec sum(map.values = taux_captation)
 		rgb color;
+		
+	
 		
 		action update_shape {
 			set shape <- circle(rayon_captation);

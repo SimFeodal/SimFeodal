@@ -17,13 +17,13 @@ TODO
 
  2. Grands Seigneurs
 	-------------------------------------------------------------
-	- [ ] Création châteaux
-	- [ ] Création ZP châteaux
-		- [ ] ZP loyers
-		- [ ] ZP haute justice
-		- [ ] ZP droits banaux
-		- [ ] ZP droits basse et moyenne justice
-	- [ ] Gains de droits
+	- [x] Création châteaux
+	- [x] Création ZP châteaux
+		- [x] ZP loyers
+		- [x] ZP haute justice
+		- [x] ZP droits banaux
+		- [x] ZP droits basse et moyenne justice
+	- [x] Gains de droits
 		-> Nouvelles ZP
 	- [ ] Dons de châteaux
 		- [ ] Don ZP loyer
@@ -51,7 +51,7 @@ TODO
 	-------------------------------------------------------------
 	- [ ] Différencier Initiaux/Nouveaux
 	- [ ] Ajouter suzerain
-	- [ ] Apparition
+	- [x] Apparition
 	- [ ] Gains de droits
 		- [ ] Création nouvelles ZP (banaux & moyenne et basse Justice)
 	- [ ] Création ZP châteaux

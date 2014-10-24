@@ -19,37 +19,76 @@ import "Zones_Prelevement.gaml"
 
 entities {
 	species Chateaux parent: Attracteurs  schedules: shuffle(Chateaux){
+	
 		string type;
 		list<string> fonctions_possedees;
-		float aire_attraction;
-		Agregats monAgregat;
 		int attractivite <- 0;
-		Seigneurs monSeigneur;
-		Seigneurs monGardien;
+		Agregats monAgregat <- nil;
 		Seigneurs proprietaire <- nil;
 		Seigneurs gardien <- nil;
+		bool ZP_loyer;
+		bool ZP_hauteJustice;
+		bool ZP_banaux;
+		bool ZP_basseMoyenneJustice;
 		
 		action update_attractivite {
 			set attractivite <- length(fonctions_possedees);
 		}
 		
-		
-		action update_agglo {
-			list<Agregats> agregats_proches <- Agregats at_distance 1000;
-			// Si une agglo intersecte mon shape
-			if (agregats_proches != nil){
-				set monAgregat <- agregats_proches closest_to self;
-			} else {
-				set monAgregat <- nil;
+		action creation_ZP_loyer (point centre, int rayon, Seigneurs proprio, float taux_taxation){
+			create Zones_Prelevement number: 1 {
+				set location <- centre;
+				set ZP_chateau <- true;
+				set proprietaire <- proprio;
+				set type_droit <- "Loyer" ;
+				set rayon_captation <- rayon;
+				set taux_captation <- taux_taxation;
+				set preleveurs <- map([proprio::1.0]);
 			}
-			//Sinon, on cherche à 1000m et on prend la plus proche
-			
-			// Sinon, pas d'agglo
+			set ZP_loyer <- true;
 		}
 		
-		rgb color <- #red;
-	aspect base {
-		draw circle(500) color: color ;
-	}
+		action creation_ZP_hauteJustice (point centre, int rayon, Seigneurs proprio, float taux_taxation){
+			create Zones_Prelevement number: 1 {
+				set location <- centre;
+				set ZP_chateau <- true;
+				set proprietaire <- proprio;
+				set type_droit <- "Haute_Justice" ;
+				set rayon_captation <- rayon;
+				set taux_captation <- taux_taxation;
+				set preleveurs <- map([proprio::1.0]);
+			}
+			set ZP_hauteJustice <- true;
+		}
+		
+		action creation_ZP_banaux (point centre, int rayon, Seigneurs proprio, float taux_taxation){
+			create Zones_Prelevement number: 1 {
+				set location <- centre;
+				set ZP_chateau <- true;
+				set proprietaire <- proprio;
+				set type_droit <- "Banaux" ;
+				set rayon_captation <- rayon;
+				set taux_captation <- taux_taxation;
+				set preleveurs <- map([proprio::1.0]);
+			}
+			set ZP_banaux <- true;
+		}
+		
+		action creation_ZP_basseMoyenne_Justice (point centre, int rayon, Seigneurs proprio, float taux_taxation){
+			create Zones_Prelevement number: 1 {
+				set location <- centre;
+				set ZP_chateau <- true;
+				set proprietaire <- proprio;
+				set type_droit <- "basseMoyenne_Justice" ;
+				set rayon_captation <- rayon;
+				set taux_captation <- taux_taxation;
+				set preleveurs <- map([proprio::1.0]);
+			}
+			set ZP_basseMoyenneJustice <- true;
+		}
+		
+		aspect base {
+			draw circle(500) color: #red ;
+		}
 	}
 }

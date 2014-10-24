@@ -33,7 +33,22 @@ entities {
 		bool droits_banaux <- false;
 		bool droits_moyenneBasseJustice <- false;
 		
+		Seigneurs monSuzerain <- nil;
+		
 		list<Foyers_Paysans> FP_assujettis <- [];
+		
+		list<Foyers_Paysans> FP_loyer <- [];
+		list<Foyers_Paysans> FP_loyer_garde <- [];
+		
+		list<Foyers_Paysans> FP_hauteJustice <- [];
+		list<Foyers_Paysans> FP_hauteJustice_garde <- [];
+		
+		list<Foyers_Paysans> FP_banaux <- [];
+		list<Foyers_Paysans> FP_banaux_garde <- [];
+		
+		list<Foyers_Paysans> FP_basseMoyenneJustice <- [];
+		list<Foyers_Paysans> FP_basseMoyenneJustice_garde <- [];
+		
 		
 		init {
 			if (type = "Chatelain") {
@@ -50,24 +65,45 @@ entities {
 		
 		action MaJ_droits_Grands_Seigneurs {
 			if (Annee < 900){
-					if (!droits_hauteJustice) {
-						set droits_hauteJustice <- flip(0.1);
-						if (droits_hauteJustice){
+				if (!droits_hauteJustice) {
+					set droits_hauteJustice <- flip(0.1);
+					if (droits_hauteJustice){
+						do MaJ_ZP_chateaux(self, "Haute_Justice");
+						if (!droits_banaux) {
 							set droits_banaux <- true;
+							do MaJ_ZP_chateaux(self, "Banaux");
+							
+						}
+						if (!droits_moyenneBasseJustice) {
 							set droits_moyenneBasseJustice <- true;
-							// MaJ des FP assujettis : lesquels ? ou ?
+							do MaJ_ZP_chateaux(self, "basseMoyenne_Justice");
 						}
 					}
-					
-					if (!droits_banaux) {set droits_banaux <- flip(0.1);}
-					if (!droits_moyenneBasseJustice){set droits_moyenneBasseJustice <- flip(0.1);}
-					
-					
-				} else if (Annee = 900) {
-					set droits_hauteJustice <-true;
-					set droits_banaux <- true;
-					set droits_moyenneBasseJustice <- true;
 				}
+					
+				if (!droits_banaux) {
+					set droits_banaux <- flip(0.1);
+					if (droits_banaux) {
+						set droits_banaux <- true;
+						do MaJ_ZP_chateaux(self, "Banaux");	
+					}
+				}
+				
+				if (!droits_moyenneBasseJustice) {
+					set droits_moyenneBasseJustice <- flip(0.1);
+					if (droits_moyenneBasseJustice) {
+						set droits_moyenneBasseJustice <- true;
+						do MaJ_ZP_chateaux(self, "basseMoyenne_Justice");
+					}
+				}
+			} else if (Annee = 900) {
+				set droits_hauteJustice <-true;
+				do MaJ_ZP_chateaux(self, "Haute_Justice");
+				set droits_banaux <- true;
+				do MaJ_ZP_chateaux(self, "Banaux");
+				set droits_moyenneBasseJustice <- true;
+				do MaJ_ZP_chateaux(self, "basseMoyenne_Justice");
+			}
 		}
 		
 		action MaJ_droits_Petits_Seigneurs {
@@ -76,6 +112,31 @@ entities {
 		
 		action MaJ_droits_Chatelains {
 			
+		}
+		
+		action MaJ_ZP_chateaux(Seigneurs seigneur, string type_droit){
+			switch type_droit {
+				match "Loyer" {
+					ask Chateaux where (each.proprietaire = self and !each.ZP_loyer){
+						do creation_ZP_loyer(self.location, 10000, seigneur, 1.0);
+					}
+				}
+				match "Haute_Justice" {
+					ask Chateaux where (each.proprietaire = self and !each.ZP_hauteJustice){
+						do creation_ZP_hauteJustice(self.location, 10000, seigneur, 1.0);
+					}
+				}
+				match "Banaux" {
+					ask Chateaux where (each.proprietaire = self and !each.ZP_banaux){
+						do creation_ZP_banaux(self.location, 10000, seigneur, 1.0);
+					}
+				}
+				match "basseMoyenne_Justice" {
+					ask Chateaux where (each.proprietaire = self and !each.ZP_basseMoyenneJustice){
+						do creation_ZP_basseMoyenne_Justice(self.location, 10000, seigneur, 1.0);
+					}
+				}
+			}
 		}
 		
 		action creer_zone_prelevement (point centre_zone, int rayon, Seigneurs proprio, string typeDroit, float txPrelev) {
@@ -130,6 +191,37 @@ entities {
 			// on construit un château...
 		}
 		
+		action construction_chateau_GS {
+			int nbChateauxPotentiel <- int(floor(self.puissance / 2000));
+			
+			list<Agregats> agregatsPotentiel <- Agregats where (each.monChateau = nil);
+			
+			int nbChateaux <- min([rnd(nbChateauxPotentiel), length(agregatsPotentiel)]);
+			create Chateaux number: nbChateaux {
+				set proprietaire <- myself;
+				set gardien <- myself;
+				Agregats choixAgregat <- one_of(agregatsPotentiel where (each.monChateau = nil));
+				ask choixAgregat {
+					set monChateau <- myself;
+				}
+				set location <- any_location_in(500 around choixAgregat);
+				do creation_ZP_loyer(location, 10000, myself, 1.0);
+				if (myself.droits_hauteJustice){
+					do creation_ZP_hauteJustice(location, 10000, myself, 1.0);
+					do creation_ZP_banaux(location, 10000, myself, 1.0);
+					do creation_ZP_basseMoyenne_Justice(location, 10000, myself, 1.0);
+				} else {
+					if (myself.droits_banaux) {
+						do creation_ZP_banaux(location, 10000, myself, 1.0);
+					}
+					if (myself.droits_moyenneBasseJustice){
+						do creation_ZP_basseMoyenne_Justice(location, 10000, myself, 1.0);
+					}
+				}
+			}
+		}
+		
+
 	
 		action MaJ_type {
 			if (self.type = "Petit Seigneur") {
@@ -143,5 +235,4 @@ entities {
 		}
 		
 	}
-	
 }
