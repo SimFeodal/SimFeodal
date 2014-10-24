@@ -1,37 +1,8 @@
-Transition8
+Fixation et polarisation de l'habitat en Europe du Nord-Ouest entre 800 et 1100 : une modélisation multi-agent
 ===========
 
-Modèle GAMA de la transition 800-1100 de l'ANR TransMonDyn
+Voir descriptif ici : [www.transmondyn.parisgeo.cnrs.fr/modeles/fixation-et-polarisation](http://www.transmondyn.parisgeo.cnrs.fr/modeles/fixation-et-polarisation)
+
+Modèle GAMA (1.6.1) de la [transition 8](http://www.transmondyn.parisgeo.cnrs.fr/transitions-etudiees/cas-empiriques/t8) de [l'ANR TransMonDyn](http://www.transmondyn.parisgeo.cnrs.fr)
 
 En développement !
-
-[ANR TransMonDyn](http://www.transmondyn.parisgeo.cnrs.fr)
-
-# TODO :
-
-## Sémantique :
-
-* Ne pas utiliser villages
-* En 800, il n'y a pas de châteaux : quelques agglos fortifiées (les castra)
-
-
-## Règles :
-
-* Mobilité différentielle esclaves/serfs :  Sera geré sous forme d'un taux (paramétrable) de FP mobiles : mobilité intrinsèque
-* Les CA n'émergent pas forcément dans les agglos sec. antiques  
-	+ Quand il y a une CA, tous les FP y appartiennent
-* Création des prieurés : toujours à côté des églises qui ont été données
-	+ Association entre monastères et seigneurs laïcs
-
-### Pour tous les agents :
-
-1. Cherchent à s'enrichir : "Dégager plus de ce qu'il y a"
-	+ FP : Sécurité alimentaire
-	+ Seigneurs : Etre plus puissant : alimenter sa puissance pour redistribuer plus
-2. Etre protegé
-	+ Seigneurs monastiques et laïcs :
-		+ Rapport entretenu avec l'autorité supérieure : seigneur plus puissant, Autorité Centrale, Diocèse etc.
-3. Assurer son salut
-
-
-
