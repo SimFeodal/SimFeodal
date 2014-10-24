@@ -25,6 +25,7 @@ entities {
 		list<Foyers_Paysans> fp_agregat ;
 		bool communaute_agraire <- false;
 		bool marche <- false;
+		Chateaux monChateau <- nil;
 		
 		action update_shape {
 			set shape <- convex_hull(polygon(fp_agregat collect each.location));
@@ -34,6 +35,14 @@ entities {
 			// Temporairement désactivé
 			//set attractivite <- length(fp_agregat) +  sum(Chateaux where (self = each.monAgregat) collect each.attractivite);
 			set attractivite <- length(fp_agregat);
+		}
+		
+		action update_chateau {
+			if (monChateau = nil){
+				if ((Chateaux closest_to self) distance_to self < 2000){
+					
+				}
+			}
 		}
 		
 		action update_comm_agraire {

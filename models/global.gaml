@@ -17,7 +17,7 @@ import "Agents/Attracteurs.gaml"
 import "Agents/Zones_Prelevement.gaml"
 
 global {
-	int Annee <- 800;
+	int Annee <- 800 update: Annee + 20;
 	int nombre_foyers_paysans <- 1000 ;
 	int nombre_agglos_antiques <- 3 ;
 	int nombre_villages <- 20 ;
@@ -61,22 +61,13 @@ global {
 	int nb_seigneurs_a_creer_total <- nombre_seigneurs_objectif - (nombre_grands_seigneurs + nombre_petits_seigneurs);
 	int nb_moyen_petits_seigneurs_par_tour <- round(nb_seigneurs_a_creer_total / ((fin_simulation - debut_simulation) / 20));
 	
-	file shape_file_bounds <- file("../includes/Emprise_territoire.shp");
+	const shape_file_bounds type: file<- file("../includes/Emprise_territoire.shp");
 
 	
-	geometry shape <- envelope(shape_file_bounds) ;
-	geometry worldextent <- envelope(shape_file_bounds) ;
-	geometry reduced_worldextent <- worldextent scaled_by 0.99;
+	const shape type: geometry <- envelope(shape_file_bounds) ;
+	const worldextent type: geometry<- envelope(shape_file_bounds) ;
+	const reduced_worldextent type: geometry<- worldextent scaled_by 0.99;
 	
-	action update_year {
-		 set Annee <- ((cycle + 1)* 20) + debut_simulation;
-		 if ((Annee) >= fin_simulation) {
-		 	ask world {
-		 		do pause;
-		 	}
-		 }
-	}
-
 	
     action reset_globals {
 		set nb_demenagement_local <- 0;
@@ -147,6 +138,10 @@ global {
    						ask fp_agregat {
    							set monAgregat <- myself ;
    						}
+					set monChateau <- i.monChateau;
+					ask monChateau {
+						set monAgregat <- j as Agregats;
+					}
 					do update_shape;
 					do update_comm_agraire;
    					}
@@ -157,7 +152,8 @@ global {
    				}
    			}
    			if (!encore_agregat) {
-				ask i { do die;}	   				
+				ask i { do die;}
+				ask (Chateaux where (each.monAgregat = i)) {set monAgregat <- nil;}	   				
    			}
    		}
    		loop nouvel_agregat over: agregats_detectees{
@@ -200,7 +196,6 @@ global {
 	
 	action attribution_loyers_FP {
 		list<Foyers_Paysans> FP_dispos <- Foyers_Paysans where (each.seigneur_loyer = nil);
-		int FPDispo_A <- length(FP_dispos);
 		
 		ask Zones_Prelevement where (each.type_droit = "Loyer") {
 			list<Foyers_Paysans> FP_zone <- FP_dispos inside self.shape;
@@ -211,8 +206,6 @@ global {
 			}
 		}
 		
-		int FPDispo_B <- length(FP_dispos);
-		write("Année " + Annee + " / Total : " + FPDispo_A + " / Après PS : " + FPDispo_B);
 		ask Seigneurs where (each.type = "Grand Seigneur") {
 			int nbFP_concernes <- round(self.puissance_init * length(FP_dispos));
 			ask nbFP_concernes among FP_dispos {
