@@ -54,10 +54,10 @@ global schedules: list(world) + list(Attracteurs) + list(Agregats) + list(Foyers
 		do attribution_loyers_FP;
 
 		// TODO : Maj  Droits (sauf Loyers)-> Creation de nouvelles ZP
-		ask Seigneurs where (each.type="Grand Seigneur"){do MaJ_droits_Grands_Seigneurs;} // FIXME
-		ask Seigneurs where (each.type="Petit Seigneur"){do MaJ_droits_Petits_Seigneurs;} // FIXME
-		ask Seigneurs where (each.type="Chatelain"){do MaJ_droits_Chatelains;} // FIXME
-		// TODO : MaJ Droits châteaux
+		ask Seigneurs where (each.type="Grand Seigneur"){do MaJ_droits_Grands_Seigneurs;} // MaJ droits chateaux
+		ask Seigneurs where (each.type != "Grand Seigneur") {do MaJ_droits_Petits_Seigneurs;} MaJ droits chateaux
+		//ask Seigneurs where (each.type="Petit Seigneur"){do MaJ_droits_Petits_Seigneurs;} // FIXME
+		//ask Seigneurs where (each.type="Chatelain"){do MaJ_droits_Chatelains;} // FIXME
 	}
 		
 		reflex MaJ_Zones_Prelevement {
