@@ -37,13 +37,6 @@ entities {
 			set attractivite <- length(fp_agregat);
 		}
 		
-		action update_chateau {
-			if (monChateau = nil){
-				if ((Chateaux closest_to self) distance_to self < 2000){
-					
-				}
-			}
-		}
 		
 		action update_comm_agraire {
 			if (!self.communaute_agraire) {
