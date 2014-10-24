@@ -110,8 +110,8 @@ entities {
 				Chateaux plusProcheChateau <- Chateaux closest_to self;
 				if (plusProcheChateau = nil) {return(0.0);}
 				if (self distance_to plusProcheChateau <= 5000) {
-					int protection_seigneur <- plusProcheChateau.monSeigneur.puissance_armee ;
-					set satisfaction_protection <- max([protection_seigneur / 300 , 1.0]);
+					int protection_seigneur <- plusProcheChateau.gardien.puissance_armee ;
+					set satisfaction_protection <- max([protection_seigneur / 600 , 1.0]);
 				} else {
 					set satisfaction_protection <- 0.0;
 				}
