@@ -54,7 +54,8 @@ global {
 	int rayon_min_PS_nouveau <- 300;
 	int rayon_max_PS_nouveau <- 2000;
 	
-	float proba_gain_droits_banaux <- 0.1;
+	float proba_gain_droits_banaux_chateau <- 0.1;
+	float proba_gain_droits_basseMoyenneJustice_chateau <- 0.1;
 	
 	float proba_gain_droits_paroissiaux <- 0.05;
 	

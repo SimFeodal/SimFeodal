@@ -82,7 +82,7 @@ entities {
 				}
 					
 				if (!droits_banaux) {
-					set droits_banaux <- flip(0.1);
+					set droits_banaux <- flip(proba_gain_droits_banaux_chateau);
 					if (droits_banaux) {
 						set droits_banaux <- true;
 						do MaJ_ZP_chateaux(self, "Banaux");	
@@ -90,7 +90,7 @@ entities {
 				}
 				
 				if (!droits_moyenneBasseJustice) {
-					set droits_moyenneBasseJustice <- flip(0.1);
+					set droits_moyenneBasseJustice <- flip(proba_gain_droits_basseMoyenneJustice_chateau);
 					if (droits_moyenneBasseJustice) {
 						set droits_moyenneBasseJustice <- true;
 						do MaJ_ZP_chateaux(self, "basseMoyenne_Justice");
@@ -107,7 +107,21 @@ entities {
 		}
 		
 		action MaJ_droits_Petits_Seigneurs {
+			if (!droits_banaux) {
+				set droits_banaux <- flip(proba_gain_droits_banaux_chateau);
+				if (droits_banaux) {
+					set droits_banaux <- true;
+					do MaJ_ZP_chateaux(self, "Banaux");	
+				}
+			}
 			
+			if (!droits_moyenneBasseJustice) {
+				set droits_moyenneBasseJustice <- flip(proba_gain_droits_basseMoyenneJustice_chateau);
+				if (droits_moyenneBasseJustice) {
+					set droits_moyenneBasseJustice <- true;
+					do MaJ_ZP_chateaux(self, "basseMoyenne_Justice");
+				}
+			}
 		}
 		
 		action MaJ_droits_Chatelains {
@@ -215,6 +229,31 @@ entities {
 						do creation_ZP_banaux(location, 10000, myself, 1.0);
 					}
 					if (myself.droits_moyenneBasseJustice){
+						do creation_ZP_basseMoyenne_Justice(location, 10000, myself, 1.0);
+					}
+				}
+			}
+		}
+		
+		action construction_chateau_PS {
+			
+			Agregats agregatPotentiel <- Agregats closest_to self;
+			set agregatPotentiel <- (agregatPotentiel.monChateau = nil) ? agregatPotentiel : nil ;
+			if (agregatPotentiel != nil) {
+				create Chateaux number: 1 {
+					set proprietaire <- myself;
+					set gardien <- myself;
+					ask agregatPotentiel {
+						set monChateau <- myself;
+					}
+					set location <- any_location_in(500 around agregatPotentiel);
+					do creation_ZP_loyer(location, 10000, myself, 1.0);
+					if (flip(proba_gain_droits_banaux_chateau)){
+						ask myself {set droits_banaux <- true;}
+						do creation_ZP_banaux(location, 10000, myself, 1.0);
+					}
+					if (flip(proba_gain_droits_basseMoyenneJustice_chateau)){
+						ask myself {set droits_moyenneBasseJustice <- true;}
 						do creation_ZP_basseMoyenne_Justice(location, 10000, myself, 1.0);
 					}
 				}

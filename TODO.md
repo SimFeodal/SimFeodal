@@ -49,16 +49,16 @@ TODO
 
  3. Petits Seigneurs
 	-------------------------------------------------------------
-	- [ ] Différencier Initiaux/Nouveaux
-	- [ ] Ajouter suzerain
+	- [ ] Différencier Initiaux/Nouveaux -> Châtelain par don GS : uniquement intialement_presents
+	- [ ] Ajouter suzerain -> Don GS -> PS : Seulement ceux dont suzerain != autre grand seigneur
 	- [x] Apparition
 	- [ ] Gains de droits
 		- [ ] Création nouvelles ZP (banaux & moyenne et basse Justice)
-	- [ ] Création ZP châteaux
-		- [ ] ZP loyers
-		- [ ] ZP haute justice
-		- [ ] ZP droits banaux
-		- [ ] ZP droits basse et moyenne justice
+	- [x] Création ZP châteaux
+		- [x] ZP loyers
+		- [ ] ZP haute justice -> N'ont jamais haute justice avec château
+		- [x] ZP droits banaux
+		- [x] ZP droits basse et moyenne justice
 	-	[ ] Cession droits
 		- [ ] ZP toutes
 

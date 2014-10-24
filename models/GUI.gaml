@@ -80,13 +80,13 @@ global schedules: list(world) + list(Attracteurs) + list(Agregats) + list(Foyers
 		ask Seigneurs {do MaJ_puissance_armee;} // TODO
 
 		ask Seigneurs where (each.type = "Grand Seigneur" and each.puissance > 2000) {
-			do construction_chateau_GS; //TODO
+			do construction_chateau_GS;
 		}
+		
 		ask Seigneurs where (each.type != "Grand Seigneur" and each.puissance > 2000){
-			do construction_chateau; // TODO
-			// Peut créer n châteaux, avec n = floor(puissance / 2000)
-			// Pour chaque n, proba de créer château
+			do construction_chateau_PS;
 		}
+
 		
 	}
 	
@@ -130,11 +130,15 @@ experiment base_experiment type: gui {
 	parameter "Probabilité créer château" var: proba_creer_chateau category: "Seigneurs";
 	parameter "Probabilité don château" var: proba_don_chateau category: "Seigneurs";
 	
+	parameter "Proba. gain droits banaux sur château" var: proba_gain_droits_banaux_chateau category: "Châtelain";
+	parameter "Proba. gain droits BM Justice sur château" var: proba_gain_droits_basseMoyenneJustice_chateau category: "Châtelain";
+	
 	parameter "Nombre visé de petits seigneurs en fin de simulation" var: nombre_seigneurs_objectif category: "Petits Seigneurs";
 	parameter "%FP payant un loyer (Petit Seigneur initial) - Borne Min" var: min_fourchette_loyers_PS_init category: "Petits Seigneurs" min: 0.0 max: 1.0;
 	parameter "%FP payant un loyer (Petit Seigneur initial) - Borne Max" var: max_fourchette_loyers_PS_init category: "Petits Seigneurs" min: 0.0 max: 1.0;
 	parameter "Rayon min Zone Prélevement - Petits Seigneurs Init" var: rayon_min_PS_init category: "Petits Seigneurs" min: 100 max: 20000;
 	parameter "Rayon max Zone Prélevement - Petits Seigneurs Init" var: rayon_max_PS_init category: "Petits Seigneurs" min: 100 max: 25000;
+	
 	
 	parameter "Nombre visé de seigneurs en fin de simulation" var: nombre_seigneurs_objectif category: "Petits Seigneurs";
 	parameter "Proba d'obtenir un loyer pour la terre (Petit Seigneur nouveau)" var: proba_collecter_loyer category: "Petits Seigneurs";
