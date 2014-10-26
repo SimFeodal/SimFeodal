@@ -76,4 +76,6 @@ TODO
 
 4. Agrégats
 	-------------------------------------------------------------
-	- [ ] Mettre en place les fonctions dans les agrégats	
+	- [ ] Mettre en place les fonctions dans les agrégats
+
+	

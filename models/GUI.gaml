@@ -123,16 +123,22 @@ experiment base_experiment type: gui {
 	
 	parameter "Puissance Grand Seigneur 1" var: puissance_grand_seigneur1 category: "Grands Seigneurs";
 	parameter "Puissance Grand Seigneur 2" var: puissance_grand_seigneur2 category: "Grands Seigneurs";
+	parameter "Probabilité créer château GS" var: proba_creer_chateau_GS category: "Grands Seigneurs";
+	parameter "Probabilité don château GS" var: proba_don_chateau_GS category: "Grands Seigneurs";
 	
 	//parameter "Probabilité (FP) de devenir seigneur" var: proba_devenir_seigneur category: "Seigneurs";
 	parameter "Châtelain peut créer château" var: chatelain_cree_chateau category: "Seigneurs";
-	parameter "Probabilité créer château" var: proba_creer_chateau category: "Seigneurs";
-	parameter "Probabilité don château" var: proba_don_chateau category: "Seigneurs";
+
 	
-	parameter "Proba. gain droits banaux sur château" var: proba_gain_droits_banaux_chateau category: "Châtelain";
-	parameter "Proba. gain droits BM Justice sur château" var: proba_gain_droits_basseMoyenneJustice_chateau category: "Châtelain";
+	parameter "Proba. gain droits banaux sur château" var: proba_gain_droits_banaux_chateau category: "Châtelains";
+	parameter "Proba. gain droits BM Justice sur château" var: proba_gain_droits_basseMoyenneJustice_chateau category: "Châtelains";
+	parameter "Probabilité créer château GS" var: proba_creer_chateau_PS category: "Châtelains";
+	parameter "Probabilité don château GS" var: proba_don_chateau_PS category: "Châtelains";
 	
 	parameter "Nombre visé de petits seigneurs en fin de simulation" var: nombre_seigneurs_objectif category: "Petits Seigneurs";
+	
+
+	
 	parameter "%FP payant un loyer (Petit Seigneur initial) - Borne Min" var: min_fourchette_loyers_PS_init category: "Petits Seigneurs" min: 0.0 max: 1.0;
 	parameter "%FP payant un loyer (Petit Seigneur initial) - Borne Max" var: max_fourchette_loyers_PS_init category: "Petits Seigneurs" min: 0.0 max: 1.0;
 	parameter "Rayon min Zone Prélevement - Petits Seigneurs Init" var: rayon_min_PS_init category: "Petits Seigneurs" min: 100 max: 20000;

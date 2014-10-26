@@ -234,6 +234,9 @@ entities {
 			
 			int nbChateaux <- min([rnd(nbChateauxPotentiel), length(agregatsPotentiel)]);
 			create Chateaux number: nbChateaux {
+				if (!flip(proba_creer_chateau_GS)){
+					do die;
+				}
 				set proprietaire <- myself;
 				set gardien <- myself;
 				Agregats choixAgregat <- one_of(agregatsPotentiel where (each.monChateau = nil));
@@ -267,9 +270,13 @@ entities {
 				// FIXME : Chateaux trop proches sinon
 				if (agregatPotentiel distance_to (Chateaux closest_to agregatPotentiel) < 3000) {return();}
 				create Chateaux number: 1 {
+					if (!flip(proba_creer_chateau_PS)){
+						do die;
+					}
 					set proprietaire <- myself;
 					set gardien <- myself;
 					do die;
+					set myself.type <- "Chatelain";
 					ask agregatPotentiel {
 						set monChateau <- myself;
 					}

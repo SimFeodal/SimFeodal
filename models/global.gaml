@@ -30,8 +30,14 @@ global {
 	int nb_demenagement_lointain <- 0;
 	int nb_non_demenagement <- 0;
 	float proba_devenir_seigneur <- 0.01;
-	float proba_don_chateau <- 0.33;
-	float proba_creer_chateau <- 0.33;
+	
+	float proba_don_chateau_GS <- 0.33;
+	float proba_creer_chateau_GS <- 0.33;
+	
+	float proba_don_chateau_PS <- 0.15;
+	float proba_creer_chateau_PS <- 0.15;
+	
+	
 	bool chatelain_cree_chateau <- false ;
 	int nombre_grands_seigneurs <- 2;
 	int nombre_petits_seigneurs <- 18;
