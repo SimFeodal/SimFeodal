@@ -58,8 +58,8 @@ entities {
 		}
 		
 		action update_satisfaction_materielle {
-			int loyer <- (self.seigneur_loyer != nil ? 1 : 0);
-			int hauteJustice <- (self.seigneur_hauteJustice != nil ? 1 : 0);
+			int loyer <- (self.seigneur_loyer != nil) ? 1 : 0;
+			int hauteJustice <- (self.seigneur_hauteJustice != nil) ? 1 : 0;
 			int banaux <- length(self.seigneurs_banaux);
 			int basseMoyenneJustice <- length(self.seigneurs_basseMoyenneJustice);
 			

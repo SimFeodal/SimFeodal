@@ -39,8 +39,9 @@ global schedules: list(world) + list(Attracteurs) + list(Agregats) + list(Foyers
 	}
 	
 	reflex MaJ_FP {
-		ask Foyers_Paysans{ do update_satisfaction;}
-		ask Foyers_Paysans {do demenagement;}
+		ask Foyers_Paysans{
+			do demenagement;
+		}
 	}
 	
 	reflex MaJ_Chateaux {
@@ -98,7 +99,6 @@ global schedules: list(world) + list(Attracteurs) + list(Agregats) + list(Foyers
 			}
 			*/ 
 		}
-		
 		ask Seigneurs {
 			do MaJ_puissance; // TODO
 			do MaJ_puissance_armee;
@@ -113,6 +113,10 @@ global schedules: list(world) + list(Attracteurs) + list(Agregats) + list(Foyers
 		}
 
 		
+	}
+	
+	reflex MaJ_satisfaction_FP {
+		ask Foyers_Paysans {do update_satisfaction;}
 	}
 	
 	reflex fin_simulation {
@@ -194,6 +198,7 @@ experiment base_experiment type: gui {
 		monitor "Attractivité globale" value: length(Foyers_Paysans) + sum(Chateaux collect each.attractivite);
 		monitor "Attractivité agrégats" value: sum(Agregats where (!each.fake_agregat) collect each.attractivite);
 		
+		
 		display "Carte" {
 			species Zones_Prelevement transparency: 0.9;
 			species Eglises aspect: base ;
@@ -225,6 +230,7 @@ experiment base_experiment type: gui {
     		chart "Nombre de Seigneurs Preleveurs" type:series position: {0,0} size: {1,1}{
     			data "Nb Seigneurs Max" value: max(Foyers_Paysans collect each.nb_preleveurs) color: #blue;
     			data "Nb Seigneurs Mean" value: mean(Foyers_Paysans collect each.nb_preleveurs) color: #green;
+    			data "Nb Seigneurs Median" value: median(Foyers_Paysans collect each.nb_preleveurs) color: #orange;
     			data "Nb Seigneurs Min" value: min(Foyers_Paysans collect each.nb_preleveurs) color: #red;
     		}
     	}
@@ -234,12 +240,14 @@ experiment base_experiment type: gui {
     		chart "Puissance des seigneurs" type:series position: {0,0} size: {0.33,1}{
     			data "Min" value: min(Seigneurs collect each.puissance) color: #green;
     			data "Mean" value: mean(Seigneurs collect each.puissance) color: #blue;
+    			data "Median" value: median(Seigneurs collect each.puissance) color: #orange;
     			data "Max" value: max(Seigneurs collect each.puissance) color: #red;
     		}
     		
     		chart "Puissance armée des seigneurs" type:series position: {0.33,0} size: {0.33,1}{
     			data "Min" value: min(Seigneurs collect each.puissance_armee) color: #green;
     			data "Mean" value: mean(Seigneurs collect each.puissance_armee) color: #blue;
+    			data "Med" value:  median(Seigneurs collect each.puissance_armee) color: #orange;
     			data "Max" value: max(Seigneurs collect each.puissance_armee) color: #red;
     		}
     		chart "Dépendance (loyer) des FP" type:series position: {0.66,0} size: {0.33,1}{
