@@ -190,31 +190,31 @@ entities {
 		}
 		
 		float MaJ_loyers {
-			set FP_loyer <- Foyers_Paysans where (each.seigneur_loyer = self);
 			float Loyers <- length(FP_loyer) * taux_prelevement * 1.0;
-			set FP_assujettis <- remove_duplicates(FP_assujettis + FP_loyer);
-			return(Loyers);
+			float Loyers_garde <- length(FP_loyer_garde) * taux_prelevement * 1.25;
+			set FP_assujettis <- remove_duplicates(FP_assujettis + FP_loyer + FP_loyer_garde);
+			return(Loyers + Loyers_garde);
 		}
 		
 		float MaJ_hauteJustice {
-			set FP_hauteJustice <- Foyers_Paysans where (each.seigneur_hauteJustice = self);
 			float HteJustice <- length(FP_hauteJustice) * taux_prelevement * 1.0;
-			set FP_assujettis <- remove_duplicates(FP_assujettis + FP_hauteJustice);
-			return(HteJustice);
+			float HteJustice_garde <- length(FP_hauteJustice_garde) * taux_prelevement * 1.25;
+			set FP_assujettis <- remove_duplicates(FP_assujettis + FP_hauteJustice + FP_hauteJustice_garde);
+			return(HteJustice + HteJustice_garde);
 		}
 		
 		float MaJ_banaux {
-			set FP_banaux <- Foyers_Paysans where (each.seigneurs_banaux contains self);
 			float Banaux <- length(FP_banaux) * taux_prelevement * 0.25;
-			set FP_assujettis <- remove_duplicates(FP_assujettis + FP_banaux);
-			return(Banaux);
+			float Banaux_garde <- length(FP_banaux_garde) * taux_prelevement * 0.35;
+			set FP_assujettis <- remove_duplicates(FP_assujettis + FP_banaux + FP_banaux_garde);
+			return(Banaux + Banaux_garde);
 		}
 		
 		float MaJ_moyenneBasseJustice {
-			set FP_basseMoyenneJustice <- Foyers_Paysans where (each.seigneurs_banaux contains self);
 			float moyenneBasseJustice <- length(FP_basseMoyenneJustice) * taux_prelevement * 0.25;
-			set FP_assujettis <- remove_duplicates(FP_assujettis + FP_basseMoyenneJustice);
-			return(moyenneBasseJustice);
+			float moyenneBasseJustice_garde <- length(FP_basseMoyenneJustice_garde) * taux_prelevement * 0.35;
+			set FP_assujettis <- remove_duplicates(FP_assujettis + FP_basseMoyenneJustice + FP_basseMoyenneJustice_garde);
+			return(moyenneBasseJustice + moyenneBasseJustice_garde);
 		}
 		
 		action MaJ_puissance {

@@ -30,27 +30,28 @@ TODO
 		- [x] Don ZP haute justice
 		- [x] Don ZP banaux
 		- [x] Don ZP basse et moyenne justice
-	- [ ] Calcul puissance
+	- [x] Calcul puissance
 		- [x] Revenus propres
 			- [x] Loyers
 			- [x] Haute-justice
 			- [x] Banaux propres
 			- [x] Basse et Moyenne justice
-		- [ ] Revenus garde général
-			- [ ] Loyers
-			- [ ] Haute-justice
-			- [ ] Banaux propres
-			- [ ] Basse et Moyenne justice
-	- [ ] Calcul puissance armée
+		- [x] Revenus garde général
+			- [x] Loyers
+			- [x] Haute-justice
+			- [x] Banaux propres
+			- [x] Basse et Moyenne justice
+	- [x] Calcul puissance armée
 		- [x] FP propres
-		- [ ] FP garde
+		- [x] FP garde
+	- [ ] Cession droits sur ZP
 
 
 
  3. Petits Seigneurs
 	-------------------------------------------------------------
-	- [ ] Différencier Initiaux/Nouveaux -> Châtelain par don GS : uniquement intialement_presents
-	- [ ] Ajouter suzerain -> Don GS -> PS : Seulement ceux dont suzerain != autre grand seigneur
+	- [x] Différencier Initiaux/Nouveaux -> Châtelain par don GS : uniquement intialement_presents
+	- [x] Ajouter suzerain -> Don GS -> PS : Seulement ceux dont suzerain != autre grand seigneur
 	- [x] Apparition
 	- [x] Gains de droits
 		- [x] Création nouvelles ZP (banaux & moyenne et basse Justice)
@@ -59,21 +60,21 @@ TODO
 		- [ ] ZP haute justice -> N'ont jamais haute justice avec château
 		- [x] ZP droits banaux
 		- [x] ZP droits basse et moyenne justice
-	- [ ] Calcul puissance
+	- [x] Calcul puissance
 		- [x] Revenus propres
 			- [x] Loyers
 			- [x] Haute-justice
 			- [x] Banaux propres
 			- [x] Basse et Moyenne justice
-		- [ ] Revenus garde
-			- [ ] Loyers
-			- [ ] Haute-justice
-			- [ ] Banaux propres
-			- [ ] Basse et Moyenne justice
-		- [ ] Revenu locatifs
-			- [ ] Sur châteaux
-	-	[ ] Cession droits
-		- [ ] ZP toutes
+		- [x] Revenus garde
+			- [x] Loyers
+			- [x] Haute-justice
+			- [x] Banaux propres
+			- [x] Basse et Moyenne justice
+	- [ ] Cession droits sur ZP
+	- [x] Calcul puissance armée
+		- [x] FP propres
+		- [x] FP garde
 
 
 4. Agrégats

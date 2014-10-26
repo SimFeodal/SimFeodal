@@ -213,6 +213,7 @@ global {
 			int nbFP_concernes <- round(self.taux_captation * length(FP_zone));
 			ask nbFP_concernes among FP_zone {
 				set seigneur_loyer <- myself.proprietaire;
+				set myself.proprietaire.FP_loyer <- remove_duplicates(myself.proprietaire.FP_loyer + self);
 				FP_dispos >- self;
 			}
 		}
@@ -221,6 +222,7 @@ global {
 			int nbFP_concernes <- round(self.puissance_init * length(FP_dispos));
 			ask nbFP_concernes among FP_dispos {
 				set seigneur_loyer <- myself;
+				set myself.FP_loyer <- remove_duplicates(myself.FP_loyer + self);
 			}
 			set FP_dispos <- Foyers_Paysans where (each.seigneur_loyer = nil);
 		}

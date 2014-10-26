@@ -30,30 +30,74 @@ entities {
 		
 		action update_taxes_FP {
 			int nb_FP <- length(Foyers_Paysans at_distance rayon_captation);
-			list<Foyers_Paysans> mes_FP <- floor(nb_FP * taux_captation) among (Foyers_Paysans at_distance rayon_captation);
+			list<Foyers_Paysans> FP_impactes <- floor(nb_FP * taux_captation) among (Foyers_Paysans at_distance rayon_captation);
+			float mon_taux_FP <- (!empty(preleveurs)) ? (1.0 - sum(preleveurs.values)): 1.0;
 			switch type_droit {
 				match "Haute_Justice"{
-					ask mes_FP {
-						set seigneur_loyer <- myself.proprietaire;
-					}
-					ask self.proprietaire {
-						set FP_hauteJustice <- remove_duplicates(FP_hauteJustice + mes_FP);
+					if (mon_taux_FP = 1.0){
+						ask FP_impactes {
+							set seigneur_hauteJustice <- myself.proprietaire;
+						}
+						ask self.proprietaire {
+							set FP_hauteJustice <- remove_duplicates(FP_hauteJustice + FP_impactes);
+						}
+					} else {
+						ask ((mon_taux_FP * length(FP_impactes)) among FP_impactes) {
+							set seigneur_hauteJustice <- myself.proprietaire;
+							set myself.proprietaire.FP_hauteJustice <- remove_duplicates(myself.proprietaire.FP_hauteJustice + FP_impactes);
+						}
+						loop currentPreleveur over: (preleveurs.keys){
+							ask (((preleveurs[currentPreleveur]) * length(FP_impactes)) among FP_impactes) {
+								set seigneur_hauteJustice <- currentPreleveur;
+								set currentPreleveur.FP_hauteJustice <- remove_duplicates(currentPreleveur.FP_hauteJustice + self);
+								set myself.proprietaire.FP_hauteJustice_garde <- remove_duplicates( myself.proprietaire.FP_hauteJustice_garde + self);
+							}
+						}
 					}
 				}
 				match "Banaux" {
-					ask mes_FP {
-						set seigneurs_banaux <- seigneurs_banaux + myself.proprietaire;
-					}
-					ask proprietaire {
-						set FP_banaux <- FP_banaux + mes_FP;
+					if (mon_taux_FP = 1.0){
+						ask FP_impactes {
+							set seigneurs_banaux <- seigneurs_banaux + myself.proprietaire;
+						}
+						ask self.proprietaire {
+							set FP_banaux <- FP_banaux + FP_impactes;
+						}
+					} else {
+						ask ((mon_taux_FP * length(FP_impactes)) among FP_impactes) {
+							set seigneurs_banaux <- seigneurs_banaux + myself.proprietaire;
+							set myself.proprietaire.FP_banaux <- myself.proprietaire.FP_banaux + FP_impactes;
+						}
+						loop currentPreleveur over: (preleveurs.keys){
+							ask (((preleveurs[currentPreleveur]) * length(FP_impactes)) among FP_impactes) {
+								set seigneurs_banaux <- seigneurs_banaux + currentPreleveur;
+								set currentPreleveur.FP_banaux <- currentPreleveur.FP_banaux + self;
+								set myself.proprietaire.FP_banaux_garde <- myself.proprietaire.FP_banaux_garde + self;
+							}
+						}
 					}
 				}
 				match "basseMoyenne_Justice" {
-					ask mes_FP {
-						set seigneurs_basseMoyenneJustice <- seigneurs_basseMoyenneJustice + myself.proprietaire;
-					}
-					ask proprietaire {
-						set FP_basseMoyenneJustice <- FP_basseMoyenneJustice + mes_FP;
+					if (mon_taux_FP = 1.0){
+						ask FP_impactes {
+							set seigneurs_basseMoyenneJustice <- seigneurs_basseMoyenneJustice + myself.proprietaire;
+						}
+						ask self.proprietaire {
+							set FP_basseMoyenneJustice <- FP_basseMoyenneJustice + FP_impactes;
+						}
+					} else {
+						ask ((mon_taux_FP * length(FP_impactes)) among FP_impactes) {
+							set seigneurs_basseMoyenneJustice <- seigneurs_basseMoyenneJustice + myself.proprietaire;
+							set myself.proprietaire.FP_basseMoyenneJustice <- myself.proprietaire.FP_basseMoyenneJustice + FP_impactes;
+						}
+						
+						loop currentPreleveur over: (preleveurs.keys){
+							ask (((preleveurs[currentPreleveur]) * length(FP_impactes)) among FP_impactes) {
+								set seigneurs_basseMoyenneJustice <- seigneurs_basseMoyenneJustice + currentPreleveur;
+								set currentPreleveur.FP_basseMoyenneJustice <- currentPreleveur.FP_basseMoyenneJustice + self;
+								set myself.proprietaire.FP_basseMoyenneJustice_garde <- myself.proprietaire.FP_basseMoyenneJustice_garde + self;
+							}
+						}
 					}
 				}
 			}
