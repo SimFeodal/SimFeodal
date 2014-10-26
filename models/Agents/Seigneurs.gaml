@@ -141,22 +141,22 @@ entities {
 		action MaJ_ZP_chateaux(Seigneurs seigneur, string type_droit){
 			switch type_droit {
 				match "Loyer" {
-					ask Chateaux where (each.proprietaire = self and !each.ZP_loyer){
+					ask Chateaux where (each.proprietaire = self and each.ZP_loyer = nil){
 						do creation_ZP_loyer(self.location, 10000, seigneur, 1.0);
 					}
 				}
 				match "Haute_Justice" {
-					ask Chateaux where (each.proprietaire = self and !each.ZP_hauteJustice){
+					ask Chateaux where (each.proprietaire = self and each.ZP_hauteJustice = nil){
 						do creation_ZP_hauteJustice(self.location, 10000, seigneur, 1.0);
 					}
 				}
 				match "Banaux" {
-					ask Chateaux where (each.proprietaire = self and !each.ZP_banaux){
+					ask Chateaux where (each.proprietaire = self and each.ZP_banaux = nil){
 						do creation_ZP_banaux(self.location, 10000, seigneur, 1.0);
 					}
 				}
 				match "basseMoyenne_Justice" {
-					ask Chateaux where (each.proprietaire = self and !each.ZP_basseMoyenneJustice){
+					ask Chateaux where (each.proprietaire = self and each.ZP_basseMoyenneJustice = nil){
 						do creation_ZP_basseMoyenne_Justice(self.location, 10000, seigneur, 1.0);
 					}
 				}
@@ -222,8 +222,71 @@ entities {
 		}
 		
 		
-		action don_chateaux {
-			// On donne ses châteaux...
+		action don_chateaux_GS {
+			loop chateau over: Chateaux where (each.proprietaire = self and each.gardien = self){
+				if (flip(proba_don_chateau_GS)){
+					Seigneurs choixSeigneur <- one_of(Seigneurs where (each.type != 'Grand Seigneur' and each.initialement_present and ((each.monSuzerain = self or each.monSuzerain = nil) or (each.monSuzerain.type != "Grand Seigneur"))));
+					set chateau.gardien <- choixSeigneur;
+					set choixSeigneur.type <- "Chatelain";
+					
+					if (chateau.ZP_loyer != nil) {
+						ask chateau.ZP_loyer {
+							set preleveurs <- map(choixSeigneur::1.0);
+						}
+					}
+					
+					if (chateau.ZP_hauteJustice != nil) {
+						ask chateau.ZP_hauteJustice {
+							set preleveurs[choixSeigneur] <- 0.33;
+						}
+					}
+					
+					if (chateau.ZP_banaux != nil){
+						ask chateau.ZP_banaux {
+							set preleveurs[choixSeigneur] <- 0.33;
+						}
+					}
+
+					if (chateau.ZP_basseMoyenneJustice != nil) {
+						ask chateau.ZP_basseMoyenneJustice {
+							set preleveurs[choixSeigneur] <- 0.33;
+						}
+					}
+				}
+			}
+		}
+		
+		action update_droits_chateaux_GS {
+			loop chateau over: Chateaux where (each.proprietaire = self and each.gardien != self){
+				
+				if (chateau.ZP_banaux != nil){
+					ask chateau.ZP_banaux {
+						if (sum(preleveurs.values) < 1){
+							set preleveurs[preleveurs.keys[0]] <- (preleveurs[preleveurs.keys[0]] = 0.66) ? 1.0 : preleveurs[preleveurs.keys[0]] + 0.33;
+						}
+					}
+				}
+				
+				if (chateau.ZP_hauteJustice != nil){
+					ask chateau.ZP_hauteJustice {
+						if (sum(preleveurs.values) < 1){
+							set preleveurs[preleveurs.keys[0]] <- (preleveurs[preleveurs.keys[0]] = 0.66) ? 1.0 : preleveurs[preleveurs.keys[0]] + 0.33;
+						}
+					}
+				}
+				
+				if (chateau.ZP_basseMoyenneJustice != nil){
+					ask chateau.ZP_basseMoyenneJustice {
+						if (sum(preleveurs.values) < 1){
+							set preleveurs[preleveurs.keys[0]] <- (preleveurs[preleveurs.keys[0]] = 0.66) ? 1.0 : preleveurs[preleveurs.keys[0]] + 0.33;
+						}
+					}
+				}
+			}
+		}
+		
+		action don_chateaux_PS {
+			
 		}
 		
 		
@@ -282,6 +345,18 @@ entities {
 					}
 					set location <- any_location_in(500 around agregatPotentiel);
 					do creation_ZP_loyer(location, 10000, myself, 1.0);
+					
+					if (Annee > 900 and flip(proba_gain_droits_hauteJustice_chateau)){
+						ask myself {
+							set droits_hauteJustice <- true;
+							set droits_banaux <- true;
+							set droits_moyenneBasseJustice <- true;
+						}
+						do creation_ZP_hauteJustice(location, 10000, myself, 1.0);
+						do creation_ZP_banaux(location, 10000, myself, 1.0);
+						do creation_ZP_basseMoyenne_Justice(location, 10000, myself, 1.0);
+						
+					}
 					if (flip(proba_gain_droits_banaux_chateau)){
 						ask myself {set droits_banaux <- true;}
 						do creation_ZP_banaux(location, 10000, myself, 1.0);

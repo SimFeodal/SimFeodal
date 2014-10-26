@@ -26,10 +26,10 @@ entities {
 		Agregats monAgregat <- nil;
 		Seigneurs proprietaire <- nil;
 		Seigneurs gardien <- nil;
-		bool ZP_loyer;
-		bool ZP_hauteJustice;
-		bool ZP_banaux;
-		bool ZP_basseMoyenneJustice;
+		Zones_Prelevement ZP_loyer <- nil;
+		Zones_Prelevement ZP_hauteJustice;
+		Zones_Prelevement ZP_banaux;
+		Zones_Prelevement ZP_basseMoyenneJustice;
 		
 		action update_attractivite {
 			set attractivite <- length(fonctions_possedees);
@@ -44,8 +44,8 @@ entities {
 				set rayon_captation <- rayon;
 				set taux_captation <- taux_taxation;
 				set preleveurs <- map([proprio::1.0]);
+				set myself.ZP_loyer <- self;
 			}
-			set ZP_loyer <- true;
 		}
 		
 		action creation_ZP_hauteJustice (point centre, int rayon, Seigneurs proprio, float taux_taxation){
@@ -57,8 +57,8 @@ entities {
 				set rayon_captation <- rayon;
 				set taux_captation <- taux_taxation;
 				set preleveurs <- map([proprio::1.0]);
+				set myself.ZP_hauteJustice <- self;
 			}
-			set ZP_hauteJustice <- true;
 		}
 		
 		action creation_ZP_banaux (point centre, int rayon, Seigneurs proprio, float taux_taxation){
@@ -70,8 +70,8 @@ entities {
 				set rayon_captation <- rayon;
 				set taux_captation <- taux_taxation;
 				set preleveurs <- map([proprio::1.0]);
+				set myself.ZP_banaux <- self;
 			}
-			set ZP_banaux <- true;
 		}
 		
 		action creation_ZP_basseMoyenne_Justice (point centre, int rayon, Seigneurs proprio, float taux_taxation){
@@ -83,8 +83,8 @@ entities {
 				set rayon_captation <- rayon;
 				set taux_captation <- taux_taxation;
 				set preleveurs <- map([proprio::1.0]);
+				set myself.ZP_basseMoyenneJustice <- self;
 			}
-			set ZP_basseMoyenneJustice <- true;
 		}
 		
 		aspect base {

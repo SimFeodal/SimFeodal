@@ -80,7 +80,16 @@ global schedules: list(world) + list(Attracteurs) + list(Agregats) + list(Foyers
 		// TODO : Cession droits châteaux
 
 
-		if (Annee > 950) {ask Seigneurs {do don_chateaux;}} // TODO
+		if (Annee > 950) {
+			ask Seigneurs where (each.type = "Grand Seigneur"){
+				do update_droits_chateaux_GS;
+				do don_chateaux_GS;
+			}
+			 
+			ask Seigneurs where (each.type = "Chatelain"){
+				do don_chateaux_PS;
+			}
+		} // TODO
 		
 		ask Seigneurs {
 			do MaJ_puissance; // TODO
@@ -129,7 +138,7 @@ experiment base_experiment type: gui {
 	//parameter "Probabilité (FP) de devenir seigneur" var: proba_devenir_seigneur category: "Seigneurs";
 	parameter "Châtelain peut créer château" var: chatelain_cree_chateau category: "Seigneurs";
 
-	
+	parameter "Proba. gain droits haute justice sur château" var: proba_gain_droits_hauteJustice_chateau category: "Châtelains";
 	parameter "Proba. gain droits banaux sur château" var: proba_gain_droits_banaux_chateau category: "Châtelains";
 	parameter "Proba. gain droits BM Justice sur château" var: proba_gain_droits_basseMoyenneJustice_chateau category: "Châtelains";
 	parameter "Probabilité créer château GS" var: proba_creer_chateau_PS category: "Châtelains";

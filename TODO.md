@@ -25,18 +25,18 @@ TODO
 		- [x] ZP droits basse et moyenne justice
 	- [x] Gains de droits
 		-> Nouvelles ZP
-	- [ ] Dons de châteaux
-		- [ ] Don ZP loyer
-		- [ ] Don ZP haute justice
-		- [ ] Don ZP banaux
-		- [ ] Don ZP basse et moyenne justice
+	- [x] Dons de châteaux
+		- [x] Don ZP loyer
+		- [x] Don ZP haute justice
+		- [x] Don ZP banaux
+		- [x] Don ZP basse et moyenne justice
 	- [ ] Calcul puissance
 		- [x] Revenus propres
 			- [x] Loyers
 			- [x] Haute-justice
 			- [x] Banaux propres
 			- [x] Basse et Moyenne justice
-		- [ ] Revenus garde
+		- [ ] Revenus garde général
 			- [ ] Loyers
 			- [ ] Haute-justice
 			- [ ] Banaux propres
@@ -70,6 +70,8 @@ TODO
 			- [ ] Haute-justice
 			- [ ] Banaux propres
 			- [ ] Basse et Moyenne justice
+		- [ ] Revenu locatifs
+			- [ ] Sur châteaux
 	-	[ ] Cession droits
 		- [ ] ZP toutes
 
@@ -78,4 +80,3 @@ TODO
 	-------------------------------------------------------------
 	- [ ] Mettre en place les fonctions dans les agrégats
 
-	

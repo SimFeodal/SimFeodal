@@ -32,10 +32,10 @@ global {
 	float proba_devenir_seigneur <- 0.01;
 	
 	float proba_don_chateau_GS <- 0.33;
-	float proba_creer_chateau_GS <- 0.33;
+	float proba_creer_chateau_GS <- 1.0;
 	
 	float proba_don_chateau_PS <- 0.15;
-	float proba_creer_chateau_PS <- 0.15;
+	float proba_creer_chateau_PS <- 1.0;
 	
 	
 	bool chatelain_cree_chateau <- false ;
@@ -60,6 +60,7 @@ global {
 	int rayon_min_PS_nouveau <- 300;
 	int rayon_max_PS_nouveau <- 2000;
 	
+	float proba_gain_droits_hauteJustice_chateau <- 0.1;
 	float proba_gain_droits_banaux_chateau <- 0.1;
 	float proba_gain_droits_basseMoyenneJustice_chateau <- 0.1;
 	
