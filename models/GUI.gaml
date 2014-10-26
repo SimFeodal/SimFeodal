@@ -77,19 +77,18 @@ global schedules: list(world) + list(Attracteurs) + list(Agregats) + list(Foyers
 	reflex MaJ_Seigneurs2 {
 		// TODO : Cession de droits sur les ZP (cf. feuille A1b) 
 
-		// TODO : Cession droits châteaux
-
-
 		if (Annee > 950) {
 			ask Seigneurs where (each.type = "Grand Seigneur"){
 				do update_droits_chateaux_GS;
 				do don_chateaux_GS;
 			}
-			 
+			/* 
+			Pour l'instant, les PS ne donnent pas leurs châteaux en garde
 			ask Seigneurs where (each.type = "Chatelain"){
 				do don_chateaux_PS;
 			}
-		} // TODO
+			*/ 
+		}
 		
 		ask Seigneurs {
 			do MaJ_puissance; // TODO

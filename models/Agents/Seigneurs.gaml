@@ -228,6 +228,7 @@ entities {
 					Seigneurs choixSeigneur <- one_of(Seigneurs where (each.type != 'Grand Seigneur' and each.initialement_present and ((each.monSuzerain = self or each.monSuzerain = nil) or (each.monSuzerain.type != "Grand Seigneur"))));
 					set chateau.gardien <- choixSeigneur;
 					set choixSeigneur.type <- "Chatelain";
+					set choixSeigneur.monSuzerain <- self;
 					
 					if (chateau.ZP_loyer != nil) {
 						ask chateau.ZP_loyer {
