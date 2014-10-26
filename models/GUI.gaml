@@ -84,7 +84,15 @@ global schedules: list(world) + list(Attracteurs) + list(Agregats) + list(Foyers
 				// Don droits GS
 				do don_droits_GS;
 			}
+			
+			ask Seigneurs where (each.type != "Grand Seigneur"){
+				// Don droits PS
+				do don_droits_PS;
+			}
+			
 		}
+		
+		
 		
 		// Don châteaux
 		if (Annee > 950) {
@@ -157,9 +165,8 @@ experiment base_experiment type: gui {
 	parameter "Probabilité don château GS" var: proba_don_chateau_PS category: "Châtelains";
 	
 	parameter "Nombre visé de petits seigneurs en fin de simulation" var: nombre_seigneurs_objectif category: "Petits Seigneurs";
-	
+	parameter "Proba. don droits sur ZP" var: proba_don_partie_ZP category: "Petits Seigneurs";	
 
-	
 	parameter "%FP payant un loyer (Petit Seigneur initial) - Borne Min" var: min_fourchette_loyers_PS_init category: "Petits Seigneurs" min: 0.0 max: 1.0;
 	parameter "%FP payant un loyer (Petit Seigneur initial) - Borne Max" var: max_fourchette_loyers_PS_init category: "Petits Seigneurs" min: 0.0 max: 1.0;
 	parameter "Rayon min Zone Prélevement - Petits Seigneurs Init" var: rayon_min_PS_init category: "Petits Seigneurs" min: 100 max: 20000;
@@ -254,6 +261,21 @@ experiment base_experiment type: gui {
     			data "FP payant un loyer à un GS" value: length(Foyers_Paysans where (each.seigneur_loyer != nil and each.seigneur_loyer.type = "Grand Seigneur")) color: #green;
     			data "FP payant un loyer à un PS initial" value: length(Foyers_Paysans where (each.seigneur_loyer != nil and each.seigneur_loyer.type = "Petit Seigneur" and each.seigneur_loyer.initialement_present)) color: #blue;
     			data "FP payant un loyer à un PS nouveau" value: length(Foyers_Paysans where (each.seigneur_loyer != nil and each.seigneur_loyer.type = "Petit Seigneur" and !each.seigneur_loyer.initialement_present)) color: #red;
+    		}
+    	}
+    	    	
+    	display "Zones Prelevement"{
+    		chart "Nombre de ZP" type:series position: {0.0, 0.0} size: {0.5, 1}{
+    			data "Loyers" value: length(Zones_Prelevement where (each.type_droit = "Loyer")) color: #blue;
+    			data "Haute Justice" value: length(Zones_Prelevement where (each.type_droit = "Haute_Justice")) color: #red;
+    			data "Banaux" value: length(Zones_Prelevement where (each.type_droit = "Banaux")) color: #green;
+    			data "Basse et Moyenne Justice" value: length(Zones_Prelevement where (each.type_droit = "basseMoyenne_Justice")) color: #yellow;
+    		}
+    		chart "Nb de preleveurs" type: series position: {0.5, 0.0} size: {0.5, 1}{
+    			data "Max" value: max ( Zones_Prelevement collect (length (each.preleveurs.keys))) color: #red;
+    			data "Mean" value: mean ( Zones_Prelevement collect (length (each.preleveurs.keys))) color: #green;
+    			data "Min" value: min ( Zones_Prelevement collect (length (each.preleveurs.keys))) color: #blue;
+    			data "Med" value: median(Zones_Prelevement collect (length (each.preleveurs.keys))) color: #orange;
     		}
     	}	
 	}

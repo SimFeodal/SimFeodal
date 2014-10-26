@@ -74,7 +74,7 @@ TODO
 	- [x] Calcul puissance armée
 		- [x] FP propres
 		- [x] FP garde
-	- [ ] Cession droits sur ZP
+	- [x] Cession droits sur ZP
 
 
 4. Agrégats

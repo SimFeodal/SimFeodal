@@ -49,6 +49,8 @@ global {
 	int puissance_grand_seigneur1 <- 5;
 	int puissance_grand_seigneur2 <- 5;
 	
+	float proba_don_partie_ZP <- 0.33;
+	
 	float min_fourchette_loyers_PS_init <- 0.05;
 	float max_fourchette_loyers_PS_init <- 0.25;
 	float min_fourchette_loyers_PS_nouveau <- 0.0;

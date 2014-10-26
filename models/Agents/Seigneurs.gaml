@@ -90,6 +90,22 @@ entities {
 			ask choixSeigneur { set monSuzerain <- myself;}
 		}
 		
+		action don_droits_PS {
+			loop currentZP over: (Zones_Prelevement where (!each.ZP_chateau and each.proprietaire = self)){
+				list<Seigneurs> preleveurs_potentiels <- [];
+				float pourcentage_donne <- (rnd(20) * 10) /200; // par pas de 5%
+				ask currentZP {
+					set preleveurs_potentiels <- Seigneurs where (each.type != "Grand Seigneur" and each != currentZP.proprietaire) at_distance 3000;
+				}
+				if (flip(proba_don_partie_ZP) and (sum(currentZP.preleveurs.values) < (1.0 - pourcentage_donne) ) and !empty(preleveurs_potentiels)) {
+					Seigneurs monPreleveur <- one_of(preleveurs_potentiels);
+					ask currentZP {
+						set preleveurs[monPreleveur] <- (preleveurs.keys contains monPreleveur) ? preleveurs[monPreleveur] + pourcentage_donne : pourcentage_donne;
+					}
+				}
+			}
+		}
+		
 		action MaJ_droits_Grands_Seigneurs {
 			if (Annee < 900){
 				if (!droits_hauteJustice) {
