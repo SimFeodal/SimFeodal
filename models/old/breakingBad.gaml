@@ -81,8 +81,8 @@ experiment test type: gui {
 			write "no";
 			write(testmap);
 		}
-		write string(testmap at "C");
-		
+		//write string(testmap at "C");
+		write string((rnd(20) * 10)/200);
 	}
 }
 
