@@ -73,6 +73,23 @@ entities {
 			}
 		}
 		
+		action don_droits_GS {
+			Seigneurs choixSeigneur <- one_of(Seigneurs where (each.type != 'Grand Seigneur' and each.initialement_present and ((each.monSuzerain = self or each.monSuzerain = nil))));
+			string monType_droit <- flip(0.33) ? "Haute_Justice" : (flip(0.5) ? "Banaux" : "basseMoyenne_Justice");
+			Agregats choixAgregat <- one_of(Agregats);
+			int rayon_taxe <- (rayon_min_PS_init + rnd(rayon_max_PS_init - rayon_min_PS_init));
+			create Zones_Prelevement number: 1 {
+				set location <- any_location_in(choixAgregat.shape);
+				set ZP_chateau <- false;
+				set proprietaire <- myself;
+				set type_droit <- monType_droit ;
+				set rayon_captation <- rayon_taxe;
+				set taux_captation <- 1.0;
+				set preleveurs <- map([choixSeigneur::1.0]);
+			}
+			ask choixSeigneur { set monSuzerain <- myself;}
+		}
+		
 		action MaJ_droits_Grands_Seigneurs {
 			if (Annee < 900){
 				if (!droits_hauteJustice) {

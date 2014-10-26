@@ -44,7 +44,7 @@ TODO
 	- [x] Calcul puissance armée
 		- [x] FP propres
 		- [x] FP garde
-	- [ ] Cession droits sur ZP
+	- [x] Création nouvelles ZP et cession de leurs droits.
 
 
 
@@ -71,10 +71,10 @@ TODO
 			- [x] Haute-justice
 			- [x] Banaux propres
 			- [x] Basse et Moyenne justice
-	- [ ] Cession droits sur ZP
 	- [x] Calcul puissance armée
 		- [x] FP propres
 		- [x] FP garde
+	- [ ] Cession droits sur ZP
 
 
 4. Agrégats

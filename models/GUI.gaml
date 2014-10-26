@@ -77,6 +77,15 @@ global schedules: list(world) + list(Attracteurs) + list(Agregats) + list(Foyers
 	reflex MaJ_Seigneurs2 {
 		// TODO : Cession de droits sur les ZP (cf. feuille A1b) 
 
+		// Don droits
+		if (Annee > 880) {
+			ask Seigneurs where (each.type = "Grand Seigneur"){
+				// Don droits GS
+				do don_droits_GS;
+			}
+		}
+		
+		// Don châteaux
 		if (Annee > 950) {
 			ask Seigneurs where (each.type = "Grand Seigneur"){
 				do update_droits_chateaux_GS;
