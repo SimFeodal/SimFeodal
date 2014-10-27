@@ -39,7 +39,7 @@ entities {
 				}
 			} else {
 				if (length(Chateaux) > 0){
-					if (self distance_to (Chateaux closest_to self) > 3000){
+					if (self distance_to (Chateaux closest_to self) < 3000){
 						set monChateau <- Chateaux closest_to self;
 					}
 				}
