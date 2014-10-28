@@ -85,6 +85,13 @@ global schedules: list(world) + list(Attracteurs) + list(Agregats) + list(Foyers
 	reflex MaJ_satisfaction_FP {
 		ask Foyers_Paysans {do update_satisfaction;}
 	}
+	
+	reflex update_plot {
+		ask Seigneurs {
+			set monNbZP <- length(Zones_Prelevement where ((each.preleveurs.keys contains self) or (each.proprietaire = self)));
+		}
+	}
+	
 	reflex fin_simulation {
 		if (Annee >= fin_simulation) {ask world {do pause;}}
 	}
@@ -223,17 +230,23 @@ experiment base_experiment type: gui {
     	}
     	    	
     	display "Zones Prelevement"{
-    		chart "Nombre de ZP" type:series position: {0.0, 0.0} size: {0.5, 1}{
+    		chart "Nombre de ZP" type:series position: {0.0, 0.0} size: {1.0, 0.33}{
     			data "Loyers" value: length(Zones_Prelevement where (each.type_droit = "Loyer")) color: #blue;
     			data "Haute Justice" value: length(Zones_Prelevement where (each.type_droit = "Haute_Justice")) color: #red;
     			data "Banaux" value: length(Zones_Prelevement where (each.type_droit = "Banaux")) color: #green;
     			data "Basse et Moyenne Justice" value: length(Zones_Prelevement where (each.type_droit = "basseMoyenne_Justice")) color: #yellow;
     		}
-    		chart "Nb de preleveurs" type: series position: {0.5, 0.0} size: {0.5, 1}{
+    		chart "Nb de preleveurs" type: series position: {0, 0.33} size: {1.0, 0.33}{
     			data "Max" value: max ( Zones_Prelevement collect (length(each.preleveurs.keys))) color: #red;
     			data "Mean" value: mean ( Zones_Prelevement collect (length(each.preleveurs.keys))) color: #green;
     			data "Min" value: min ( Zones_Prelevement collect (length(each.preleveurs.keys))) color: #blue;
     			data "Med" value: median(Zones_Prelevement collect (length(each.preleveurs.keys))) color: #orange;
+    		}
+    		chart "Nb ZP / Seigneur" type: series position: {0.0, 0.66} size: {1.0, 0.33}{
+    			data "Max" value: max(Seigneurs collect each.monNbZP) color: #red;
+    			data "Mean" value: mean(Seigneurs collect each.monNbZP) color: #green;
+    			data "Median" value: median(Seigneurs collect each.monNbZP) color: #orange;
+    			data "Min" value: min(Seigneurs collect each.monNbZP) color: #blue;	
     		}
     	}	
 	}
