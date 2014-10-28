@@ -19,26 +19,24 @@ import "Agents/Zones_Prelevement.gaml"
 
 global schedules: list(world) + list(Attracteurs) + list(Agregats) + list(Foyers_Paysans) + list(Chateaux) + list(Eglises) + list(Seigneurs){
     
-	init {
-		do generer_monde;
-	}
+	init { do generer_monde; }
 	
-	reflex MaJ_globale {
-		do reset_globals;
-		if (time > 0) {do renouvellement_FP;}
+	reflex MaJ_globale { do reset_globals; }
+	
+	reflex renouvellement_monde when: (time > 0){
+		do renouvellement_FP;
+	}
+		
+	reflex MaJ_Agregats{
 		do update_agregats;
 		do creation_nouveaux_seigneurs;
-	}
-	
-	reflex MaJ_Agregats1 when: (length(Chateaux) > 0){
-		ask Agregats {do update_chateau;}
-	} 
-	
-	reflex MaJ_Agregats{
+		if (length(Chateaux) > 0){
+			ask Agregats {do update_chateau;}
+		}
 		ask Agregats {do update_attractivite;}
 	}
 	
-	reflex MaJ_FP {
+	reflex Demenagement_FP {
 		ask Foyers_Paysans{
 			do demenagement;
 		}
@@ -46,7 +44,6 @@ global schedules: list(world) + list(Attracteurs) + list(Agregats) + list(Foyers
 	
 	reflex MaJ_Chateaux {
 		ask Chateaux {do update_attractivite;}
-		//ask Chateaux {do update_agglo;}
 	}
 	
 	reflex MaJ_Eglises {
@@ -54,79 +51,40 @@ global schedules: list(world) + list(Attracteurs) + list(Agregats) + list(Foyers
 		ask Eglises where (!each.eglise_paroissiale) {do update_droits_paroissiaux;}
 	}
 	
-	reflex MaJ_Seigneurs1 {
-		// TODO : Maj  Droits (sauf Loyers)-> Creation de nouvelles ZP
-		ask Seigneurs where (each.type="Grand Seigneur"){do MaJ_droits_Grands_Seigneurs;} // MaJ droits chateaux
-		ask Seigneurs where (each.type != "Grand Seigneur") {do MaJ_droits_Petits_Seigneurs;} //MaJ droits chateaux
-		
-		ask Seigneurs where (each.type != "Grand Seigneur"){do gains_droits_PS;}
-		//ask Seigneurs where (each.type="Petit Seigneur"){do MaJ_droits_Petits_Seigneurs;} // FIXME
-		//ask Seigneurs where (each.type="Chatelain"){do MaJ_droits_Chatelains;} // FIXME
-	}
-		
-	reflex MaJ_Zones_Prelevement {
-		ask Zones_Prelevement {do update_shape;}
+	reflex MaJ_Droits_Seigneurs {
+		ask Seigneurs where (each.type="Grand Seigneur"){do MaJ_droits_Grands_Seigneurs;}
+		ask Seigneurs where (each.type != "Grand Seigneur") { do MaJ_droits_Petits_Seigneurs; do gains_droits_PS; }
 	}
 	
-	reflex MaJ_preleveurs {
+	reflex MaJ_ZP_et_preleveurs {
+		ask Zones_Prelevement {do update_shape;}
 		ask Foyers_Paysans {do reset_preleveurs;}
 		ask Seigneurs {do reset_variables;}
 		do attribution_loyers_FP;
 		ask Zones_Prelevement where (each.type_droit != "Loyer"){ do update_taxes_FP;}
 	}
 		
-	reflex MaJ_Seigneurs2 {
-		// TODO : Cession de droits sur les ZP (cf. feuille A1b) 
-
+	reflex Dons_des_Seigneurs {
 		// Don droits
 		if (Annee > 880) {
-			ask Seigneurs where (each.type = "Grand Seigneur"){
-				// Don droits GS
-				do don_droits_GS;
-			}
-			
-			ask Seigneurs where (each.type != "Grand Seigneur"){
-				// Don droits PS
-				do don_droits_PS;
-			}
-			
+			ask Seigneurs where (each.type = "Grand Seigneur"){ do don_droits_GS; }
+			ask Seigneurs where (each.type != "Grand Seigneur"){ do don_droits_PS; }
 		}
-		
-		
-		
 		// Don châteaux
 		if (Annee > 950) {
-			ask Seigneurs where (each.type = "Grand Seigneur"){
-				do update_droits_chateaux_GS;
-				do don_chateaux_GS;
-			}
-			/* 
-			Pour l'instant, les PS ne donnent pas leurs châteaux en garde
-			ask Seigneurs where (each.type = "Chatelain"){
-				do don_chateaux_PS;
-			}
-			*/ 
+			ask Seigneurs where (each.type = "Grand Seigneur"){ do update_droits_chateaux_GS; do don_chateaux_GS; }
 		}
-		ask Seigneurs {
-			do MaJ_puissance; // TODO
-			do MaJ_puissance_armee;
-		}
-
-		ask Seigneurs where (each.type = "Grand Seigneur" and each.puissance > 2000) {
-			do construction_chateau_GS;
-		}
-		
-		ask Seigneurs where (each.type != "Grand Seigneur" and each.puissance > 2000){
-			do construction_chateau_PS;
-		}
-
-		
+		ask Seigneurs { do MaJ_puissance; do MaJ_puissance_armee; }
+	}
+	
+	reflex Constructions_chateaux {
+		ask Seigneurs where (each.type = "Grand Seigneur" and each.puissance > 2000) { do construction_chateau_GS;}
+		ask Seigneurs where (each.type != "Grand Seigneur" and each.puissance > 2000){ do construction_chateau_PS;}
 	}
 	
 	reflex MaJ_satisfaction_FP {
 		ask Foyers_Paysans {do update_satisfaction;}
 	}
-	
 	reflex fin_simulation {
 		if (Annee >= fin_simulation) {ask world {do pause;}}
 	}
@@ -272,10 +230,10 @@ experiment base_experiment type: gui {
     			data "Basse et Moyenne Justice" value: length(Zones_Prelevement where (each.type_droit = "basseMoyenne_Justice")) color: #yellow;
     		}
     		chart "Nb de preleveurs" type: series position: {0.5, 0.0} size: {0.5, 1}{
-    			data "Max" value: max ( Zones_Prelevement collect (length (each.preleveurs.keys))) color: #red;
-    			data "Mean" value: mean ( Zones_Prelevement collect (length (each.preleveurs.keys))) color: #green;
-    			data "Min" value: min ( Zones_Prelevement collect (length (each.preleveurs.keys))) color: #blue;
-    			data "Med" value: median(Zones_Prelevement collect (length (each.preleveurs.keys))) color: #orange;
+    			data "Max" value: max ( Zones_Prelevement collect (length(each.preleveurs.keys))) color: #red;
+    			data "Mean" value: mean ( Zones_Prelevement collect (length(each.preleveurs.keys))) color: #green;
+    			data "Min" value: min ( Zones_Prelevement collect (length(each.preleveurs.keys))) color: #blue;
+    			data "Med" value: median(Zones_Prelevement collect (length(each.preleveurs.keys))) color: #orange;
     		}
     	}	
 	}
