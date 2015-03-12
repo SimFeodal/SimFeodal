@@ -164,23 +164,7 @@ entities {
 			int rayon_local <- 5000 ;
 			list<Attracteurs> attracteurs_proches <- Attracteurs at_distance rayon_local;
 			
-			/*
-			// On supprime cette logique, FP se dirige maintenant vers barycentre des attracteurs à proximité
-			Attracteurs meilleurAttracteur <- attracteurs_proches with_max_of (each.attractivite /max([self distance_to each, 1]));
-			if (meilleurAttracteur = nil) {
-				return location;
-			} else {
-				point bestPoint <- nil;
-			if ((self distance_to meilleurAttracteur) <= 1000) {
-				point bestPoint <- any_location_in(100 around meilleurAttracteur.location);
-			} else {
-				//point bestPoint <- (lmostAttractive) inter (1000 around self);
-				point bestPoint <- (line([self.location, meilleurAttracteur.location]) inter (1000 around self)).points[1];
-			}
-			//point bestPoint <- any_location_in(100 around self.location);
-			return bestPoint;
-			}
-			*/
+
 			if (empty(attracteurs_proches)) {
 				return(location);
 			} else {
@@ -195,15 +179,28 @@ entities {
 		}
 		
 		// ATTENTION : Actuellement, déménagement lointain peut se faire dans même agrégat...
+		// A choisir entre deux possibilités : forcé de déménager ds un autre agrégat ou si meilleur agrégat = sien : ne bouge pas
 		point demenagement_lointain {
 			
 			int attractivite_cagnotte <- sum(Agregats collect each.attractivite);
+			//int attractivite_cagnotte <- sum((Agregats - monAgregat) collect each.attractivite);
+			
 			
 			point FPlocation <- nil;
-			loop agregat over: shuffle(Agregats) {
+			
+			list<Agregats> other_Agregats <- shuffle(Agregats) ;
+			//list<Agregats> other_Agregats <- shuffle(Agregats - monAgregat);
+			
+			loop agregat over: other_Agregats {
 				if (agregat.attractivite >= attractivite_cagnotte){
 					if (length(agregat.fp_agregat) > 0) {
-						set FPlocation <- any_location_in(200 around one_of(agregat.fp_agregat).location);
+						if (agregat != monAgregat) {
+							set FPlocation <- any_location_in(200 around one_of(agregat.fp_agregat).location);
+						} else {
+							set FPlocation <- location;
+							nb_demenagement_lointain <- nb_demenagement_lointain - 1;
+						}
+						
 					} else {
 						set FPlocation <- any_location_in(worldextent);
 					}
