@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Simulation id="1" sourcePath="GUI.gaml" finalstep="18" experiment="base_experiment">
+  <Parameters>
+    <Parameter name="proba_creation_ZP_banaux" type="FLOAT" value="0.05" />
+  </Parameters>
+  <Outputs>
+    <Output id="1" name="Carte" framerate="1" />
+  </Outputs>
+</Simulation>
