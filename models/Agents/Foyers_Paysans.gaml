@@ -7,7 +7,7 @@
 model t8
 
 import "../init.gaml"
-import "../GUI.gaml"
+//import "../GUI.gaml"
 import "../global.gaml"
 import "Agregats.gaml"
 import "Chateaux.gaml"
@@ -194,6 +194,7 @@ entities {
 			}
 		}
 		
+		// ATTENTION : Actuellement, déménagement lointain peut se faire dans même agrégat...
 		point demenagement_lointain {
 			
 			int attractivite_cagnotte <- sum(Agregats collect each.attractivite);

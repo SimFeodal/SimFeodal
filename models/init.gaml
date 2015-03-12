@@ -7,7 +7,7 @@
 model t8
 
 import "global.gaml"
-import "GUI.gaml"
+//import "GUI.gaml"
 import "Agents/Agregats.gaml"
 import "Agents/Foyers_Paysans.gaml"
 
@@ -16,6 +16,7 @@ import "Agents/Eglises.gaml"
 import "Agents/Seigneurs.gaml"
 import "Agents/Attracteurs.gaml"
 import "Agents/Zones_Prelevement.gaml"
+
 
 global {
 	

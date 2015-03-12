@@ -7,7 +7,7 @@
 model t8
 
 import "../init.gaml"
-import "../GUI.gaml"
+//import "../GUI.gaml"
 import "../global.gaml"
 import "Foyers_Paysans.gaml"
 import "Chateaux.gaml"
@@ -15,7 +15,6 @@ import "Eglises.gaml"
 import "Seigneurs.gaml"
 import "Attracteurs.gaml"
 import "Zones_Prelevement.gaml"
-
 
 entities {
 

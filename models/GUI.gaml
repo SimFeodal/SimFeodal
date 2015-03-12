@@ -97,7 +97,7 @@ global schedules: list(world) + list(Attracteurs) + list(Agregats) + list(Foyers
 	}
 }
 	
-experiment base_experiment type: gui {
+experiment base_experiment type: gui multicore: true {
 	
 	parameter "Année début simulation" var: debut_simulation category: "Simulation";
 	parameter "Année fin simulation" var: fin_simulation category: "Simulation";
@@ -192,18 +192,18 @@ experiment base_experiment type: gui {
 	        }
     		chart "Satisfaction_FP" type:series position: {0.5,0} size: {0.5,1}{
     			data "Satisfaction Materielle" value: mean(Foyers_Paysans collect each.satisfaction_materielle) color: #blue;
-    			data "Satisfaction Spirituelle" value: mean(Foyers_Paysans collect each.satisfaction_religieuse) color: #green;
+    			data "Satisfaction Religieuse" value: mean(Foyers_Paysans collect each.satisfaction_religieuse) color: #green;
     			data "Satisfaction Protection" value: mean(Foyers_Paysans collect each.satisfaction_protection) color: #red;
     			data "Satisfaction" value: mean(Foyers_Paysans collect each.Satisfaction) color: #black;
     		}
     	}
     	
-	    display "FP2" {
-    		chart "Nombre de Seigneurs Preleveurs" type:series position: {0,0} size: {1,1}{
-    			data "Nb Seigneurs Max" value: max(Foyers_Paysans collect each.nb_preleveurs) color: #blue;
-    			data "Nb Seigneurs Mean" value: mean(Foyers_Paysans collect each.nb_preleveurs) color: #green;
-    			data "Nb Seigneurs Median" value: median(Foyers_Paysans collect each.nb_preleveurs) color: #orange;
-    			data "Nb Seigneurs Min" value: min(Foyers_Paysans collect each.nb_preleveurs) color: #red;
+	    display "FP et preleveurs" {
+    		chart "Nombre de Droits acquittés" type:series position: {0,0} size: {1,1}{
+    			data "Nb Droits Max" value: max(Foyers_Paysans collect each.nb_preleveurs) color: #blue;
+    			data "Nb Droits Mean" value: mean(Foyers_Paysans collect each.nb_preleveurs) color: #green;
+    			data "Nb Droits Median" value: median(Foyers_Paysans collect each.nb_preleveurs) color: #orange;
+    			data "Nb Droits Min" value: min(Foyers_Paysans collect each.nb_preleveurs) color: #red;
     		}
     	}
     	
@@ -247,6 +247,20 @@ experiment base_experiment type: gui {
     			data "Mean" value: mean(Seigneurs collect each.monNbZP) color: #green;
     			data "Median" value: median(Seigneurs collect each.monNbZP) color: #orange;
     			data "Min" value: min(Seigneurs collect each.monNbZP) color: #blue;	
+    		}
+    	}
+    	
+    	display "Agrégats"{
+    		chart "Nombre d'agrégats" type: series position: {0.0,0.0} size: {1.0, 0.5}{
+    			data "Nombre d'agrégats" value: length(Agregats) color: #red;
+    			data "Nombre d'agrégats avec CA" value: length(Agregats where each.communaute_agraire) color: #blue;
+    		}
+    		chart "Composition des agrégats" type: series position: {0.0, 0.5} size: {1.0, 0.5}{
+    			data "Max" value: max(Agregats collect length(each.fp_agregat)) color: #red;
+    			data "Mean" value: mean(Agregats collect length(each.fp_agregat)) color: #green;
+    			data "Median" value: median(Agregats collect length(each.fp_agregat)) color: #orange;
+    			data "Min" value: min(Agregats collect length(each.fp_agregat)) color: #blue;
+    			
     		}
     	}	
 	}

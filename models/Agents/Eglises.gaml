@@ -7,7 +7,7 @@
 model t8
 
 import "../init.gaml"
-import "../GUI.gaml"
+//import "../GUI.gaml"
 import "../global.gaml"
 import "Foyers_Paysans.gaml"
 import "Agregats.gaml"
