@@ -87,6 +87,7 @@ global schedules: list(world) + list(Attracteurs) + list(Agregats) + list(Foyers
 	}
 	
 	reflex update_plot {
+		set nb_non_demenagement <- length(Foyers_Paysans) - (nb_demenagement_local + nb_demenagement_lointain) ;
 		ask Seigneurs {
 			set monNbZP <- length(Zones_Prelevement where ((each.preleveurs.keys contains self) or (each.proprietaire = self)));
 		}
