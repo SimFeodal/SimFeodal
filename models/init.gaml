@@ -32,7 +32,7 @@ global {
 				pool_FP <+ self ;
 				// On choisit un des FP de la même agglo
 				agent myFP <- one_of(pool_FP);
-				set location <- any_location_in(199 around myFP.location);
+				set location <- any_location_in(99 around myFP.location);
 				set mobile <- flip (taux_mobilite);
 			}
 		}
@@ -46,7 +46,7 @@ global {
 				pool_FP <+ self ;
 				// On choisit un des FP de la même agglo
 				agent myFP <- one_of(pool_FP);
-				set location <- any_location_in(199 around myFP.location);
+				set location <- any_location_in(99 around myFP.location);
 				set mobile <- flip (taux_mobilite);
 			}
 		}
