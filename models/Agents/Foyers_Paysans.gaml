@@ -195,7 +195,7 @@ entities {
 				if (agregat.attractivite >= attractivite_cagnotte){
 					if (length(agregat.fp_agregat) > 0) {
 						if (agregat != monAgregat) {
-							set FPlocation <- any_location_in(200 around one_of(agregat.fp_agregat).location);
+							set FPlocation <- any_location_in(100 around one_of(agregat.fp_agregat).location);
 						} else {
 							set FPlocation <- location;
 							nb_demenagement_lointain <- nb_demenagement_lointain - 1;
