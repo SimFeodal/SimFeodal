@@ -185,6 +185,7 @@ experiment base_experiment type: gui multicore: true {
 	parameter "Probabilité créer château GS" var: proba_creer_chateau_PS category: "Châtelains";
 	parameter "Probabilité don château GS" var: proba_don_chateau_PS category: "Châtelains";
 	
+	//parameter "Nombre visé de petits seigneurs en fin de simulation" var: nombre_seigneurs_objectif category: "Petits Seigneurs";
 	parameter "Proba. don droits sur ZP" var: proba_don_partie_ZP category: "Petits Seigneurs";	
 
 	parameter "%FP payant un loyer (Petit Seigneur initial) - Borne Min" var: min_fourchette_loyers_PS_init category: "Petits Seigneurs" min: 0.0 max: 1.0;
@@ -205,6 +206,7 @@ experiment base_experiment type: gui multicore: true {
 	parameter "Rayon max Zone Prélevement - Petits Seigneurs nouveau" var: rayon_max_PS_nouveau category: "Petits Seigneurs" min: 100 max: 10000;
 	
 	parameter "Nombre d'églises:" var: nombre_eglises category: "Eglises";
+	parameter "Dont églises paroissiales:" var: nb_eglises_paroissiales category: "Eglises" ;
 	parameter "Probabilité gain des droits paroissiaux" var: proba_gain_droits_paroissiaux category: "Eglises";
 		
 
