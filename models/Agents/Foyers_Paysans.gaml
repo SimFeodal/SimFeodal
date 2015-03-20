@@ -120,7 +120,7 @@ entities {
 			//set satisfaction_religieuse <- update_satisfaction_religieuse();
 			//set satisfaction_protection <- update_satisfaction_protection();
 			
-			set Satisfaction <- min([satisfaction_materielle, satisfaction_religieuse, satisfaction_protection]);
+			set Satisfaction <- max([0, min([satisfaction_religieuse, satisfaction_protection]) - (1 - satisfaction_materielle)]);
 		}
 		
 		action demenagement {
