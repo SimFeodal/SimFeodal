@@ -234,4 +234,19 @@ global {
 			set FP_dispos <- Foyers_Paysans where (each.seigneur_loyer = nil);
 		}
 	}
+	
+	action compute_paroisses {
+		ask Paroisses {do die;}
+		ask Eglises where (each.eglise_paroissiale) {
+			create Paroisses number: 1 {
+				set location <- myself.location ;
+				set monEglise <- myself ;
+			}
+		}
+		list<geometry> maillage_paroissial <- voronoi(Paroisses collect each.location);
+		ask Paroisses {
+			set shape <-  one_of(maillage_paroissial where (each overlaps location));
+		}
+	}
+	
 }
