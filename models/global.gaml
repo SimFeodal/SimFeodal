@@ -70,6 +70,7 @@ global {
 	float proba_creation_ZP_banaux <- 0.05;
 	float proba_creation_ZP_basseMoyenneJustice <- 0.05;
 	
+	int nb_eglises_paroissiales <- 50 ;
 	float proba_gain_droits_paroissiaux <- 0.05;
 	
 	int nb_seigneurs_a_creer_total <- nombre_seigneurs_objectif - (nombre_grands_seigneurs + nombre_petits_seigneurs);
