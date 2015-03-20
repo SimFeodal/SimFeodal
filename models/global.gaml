@@ -19,7 +19,7 @@ import "Agents/Zones_Prelevement.gaml"
 
 global {
 	int Annee <- 800 update: Annee + 20;
-	int nombre_foyers_paysans <- 1000 ;
+	int nombre_foyers_paysans <- 4000 ;
 	int nombre_agglos_antiques <- 3 ;
 	int nombre_villages <- 20 ;
 	int nombre_foyers_villages <- 10 ;
