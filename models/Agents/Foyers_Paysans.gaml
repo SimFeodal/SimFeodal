@@ -124,23 +124,12 @@ entities {
 		}
 		
 		action demenagement {
-			if (rnd(100) / 100 > Satisfaction){
-				point baseLoc <- self.location;
-				float baseSat <- self.Satisfaction;
-				point localLoc <- nil;
-				float localSat <- nil;
-				
 				set location <- demenagement_local();
 				do update_satisfaction();
-				set localLoc <- self.location;
-				set localSat <- self.Satisfaction;
-				if (Satisfaction > baseSat){
-					set nb_demenagement_local <- nb_demenagement_local + 1;
-				} else {
+			if (flip(1 - Satisfaction)){
 					set location <- demenagement_lointain();
 					do update_satisfaction();
 					nb_demenagement_lointain <- nb_demenagement_lointain + 1;
-				}
 			}
 		}
 				
