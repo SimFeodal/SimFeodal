@@ -240,8 +240,10 @@ experiment base_experiment type: gui multicore: true {
 		
 		display "Carte" {
 			species Paroisses transparency: 0.9;
+			species Paroisses transparency: 0.9 ;
 			species Zones_Prelevement transparency: 0.9;
 			species Eglises aspect: base ;
+			agents "Eglises Paroissiales" value: Eglises where (each.eglise_paroissiale) aspect: base;
 			species Chateaux aspect: base ;
 			species Agregats transparency: 0.3;
 			//species Foyers_Paysans aspect: base ;	
