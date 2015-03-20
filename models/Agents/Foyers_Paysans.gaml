@@ -82,32 +82,20 @@ entities {
 		action update_satisfaction_religieuse {
 			Eglises eglise_paroissiale_proche <- (Eglises where (each.eglise_paroissiale)) closest_to self;
 			float distance_eglise <- self distance_to eglise_paroissiale_proche;
-
+			
+			int seuil1 <- 0 ;
+			int  seuil2 <- 0 ;
 			if (Annee < 950) {
-				if (distance_eglise < 5000){
-					set satisfaction_religieuse <- 1.0;
-				} else if (distance_eglise < 8000) {
-					set satisfaction_religieuse <- -(1/3 * (distance_eglise / 1000)) + (8/3);
-				} else {
-					set satisfaction_religieuse <- 0.0;
-				}
+				set seuil1 <- 5000 ;
+				set seuil2 <- 25000 ;
 			} else if (Annee < 1050) {
-				if (distance_eglise < 3000){
-					set satisfaction_religieuse <- 1.0;
-				} else if (distance_eglise < 5000) {
-					set satisfaction_religieuse <- -(1/2 * (distance_eglise / 1000)) + (2.5);
-				} else {
-					set satisfaction_religieuse <- 0.0;
-				}	
+				set seuil1 <- 3000 ;
+				set seuil2 <- 10000 ;
 			} else {
-				if (distance_eglise < 1500){
-					set satisfaction_religieuse <- 1.0;
-				} else if (distance_eglise < 3000) {
-					set satisfaction_religieuse <- -(2/3 * (distance_eglise / 1000)) + (2);
-				} else {
-					set satisfaction_religieuse <- 0.0;
-				}	
+				set seuil1 <- 1500 ;
+				set seuil2 <- 5000 ;
 			}
+			set satisfaction_religieuse <-  max([0.0,min([ 1.0, - ( distance_eglise / (seuil2 - seuil1))  + ( seuil2 / (seuil2 - seuil1) ) ])]);
 		}
 		
 		action update_satisfaction_protection {
@@ -116,12 +104,10 @@ entities {
 			} else {
 				Chateaux plusProcheChateau <- Chateaux closest_to self;
 				if (plusProcheChateau = nil) {return(0.0);}
-				if (self distance_to plusProcheChateau <= 5000) {
-					int protection_seigneur <- plusProcheChateau.gardien.puissance_armee ;
-					set satisfaction_protection <- max([protection_seigneur / 1000 , 1.0]);
-				} else {
-					set satisfaction_protection <- 0.0;
-				}
+				float distance_chateau <- self distance_to plusProcheChateau ;
+				int seuil1 <- 1500 ;
+				int seuil2 <- 5000 ;
+				set satisfaction_protection <- max([0.0,min([ 1.0, - ( distance_chateau / (seuil2 - seuil1))  + ( seuil2/ (seuil2 - seuil1) ) ])]);
 			}
 		}
 		
