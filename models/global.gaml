@@ -72,6 +72,8 @@ global {
 	
 	int nb_eglises_paroissiales <- 50 ;
 	float proba_gain_droits_paroissiaux <- 0.05;
+	int nb_max_paroissiens <- 60;
+	int nb_min_paroissiens <- 10;
 	
 	int nb_seigneurs_a_creer_total <- nombre_seigneurs_objectif - (nombre_grands_seigneurs + nombre_petits_seigneurs);
 	int nb_moyen_petits_seigneurs_par_tour <- round(nb_seigneurs_a_creer_total / ((fin_simulation - debut_simulation) / 20));
@@ -246,6 +248,20 @@ global {
 		list<geometry> maillage_paroissial <- voronoi(Paroisses collect each.location);
 		ask Paroisses {
 			set shape <-  one_of(maillage_paroissial where (each overlaps location));
+		}
+	}
+	
+	action create_paroisses {
+		loop agregat over: shuffle(Agregats where (length(each.fp_agregat) > nb_min_paroissiens)) {
+			float nb_relatif_paroissiens <- length(agregat.fp_agregat) / length(Paroisses where (each intersects agregat)) ;
+			float proba_creation <- max([0.0,min([ 1.0, - ( nb_relatif_paroissiens / (nb_max_paroissiens - nb_min_paroissiens))  + ( nb_max_paroissiens/ (nb_max_paroissiens - nb_min_paroissiens) ) ])]);
+			if flip(proba_creation) {
+				// on crée
+				create Eglises number: 1 {
+					set location <- any_location_in(200 around agregat.shape) ;
+					set eglise_paroissiale <- true;
+				}
+			}
 		}
 	}
 	

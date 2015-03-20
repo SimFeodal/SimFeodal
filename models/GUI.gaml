@@ -140,6 +140,8 @@ global schedules: list(world) + list(Attracteurs) + list(Agregats) + list(Foyers
 			do update_fideles;
 			do update_satisfaction;
 		}
+		do create_paroisses ;
+		do compute_paroisses ;
 		do promouvoir_paroisses;
 		do compute_paroisses ;
 		write 'MaJ_paroisses : ' + string(machine_time - t);
@@ -218,7 +220,8 @@ experiment base_experiment type: gui multicore: true {
 	parameter "Nombre d'églises:" var: nombre_eglises category: "Eglises";
 	parameter "Dont églises paroissiales:" var: nb_eglises_paroissiales category: "Eglises" ;
 	parameter "Probabilité gain des droits paroissiaux" var: proba_gain_droits_paroissiaux category: "Eglises";
-		
+	parameter "Nombre max de paroissiens" var: nb_max_paroissiens category: "Eglises";
+	parameter "Nombre min de paroissiens" var: nb_min_paroissiens category: "Eglises";	
 
 	output {
 		monitor "Année" value: Annee;
@@ -239,10 +242,8 @@ experiment base_experiment type: gui multicore: true {
 		
 		
 		display "Carte" {
-			species Paroisses transparency: 0.9;
 			species Paroisses transparency: 0.9 ;
 			species Zones_Prelevement transparency: 0.9;
-			species Eglises aspect: base ;
 			agents "Eglises Paroissiales" value: Eglises where (each.eglise_paroissiale) aspect: base;
 			species Chateaux aspect: base ;
 			species Agregats transparency: 0.3;
