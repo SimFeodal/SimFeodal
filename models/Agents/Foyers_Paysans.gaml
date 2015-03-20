@@ -66,7 +66,7 @@ entities {
 			int nb_seigneurs <- loyer + hauteJustice + banaux + basseMoyenneJustice;
 			set nb_preleveurs <- nb_seigneurs;
 			
-			float S_redevances <- max([1 - (nb_seigneurs * 0.2), 0.0]);
+			float S_redevances <- max([1 - (nb_seigneurs * (1/15)), 0.0]);
 			float S_contributions <- 0.0;
 			if (self.monAgregat = nil){
 				set S_contributions <- 0.0;
