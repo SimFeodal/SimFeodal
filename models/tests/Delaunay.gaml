@@ -41,8 +41,8 @@ experiment Delaunay type: gui {
 			list<geometry> myTriangles <- triangulate(A collect each.location);
 			set myTriangle <- one_of(myTriangles);
 			//write string(oneTriangle.shape);
-			list<point> abc <- myTriangle ;
-			write string(abc) ;
+			//list<point> abc <- myTriangle ;
+			//write string(abc) ;
 			write (myTriangle farthest_point_to(point(myTriangle)));
 		write 'show must go on !';
 		}
