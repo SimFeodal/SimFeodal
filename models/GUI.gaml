@@ -140,6 +140,8 @@ global schedules: list(world) + list(Attracteurs) + list(Agregats) + list(Foyers
 			do update_fideles;
 			do update_satisfaction;
 		}
+		do promouvoir_paroisses;
+		do compute_paroisses ;
 		write 'MaJ_paroisses : ' + string(machine_time - t);
 	}
 	
