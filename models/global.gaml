@@ -116,7 +116,7 @@ global {
 			loop agregat over: shuffle(Agregats) {
 				if (agregat.attractivite >= attractivite_cagnotte){
 					if (length(agregat.fp_agregat) > 0) {
-						set FPlocation <- any_location_in(200 around one_of(agregat.fp_agregat).location);
+						set FPlocation <- any_location_in(100 around one_of(agregat.fp_agregat).location);
 					} else {
 						set FPlocation <- any_location_in(worldextent);
 					}
@@ -138,7 +138,7 @@ global {
     action update_agregats {
     	
     	// 1 - On crée une liste des nouvelles agglos
-    	list agregats_detectees <- connected_components_of(list(Foyers_Paysans) as_distance_graph 200) where (length(each) >= 5) ;
+    	list agregats_detectees <- connected_components_of(list(Foyers_Paysans) as_distance_graph 100) where (length(each) >= 5) ;
     	ask Foyers_Paysans {
     		set monAgregat <- nil ;
     	}
