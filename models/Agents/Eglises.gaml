@@ -19,6 +19,31 @@ import "Zones_Prelevement.gaml"
 
 entities {
 	
+	species Paroisses {
+		Eglises monEglise <- nil;
+		list<Foyers_Paysans> mesFideles <- nil ;
+		rgb color <- #white ;
+		float Satisfaction_Paroisse <- 1.0 ;
+		
+		action update_fideles {
+			set mesFideles <- Foyers_Paysans inside self ;
+		}
+		action update_satisfaction {
+			if length(mesFideles) > 0 {
+				float satisfaction_fideles <- mean(mesFideles collect each.satisfaction_religieuse);
+				int nombre_fideles <- length(mesFideles) ;
+				set Satisfaction_Paroisse <- min([1, (20/nombre_fideles)]) * satisfaction_fideles;	
+			} else {
+				set Satisfaction_Paroisse <- 1.0 ;
+			}
+		}
+		
+		
+		aspect base {
+			draw shape color: color;
+		}
+	}
+	
 	species Eglises parent: Attracteurs schedules: shuffle(Eglises) {
 		string type;
 		//list<string> droits_paroissiaux <- []; // ["Baptême" / "Inhumation" / "Eucharistie"]
@@ -35,6 +60,7 @@ entities {
 				set eglise_paroissiale <- flip(proba_gain_droits_paroissiaux);
 			}
 		}
+		
 		
 		aspect base {
 			draw circle(200) color: color ;
