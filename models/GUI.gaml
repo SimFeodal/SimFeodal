@@ -133,6 +133,14 @@ global schedules: list(world) + list(Attracteurs) + list(Agregats) + list(Foyers
 	}
 	
 	
+	reflex MaJ_paroisses {
+		float t <- machine_time;
+		do compute_paroisses ;
+		ask Paroisses {
+			do update_fideles;
+			do update_satisfaction;
+		}
+		write 'MaJ_paroisses : ' + string(machine_time - t);
 	}
 	
 	
@@ -229,6 +237,7 @@ experiment base_experiment type: gui multicore: true {
 		
 		
 		display "Carte" {
+			species Paroisses transparency: 0.9;
 			species Zones_Prelevement transparency: 0.9;
 			species Eglises aspect: base ;
 			species Chateaux aspect: base ;
