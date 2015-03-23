@@ -345,7 +345,7 @@ entities {
 				ask choixAgregat {
 					set monChateau <- myself;
 				}
-				set location <- any_location_in(choixAgregat.shape + 500));
+				set location <- any_location_in(choixAgregat.shape + 500);
 				do creation_ZP_loyer(location, 10000, myself, 1.0);
 				if (myself.droits_hauteJustice){
 					do creation_ZP_hauteJustice(location, 10000, myself, 1.0);
