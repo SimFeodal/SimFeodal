@@ -50,6 +50,7 @@ entities {
 		bool eglise_paroissiale <- false;
 		int attractivite <- 0;
 		rgb color <- #blue ;
+		bool reel <- false;
 		
 		action update_attractivite {
 			//set attractivite <- length(droits_paroissiaux);
@@ -58,6 +59,7 @@ entities {
 		action update_droits_paroissiaux {
 			if (!eglise_paroissiale) {
 				set eglise_paroissiale <- flip(proba_gain_droits_paroissiaux);
+				if (eglise_paroissiale) {set reel <- true;}
 			}
 		}
 		

@@ -21,6 +21,7 @@ entities {
 	
 	species Attracteurs schedules: shuffle(Attracteurs) {
 		int attractivite <- 0;
+		bool reel <- true ;
 	}
 	
 

@@ -260,6 +260,7 @@ global {
 				create Eglises number: 1 {
 					set location <- any_location_in(agregat.shape + 200) ;
 					set eglise_paroissiale <- true;
+					set reel <- true;
 				}
 			}
 		}
@@ -306,6 +307,7 @@ global {
 				if (Satisfaction_Paroisse > ancienne_satisfaction) {
 					ask paroisse_a_creer {
 						set eglise_paroissiale <- true;
+						set reel <- true;
 					}
 				} else {
 					if (eglise_batie){ask paroisse_a_creer {do die;}}

@@ -111,6 +111,7 @@ global {
 		}
 		ask (nb_eglises_paroissiales among Eglises) {
 			set eglise_paroissiale <- true;
+			set reel <- true;
 		}
 	}
 	

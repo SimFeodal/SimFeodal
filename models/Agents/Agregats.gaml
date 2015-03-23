@@ -25,6 +25,7 @@ entities {
 		bool communaute_agraire <- false;
 		bool marche <- false;
 		Chateaux monChateau <- nil;
+		bool reel <- true;
 		
 		action update_chateau {
 			// FIXME : Chateaux trop proches sinon

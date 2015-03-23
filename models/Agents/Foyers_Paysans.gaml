@@ -137,7 +137,7 @@ entities {
 			// Modèle gravitaire local, dans un rayon de 5km
 			// Amenités : Chateaux / Églises / Agregats
 			int rayon_local <- 5000 ;
-			list<Attracteurs> attracteurs_proches <- Attracteurs at_distance rayon_local;
+			list<Attracteurs> attracteurs_proches <- Attracteurs where (each.reel) at_distance rayon_local;
 			
 
 			if (empty(attracteurs_proches)) {
