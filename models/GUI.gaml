@@ -135,7 +135,7 @@ global schedules: list(world) + list(Attracteurs) + list(Agregats) + list(Foyers
 	reflex update_plot {
 		set nb_non_demenagement <- length(Foyers_Paysans) - (nb_demenagement_local + nb_demenagement_lointain) ;
 		ask Seigneurs {
-			set monNbZP <- length(Zones_Prelevement where ((each.preleveurs.keys contains self) or (each.proprietaire = self)));
+			set monNbZP <- Zones_Prelevement count ((each.preleveurs.keys contains self) or (each.proprietaire = self));
 		}
 	}
 	
@@ -206,16 +206,16 @@ experiment base_experiment type: gui multicore: true {
 	output {
 		monitor "Année" value: Annee;
 		monitor "Nombre de Foyers paysans" value: length(Foyers_Paysans);
-		monitor "Nombre FP dans agrégat" value: length(Foyers_Paysans where (each.monAgregat != nil));
+		monitor "Nombre FP dans agrégat" value: Foyers_Paysans count (each.monAgregat != nil);
 		monitor "Nombre d'agrégats" value: length(Agregats);
 
-		monitor "Nombre FP CP" value: length(Foyers_Paysans where (each.comm_agraire));
+		monitor "Nombre FP CP" value: Foyers_Paysans count (each.comm_agraire);
 		monitor "Nombre Seigneurs" value: length(Seigneurs);
-		monitor "Nombre Grands Seigneurs" value: length(Seigneurs where (each.type = "Grand Seigneur"));
-		monitor "Nombre Chatelains" value: length(Seigneurs where (each.type = "Chatelain"));
-		monitor "Nombre Petits Seigneurs" value: length(Seigneurs where (each.type = "Petit Seigneur"));
+		monitor "Nombre Grands Seigneurs" value: Seigneurs count (each.type = "Grand Seigneur");
+		monitor "Nombre Chatelains" value: Seigneurs count (each.type = "Chatelain");
+		monitor "Nombre Petits Seigneurs" value: Seigneurs count (each.type = "Petit Seigneur");
 		monitor "Nombre Eglises" value: length(Eglises);
-		monitor "Nombre Eglises Paroissiales" value: length(Eglises where each.eglise_paroissiale);
+		monitor "Nombre Eglises Paroissiales" value: Eglises count (each.eglise_paroissiale);
 		monitor "Nombre Chateaux" value: length(Chateaux);
 		monitor "Attractivité globale" value: length(Foyers_Paysans) + sum(Chateaux collect each.attractivite);
 		monitor "Attractivité agrégats" value: sum(Agregats where (!each.fake_agregat) collect each.attractivite);
@@ -238,8 +238,8 @@ experiment base_experiment type: gui multicore: true {
 	            data "Non" value: nb_non_demenagement color: #black;
 	        }
 			chart "FP" type: series position: {0.0,0.5} size: {0.5,0.5}{
-	            data "Hors CA" value: length(Foyers_Paysans where !each.comm_agraire) color: #blue; 
-	            data "Dans CA" value: length(Foyers_Paysans where each.comm_agraire)  color: #red;
+	            data "Hors CA" value: Foyers_Paysans count (!each.comm_agraire) color: #blue; 
+	            data "Dans CA" value: Foyers_Paysans count (each.comm_agraire)  color: #red;
 	        }
     		chart "Satisfaction_FP" type:series position: {0.5,0} size: {0.5,1}{
     			data "Satisfaction Materielle" value: mean(Foyers_Paysans collect each.satisfaction_materielle) color: #blue;
@@ -274,18 +274,18 @@ experiment base_experiment type: gui multicore: true {
     			data "Max" value: max(Seigneurs collect each.puissance_armee) color: #red;
     		}
     		chart "Dépendance (loyer) des FP" type:series position: {0.66,0} size: {0.33,1}{
-    			data "FP payant un loyer à un GS" value: length(Foyers_Paysans where (each.seigneur_loyer != nil and each.seigneur_loyer.type = "Grand Seigneur")) color: #green;
-    			data "FP payant un loyer à un PS initial" value: length(Foyers_Paysans where (each.seigneur_loyer != nil and each.seigneur_loyer.type = "Petit Seigneur" and each.seigneur_loyer.initialement_present)) color: #blue;
-    			data "FP payant un loyer à un PS nouveau" value: length(Foyers_Paysans where (each.seigneur_loyer != nil and each.seigneur_loyer.type = "Petit Seigneur" and !each.seigneur_loyer.initialement_present)) color: #red;
+    			data "FP payant un loyer à un GS" value: Foyers_Paysans count (each.seigneur_loyer != nil and each.seigneur_loyer.type = "Grand Seigneur") color: #green;
+    			data "FP payant un loyer à un PS initial" value: Foyers_Paysans count (each.seigneur_loyer != nil and each.seigneur_loyer.type = "Petit Seigneur" and each.seigneur_loyer.initialement_present) color: #blue;
+    			data "FP payant un loyer à un PS nouveau" value: Foyers_Paysans count (each.seigneur_loyer != nil and each.seigneur_loyer.type = "Petit Seigneur" and !each.seigneur_loyer.initialement_present) color: #red;
     		}
     	}
     	    	
     	display "Zones Prelevement"{
     		chart "Nombre de ZP" type:series position: {0.0, 0.0} size: {1.0, 0.33}{
-    			data "Loyers" value: length(Zones_Prelevement where (each.type_droit = "Loyer")) color: #blue;
-    			data "Haute Justice" value: length(Zones_Prelevement where (each.type_droit = "Haute_Justice")) color: #red;
-    			data "Banaux" value: length(Zones_Prelevement where (each.type_droit = "Banaux")) color: #green;
-    			data "Basse et Moyenne Justice" value: length(Zones_Prelevement where (each.type_droit = "basseMoyenne_Justice")) color: #yellow;
+    			data "Loyers" value: Zones_Prelevement count (each.type_droit = "Loyer") color: #blue;
+    			data "Haute Justice" value: Zones_Prelevement count (each.type_droit = "Haute_Justice") color: #red;
+    			data "Banaux" value: Zones_Prelevement count (each.type_droit = "Banaux") color: #green;
+    			data "Basse et Moyenne Justice" value: Zones_Prelevement count (each.type_droit = "basseMoyenne_Justice") color: #yellow;
     		}
     		chart "Nb de preleveurs" type: series position: {0, 0.33} size: {1.0, 0.33}{
     			data "Max" value: max ( Zones_Prelevement collect (length(each.preleveurs.keys))) color: #red;
@@ -304,7 +304,7 @@ experiment base_experiment type: gui multicore: true {
     	display "Agrégats"{
     		chart "Nombre d'agrégats" type: series position: {0.0,0.0} size: {1.0, 0.5}{
     			data "Nombre d'agrégats" value: length(Agregats) color: #red;
-    			data "Nombre d'agrégats avec CA" value: length(Agregats where each.communaute_agraire) color: #blue;
+    			data "Nombre d'agrégats avec CA" value: Agregats count (each.communaute_agraire) color: #blue;
     		}
     		chart "Composition des agrégats" type: series position: {0.0, 0.5} size: {1.0, 0.5}{
     			data "Max" value: max(Agregats collect length(each.fp_agregat)) color: #red;
