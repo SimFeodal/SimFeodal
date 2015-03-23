@@ -16,6 +16,49 @@ import "Seigneurs.gaml"
 import "Attracteurs.gaml"
 import "Zones_Prelevement.gaml"
 
+global {
+	action renouvellement_FP {
+		int attractivite_totale <- length(Foyers_Paysans) + sum(Chateaux collect each.attractivite);
+
+		int nb_FP_impactes <- int(taux_renouvellement * length(Foyers_Paysans));
+		ask nb_FP_impactes among Foyers_Paysans {
+			if (monAgregat != nil){
+				ask monAgregat {
+					fp_agregat >- myself;
+				}
+			}
+			do die;
+		}
+		create Agregats number: 1 {
+			set fake_agregat <- true;
+			set attractivite <- attractivite_totale - sum(Agregats collect each.attractivite);
+		}
+		create Foyers_Paysans number: nb_FP_impactes {
+			int attractivite_cagnotte <- attractivite_totale;
+			point FPlocation <- nil;
+			loop agregat over: shuffle(Agregats) {
+				if (agregat.attractivite >= attractivite_cagnotte){
+					if (length(agregat.fp_agregat) > 0) {
+						set FPlocation <- any_location_in(100 around one_of(agregat.fp_agregat).location);
+					} else {
+						set FPlocation <- any_location_in(worldextent);
+					}
+					break;
+				} else {
+					set attractivite_cagnotte <- attractivite_cagnotte - agregat.attractivite;
+				}
+			}
+			set location <- FPlocation;
+			set mobile <- flip (taux_mobilite);
+			
+		}
+		
+		ask Agregats where each.fake_agregat {
+			do die;
+		}
+	}
+}
+
 
 entities {
 	species Foyers_Paysans schedules: shuffle(Foyers_Paysans){
@@ -34,21 +77,6 @@ entities {
 		list<Seigneurs> seigneurs_basseMoyenneJustice <- [];
 		int nb_preleveurs <- 0;
 		
-		/*
-		// Désactivé pour l'instant
-		reflex devenir_seigneur {
-			if (Annee >= 1050 and self.monAgregat != nil){
-				if (rnd(1000) / 1000 <= proba_devenir_seigneur){
-					create Seigneurs number: 1{
-						set taux_prelevement <- rnd(100) / 100;
-						set type <- "Petit Seigneur";
-						set location <- myself.location;
-						set rayon_captation <- min_rayon_captation_petits_seigneurs + rnd(max_rayon_captation_petits_seigneurs - min_rayon_captation_petits_seigneurs);
-					}
-				}
-			}
-		}
-		*/
 		
 		action reset_preleveurs {
 			set seigneur_loyer <- nil;
@@ -116,9 +144,6 @@ entities {
 			do update_satisfaction_materielle;
 			do update_satisfaction_religieuse;
 			do update_satisfaction_protection;
-			//set satisfaction_materielle <- update_satisfaction_materielle();
-			//set satisfaction_religieuse <- update_satisfaction_religieuse();
-			//set satisfaction_protection <- update_satisfaction_protection();
 			
 			set Satisfaction <- max([0, min([satisfaction_religieuse, satisfaction_protection]) - (1 - satisfaction_materielle)]);
 		}
@@ -134,8 +159,6 @@ entities {
 		}
 				
 		point demenagement_local {
-			// Modèle gravitaire local, dans un rayon de 5km
-			// Amenités : Chateaux / Églises / Agregats
 			int rayon_local <- 5000 ;
 			list<Attracteurs> attracteurs_proches <- Attracteurs where (each.reel) at_distance rayon_local;
 			

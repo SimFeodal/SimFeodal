@@ -18,6 +18,33 @@ import "Attracteurs.gaml"
 import "Zones_Prelevement.gaml"
 
 
+global {
+	action creation_nouveaux_seigneurs {
+		int variabilite_nb_seigneurs <- round(nb_moyen_petits_seigneurs_par_tour / 3);
+		int nb_seigneurs_a_creer <- nb_moyen_petits_seigneurs_par_tour + variabilite_nb_seigneurs - rnd(variabilite_nb_seigneurs * 2);
+		// Varie entre -1/3 et +1/3 autour de la moyenne
+		create Seigneurs number: nb_seigneurs_a_creer {
+			set type <- "Petit Seigneur";
+			set initialement_present <- false;
+			set taux_prelevement <- 1.0;
+			
+			set location <- any_location_in(one_of(Agregats collect each.shape));
+			
+			set droits_loyer <- flip(proba_collecter_loyer);
+			set droits_hauteJustice <- false;
+			set droits_banaux <- false;
+			set droits_moyenneBasseJustice <- false;
+			
+			if (droits_loyer){
+				int rayon_zone <- rayon_min_PS_nouveau + rnd(rayon_max_PS_nouveau - rayon_min_PS_nouveau);
+				float txPrelev <- min_fourchette_loyers_PS_nouveau + rnd(max_fourchette_loyers_PS_nouveau - min_fourchette_loyers_PS_nouveau);
+				do creer_zone_prelevement(self.location, rayon_zone, self, "Loyer", txPrelev);
+			}			
+		}
+	}
+}
+
+
 entities {
 	species Seigneurs schedules: shuffle(Seigneurs) {
 		
