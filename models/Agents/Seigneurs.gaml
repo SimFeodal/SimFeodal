@@ -371,18 +371,23 @@ entities {
 				ask choixAgregat {
 					set monChateau <- myself;
 				}
+				int minRayon <- 2000 ;
+				int maxRayon <- 10000 ;
+				float maxPuissance <- max(Seigneurs collect each.puissance) ;
+				float minPuissance <- min(Seigneurs collect each.puissance) ;
+				float rayon_chateau <- max([minRayon,min([ maxRayon, - ( myself.puissance / (maxPuissance - minPuissance))  + ( maxPuissance / (maxPuissance - minPuissance) ) ])]);
 				set location <- any_location_in(choixAgregat.shape + 500);
-				do creation_ZP_loyer(location, 10000, myself, 1.0);
+				do creation_ZP_loyer(location, rayon_chateau, myself, 1.0);
 				if (myself.droits_hauteJustice){
-					do creation_ZP_hauteJustice(location, 10000, myself, 1.0);
-					do creation_ZP_banaux(location, 10000, myself, 1.0);
-					do creation_ZP_basseMoyenne_Justice(location, 10000, myself, 1.0);
+					do creation_ZP_hauteJustice(location, rayon_chateau, myself, 1.0);
+					do creation_ZP_banaux(location, rayon_chateau, myself, 1.0);
+					do creation_ZP_basseMoyenne_Justice(location, rayon_chateau, myself, 1.0);
 				} else {
 					if (myself.droits_banaux) {
-						do creation_ZP_banaux(location, 10000, myself, 1.0);
+						do creation_ZP_banaux(location, rayon_chateau, myself, 1.0);
 					}
 					if (myself.droits_moyenneBasseJustice){
-						do creation_ZP_basseMoyenne_Justice(location, 10000, myself, 1.0);
+						do creation_ZP_basseMoyenne_Justice(location, rayon_chateau, myself, 1.0);
 					}
 				}
 			}
@@ -407,7 +412,14 @@ entities {
 						set monChateau <- myself;
 					}
 					set location <- any_location_in(agregatPotentiel.shape + 500);
-					do creation_ZP_loyer(location, 10000, myself, 1.0);
+					int minRayon <- 2000 ;
+					int maxRayon <- 10000 ;
+					float maxPuissance <- max(Seigneurs collect each.puissance) ;
+					float minPuissance <- min(Seigneurs collect each.puissance) ;
+					float rayon_chateau <- max([minRayon,min([ maxRayon, - ( myself.puissance / (maxPuissance - minPuissance))  + ( maxPuissance / (maxPuissance - minPuissance) ) ])]);
+						
+					
+					do creation_ZP_loyer(location, rayon_chateau, myself, 1.0);
 					
 					if (Annee > 900 and flip(proba_gain_droits_hauteJustice_chateau)){
 						ask myself {
@@ -415,18 +427,18 @@ entities {
 							set droits_banaux <- true;
 							set droits_moyenneBasseJustice <- true;
 						}
-						do creation_ZP_hauteJustice(location, 10000, myself, 1.0);
-						do creation_ZP_banaux(location, 10000, myself, 1.0);
-						do creation_ZP_basseMoyenne_Justice(location, 10000, myself, 1.0);
+						do creation_ZP_hauteJustice(location, rayon_chateau, myself, 1.0);
+						do creation_ZP_banaux(location, rayon_chateau, myself, 1.0);
+						do creation_ZP_basseMoyenne_Justice(location, rayon_chateau, myself, 1.0);
 						
 					}
 					if (flip(proba_gain_droits_banaux_chateau)){
 						ask myself {set droits_banaux <- true;}
-						do creation_ZP_banaux(location, 10000, myself, 1.0);
+						do creation_ZP_banaux(location, rayon_chateau, myself, 1.0);
 					}
 					if (flip(proba_gain_droits_basseMoyenneJustice_chateau)){
 						ask myself {set droits_moyenneBasseJustice <- true;}
-						do creation_ZP_basseMoyenne_Justice(location, 10000, myself, 1.0);
+						do creation_ZP_basseMoyenne_Justice(location, rayon_chateau, myself, 1.0);
 					}
 				}
 			}
