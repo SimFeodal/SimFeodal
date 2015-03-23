@@ -103,7 +103,7 @@ entities {
 		}
 		
 		action don_droits_GS {
-			Seigneurs choixSeigneur <- one_of(Seigneurs where (each.type != 'Grand Seigneur' and each.initialement_present and ((each.monSuzerain = self or each.monSuzerain = nil))));
+			Seigneurs choixSeigneur <- shuffle(Seigneurs) first_with (each.type != "Grand Seigneur" and each.initialement_present and ((each.monSuzerain = self or each.monSuzerain = nil))) ;
 			string monType_droit <- flip(0.33) ? "Haute_Justice" : (flip(0.5) ? "Banaux" : "basseMoyenne_Justice");
 			Agregats choixAgregat <- one_of(Agregats);
 			int rayon_taxe <- (rayon_min_PS_init + rnd(rayon_max_PS_init - rayon_min_PS_init));
@@ -287,7 +287,7 @@ entities {
 		action don_chateaux_GS {
 			loop chateau over: Chateaux where (each.proprietaire = self and each.gardien = self){
 				if (flip(proba_don_chateau_GS)){
-					Seigneurs choixSeigneur <- one_of(Seigneurs where (each.type != 'Grand Seigneur' and each.initialement_present and ((each.monSuzerain = self or each.monSuzerain = nil) or (each.monSuzerain.type != "Grand Seigneur"))));
+					Seigneurs choixSeigneur <- shuffle(Seigneurs) first_with (each.type != 'Grand Seigneur' and each.initialement_present and ((each.monSuzerain = self or each.monSuzerain = nil) or (each.monSuzerain.type != "Grand Seigneur")));
 					set chateau.gardien <- choixSeigneur;
 					set choixSeigneur.type <- "Chatelain";
 					set choixSeigneur.monSuzerain <- self;
@@ -365,7 +365,7 @@ entities {
 				}
 				set proprietaire <- myself;
 				set gardien <- myself;
-				Agregats choixAgregat <- one_of(agregatsPotentiel where (each.monChateau = nil));
+				Agregats choixAgregat <- shuffle(agregatsPotentiel) first_with (each.monChateau = nil);
 				// FIXME : Chateaux trop proches sinon
 				if (choixAgregat distance_to (Chateaux closest_to choixAgregat) < 3000) {do die;}
 				ask choixAgregat {

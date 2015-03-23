@@ -26,7 +26,7 @@ global {
 		}
 		list<geometry> maillage_paroissial <- voronoi(Paroisses collect each.location);
 		ask Paroisses {
-			set shape <-  one_of(maillage_paroissial where (each overlaps location));
+			set shape <- shuffle(maillage_paroissial) first_with (each overlaps location);
 		}
 	}
 	
@@ -76,11 +76,11 @@ global {
 					list<geometry> triangles_Delaunay <- triangulate((Eglises where !(each.eglise_paroissiale)) collect each.location);
 					// On ne peut pas faire de overlap parce qu'une paroisse peut être en dehors de la triangulation Delaunay
 					geometry monTriangle <- triangles_Delaunay closest_to location;
-					set paroisse_a_creer<- one_of(Eglises where (location = (monTriangle farthest_point_to location )));
+					set paroisse_a_creer <- shuffle(Eglises) first_with (location = (monTriangle farthest_point_to location));
 				}
 				
 				list<geometry> potentiel_maillage_paroissial <- voronoi((Paroisses collect each.location) + [paroisse_a_creer.location]);
-				set shape <- one_of(potentiel_maillage_paroissial where (each overlaps location));
+				set shape <- shuffle(potentiel_maillage_paroissial) first_with (each overlaps location);
 				do update_fideles ;
 				do update_satisfaction ;
 				if (Satisfaction_Paroisse > ancienne_satisfaction) {
