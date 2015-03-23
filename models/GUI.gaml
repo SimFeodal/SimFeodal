@@ -27,16 +27,12 @@ global schedules: list(world) + list(Attracteurs) + list(Agregats) + list(Foyers
 	}
 	
 	reflex MaJ_globale {
-		float t <- machine_time;
 		do reset_globals;
-		write 'MaJ globale : ' + string(machine_time - t);
 	}
 	
 	
 	reflex renouvellement_monde when: (time > 0){
-		float t <- machine_time;
 		do renouvellement_FP;
-		write 'renouvellement_monde : ' + string(machine_time - t);
 	}
 		
 	reflex MaJ_Agregats{
@@ -60,25 +56,19 @@ global schedules: list(world) + list(Attracteurs) + list(Agregats) + list(Foyers
 	}
 	
 	reflex MaJ_Chateaux {
-		float t <- machine_time;
 		ask Chateaux {do update_attractivite;}
-		write 'MaJ_Chateaux : ' + string(machine_time - t);
 	}
 	
 	
 	reflex MaJ_Eglises {
-		float t <- machine_time;
 		ask Eglises {do update_attractivite;}
 		//ask Eglises where (!each.eglise_paroissiale) {do update_droits_paroissiaux;}
-		write 'MaJ_Eglises : ' + string(machine_time - t);
 	}
 	
 	
 	reflex MaJ_Droits_Seigneurs {
-				float t <- machine_time;
 		ask Seigneurs where (each.type="Grand Seigneur"){do MaJ_droits_Grands_Seigneurs;}
 		ask Seigneurs where (each.type != "Grand Seigneur") { do MaJ_droits_Petits_Seigneurs; do gains_droits_PS; }
-				write 'MaJ_Droits_Seigneurs : ' + string(machine_time - t);
 	}
 	
 	
@@ -103,7 +93,6 @@ global schedules: list(world) + list(Attracteurs) + list(Agregats) + list(Foyers
 	
 		
 	reflex Dons_des_Seigneurs {
-		float t <- machine_time;
 		// Don droits
 		if (Annee > 880) {
 			ask Seigneurs where (each.type = "Grand Seigneur"){ do don_droits_GS; }
@@ -114,15 +103,12 @@ global schedules: list(world) + list(Attracteurs) + list(Agregats) + list(Foyers
 			ask Seigneurs where (each.type = "Grand Seigneur"){ do update_droits_chateaux_GS; do don_chateaux_GS; }
 		}
 		ask Seigneurs { do MaJ_puissance; do MaJ_puissance_armee; }
-		write 'Dons_des_Seigneurs : ' + string(machine_time - t);
 	}
 	
 	
 	reflex Constructions_chateaux {
-		float t <- machine_time;
 		ask Seigneurs where (each.type = "Grand Seigneur" and each.puissance > 2000) { do construction_chateau_GS;}
 		ask Seigneurs where (each.type != "Grand Seigneur" and each.puissance > 2000){ do construction_chateau_PS;}
-		write 'Constructions_chateaux : ' + string(machine_time - t);
 	}
 	
 	
@@ -134,7 +120,6 @@ global schedules: list(world) + list(Attracteurs) + list(Agregats) + list(Foyers
 	
 	
 	reflex MaJ_paroisses {
-		float t <- machine_time;
 		do compute_paroisses ;
 		ask Paroisses {
 			do update_fideles;
@@ -144,24 +129,19 @@ global schedules: list(world) + list(Attracteurs) + list(Agregats) + list(Foyers
 		do compute_paroisses ;
 		do promouvoir_paroisses;
 		do compute_paroisses ;
-		write 'MaJ_paroisses : ' + string(machine_time - t);
 	}
 	
 	
 	reflex update_plot {
-		float t <- machine_time;
 		set nb_non_demenagement <- length(Foyers_Paysans) - (nb_demenagement_local + nb_demenagement_lointain) ;
 		ask Seigneurs {
 			set monNbZP <- length(Zones_Prelevement where ((each.preleveurs.keys contains self) or (each.proprietaire = self)));
 		}
-		write 'update_plot : ' + string(machine_time - t);
 	}
 	
 	
 	reflex fin_simulation {
-		float t <- machine_time;
 		if (Annee >= fin_simulation) {ask world {do pause;}}
-		write 'fin_simulation : ' + string(machine_time - t);
 	}
 }
 	
