@@ -258,7 +258,7 @@ global {
 			if flip(proba_creation) {
 				// on crée
 				create Eglises number: 1 {
-					set location <- any_location_in(200 around agregat.shape) ;
+					set location <- any_location_in(agregat.shape + 200) ;
 					set eglise_paroissiale <- true;
 				}
 			}
@@ -278,11 +278,11 @@ global {
 				// Si < 0, on regarde plus loin
 				if (length(eglises_dans_polygone) = 0) {
 					// on regarde plus loin
-					list<Eglises> eglises_proximite <- Eglises where !(each.eglise_paroissiale) inside (2000 around self.shape) ;
+					list<Eglises> eglises_proximite <- Eglises where !(each.eglise_paroissiale) inside (self.shape + 2000) ;
 					if (length(eglises_proximite) = 0){
 						// Créer nouvelle église autour du point le plus éloigné du polygone
 						create Eglises number: 1 {
-							set location <- myself.shape farthest_point_to(point(myself.shape));
+							set location <- myself.shape farthest_point_to myself.location;
 							set paroisse_a_creer <- self ;
 						}
 						set eglise_batie <- true ;

@@ -345,7 +345,7 @@ entities {
 				ask choixAgregat {
 					set monChateau <- myself;
 				}
-				set location <- any_location_in(500 around choixAgregat);
+				set location <- any_location_in(choixAgregat.shape + 500));
 				do creation_ZP_loyer(location, 10000, myself, 1.0);
 				if (myself.droits_hauteJustice){
 					do creation_ZP_hauteJustice(location, 10000, myself, 1.0);
@@ -380,7 +380,7 @@ entities {
 					ask agregatPotentiel {
 						set monChateau <- myself;
 					}
-					set location <- any_location_in(500 around agregatPotentiel);
+					set location <- any_location_in(agregatPotentiel.shape + 500);
 					do creation_ZP_loyer(location, 10000, myself, 1.0);
 					
 					if (Annee > 900 and flip(proba_gain_droits_hauteJustice_chateau)){
