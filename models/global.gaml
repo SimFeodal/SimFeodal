@@ -77,13 +77,8 @@ global {
 	int nb_seigneurs_a_creer_total <- nombre_seigneurs_objectif - (nombre_grands_seigneurs + nombre_petits_seigneurs);
 	int nb_moyen_petits_seigneurs_par_tour <- round(nb_seigneurs_a_creer_total / ((fin_simulation - debut_simulation) / 20));
 	
-	//const shape_file_bounds type: file <- file("../includes/Emprise_territoire.shp");
 	const world_bounds type: geometry <- square(100 #km) translated_by {50 #km , 50 #km};
 	
-	
-	//const shape type: geometry <- envelope(shape_file_bounds) ;
-	//const worldextent type: geometry<- envelope(shape_file_bounds) ;
-	//const reduced_worldextent type: geometry<- worldextent scaled_by 0.99;
 	const shape type: geometry <- envelope(world_bounds) ;
 	const worldextent type: geometry <- envelope(world_bounds) ;
 	const reduced_worldextent type: geometry<- worldextent scaled_by 0.99;
