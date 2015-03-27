@@ -16,10 +16,13 @@ import "Attracteurs.gaml"
 import "Zones_Prelevement.gaml"
 
 global {
+	
+	
 	action update_agregats {
+    	//list agregats_detectees1 <- connected_components_of(list(Foyers_Paysans) as_distance_graph 100) where (length(each) >= 5) ; trop lent !
+    	list<list<Foyers_Paysans>> agregats_detectees <- list<list<Foyers_Paysans>>(simple_clustering_by_distance(Foyers_Paysans, 100) );
+    	agregats_detectees <- agregats_detectees where (length(each) >= 5);
     	
-    	// 1 - On crée une liste des nouvelles agglos
-    	list agregats_detectees <- connected_components_of(list(Foyers_Paysans) as_distance_graph 100) where (length(each) >= 5) ;
     	ask Foyers_Paysans {
     		set monAgregat <- nil ;
     	}
@@ -80,7 +83,18 @@ entities {
 		
 		action update_chateau {
 			// FIXME : Chateaux trop proches sinon
-			if (monChateau != nil) {
+			
+			if (monChateau = nil or (self distance_to monChateau > 3000)) {
+				list<Chateaux> Chateaux_proches <- Chateaux at_distance 3000;
+				if (empty(Chateaux_proches)) {
+					monChateau <- nil;
+				} else {
+					monChateau <- Chateaux_proches with_min_of (each distance_to self);
+				}
+			}
+			
+			
+			/*if (monChateau != nil) {
 				if (self distance_to monChateau > 3000) {
 					if (self distance_to (Chateaux closest_to self) > 3000){
 						set monChateau <- nil;
@@ -92,7 +106,7 @@ entities {
 				if (self distance_to (Chateaux closest_to self) < 3000){
 					set monChateau <- Chateaux closest_to self;
 				}
-			}
+			}*/
 		}
 		
 		action update_shape {

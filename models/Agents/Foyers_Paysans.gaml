@@ -16,6 +16,8 @@ import "Attracteurs.gaml"
 import "Zones_Prelevement.gaml"
 
 global {
+	
+
 	action renouvellement_FP {
 		int attractivite_totale <- length(Foyers_Paysans) + sum(Chateaux collect each.attractivite);
 
@@ -56,6 +58,9 @@ global {
 			do die;
 		}
 	}
+	
+	
+	
 }
 
 
@@ -107,8 +112,10 @@ entities {
 		}
 		
 		action update_satisfaction_religieuse {
-			Eglises eglise_paroissiale_proche <- (Eglises where (each.eglise_paroissiale)) closest_to self;
-			float distance_eglise <- self distance_to eglise_paroissiale_proche;
+			//float distance_eglise <- self distance_to eglise_paroissiale_proche;
+			list<Eglises> eglises_paroissiales <- (Eglises where (each.eglise_paroissiale)) ;
+			
+			float distance_eglise <-min(eglises_paroissiales collect (each distance_to self));// self distance_to eglise_paroissiale_proche;
 			
 			int seuil1 <- 0 ;
 			int  seuil2 <- 0 ;
@@ -129,9 +136,10 @@ entities {
 			if (Annee < debut_besoin_protection){
 				set satisfaction_protection <- 1.0;
 			} else {
-				Chateaux plusProcheChateau <- Chateaux closest_to self;
-				if (plusProcheChateau = nil) {return(0.0);}
-				float distance_chateau <- self distance_to plusProcheChateau ;
+				//Chateaux plusProcheChateau <- Chateaux closest_to self;
+				float distance_chateau <- min(Chateaux collect (each distance_to self)) ;
+				//if (plusProcheChateau = nil) {return(0.0);}
+				
 				int seuil1 <- 1500 ;
 				int seuil2 <- 5000 ;
 				set satisfaction_protection <- max([0.0,min([ 1.0, - ( distance_chateau / (seuil2 - seuil1))  + ( seuil2/ (seuil2 - seuil1) ) ])]);

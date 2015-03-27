@@ -27,7 +27,7 @@ global {
 			set initialement_present <- false;
 			set taux_prelevement <- 1.0;
 			
-			set location <- any_location_in(one_of(Agregats collect each.shape));
+			location <- any_location_in(one_of(Agregats collect each.shape));
 			
 			set droits_loyer <- flip(proba_collecter_loyer);
 			set droits_hauteJustice <- false;

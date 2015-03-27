@@ -28,11 +28,12 @@ entities {
 		map<Seigneurs,float> preleveurs; // map<Seigneur, taux_prelev>
 		// Avec map.keys = Seigneurs et map.values = taux_prelev
 		// Avec sum(map.values = taux_captation)
-		rgb color;
+		rgb color; 
 		
 		action update_taxes_FP {
-			int nb_FP <- length(Foyers_Paysans at_distance rayon_captation);
-			list<Foyers_Paysans> FP_impactes <- floor(nb_FP * taux_captation) among (Foyers_Paysans at_distance rayon_captation);
+			list<Foyers_Paysans> FP_proche <- Foyers_Paysans at_distance rayon_captation;
+			int nb_FP <- length(FP_proche);
+			list<Foyers_Paysans> FP_impactes <- floor(nb_FP * taux_captation) among (FP_proche);
 			float mon_taux_FP <- (!empty(preleveurs)) ? (1.0 - sum(preleveurs.values)): 1.0;
 			switch type_droit {
 				match "Haute_Justice"{
@@ -41,18 +42,19 @@ entities {
 							set seigneur_hauteJustice <- myself.proprietaire;
 						}
 						ask self.proprietaire {
-							set FP_hauteJustice <- remove_duplicates(FP_hauteJustice + FP_impactes);
+							set FP_hauteJustice <- union(FP_hauteJustice,FP_impactes);//remove_duplicates(FP_hauteJustice + FP_impactes);
 						}
 					} else {
 						ask ((mon_taux_FP * length(FP_impactes)) among FP_impactes) {
 							set seigneur_hauteJustice <- myself.proprietaire;
-							set myself.proprietaire.FP_hauteJustice <- remove_duplicates(myself.proprietaire.FP_hauteJustice + FP_impactes);
+							set myself.proprietaire.FP_hauteJustice <- union(myself.proprietaire.FP_hauteJustice, FP_impactes);//remove_duplicates(myself.proprietaire.FP_hauteJustice + FP_impactes);
 						}
 						loop currentPreleveur over: (preleveurs.keys){
 							ask (((preleveurs[currentPreleveur]) * length(FP_impactes)) among FP_impactes) {
 								set seigneur_hauteJustice <- currentPreleveur;
-								set currentPreleveur.FP_hauteJustice <- remove_duplicates(currentPreleveur.FP_hauteJustice + self);
-								set myself.proprietaire.FP_hauteJustice_garde <- remove_duplicates( myself.proprietaire.FP_hauteJustice_garde + self);
+								if not (self in currentPreleveur.FP_hauteJustice) {set currentPreleveur.FP_hauteJustice <- (currentPreleveur.FP_hauteJustice + self);}//remove_duplicates(currentPreleveur.FP_hauteJustice + self);
+								
+								if not (self in myself.proprietaire.FP_hauteJustice_garde) {set myself.proprietaire.FP_hauteJustice_garde <- myself.proprietaire.FP_hauteJustice_garde + self;}//remove_duplicates( myself.proprietaire.FP_hauteJustice_garde + self);
 							}
 						}
 					}
