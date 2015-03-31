@@ -92,21 +92,6 @@ entities {
 					monChateau <- Chateaux_proches with_min_of (each distance_to self);
 				}
 			}
-			
-			
-			/*if (monChateau != nil) {
-				if (self distance_to monChateau > 3000) {
-					if (self distance_to (Chateaux closest_to self) > 3000){
-						set monChateau <- nil;
-					} else {
-						set monChateau <- Chateaux closest_to self;
-					}
-				}
-			} else {
-				if (self distance_to (Chateaux closest_to self) < 3000){
-					set monChateau <- Chateaux closest_to self;
-				}
-			}*/
 		}
 		
 		action update_shape {
