@@ -8,7 +8,6 @@ model t8
 import "init.gaml"
 import "Agents/Agregats.gaml"
 import "Agents/Foyers_Paysans.gaml"
-
 import "Agents/Chateaux.gaml"
 import "Agents/Eglises.gaml"
 import "Agents/Seigneurs.gaml"
