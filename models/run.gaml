@@ -74,19 +74,20 @@ global schedules: list(world) + list(Attracteurs) + list(Agregats) + list(Foyers
 	reflex MaJ_ZP_et_preleveurs {
 		float t <- machine_time;
 		ask Zones_Prelevement {do update_shape;}
-		write 'MaJ_ZP_et_preleveurs 1/5: ' + string(machine_time - t);
-		float t1 <- machine_time;
 		ask Foyers_Paysans {do reset_preleveurs;}
-		write 'MaJ_ZP_et_preleveurs 2/5: ' + string(machine_time - t1);
-		float t2 <- machine_time;
 		ask Seigneurs {do reset_variables;}
-		write 'MaJ_ZP_et_preleveurs 3/5: ' + string(machine_time - t2);
-		float t3 <- machine_time;
 		do attribution_loyers_FP;
-		write 'MaJ_ZP_et_preleveurs 4/5: ' + string(machine_time - t3);
-		float t4 <- machine_time;
-		ask Zones_Prelevement where (each.type_droit != "Loyer"){ do update_taxes_FP;}
-		write 'MaJ_ZP_et_preleveurs 5/5: ' + string(machine_time - t4);
+
+		float tt1 <- machine_time;
+		ask Zones_Prelevement where (each.type_droit = "Haute_Justice"){do update_taxes_FP_HteJustice;}
+		write 'taxes ZP Hte Justice : ' + string(machine_time - tt1);
+		float tt2 <- machine_time;
+		ask Zones_Prelevement where (each.type_droit = "Banaux"){do update_taxes_FP_Banaux;}
+		write 'taxes ZP banaux : ' + string(machine_time - tt2);
+		float tt3 <- machine_time;
+		ask Zones_Prelevement where (each.type_droit = "basseMoyenne_Justice"){do update_taxes_FP_BM_Justice;}
+		write 'taxes ZP BM Justice : ' + string(machine_time - tt3);
+		
 		write 'MaJ_ZP_et_preleveurs : ' + string(machine_time - t);
 	}
 	

@@ -30,78 +30,99 @@ entities {
 		// Avec sum(map.values = taux_captation)
 		rgb color; 
 		
-		action update_taxes_FP {
+		action update_taxes_FP_HteJustice {
 			list<Foyers_Paysans> FP_proche <- Foyers_Paysans at_distance rayon_captation;
 			int nb_FP <- length(FP_proche);
 			list<Foyers_Paysans> FP_impactes <- floor(nb_FP * taux_captation) among (FP_proche);
 			float mon_taux_FP <- (!empty(preleveurs)) ? (1.0 - sum(preleveurs.values)): 1.0;
-			switch type_droit {
-				match "Haute_Justice"{
-					if (mon_taux_FP = 1.0){
-						ask FP_impactes {
-							set seigneur_hauteJustice <- myself.proprietaire;
-						}
-						ask self.proprietaire {
-							set FP_hauteJustice <- union(FP_hauteJustice,FP_impactes);//remove_duplicates(FP_hauteJustice + FP_impactes);
-						}
-					} else {
-						ask ((mon_taux_FP * length(FP_impactes)) among FP_impactes) {
-							set seigneur_hauteJustice <- myself.proprietaire;
-							set myself.proprietaire.FP_hauteJustice <- union(myself.proprietaire.FP_hauteJustice, FP_impactes);//remove_duplicates(myself.proprietaire.FP_hauteJustice + FP_impactes);
-						}
-						loop currentPreleveur over: (preleveurs.keys){
-							ask (((preleveurs[currentPreleveur]) * length(FP_impactes)) among FP_impactes) {
-								set seigneur_hauteJustice <- currentPreleveur;
-								if not (self in currentPreleveur.FP_hauteJustice) {set currentPreleveur.FP_hauteJustice <- (currentPreleveur.FP_hauteJustice + self);}//remove_duplicates(currentPreleveur.FP_hauteJustice + self);
-								
-								if not (self in myself.proprietaire.FP_hauteJustice_garde) {set myself.proprietaire.FP_hauteJustice_garde <- myself.proprietaire.FP_hauteJustice_garde + self;}//remove_duplicates( myself.proprietaire.FP_hauteJustice_garde + self);
-							}
-						}
-					}
+			if (mon_taux_FP = 1.0){
+				ask FP_impactes {
+					set seigneur_hauteJustice <- myself.proprietaire;
 				}
-				match "Banaux" {
-					if (mon_taux_FP = 1.0){
-						ask FP_impactes {
-							set seigneurs_banaux <- seigneurs_banaux + myself.proprietaire;
-						}
-						ask self.proprietaire {
-							set FP_banaux <- FP_banaux + FP_impactes;
-						}
-					} else {
-						ask ((mon_taux_FP * length(FP_impactes)) among FP_impactes) {
-							set seigneurs_banaux <- seigneurs_banaux + myself.proprietaire;
-							set myself.proprietaire.FP_banaux <- myself.proprietaire.FP_banaux + FP_impactes;
-						}
-						loop currentPreleveur over: (preleveurs.keys){
-							ask (((preleveurs[currentPreleveur]) * length(FP_impactes)) among FP_impactes) {
-								set seigneurs_banaux <- seigneurs_banaux + currentPreleveur;
-								set currentPreleveur.FP_banaux <- currentPreleveur.FP_banaux + self;
-								set myself.proprietaire.FP_banaux_garde <- myself.proprietaire.FP_banaux_garde + self;
-							}
-						}
-					}
+				ask self.proprietaire {
+					set FP_hauteJustice <- union(FP_hauteJustice,FP_impactes);
 				}
-				match "basseMoyenne_Justice" {
-					if (mon_taux_FP = 1.0){
-						ask FP_impactes {
-							set seigneurs_basseMoyenneJustice <- seigneurs_basseMoyenneJustice + myself.proprietaire;
-						}
-						ask self.proprietaire {
-							set FP_basseMoyenneJustice <- FP_basseMoyenneJustice + FP_impactes;
-						}
-					} else {
-						ask ((mon_taux_FP * length(FP_impactes)) among FP_impactes) {
-							set seigneurs_basseMoyenneJustice <- seigneurs_basseMoyenneJustice + myself.proprietaire;
-							set myself.proprietaire.FP_basseMoyenneJustice <- myself.proprietaire.FP_basseMoyenneJustice + FP_impactes;
+			} else {
+				list<Foyers_Paysans> FP_a_taxer <- FP_impactes;
+				ask ((mon_taux_FP * length(FP_impactes)) among FP_impactes) {
+					set seigneur_hauteJustice <- myself.proprietaire;
+					set myself.proprietaire.FP_hauteJustice <- union(myself.proprietaire.FP_hauteJustice, FP_impactes);
+					FP_a_taxer >- self;
+				}
+				loop currentPreleveur over: (preleveurs.keys){
+					ask (((preleveurs[currentPreleveur]) * length(FP_impactes)) among FP_a_taxer) {
+						set seigneur_hauteJustice <- currentPreleveur;
+						FP_a_taxer >- self;
+						if not (self in currentPreleveur.FP_hauteJustice) {
+							set currentPreleveur.FP_hauteJustice <- currentPreleveur.FP_hauteJustice + self;
 						}
 						
-						loop currentPreleveur over: (preleveurs.keys){
-							ask (((preleveurs[currentPreleveur]) * length(FP_impactes)) among FP_impactes) {
-								set seigneurs_basseMoyenneJustice <- seigneurs_basseMoyenneJustice + currentPreleveur;
-								set currentPreleveur.FP_basseMoyenneJustice <- currentPreleveur.FP_basseMoyenneJustice + self;
-								set myself.proprietaire.FP_basseMoyenneJustice_garde <- myself.proprietaire.FP_basseMoyenneJustice_garde + self;
-							}
+						if not (self in myself.proprietaire.FP_hauteJustice_garde) {
+							set myself.proprietaire.FP_hauteJustice_garde <- myself.proprietaire.FP_hauteJustice_garde + self;
 						}
+					}
+				}
+			}
+		}
+		
+		action update_taxes_FP_Banaux {
+			list<Foyers_Paysans> FP_proche <- Foyers_Paysans at_distance rayon_captation;
+			int nb_FP <- length(FP_proche);
+			list<Foyers_Paysans> FP_impactes <- floor(nb_FP * taux_captation) among (FP_proche);
+			float mon_taux_FP <- (!empty(preleveurs)) ? (1.0 - sum(preleveurs.values)): 1.0;
+			if (mon_taux_FP = 1.0){
+				ask FP_impactes {
+					set seigneurs_banaux <- seigneurs_banaux + myself.proprietaire;
+				}
+				ask self.proprietaire {
+					set FP_banaux <- FP_banaux + FP_impactes;
+				}
+			} else {
+				list<Foyers_Paysans> FP_a_taxer <- FP_impactes;
+				ask ((mon_taux_FP * length(FP_impactes)) among FP_impactes) {
+					set seigneurs_banaux <- seigneurs_banaux + myself.proprietaire;
+					set myself.proprietaire.FP_banaux <- myself.proprietaire.FP_banaux + FP_impactes;
+					FP_a_taxer >- self;
+				}
+				loop currentPreleveur over: (preleveurs.keys){
+					ask (((preleveurs[currentPreleveur]) * length(FP_impactes)) among FP_a_taxer) {
+						set seigneurs_banaux <- seigneurs_banaux + currentPreleveur;
+						set currentPreleveur.FP_banaux <- currentPreleveur.FP_banaux + self;
+						set myself.proprietaire.FP_banaux_garde <- myself.proprietaire.FP_banaux_garde + self;
+						FP_a_taxer >- self;
+					}
+				}
+			}
+		}
+		
+		
+		
+		action update_taxes_FP_BM_Justice {
+			list<Foyers_Paysans> FP_proche <- Foyers_Paysans at_distance rayon_captation;
+			int nb_FP <- length(FP_proche);
+			list<Foyers_Paysans> FP_impactes <- floor(nb_FP * taux_captation) among (FP_proche);
+			float mon_taux_FP <- (!empty(preleveurs)) ? (1.0 - sum(preleveurs.values)): 1.0;
+			if (mon_taux_FP = 1.0){
+				ask FP_impactes {
+					set seigneurs_basseMoyenneJustice <- seigneurs_basseMoyenneJustice + myself.proprietaire;
+				}
+				ask self.proprietaire {
+					set FP_basseMoyenneJustice <- FP_basseMoyenneJustice + FP_impactes;
+				}
+			} else {
+				list<Foyers_Paysans> FP_a_taxer <- FP_impactes;
+				ask ((mon_taux_FP * length(FP_impactes)) among FP_impactes) {
+					set seigneurs_basseMoyenneJustice <- seigneurs_basseMoyenneJustice + myself.proprietaire;
+					set myself.proprietaire.FP_basseMoyenneJustice <- myself.proprietaire.FP_basseMoyenneJustice + FP_impactes;
+					FP_a_taxer >- self;
+				}
+				
+				loop currentPreleveur over: (preleveurs.keys){
+					ask (((preleveurs[currentPreleveur]) * length(FP_impactes)) among FP_a_taxer) {
+						set seigneurs_basseMoyenneJustice <- seigneurs_basseMoyenneJustice + currentPreleveur;
+						set currentPreleveur.FP_basseMoyenneJustice <- currentPreleveur.FP_basseMoyenneJustice + self;
+						set myself.proprietaire.FP_basseMoyenneJustice_garde <- myself.proprietaire.FP_basseMoyenneJustice_garde + self;
+						FP_a_taxer >- self;
 					}
 				}
 			}
