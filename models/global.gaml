@@ -88,4 +88,28 @@ global {
 		set nb_non_demenagement <- 0;
 	}
 	
+	action outputs_FP {
+		
+	}
+	
+	action outputs_Seigneurs {
+		
+	}
+	
+	action outputs_ZP {
+		
+	}
+	
+	action outputs_Chateaux {
+		
+	}
+	
+	action outputs_Agregats {
+		
+	}
+	
+	action output_Churches {
+		
+	}
+	
 }
