@@ -16,7 +16,31 @@ import "Eglises.gaml"
 import "Seigneurs.gaml"
 import "Attracteurs.gaml"
 
-
+global {
+	action attribution_loyers_FP {
+		list<Foyers_Paysans> FP_dispos <- Foyers_Paysans where (each.seigneur_loyer = nil);
+		
+		ask Zones_Prelevement where (each.type_droit = "Loyer") {
+			list<Foyers_Paysans> FP_zone <- FP_dispos inside self.shape;
+			int nbFP_concernes <- round(self.taux_captation * length(FP_zone));
+			ask nbFP_concernes among FP_zone {
+				set seigneur_loyer <- myself.proprietaire;
+				set myself.proprietaire.FP_loyer <- remove_duplicates(myself.proprietaire.FP_loyer + self);
+				FP_dispos >- self;
+			}
+		}
+		
+		ask Seigneurs where (each.type = "Grand Seigneur") {
+			int nbFP_concernes <- round(self.puissance_init * length(FP_dispos));
+			ask nbFP_concernes among FP_dispos {
+				set seigneur_loyer <- myself;
+				set myself.FP_loyer <- remove_duplicates(myself.FP_loyer + self);
+			}
+			set FP_dispos <- Foyers_Paysans where (each.seigneur_loyer = nil);
+		}
+	}
+	
+}
 
 entities {
 	species Zones_Prelevement schedules: shuffle(Zones_Prelevement) {
