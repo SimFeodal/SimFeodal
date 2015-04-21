@@ -84,8 +84,8 @@ entities {
 		action update_chateau {
 			// FIXME : Chateaux trop proches sinon
 			
-			if (monChateau = nil or (self distance_to monChateau > 3000)) {
-				list<Chateaux> Chateaux_proches <- Chateaux at_distance 3000;
+			if (monChateau = nil or (self distance_to monChateau > 1000)) {
+				list<Chateaux> Chateaux_proches <- Chateaux at_distance 1000;
 				if (empty(Chateaux_proches)) {
 					monChateau <- nil;
 				} else {
