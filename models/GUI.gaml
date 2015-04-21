@@ -38,8 +38,8 @@ experiment base_experiment type: gui multicore: true {
 	parameter "Proba. gain droits haute justice sur château" var: proba_gain_droits_hauteJustice_chateau category: "Châtelains";
 	parameter "Proba. gain droits banaux sur château" var: proba_gain_droits_banaux_chateau category: "Châtelains";
 	parameter "Proba. gain droits BM Justice sur château" var: proba_gain_droits_basseMoyenneJustice_chateau category: "Châtelains";
-	parameter "Probabilité créer château GS" var: proba_creer_chateau_PS category: "Châtelains";
-	parameter "Probabilité don château GS" var: proba_don_chateau_PS category: "Châtelains";
+	parameter "Probabilité créer château PS" var: proba_creer_chateau_PS category: "Châtelains";
+	parameter "Probabilité don château PS" var: proba_don_chateau_PS category: "Châtelains";
 	
 	//parameter "Nombre visé de petits seigneurs en fin de simulation" var: nombre_seigneurs_objectif category: "Petits Seigneurs";
 	parameter "Proba. don droits sur ZP" var: proba_don_partie_ZP category: "Petits Seigneurs";	
@@ -175,6 +175,18 @@ experiment base_experiment type: gui multicore: true {
     			data "Mean" value: mean(Agregats collect length(each.fp_agregat)) color: #green;
     			data "Median" value: median(Agregats collect length(each.fp_agregat)) color: #orange;
     			data "Min" value: min(Agregats collect length(each.fp_agregat)) color: #blue;
+    			
+    		}
+    	}
+    	
+    	display "Châteaux/Eglises"{
+    		chart "Nombre de châteaux" type: series position: {0.0,0.0} size: {1.0, 0.5}{
+    			data "Importants (>=5km)" value: Chateaux count (each.monRayon >= 5000) color: #red;
+    			data "Mineurs (<5km)" value: Chateaux count (each.monRayon < 5000) color: #blue;
+    		}
+    		chart "Eglises" type: series position: {0.0, 0.5} size: {1.0, 0.5}{
+    			data "Bâtiments" value: length(Eglises) color: #red;
+    			data "Paroisses" value: Eglises count (each.eglise_paroissiale) color: #blue;
     			
     		}
     	}	

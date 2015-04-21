@@ -376,6 +376,7 @@ entities {
 				float maxPuissance <- max(Seigneurs collect each.puissance) ;
 				float minPuissance <- min(Seigneurs collect each.puissance) ;
 				float rayon_chateau <- max([minRayon,min([ maxRayon, - ( myself.puissance / (maxPuissance - minPuissance))  + ( maxPuissance / (maxPuissance - minPuissance) ) ])]);
+				set monRayon <- rayon_chateau;
 				set location <- any_location_in(choixAgregat.shape + 500);
 				do creation_ZP_loyer(location, rayon_chateau, myself, 1.0);
 				if (myself.droits_hauteJustice){
@@ -417,7 +418,7 @@ entities {
 					float maxPuissance <- max(Seigneurs collect each.puissance) ;
 					float minPuissance <- min(Seigneurs collect each.puissance) ;
 					float rayon_chateau <- max([minRayon,min([ maxRayon, - ( myself.puissance / (maxPuissance - minPuissance))  + ( maxPuissance / (maxPuissance - minPuissance) ) ])]);
-						
+					set monRayon <- rayon_chateau;
 					
 					do creation_ZP_loyer(location, rayon_chateau, myself, 1.0);
 					

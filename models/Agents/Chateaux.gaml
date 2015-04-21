@@ -30,6 +30,7 @@ entities {
 		Zones_Prelevement ZP_banaux;
 		Zones_Prelevement ZP_basseMoyenneJustice;
 		bool reel <- true;
+		float monRayon;
 		
 		action update_attractivite {
 			set attractivite <- length(fonctions_possedees);
