@@ -1,0 +1,1561 @@
+
+Information: Generation monde : 6266.0
+Information: Generation monde : 6113.0
+Information: Generation monde : 6037.0
+Information: Generation monde : 6004.0
+Information: Generation monde : 6534.0
+Information: Generation monde : 6437.0
+Information: Generation monde : 6366.0
+Information: Generation monde : 6644.0
+Information: Generation monde : 6609.0
+Information: Generation monde : 7305.0
+Information: Generation monde : 7511.0
+Information: Generation monde : 8635.0
+Information: Generation monde : 1723.0
+Information: Generation monde : 1702.0
+Information: Generation monde : 3026.0
+Information: Generation monde : 2735.0
+Information: Generation monde : 2955.0
+Information: Generation monde : 2947.0
+Information: Generation monde : 2553.0
+Information: Generation monde : 2765.0
+Information: Generation monde : 2945.0
+Information: Generation monde : 2883.0
+Information: Generation monde : 3166.0
+Information: Generation monde : 2712.0
+Simulation is running...
+Simulation is running...
+Simulation is running...
+Information: MaJ_Agregats : 318.0
+Simulation is running...
+Information: MaJ_Agregats : 251.0
+Information: MaJ_Agregats : 528.0
+Simulation is running...
+Simulation is running...
+Simulation is running...
+Information: MaJ_Agregats : 395.0
+Simulation is running...
+Information: MaJ_Agregats : 428.0
+Information: MaJ_Agregats : 536.0
+Information: MaJ_Agregats : 536.0
+Information: MaJ_Agregats : 573.0
+Simulation is running...
+Simulation is running...
+Information: MaJ_Agregats : 600.0
+Simulation is running...
+Information: MaJ_Agregats : 808.0
+Information: MaJ_Agregats : 612.0
+Simulation is running...
+Information: MaJ_Agregats : 592.0
+Information: Demenagement_FP : 4700.0
+Information: Demenagement_FP : 6175.0
+Information: Demenagement_FP : 5236.0
+Information: Demenagement_FP : 6204.0
+Information: Demenagement_FP : 5469.0
+Information: taxes ZP Hte Justice : 0.0
+Information: taxes ZP banaux : 2.0
+Information: taxes ZP BM Justice : 9.0
+Information: MaJ_ZP_et_preleveurs : 1793.0
+Information: Demenagement_FP : 6042.0
+Information: Demenagement_FP : 6477.0
+Information: MaJ_satisfaction_FP : 571.0
+Information: Demenagement_FP : 6932.0
+Information: Demenagement_FP : 5972.0
+Information: taxes ZP Hte Justice : 0.0
+Information: taxes ZP banaux : 2.0
+Information: taxes ZP BM Justice : 17.0
+Information: MaJ_ZP_et_preleveurs : 2205.0
+Information: taxes ZP Hte Justice : 0.0
+Information: taxes ZP banaux : 2.0
+Information: taxes ZP BM Justice : 35.0
+Information: MaJ_ZP_et_preleveurs : 2851.0
+Information: Demenagement_FP : 6819.0
+Information: MaJ_satisfaction_FP : 757.0
+Information: taxes ZP Hte Justice : 0.0
+Information: taxes ZP banaux : 2.0
+Information: taxes ZP BM Justice : 32.0
+Information: MaJ_ZP_et_preleveurs : 1947.0
+Information: MaJ_satisfaction_FP : 804.0
+Information: Demenagement_FP : 7214.0
+Information: taxes ZP Hte Justice : 0.0
+Information: taxes ZP banaux : 15.0
+Information: taxes ZP BM Justice : 52.0
+Information: MaJ_ZP_et_preleveurs : 3428.0
+Information: MaJ_satisfaction_FP : 537.0
+Information: taxes ZP Hte Justice : 0.0
+Information: taxes ZP banaux : 8.0
+Information: taxes ZP BM Justice : 50.0
+Information: MaJ_ZP_et_preleveurs : 3125.0
+Information: MaJ_Agregats : 485.0
+Information: Demenagement_FP : 7108.0
+Information: taxes ZP Hte Justice : 1.0
+Information: taxes ZP banaux : 2.0
+Information: taxes ZP BM Justice : 22.0
+Information: MaJ_ZP_et_preleveurs : 4580.0
+Information: taxes ZP Hte Justice : 0.0
+Information: taxes ZP banaux : 2.0
+Information: taxes ZP BM Justice : 66.0
+Information: MaJ_ZP_et_preleveurs : 4504.0
+Information: taxes ZP Hte Justice : 0.0
+Information: taxes ZP banaux : 2.0
+Information: MaJ_satisfaction_FP : 600.0
+Information: taxes ZP BM Justice : 36.0
+Information: MaJ_ZP_et_preleveurs : 4043.0
+Information: MaJ_satisfaction_FP : 1126.0
+Information: taxes ZP Hte Justice : 0.0
+Information: taxes ZP banaux : 4.0
+Information: taxes ZP BM Justice : 9.0
+Information: MaJ_ZP_et_preleveurs : 2431.0
+Information: MaJ_satisfaction_FP : 1018.0
+Information: MaJ_satisfaction_FP : 1291.0
+Information: MaJ_Agregats : 244.0
+Information: Demenagement_FP : 1896.0
+Information: MaJ_satisfaction_FP : 882.0
+Information: MaJ_satisfaction_FP : 1362.0
+Information: MaJ_Agregats : 235.0
+Information: Demenagement_FP : 1244.0
+Information: taxes ZP Hte Justice : 0.0
+Information: taxes ZP banaux : 30.0
+Information: taxes ZP BM Justice : 7.0
+Information: MaJ_ZP_et_preleveurs : 1347.0
+Information: MaJ_Agregats : 388.0
+Information: taxes ZP Hte Justice : 0.0
+Information: taxes ZP banaux : 4.0
+Information: taxes ZP BM Justice : 21.0
+Information: MaJ_ZP_et_preleveurs : 4083.0
+Information: MaJ_satisfaction_FP : 393.0
+Information: Demenagement_FP : 1400.0
+Information: MaJ_Agregats : 339.0
+Information: taxes ZP Hte Justice : 0.0
+Information: taxes ZP banaux : 14.0
+Information: taxes ZP BM Justice : 8.0
+Information: MaJ_ZP_et_preleveurs : 3942.0
+Information: taxes ZP Hte Justice : 0.0
+Information: taxes ZP banaux : 29.0
+Information: taxes ZP BM Justice : 11.0
+Information: MaJ_ZP_et_preleveurs : 1333.0
+Information: MaJ_Agregats : 195.0
+Information: MaJ_satisfaction_FP : 1047.0
+Information: Demenagement_FP : 1405.0
+Information: MaJ_satisfaction_FP : 410.0
+Information: MaJ_Agregats : 429.0
+Information: MaJ_Agregats : 385.0
+Information: MaJ_satisfaction_FP : 1154.0
+Information: MaJ_Agregats : 351.0
+Information: Demenagement_FP : 1384.0
+Information: Demenagement_FP : 686.0
+Information: taxes ZP Hte Justice : 0.0
+Information: taxes ZP banaux : 28.0
+Information: taxes ZP BM Justice : 7.0
+Information: MaJ_ZP_et_preleveurs : 1694.0
+Information: MaJ_Agregats : 571.0
+Information: MaJ_Agregats : 241.0
+Information: taxes ZP Hte Justice : 0.0
+Information: taxes ZP banaux : 10.0
+Information: taxes ZP BM Justice : 29.0
+Information: MaJ_ZP_et_preleveurs : 1245.0
+Information: MaJ_satisfaction_FP : 387.0
+Information: Demenagement_FP : 1084.0
+Information: MaJ_satisfaction_FP : 400.0
+Information: Demenagement_FP : 1620.0
+Information: Demenagement_FP : 774.0
+Information: taxes ZP Hte Justice : 0.0
+Information: taxes ZP banaux : 3.0
+Information: taxes ZP BM Justice : 2.0
+Information: MaJ_ZP_et_preleveurs : 1302.0
+Information: taxes ZP Hte Justice : 0.0
+Information: taxes ZP banaux : 22.0
+Information: taxes ZP BM Justice : 10.0
+Information: MaJ_ZP_et_preleveurs : 1413.0
+Information: Demenagement_FP : 1957.0
+Information: MaJ_Agregats : 619.0
+Information: MaJ_satisfaction_FP : 385.0
+Information: MaJ_satisfaction_FP : 405.0
+Information: MaJ_Agregats : 206.0
+Information: Demenagement_FP : 1720.0
+Information: MaJ_Agregats : 180.0
+Information: taxes ZP Hte Justice : 0.0
+Information: taxes ZP banaux : 30.0
+Information: taxes ZP BM Justice : 18.0
+Information: MaJ_ZP_et_preleveurs : 1223.0
+Information: taxes ZP Hte Justice : 1.0
+Information: taxes ZP banaux : 14.0
+Information: taxes ZP BM Justice : 14.0
+Information: MaJ_ZP_et_preleveurs : 1456.0
+Information: MaJ_Agregats : 264.0
+Information: taxes ZP Hte Justice : 0.0
+Information: taxes ZP banaux : 27.0
+Information: taxes ZP BM Justice : 4.0
+Information: MaJ_ZP_et_preleveurs : 1600.0
+Information: Demenagement_FP : 811.0
+Information: MaJ_satisfaction_FP : 395.0
+Information: MaJ_Agregats : 215.0
+Information: MaJ_satisfaction_FP : 482.0
+Information: Demenagement_FP : 801.0
+Information: taxes ZP Hte Justice : 0.0
+Information: taxes ZP banaux : 29.0
+Information: taxes ZP BM Justice : 11.0
+Information: MaJ_ZP_et_preleveurs : 1674.0
+Information: MaJ_satisfaction_FP : 456.0
+Information: taxes ZP Hte Justice : 1.0
+Information: taxes ZP banaux : 30.0
+Information: taxes ZP BM Justice : 5.0
+Information: MaJ_ZP_et_preleveurs : 1308.0
+Information: MaJ_Agregats : 390.0
+Information: MaJ_satisfaction_FP : 388.0
+Information: Demenagement_FP : 949.0
+Information: Demenagement_FP : 843.0
+Information: MaJ_Agregats : 304.
+Information: MaJ_satisfaction_FP : 403.0
+Information: taxes ZP Hte Justice : 0.0
+Information: taxes ZP banaux : 30.0
+Information: taxes ZP BM Justice : 2.0
+Information: MaJ_ZP_et_preleveurs : 1048.0
+Information: Demenagement_FP : 2348.0
+Information: MaJ_Agregats : 463.0
+Information: taxes ZP Hte Justice : 0.0
+Information: taxes ZP banaux : 3.0
+Information: taxes ZP BM Justice : 1.0
+Information: MaJ_ZP_et_preleveurs : 1174.0
+Information: MaJ_Agregats : 222.0
+Information: MaJ_Agregats : 226.0
+Information: MaJ_satisfaction_FP : 394.0
+Information: Demenagement_FP : 722.0
+Information: MaJ_Agregats : 211.0
+Information: taxes ZP Hte Justice : 0.0
+Information: taxes ZP banaux : 4.0
+Information: taxes ZP BM Justice : 4.0
+Information: MaJ_ZP_et_preleveurs : 1059.0
+Information: taxes ZP Hte Justice : 16.0
+Information: MaJ_Agregats : 226.0
+Information: taxes ZP banaux : 15.0
+Information: Demenagement_FP : 628.0
+Information: MaJ_satisfaction_FP : 409.0
+Information: Demenagement_FP : 716.0
+Information: Demenagement_FP : 1683.0
+Information: MaJ_Agregats : 224.0
+Information: MaJ_satisfaction_FP : 389.0
+Information: Demenagement_FP : 735.0
+Information: Demenagement_FP : 1647.0
+Information: MaJ_Agregats : 221.0
+Information: taxes ZP BM Justice : 803.0
+Information: MaJ_ZP_et_preleveurs : 2085.0
+Information: Demenagement_FP : 874.0
+Information: taxes ZP Hte Justice : 0.0
+Information: taxes ZP banaux : 3.0
+Information: taxes ZP BM Justice : 3.0
+Information: MaJ_ZP_et_preleveurs : 1329.0
+Information: Demenagement_FP : 705.0
+Information: taxes ZP Hte Justice : 0.0
+Information: taxes ZP banaux : 5.0
+Information: taxes ZP BM Justice : 2.0
+Information: MaJ_ZP_et_preleveurs : 1043.0
+Information: taxes ZP Hte Justice : 0.0
+Information: taxes ZP banaux : 29.0
+Information: taxes ZP BM Justice : 7.0
+Information: MaJ_ZP_et_preleveurs : 2226.0
+Information: MaJ_Agregats : 332.0
+Information: taxes ZP Hte Justice : 0.0
+Information: taxes ZP banaux : 3.0
+Information: taxes ZP BM Justice : 2.0
+Information: MaJ_ZP_et_preleveurs : 1188.0
+Information: MaJ_satisfaction_FP : 413.0
+Information: taxes ZP Hte Justice : 0.0
+Information: taxes ZP banaux : 50.0
+Information: taxes ZP BM Justice : 31.0
+Information: MaJ_ZP_et_preleveurs : 1307.0
+Information: MaJ_satisfaction_FP : 479.0
+Information: Demenagement_FP : 747.0
+Information: MaJ_satisfaction_FP : 392.0
+Information: MaJ_satisfaction_FP : 488.0
+Information: MaJ_satisfaction_FP : 393.0
+Information: taxes ZP Hte Justice : 0.0
+Information: taxes ZP banaux : 4.0
+Information: taxes ZP BM Justice : 1.0
+Information: MaJ_ZP_et_preleveurs : 1170.0
+Information: Demenagement_FP : 561.0
+Information: MaJ_satisfaction_FP : 394.0
+Information: taxes ZP Hte Justice : 0.0
+Information: taxes ZP Hte Justice : 0.0
+Information: taxes ZP banaux : 11.0
+Information: taxes ZP BM Justice : 4.0
+Information: MaJ_ZP_et_preleveurs : 1242.0
+Information: taxes ZP banaux : 32.0
+Information: taxes ZP BM Justice : 1.0
+Information: MaJ_ZP_et_preleveurs : 1060.0
+Information: MaJ_satisfaction_FP : 396.0
+Information: MaJ_Agregats : 394.0
+Information: taxes ZP Hte Justice : 214.0
+Information: taxes ZP banaux : 46.0
+Information: MaJ_satisfaction_FP : 389.0
+Information: MaJ_satisfaction_FP : 452.0
+Information: MaJ_Agregats : 413.0
+Information: MaJ_Agregats : 236.0
+Information: taxes ZP BM Justice : 314.0
+Information: MaJ_ZP_et_preleveurs : 1660.0
+Information: taxes ZP Hte Justice : 14.0
+Information: taxes ZP banaux : 13.0
+Information: taxes ZP BM Justice : 17.0
+Information: MaJ_ZP_et_preleveurs : 1194.0
+Information: MaJ_Agregats : 405.0
+Information: taxes ZP Hte Justice : 0.0
+Information: taxes ZP banaux : 6.0
+Information: taxes ZP BM Justice : 3.0
+Information: MaJ_ZP_et_preleveurs : 1102.0
+Information: MaJ_Agregats : 278.0
+Information: MaJ_satisfaction_FP : 400.0
+Information: MaJ_Agregats : 243.0
+Information: Demenagement_FP : 716.0
+Information: MaJ_Agregats : 327.0
+Information: MaJ_satisfaction_FP : 397.0
+Information: MaJ_satisfaction_FP : 405.0
+Information: Demenagement_FP : 661.0
+Information: MaJ_Agregats : 250.0
+Information: MaJ_Agregats : 415.0
+Information: Demenagement_FP : 717.0
+Information: Demenagement_FP : 628.0
+Information: Demenagement_FP : 790.0
+Information: MaJ_Agregats : 442.0
+Information: MaJ_Agregats : 403
+Information: MaJ_Agregats : 520.0
+Information: Demenagement_FP : 862.0
+Information: taxes ZP Hte Justice : 1.0
+Information: taxes ZP banaux : 3.0
+Information: taxes ZP BM Justice : 1.0
+Information: MaJ_ZP_et_preleveurs : 1032.0
+Information: taxes ZP Hte Justice : 115.0
+Information: taxes ZP Hte Justice : 0.0
+Information: taxes ZP banaux : 254.0
+Information: taxes ZP BM Justice : 25.0
+Information: MaJ_ZP_et_preleveurs : 1692.0
+Information: taxes ZP Hte Justice : 0.0
+Information: MaJ_satisfaction_FP : 486.0
+Information: taxes ZP Hte Justice : 0.0
+Information: taxes ZP banaux : 20.0
+Information: taxes ZP BM Justice : 2.0
+Information: MaJ_ZP_et_preleveurs : 1072.0
+Information: Demenagement_FP : 1539.0
+Information: taxes ZP banaux : 592.0
+Information: taxes ZP BM Justice : 2.0
+Information: MaJ_ZP_et_preleveurs : 1730.0
+Information: taxes ZP banaux : 534.0
+Information: taxes ZP BM Justice : 4.0
+Information: MaJ_ZP_et_preleveurs : 1590.0
+Information: MaJ_satisfaction_FP : 402.0
+Information: MaJ_satisfaction_FP : 405.0
+Information: taxes ZP Hte Justice : 0.0
+Information: taxes ZP banaux : 5.0
+Information: taxes ZP BM Justice : 34.0
+Information: MaJ_ZP_et_preleveurs : 1234.0
+Information: MaJ_satisfaction_FP : 399.0
+Information: MaJ_Agregats : 409.0
+Information: MaJ_satisfaction_FP : 503.0
+Information: MaJ_satisfaction_FP : 402.0
+.Information: taxes ZP Hte Justice : 0.0
+Information: taxes ZP banaux : 34.0
+Information: taxes ZP BM Justice : 2.0
+Information: MaJ_Agregats : 198.0
+Information: MaJ_ZP_et_preleveurs : 1316.0
+Information: MaJ_Agregats : 336.0
+Information: MaJ_Agregats : 442.0
+Information: MaJ_Agregats : 243.0
+Information: Demenagement_FP : 4457.0
+Information: MaJ_satisfaction_FP : 402.0
+Information: MaJ_Agregats : 398.0
+Information: Demenagement_FP : 636.0
+Information: Demenagement_FP : 5157.0
+Information: Demenagement_FP : 776.0
+Information: MaJ_Agregats : 439.0
+Information: taxes ZP Hte Justice : 0.0
+Information: taxes ZP banaux : 6.0
+Information: taxes ZP BM Justice : 3.0
+Information: MaJ_ZP_et_preleveurs : 1229.0
+Information: Demenagement_FP : 4509.0
+Information: MaJ_satisfaction_FP : 401.0
+Information: Demenagement_FP : 4895.0
+Information: taxes ZP Hte Justice : 122.0
+Information: taxes ZP banaux : 200.0
+Information: taxes ZP BM Justice : 25.0
+Information: MaJ_ZP_et_preleveurs : 1561.0
+Information: Demenagement_FP : 1226.0
+Information: MaJ_Agregats : 290.0
+Information: MaJ_satisfaction_FP : 465.0
+Information: Demenagement_FP : 5510.0
+Information: MaJ_Agregats : 337.0
+Information: Demenagement_FP : 4119.0
+Information: Demenagement_FP : 4739.0
+Information: taxes ZP Hte Justice : 1.0
+Information: taxes ZP banaux : 8.0
+Information: taxes ZP BM Justice : 1.0
+Information: MaJ_ZP_et_preleveurs : 1289.0
+Information: Demenagement_FP : 4411.0
+Information: MaJ_satisfaction_FP : 402.0
+Information: Demenagement_FP : 4778.0
+Information: MaJ_Agregats : 600.0
+Information: taxes ZP Hte Justice : 2655.0
+Information: Demenagement_FP : 4594.0
+Information: taxes ZP Hte Justice : 1127.0
+Information: Demenagement_FP : 4183.0
+Information: taxes ZP Hte Justice : 2408.0
+Information: taxes ZP banaux : 2030.0
+Information: taxes ZP banaux : 1487.0
+Information: taxes ZP BM Justice : 1373.0
+Information: MaJ_ZP_et_preleveurs : 9214.0
+Information: taxes ZP BM Justice : 794.0
+Information: MaJ_ZP_et_preleveurs : 6151.0
+Information: MaJ_satisfaction_FP : 435.0
+Information: taxes ZP banaux : 2398.0
+Information: MaJ_satisfaction_FP : 436.0
+Information: taxes ZP Hte Justice : 6850.0
+Information: taxes ZP Hte Justice : 4638.0
+Information: Demenagement_FP : 5237.0
+Information: taxes ZP Hte Justice : 5442.0
+Information: taxes ZP Hte Justice : 1202.0
+Information: MaJ_Agregats : 650.0
+Information: taxes ZP Hte Justice : 4654.0
+Information: taxes ZP Hte Justice : 4958.0
+Information: MaJ_Agregats : 940.0
+Information: taxes ZP banaux : 380.0
+Information: taxes ZP BM Justice : 385.0
+Information: MaJ_ZP_et_preleveurs : 9106.0
+Information: taxes ZP BM Justice : 2345.0
+Information: MaJ_ZP_et_preleveurs : 9965.0
+Information: taxes ZP banaux : 1384.0
+Information: Demenagement_FP : 1494.0
+Information: MaJ_satisfaction_FP : 836.0
+Information: taxes ZP BM Justice : 815.0
+Information: MaJ_ZP_et_preleveurs : 5890.0
+Information: MaJ_satisfaction_FP : 831.0
+Information: taxes ZP banaux : 2369.0
+Information: taxes ZP banaux : 3599.0
+Information: MaJ_satisfaction_FP : 567.0
+Information: Demenagement_FP : 3142.0
+Information: MaJ_Agregats : 931.0
+Information: MaJ_Agregats : 526.0
+Information: MaJ_Agregats : 1008.0
+Information: Demenagement_FP : 1332
+Information: taxes ZP Hte Justice : 6344.0
+Information: taxes ZP BM Justice : 3192.0
+Information: MaJ_ZP_et_preleveurs : 15226.0
+Information: taxes ZP Hte Justice : 8168.0
+Information: taxes ZP banaux : 5554.0
+Information: taxes ZP Hte Justice : 2685.0
+Information: MaJ_satisfaction_FP : 577.0
+Information: Demenagement_FP : 2776.0
+Information: taxes ZP BM Justice : 4013.0
+Information: MaJ_ZP_et_preleveurs : 16475.0
+Information: Demenagement_FP : 2819.0
+Information: MaJ_Agregats : 519.0
+Information: MaJ_satisfaction_FP : 489.0
+Information: taxes ZP Hte Justice : 5635.0
+Information: Demenagement_FP : 1129.0
+Information: taxes ZP banaux : 3281.0
+Information: taxes ZP banaux : 2575.0
+Information: MaJ_Agregats : 638.0
+Information: Demenagement_FP : 959.0
+Information: taxes ZP Hte Justice : 2830.0
+Information: taxes ZP Hte Justice : 2590.0
+Information: taxes ZP banaux : 12099.0
+Information: taxes ZP banaux : 523.0
+Information: taxes ZP BM Justice : 2531.0
+Information: MaJ_ZP_et_preleveurs : 9746.0
+Information: taxes ZP BM Justice : 447.0
+Information: MaJ_ZP_et_preleveurs : 5090.0
+Information: taxes ZP Hte Justice : 4839.0
+Information: MaJ_satisfaction_FP : 468.0
+Information: MaJ_satisfaction_FP : 440.0
+Information: taxes ZP banaux : 2689.0
+Information: MaJ_Agregats : 586.0
+Information: taxes ZP BM Justice : 4890.0
+Information: MaJ_ZP_et_preleveurs : 17881.0
+Information: MaJ_Agregats : 635.0
+Information: taxes ZP Hte Justice : 3661.0
+Information: Demenagement_FP : 783.0
+Information: taxes ZP BM Justice : 3148.0
+Information: MaJ_ZP_et_preleveurs : 25899.0
+Information: MaJ_satisfaction_FP : 783.0
+Information: taxes ZP Hte Justice : 4209.0
+Information: Demenagement_FP : 973.0
+Information: MaJ_satisfaction_FP : 440.0
+Information: taxes ZP BM Justice : 2872.0
+Information: MaJ_ZP_et_preleveurs : 10628.0
+Information: MaJ_Agregats : 617.0
+Information: MaJ_Agregats : 964.0
+Information: taxes ZP Hte Justice : 4073.0
+Information: taxes ZP banaux : 10738.0
+Information: taxes ZP banaux : 4476.0
+Information: MaJ_satisfaction_FP : 458.0
+Information: Demenagement_FP : 953.0
+Information: MaJ_Agregats : 532.0
+Information: Demenagement_FP : 1407.0
+Information: taxes ZP banaux : 3877.0
+Information: taxes ZP banaux : 3462.0
+Information: Demenagement_FP : 832.0
+Information: taxes ZP BM Justice : 2578.0
+Information: MaJ_ZP_et_preleveurs : 15450.0
+Information: MaJ_satisfaction_FP : 450.0
+Information: taxes ZP banaux : 12054.0
+Information: taxes ZP banaux : 4881.0
+Information: taxes ZP Hte Justice : 4547.0
+Information: MaJ_Agregats : 820.0
+Information: taxes ZP BM Justice : 3189.0
+Information: MaJ_ZP_et_preleveurs : 14276.0
+Information: taxes ZP BM Justice : 15854.0
+Information: MaJ_ZP_et_preleveurs : 28957.0
+Information: taxes ZP BM Justice : 4001.0
+Information: MaJ_ZP_et_preleveurs : 13344.0
+Information: MaJ_satisfaction_FP : 905.0
+Information: Demenagement_FP : 1220.0
+Information: MaJ_satisfaction_FP : 435.0
+Information: MaJ_satisfaction_FP : 458.0
+Information: taxes ZP Hte Justice : 5913.0
+Information: taxes ZP Hte Justice : 4603.0
+Information: MaJ_Agregats : 596.0
+Information: MaJ_Agregats : 648.0
+Information: MaJ_Agregats : 767.0
+Information: Demenagement_FP : 860.0
+Information: Demenagement_FP : 1160.0
+Information: Demenagement_FP : 1096.0
+Information: taxes ZP banaux : 4740.0
+Information: taxes ZP Hte Justice : 4954.0
+Information: taxes ZP Hte Justice : 6502.0
+Information: taxes ZP BM Justice : 5512.0
+Information: MaJ_ZP_et_preleveurs : 16425.0
+Information: MaJ_satisfaction_FP : 440.0
+Information: MaJ_Agregats : 548.0
+Information: taxes ZP banaux : 5270.0
+Information: Demenagement_FP : 1161.0
+Information: taxes ZP BM Justice : 5095.0
+Information: MaJ_ZP_et_preleveurs : 16903.0
+Information: taxes ZP Hte Justice : 4763.0
+Information: taxes ZP Hte Justice : 6099.0
+Information: taxes ZP banaux : 5094.0
+Information: MaJ_satisfaction_FP : 445.0
+Information: taxes ZP Hte Justice : 5597.0
+Information: taxes ZP BM Justice : 12197.0
+Information: MaJ_ZP_et_preleveurs : 33086.0
+Information: MaJ_Agregats : 583.0
+Information: taxes ZP banaux : 6653.0
+Information: MaJ_satisfaction_FP : 439.0
+Information: taxes ZP BM Justice : 4786.0
+Information: MaJ_ZP_et_preleveurs : 18707.0
+Information: MaJ_satisfaction_FP : 550.0
+Information: Demenagement_FP : 1300.0
+Information: MaJ_Agregats : 699.0
+Information: MaJ_Agregats : 528.0
+Information: taxes ZP Hte Justice : 7190.0
+Information: taxes ZP banaux : 11812.0
+Information: Demenagement_FP : 958.0
+Information: taxes ZP Hte Justice : 4266.0
+Information: Demenagement_FP : 970.0
+Information: taxes ZP banaux : 5141.0
+Information: taxes ZP BM Justice : 5513.0
+Information: MaJ_ZP_et_preleveurs : 18388.0
+Information: MaJ_satisfaction_FP : 454.0
+Information: taxes ZP BM Justice : 5360.0
+Information: MaJ_ZP_et_preleveurs : 20641.0
+Information: MaJ_Agregats : 482.0
+Information: MaJ_satisfaction_FP : 453.0
+Information: Demenagement_FP : 1314.0
+Information: taxes ZP BM Justice : 4478.0
+Information: MaJ_ZP_et_preleveurs : 22897.0
+Information: taxes ZP banaux : 8119.0
+Information: MaJ_Agregats : 618.0
+Information: MaJ_satisfaction_FP : 597.0
+Information: taxes ZP banaux : 5217.0
+Information: taxes ZP Hte Justice : 5085.0
+Information: Demenagement_FP : 1041.0
+Information: taxes ZP BM Justice : 25189.0
+Information: MaJ_ZP_et_preleveurs : 48370.0
+Information: taxes ZP BM Justice : 5322.0
+Information: MaJ_ZP_et_preleveurs : 17102.0
+Information: MaJ_Agregats : 520.0
+Information: taxes ZP banaux : 10815.0
+Information: MaJ_satisfaction_FP : 632.0
+Information: MaJ_satisfaction_FP : 591.0
+Information: Demenagement_FP : 860.0
+Information: MaJ_Agregats : 583.0
+Information: MaJ_Agregats : 935.0
+Information: taxes ZP Hte Justice : 5598.0
+Information: Demenagement_FP : 1179.0
+Information: taxes ZP Hte Justice : 5795.0
+Information: taxes ZP banaux : 10400.0
+Information: Demenagement_FP : 1900.0
+Information: taxes ZP banaux : 4882.0
+Information: taxes ZP BM Justice : 6187.0
+Information: MaJ_ZP_et_preleveurs : 17593.0
+Information: MaJ_satisfaction_FP : 450.0
+Information: taxes ZP Hte Justice : 5479.0
+Information: MaJ_Agregats : 494.0
+Information: taxes ZP Hte Justice : 5138.0
+Information: taxes ZP banaux : 5234.0
+Information: Demenagement_FP : 1267.0
+Information: taxes ZP Hte Justice : 6810.0
+Information: taxes ZP Hte Justice : 4779.0
+Information: taxes ZP BM Justice : 5159.0
+Information: MaJ_ZP_et_preleveurs : 17490.0
+Information: taxes ZP BM Justice : 9553.0
+Information: MaJ_ZP_et_preleveurs : 29150.0
+Information: MaJ_satisfaction_FP : 455.0
+Information: MaJ_satisfaction_FP : 451.0
+Information: taxes ZP BM Justice : 7301.0
+Information: MaJ_ZP_et_preleveurs : 27779.0
+Information: taxes ZP banaux : 5378.0
+Information: MaJ_Agregats : 690.0
+Information: MaJ_Agregats : 484.0
+Information: MaJ_satisfaction_FP : 436.0
+Information: Demenagement_FP : 926.0
+Information: Demenagement_FP : 1202.0
+Information: MaJ_Agregats : 522.0
+Information: taxes ZP BM Justice : 5577.0
+Information: MaJ_ZP_et_preleveurs : 19523.0
+Information: Demenagement_FP : 1153.0
+Information: MaJ_satisfaction_FP : 457.0
+Information: taxes ZP Hte Justice : 4271.0
+Information: taxes ZP Hte Justice : 7953.0
+Information: taxes ZP banaux : 5777.0
+Information: MaJ_Agregats : 595.0
+Information: Demenagement_FP : 897.0
+Information: taxes ZP banaux : 8497.0
+Information: taxes ZP BM Justice : 5693.0
+Information: MaJ_ZP_et_preleveurs : 19196.0
+Information: taxes ZP BM Justice : 18808.0
+Information: MaJ_ZP_et_preleveurs : 34232.0
+Information: MaJ_satisfaction_FP : 536.0
+Information: MaJ_satisfaction_FP : 537.0
+Information: MaJ_Agregats : 459.0
+Information: taxes ZP banaux : 11157.0
+Information: MaJ_Agregats : 489.0
+Information: Demenagement_FP : 954.0
+Information: taxes ZP Hte Justice : 5274.0
+Information: Demenagement_FP : 878.0
+Information: taxes ZP BM Justice : 5261.0
+Information: MaJ_ZP_et_preleveurs : 17641.0
+Information: taxes ZP banaux : 6374.0
+Information: taxes ZP banaux : 18397.0
+Information: MaJ_satisfaction_FP : 463.0
+Information: taxes ZP Hte Justice : 5960.0
+Information: MaJ_Agregats : 508.0
+Information: taxes ZP Hte Justice : 5381.0
+Information: taxes ZP banaux : 7778.0
+Information: Demenagement_FP : 1090.0
+Information: taxes ZP BM Justice : 4806.0
+Information: MaJ_ZP_et_preleveurs : 22979.0
+Information: MaJ_satisfaction_FP : 446.0
+Information: taxes ZP banaux : 5345.0
+Information: taxes ZP Hte Justice : 5978.0
+Information: MaJ_Agregats : 467.0
+Information: taxes ZP BM Justice : 9215.0
+Information: MaJ_ZP_et_preleveurs : 26559.0
+Information: MaJ_satisfaction_FP : 463.0
+Information: Demenagement_FP : 1180.0
+Information: MaJ_Agregats : 522.0
+Information: taxes ZP Hte Justice : 5706.0
+Information: taxes ZP BM Justice : 7485.0
+Information: MaJ_ZP_et_preleveurs : 20050.0
+Information: taxes ZP Hte Justice : 6177.0
+Information: MaJ_satisfaction_FP : 457.0
+Information: Demenagement_FP : 1172.0
+Information: MaJ_Agregats : 489.0
+Information: taxes ZP Hte Justice : 4754.0
+Information: taxes ZP banaux : 7909.0
+Information: Demenagement_FP : 1115.0
+Information: taxes ZP banaux : 9221.0
+Information: taxes ZP BM Justice : 5601.0
+Information: MaJ_ZP_et_preleveurs : 18664.0
+Information: MaJ_satisfaction_FP : 453.0
+Information: taxes ZP banaux : 6059.0
+Information: MaJ_Agregats : 556.0
+Information: Demenagement_FP : 1051.0
+Information: taxes ZP banaux : 5590.0
+Information: taxes ZP Hte Justice : 5293.0
+Information: taxes ZP banaux : 7484.0
+Information: taxes ZP banaux : 7038.0
+Information: taxes ZP Hte Justice : 4269.0
+Information: taxes ZP Hte Justice : 5960.0
+Information: taxes ZP BM Justice : 5906.0
+Information: MaJ_ZP_et_preleveurs : 21256.0
+Information: taxes ZP BM Justice : 7562.0
+Information: MaJ_ZP_et_preleveurs : 23730.0
+Information: MaJ_satisfaction_FP : 465.0
+Information: MaJ_satisfaction_FP : 444.0
+Information: MaJ_Agregats : 532.0
+Information: taxes ZP BM Justice : 5888.0
+Information: MaJ_ZP_et_preleveurs : 19976.0
+Information: taxes ZP BM Justice : 18795.0
+Information: MaJ_ZP_et_preleveurs : 45902.0
+Information: MaJ_Agregats : 547.0
+Information: Demenagement_FP : 871.0
+Information: taxes ZP BM Justice : 9063.0
+Information: MaJ_ZP_et_preleveurs : 27383.0
+Information: MaJ_satisfaction_FP : 459.0
+Information: MaJ_satisfaction_FP : 580.0
+Information: Demenagement_FP : 873.0
+Information: taxes ZP BM Justice : 17904.0
+Information: MaJ_ZP_et_preleveurs : 36331.0
+Information: MaJ_satisfaction_FP : 460.0
+Information: taxes ZP Hte Justice : 5195.0
+Information: MaJ_Agregats : 474.0
+Information: MaJ_satisfaction_FP : 561.0
+Information: MaJ_Agregats : 534.0
+Information: MaJ_Agregats : 618.0
+Information: Demenagement_FP : 919.0
+Information: taxes ZP BM Justice : 5678.0
+Information: MaJ_ZP_et_preleveurs : 19448.0
+Information: Demenagement_FP : 959.0
+Information: Demenagement_FP : 904.0
+Information: MaJ_Agregats : 467.0
+Information: MaJ_satisfaction_FP : 457.0
+Information: taxes ZP banaux : 6494.0
+Information: Demenagement_FP : 919.0
+Information: MaJ_Agregats : 556.0
+Information: Demenagement_FP : 978.0
+Information: taxes ZP banaux : 8817.0
+Information: taxes ZP banaux : 5226.0
+Information: taxes ZP banaux : 12728.0
+Information: taxes ZP Hte Justice : 5946.0
+Information: taxes ZP Hte Justice : 5803.0
+Information: taxes ZP Hte Justice : 5692.0
+Information: taxes ZP Hte Justice : 5996.0
+Information: taxes ZP BM Justice : 7834.0
+Information: MaJ_ZP_et_preleveurs : 20583.0
+Information: taxes ZP BM Justice : 16111.0
+Information: MaJ_ZP_et_preleveurs : 31591.0
+Information: MaJ_satisfaction_FP : 462.0
+Information: taxes ZP BM Justice : 5641.0
+Information: MaJ_ZP_et_preleveurs : 18469.0
+Information: taxes ZP Hte Justice : 5414.0
+Information: MaJ_satisfaction_FP : 437.0
+Information: MaJ_satisfaction_FP : 459.0
+Information: taxes ZP BM Justice : 5688.0
+Information: MaJ_ZP_et_preleveurs : 25829.0
+Information: taxes ZP Hte Justice : 6576.0
+Information: MaJ_Agregats : 503.0
+Information: taxes ZP Hte Justice : 6874.0
+Information: MaJ_satisfaction_FP : 484.0
+Information: MaJ_Agregats : 438.0
+Information: MaJ_Agregats : 604.0
+Information: Demenagement_FP : 949.0
+Information: MaJ_Agregats : 482.0
+Information: Demenagement_FP : 900.0
+Information: Demenagement_FP : 1322.0
+Information: taxes ZP banaux : 5809.0
+Information: taxes ZP BM Justice : 8961.0
+Information: MaJ_ZP_et_preleveurs : 26160.0
+Information: Demenagement_FP : 1187.0
+Information: MaJ_satisfaction_FP : 469.0
+Information: taxes ZP banaux : 5549.0
+Information: MaJ_Agregats : 472.0
+Information: Demenagement_FP : 1037.0
+Information: taxes ZP banaux : 8386.0
+Information: taxes ZP banaux : 7150.0
+Information: taxes ZP banaux : 7577.0
+Information: taxes ZP Hte Justice : 4354.0
+Information: taxes ZP BM Justice : 6481.0
+Information: MaJ_ZP_et_preleveurs : 21416.0
+Information: MaJ_satisfaction_FP : 469.0
+Information: taxes ZP BM Justice : 6117.0
+Information: MaJ_ZP_et_preleveurs : 19988.0
+Information: taxes ZP Hte Justice : 5216.0
+Information: taxes ZP banaux : 9756.0
+Information: MaJ_satisfaction_FP : 656.0
+Information: taxes ZP Hte Justice : 6212.0
+Information: MaJ_Agregats : 524.0
+Information: taxes ZP Hte Justice : 6154.0
+Information: Demenagement_FP : 843.0
+Information: MaJ_Agregats : 512.0
+Information: Demenagement_FP : 1059.0
+Information: taxes ZP BM Justice : 5473.0
+Information: MaJ_ZP_et_preleveurs : 20331.0
+Information: MaJ_satisfaction_FP : 464.0
+Information: taxes ZP Hte Justice : 6110.0
+Information: taxes ZP BM Justice : 8608.0
+Information: MaJ_ZP_et_preleveurs : 26038.0
+Information: taxes ZP banaux : 6311.0
+Information: MaJ_Agregats : 506.0
+Information: MaJ_satisfaction_FP : 462.0
+Information: taxes ZP banaux : 5107.0
+Information: Demenagement_FP : 966.0
+Information: MaJ_Agregats : 518.0
+Information: Demenagement_FP : 1005.0
+Information: taxes ZP banaux : 7394.0
+Information: taxes ZP BM Justice : 9820.0
+Information: MaJ_ZP_et_preleveurs : 29670.0
+Information: MaJ_satisfaction_FP : 476.0
+Information: taxes ZP Hte Justice : 5922.0
+Information: taxes ZP banaux : 20174.0
+Information: taxes ZP BM Justice : 5736.0
+Information: MaJ_ZP_et_preleveurs : 18662.0
+Information: taxes ZP Hte Justice : 5723.0
+Information: MaJ_satisfaction_FP : 468.0
+Information: taxes ZP BM Justice : 15328.0
+Information: MaJ_ZP_et_preleveurs : 30211.0
+Information: MaJ_Agregats : 566.0
+Information: MaJ_satisfaction_FP : 450.0
+Information: taxes ZP BM Justice : 7839.0
+Information: MaJ_ZP_et_preleveurs : 20628.0
+Information: Demenagement_FP : 876.0
+Information: MaJ_Agregats : 558.0
+Information: MaJ_satisfaction_FP : 467.0
+Information: taxes ZP Hte Justice : 5367.0
+Information: taxes ZP banaux : 9347.0
+Information: Demenagement_FP : 845.0
+Information: MaJ_Agregats : 496.0
+Information: MaJ_Agregats : 587.0
+Information: Demenagement_FP : 984.0
+Information: Demenagement_FP : 1442.0
+Information: taxes ZP Hte Justice : 5848.0
+Information: taxes ZP banaux : 5519.0
+Information: taxes ZP banaux : 6036.0
+Information: taxes ZP banaux : 16115.0
+Information: taxes ZP banaux : 7390.0
+Information: taxes ZP Hte Justice : 5297.0
+Information: taxes ZP Hte Justice : 4580.0
+Information: taxes ZP BM Justice : 9045.0
+Information: MaJ_ZP_et_preleveurs : 26764.0
+Information: taxes ZP BM Justice : 6140.0
+Information: MaJ_ZP_et_preleveurs : 19996.0
+Information: taxes ZP Hte Justice : 6651.0
+Information: taxes ZP BM Justice : 14793.0
+Information: MaJ_ZP_et_preleveurs : 30221.0
+Information: taxes ZP Hte Justice : 5999.0
+Information: taxes ZP BM Justice : 6361.0
+Information: MaJ_ZP_et_preleveurs : 21603.0
+Information: MaJ_satisfaction_FP : 570.0
+Information: MaJ_satisfaction_FP : 465.0
+Information: MaJ_satisfaction_FP : 472.0
+Information: MaJ_satisfaction_FP : 476.0
+Information: MaJ_Agregats : 475.0
+Information: taxes ZP BM Justice : 6719.0
+Information: MaJ_ZP_et_preleveurs : 30968.0
+Information: MaJ_Agregats : 472.0
+Information: MaJ_Agregats : 426.0
+Information: taxes ZP banaux : 8617.0
+Information: MaJ_satisfaction_FP : 460.0
+Information: MaJ_Agregats : 599.0
+Information: Demenagement_FP : 912.0
+Information: Demenagement_FP : 1014.0
+Information: Demenagement_FP : 1038.0
+Information: MaJ_Agregats : 454.0
+Information: Demenagement_FP : 803.0
+Information: taxes ZP BM Justice : 5520.0
+Information: MaJ_ZP_et_preleveurs : 20143.0
+Information: MaJ_satisfaction_FP : 486.0
+Information: taxes ZP banaux : 5185.0
+Information: Demenagement_FP : 1000.0
+Information: MaJ_Agregats : 581.0
+Information: taxes ZP banaux : 6563.0
+Information: Demenagement_FP : 950.0
+Information: taxes ZP banaux : 7036.0
+Information: taxes ZP BM Justice : 20142.0
+Information: MaJ_ZP_et_preleveurs : 50619.0
+Information: MaJ_satisfaction_FP : 454.0
+Information: taxes ZP BM Justice : 5563.0
+Information: MaJ_ZP_et_preleveurs : 18418.0
+Information: taxes ZP banaux : 9349.0
+Information: MaJ_satisfaction_FP : 478.0
+Information: MaJ_Agregats : 496.0
+Information: taxes ZP BM Justice : 8497.0
+Information: MaJ_ZP_et_preleveurs : 26132.0
+Information: taxes ZP Hte Justice : 6103.0
+Information: taxes ZP Hte Justice : 5660.0
+Information: MaJ_satisfaction_FP : 477.0
+Information: MaJ_Agregats : 546.0
+Information: taxes ZP Hte Justice : 6481.0
+Information: Demenagement_FP : 1165.0
+Information: MaJ_Agregats : 490.0
+Information: Demenagement_FP : 1083.0
+Information: taxes ZP Hte Justice : 6436.0
+Information: taxes ZP Hte Justice : 6105.0
+Information: Demenagement_FP : 816.0
+Information: taxes ZP Hte Justice : 5314.0
+Information: taxes ZP BM Justice : 8042.0
+Information: MaJ_ZP_et_preleveurs : 21256.0
+Information: MaJ_satisfaction_FP : 471.0
+Information: MaJ_Agregats : 612.0
+Information: Demenagement_FP : 860.0
+Information: taxes ZP banaux : 5765.0
+Information: taxes ZP banaux : 7203.0
+Information: taxes ZP BM Justice : 9452.0
+Information: MaJ_ZP_et_preleveurs : 28835.0
+Information: taxes ZP banaux : 6703.0
+Information: MaJ_satisfaction_FP : 499.0
+Information: taxes ZP banaux : 9188.0
+Information: taxes ZP Hte Justice : 5589.0
+Information: MaJ_Agregats : 446.0
+Information: taxes ZP banaux : 7878.0
+Information: Demenagement_FP : 838.0
+Information: taxes ZP BM Justice : 13978.0
+Information: MaJ_ZP_et_preleveurs : 28809.0
+Information: taxes ZP Hte Justice : 5693.0
+Information: taxes ZP Hte Justice : 6901.0
+Information: MaJ_satisfaction_FP : 466.0
+Information: taxes ZP BM Justice : 6036.0
+Information: MaJ_ZP_et_preleveurs : 20057.0
+Information: taxes ZP Hte Justice : 4610.0
+Information: MaJ_Agregats : 593.0
+Information: MaJ_satisfaction_FP : 476.0
+Information: Demenagement_FP : 1060.0
+Information: MaJ_Agregats : 457.0
+Information: Demenagement_FP : 1052.0
+Information: taxes ZP BM Justice : 6992.0
+Information: MaJ_ZP_et_preleveurs : 23044.0
+Information: taxes ZP BM Justice : 5237.0
+Information: MaJ_ZP_et_preleveurs : 20292.0
+Information: MaJ_satisfaction_FP : 507.0
+Information: MaJ_satisfaction_FP : 482.0
+Information: taxes ZP banaux : 7043.0
+Information: taxes ZP banaux : 15507.0
+Information: MaJ_Agregats : 525.0
+Information: MaJ_Agregats : 510.0
+Information: taxes ZP BM Justice : 8517.0
+Information: MaJ_ZP_et_preleveurs : 25967.0
+Information: Demenagement_FP : 1088.0
+Information: MaJ_satisfaction_FP : 618.0
+Information: Demenagement_FP : 1146.0
+Information: taxes ZP banaux : 7100.0
+Information: MaJ_Agregats : 472.0
+Information: Demenagement_FP : 858.0
+Information: taxes ZP banaux : 9223.0
+Information: taxes ZP Hte Justice : 6428.0
+Information: taxes ZP Hte Justice : 6203.0
+Information: taxes ZP BM Justice : 15139.0
+Information: MaJ_ZP_et_preleveurs : 30653.0
+Information: taxes ZP BM Justice : 6654.0
+Information: MaJ_ZP_et_preleveurs : 21803.0
+Information: MaJ_satisfaction_FP : 445.0
+Information: taxes ZP Hte Justice : 6050.0
+Information: MaJ_satisfaction_FP : 476.0
+Information: taxes ZP BM Justice : 6791.0
+Information: MaJ_ZP_et_preleveurs : 30624.0
+Information: MaJ_Agregats : 446.0
+Information: MaJ_satisfaction_FP : 467.0
+Information: MaJ_Agregats : 595.0
+Information: MaJ_Agregats : 457.0
+Information: taxes ZP Hte Justice : 5042.0
+Information: Demenagement_FP : 1175.0
+Information: Demenagement_FP : 882.0
+Information: Demenagement_FP : 1009.0
+Information: taxes ZP Hte Justice : 6056.0
+Information: taxes ZP Hte Justice : 5930.0
+Information: taxes ZP BM Justice : 9085.0
+Information: MaJ_ZP_et_preleveurs : 22929.0
+Information: taxes ZP banaux : 7017.0
+Information: MaJ_satisfaction_FP : 484.0
+Information: taxes ZP BM Justice : 8707.0
+Information: MaJ_ZP_et_preleveurs : 26848.0
+Information: MaJ_satisfaction_FP : 491.0
+Information: MaJ_Agregats : 478.0
+Information: MaJ_Agregats : 477.0
+Information: Demenagement_FP : 1001.0
+Information: taxes ZP banaux : 10115.0
+Information: taxes ZP banaux : 7493.0
+Information: taxes ZP banaux : 20029.0
+Information: Demenagement_FP : 830.0
+Information: taxes ZP banaux : 7771.0
+Information: taxes ZP Hte Justice : 5345.0
+Information: taxes ZP Hte Justice : 6366.0
+Information: taxes ZP Hte Justice : 6235.0
+Information: taxes ZP banaux : 7691.0
+Information: taxes ZP banaux : 8556.0
+Information: taxes ZP Hte Justice : 4730.0
+Information: taxes ZP BM Justice : 7302.0
+Information: MaJ_ZP_et_preleveurs : 23719.0
+Information: taxes ZP BM Justice : 5250.0
+Information: MaJ_ZP_et_preleveurs : 20039.0
+Information: MaJ_satisfaction_FP : 478.0
+Information: MaJ_satisfaction_FP : 492.0
+Information: MaJ_Agregats : 505.0
+Information: taxes ZP Hte Justice : 5783.0
+Information: MaJ_Agregats : 541.0
+Information: taxes ZP BM Justice : 9690.0
+Information: MaJ_ZP_et_preleveurs : 29823.0
+Information: taxes ZP banaux : 6784.0
+Information: taxes ZP banaux : 6830.0
+Information: Demenagement_FP : 910.0
+Information: MaJ_satisfaction_FP : 504.0
+Information: Demenagement_FP : 970.0
+Information: MaJ_Agregats : 423.0
+Information: taxes ZP BM Justice : 14276.0
+Information: MaJ_ZP_et_preleveurs : 29248.0
+Information: Demenagement_FP : 857.0
+Information: taxes ZP BM Justice : 7749.0
+Information: MaJ_ZP_et_preleveurs : 24987.0
+Information: MaJ_satisfaction_FP : 610.0
+Information: MaJ_satisfaction_FP : 499.0
+Information: MaJ_Agregats : 427.0
+Information: taxes ZP BM Justice : 8176.0
+Information: MaJ_ZP_et_preleveurs : 24764.0
+Information: Demenagement_FP : 1221.0
+Information: MaJ_Agregats : 551.0
+Information: MaJ_satisfaction_FP : 484.0
+Information: taxes ZP banaux : 7932.0
+Information: Demenagement_FP : 1037.0
+Information: MaJ_Agregats : 498.0
+Information: taxes ZP BM Justice : 6263.0
+Information: MaJ_ZP_et_preleveurs : 20958.0
+Information: Demenagement_FP : 961.0
+Information: MaJ_satisfaction_FP : 597.0
+Information: taxes ZP Hte Justice : 4930.0
+Information: MaJ_Agregats : 587.0
+Information: taxes ZP Hte Justice : 5796.0
+Information: taxes ZP banaux : 9296.0
+Information: taxes ZP BM Justice : 19082.0
+Information: MaJ_ZP_et_preleveurs : 49585.0
+Information: Demenagement_FP : 852.0
+Information: MaJ_satisfaction_FP : 459.0
+Information: taxes ZP banaux : 16435.0
+Information: MaJ_Agregats : 503.0
+Information: Demenagement_FP : 1140.0
+Information: taxes ZP Hte Justice : 6541.0
+Information: taxes ZP Hte Justice : 6015.0
+Information: taxes ZP BM Justice : 9152.0
+Information: MaJ_ZP_et_preleveurs : 24135.0
+Information: taxes ZP Hte Justice : 5798.0
+Information: MaJ_satisfaction_FP : 493.0
+Information: taxes ZP Hte Justice : 5967.0
+Information: taxes ZP banaux : 8251.0
+Information: MaJ_Agregats : 502.0
+Information: taxes ZP banaux : 7386.0
+Information: taxes ZP BM Justice : 16342.0
+Information: MaJ_ZP_et_preleveurs : 31409.0
+Information: MaJ_satisfaction_FP : 450.0
+Information: Demenagement_FP : 931.0
+Information: taxes ZP BM Justice : 6940.0
+Information: MaJ_ZP_et_preleveurs : 31611.0
+Information: taxes ZP Hte Justice : 5492.0
+Information: taxes ZP BM Justice : 8644.0
+Information: MaJ_ZP_et_preleveurs : 26915.0
+Information: MaJ_Agregats : 430.0
+Information: MaJ_satisfaction_FP : 467.0
+Information: MaJ_satisfaction_FP : 488.0
+Information: Demenagement_FP : 970.0
+Information: MaJ_Agregats : 492.0
+Information: taxes ZP banaux : 6594.0
+Information: MaJ_Agregats : 456.0
+Information: Demenagement_FP : 953.0
+Information: Demenagement_FP : 941.0
+Information: taxes ZP BM Justice : 5099.0
+Information: MaJ_ZP_et_preleveurs : 20102.0
+Information: MaJ_satisfaction_FP : 487.0
+Information: taxes ZP banaux : 10246.0
+Information: taxes ZP Hte Justice : 6903.0
+Information: MaJ_Agregats : 558.0
+Information: taxes ZP BM Justice : 6791.0
+Information: MaJ_ZP_et_preleveurs : 22727.0
+Information: taxes ZP banaux : 8306.0
+Information: MaJ_satisfaction_FP : 540.0
+Information: taxes ZP Hte Justice : 4627.0
+Information: Demenagement_FP : 938.0
+Information: taxes ZP banaux : 6783.0
+Information: taxes ZP banaux : 9057.0
+Information: MaJ_Agregats : 535.0
+Information: Demenagement_FP : 876.0
+Information: taxes ZP Hte Justice : 6135.0
+Information: taxes ZP Hte Justice : 6370.0
+Information: taxes ZP Hte Justice : 5811.0
+Information: taxes ZP BM Justice : 6212.0
+Information: MaJ_ZP_et_preleveurs : 20916.0
+Information: taxes ZP Hte Justice : 4706.0
+Information: MaJ_satisfaction_FP : 500.0
+Information: taxes ZP BM Justice : 8328.0
+Information: MaJ_ZP_et_preleveurs : 24478.0
+Information: taxes ZP banaux : 7834.0
+Information: taxes ZP BM Justice : 7576.0
+Information: MaJ_ZP_et_preleveurs : 26099.0
+Information: MaJ_satisfaction_FP : 490.0
+Information: taxes ZP BM Justice : 9488.0
+Information: MaJ_ZP_et_preleveurs : 29762.0
+Information: MaJ_Agregats : 618.0
+Information: MaJ_satisfaction_FP : 495.0
+Information: MaJ_satisfaction_FP : 508.0
+Information: MaJ_Agregats : 496.0
+Information: Demenagement_FP : 872.0
+Information: MaJ_Agregats : 520.0
+Information: MaJ_Agregats : 421.0
+Information: Demenagement_FP : 989.0
+Information: taxes ZP banaux : 7350.0
+Information: taxes ZP Hte Justice : 5933.0
+Information: Demenagement_FP : 904.0
+Information: taxes ZP BM Justice : 15518.0
+Information: MaJ_ZP_et_preleveurs : 29890.0
+Information: Demenagement_FP : 1159.0
+Information: MaJ_satisfaction_FP : 600.0
+Information: MaJ_Agregats : 412.0
+Information: Demenagement_FP : 986.0
+Information: taxes ZP banaux : 7808.0
+Information: taxes ZP banaux : 8985.0
+Information: taxes ZP BM Justice : 9046.0
+Information: MaJ_ZP_et_preleveurs : 23694.0
+Information: taxes ZP Hte Justice : 5530.0
+Information: MaJ_satisfaction_FP : 496.0
+Information: taxes ZP banaux : 18903.0
+Information: taxes ZP banaux : 7249.0
+Information: taxes ZP Hte Justice : 5404.0
+Information: MaJ_Agregats : 514.0
+Information: taxes ZP banaux : 14781.0
+Information: Demenagement_FP : 902.0
+Information: taxes ZP BM Justice : 5192.0
+Information: MaJ_ZP_et_preleveurs : 19613.0
+Information: taxes ZP Hte Justice : 5954.0
+Information: MaJ_satisfaction_FP : 492.0
+Information: taxes ZP Hte Justice : 6475.0
+Information: taxes ZP Hte Justice : 5821.0
+Information: MaJ_Agregats : 609.0
+Information: Demenagement_FP : 881.0
+Information: taxes ZP BM Justice : 8273.0
+Information: MaJ_ZP_et_preleveurs : 26250.0
+Information: MaJ_satisfaction_FP : 501.0
+Information: taxes ZP BM Justice : 6735.0
+Information: MaJ_ZP_et_preleveurs : 22551.0
+Information: taxes ZP banaux : 7285.0
+Information: MaJ_Agregats : 485.0
+Information: MaJ_satisfaction_FP : 503.0
+Information: taxes ZP banaux : 7539.0
+Information: taxes ZP BM Justice : 6516.0
+Information: MaJ_ZP_et_preleveurs : 29668.0
+Information: Demenagement_FP : 853.0
+Information: taxes ZP Hte Justice : 4513.0
+Information: MaJ_satisfaction_FP : 481.0
+Information: MaJ_Agregats : 490.0
+Information: Demenagement_FP : 894.0
+Information: MaJ_Agregats : 453.0
+Information: taxes ZP BM Justice : 17100.0
+Information: MaJ_ZP_et_preleveurs : 32579.0
+Information: MaJ_satisfaction_FP : 444.0
+Information: taxes ZP banaux : 7112.0
+Information: Demenagement_FP : 1121.0
+Information: MaJ_Agregats : 434.0
+Information: taxes ZP banaux : 9010.0
+Information: taxes ZP Hte Justice : 4553.0
+Information: Demenagement_FP : 1096.0
+Information: taxes ZP banaux : 9880.0
+Information: taxes ZP BM Justice : 6362.0
+Information: MaJ_ZP_et_preleveurs : 21704.0
+Information: MaJ_satisfaction_FP : 633.0
+Information: MaJ_Agregats : 533.0
+Information: taxes ZP BM Justice : 7880.0
+Information: MaJ_ZP_et_preleveurs : 23033.0
+Information: Demenagement_FP : 844.0
+Information: MaJ_satisfaction_FP : 490.0
+Information: taxes ZP banaux : 8141.0
+Information: taxes ZP Hte Justice : 5700.0
+Information: MaJ_Agregats : 537.0
+Information: taxes ZP BM Justice : 17814.0
+Information: MaJ_ZP_et_preleveurs : 47309.0
+Information: Demenagement_FP : 922.0
+Information: taxes ZP Hte Justice : 5993.0
+Information: MaJ_satisfaction_FP : 468.0
+Information: taxes ZP Hte Justice : 5972.0
+Information: taxes ZP banaux : 7447.0
+Information: taxes ZP BM Justice : 7692.0
+Information: MaJ_ZP_et_preleveurs : 26264.0
+Information: MaJ_Agregats : 529.0
+Information: MaJ_satisfaction_FP : 495.0
+Information: Demenagement_FP : 943.0
+Information: taxes ZP Hte Justice : 6152.0
+Information: MaJ_Agregats : 538.0
+Information: Demenagement_FP : 908.0
+Information: taxes ZP BM Justice : 9070.0
+Information: MaJ_ZP_et_preleveurs : 28792.0
+Information: MaJ_satisfaction_FP : 516.0
+Information: MaJ_Agregats : 423.0
+Information: taxes ZP BM Justice : 5095.0
+Information: MaJ_ZP_et_preleveurs : 19291.0
+Information: taxes ZP Hte Justice : 5640.0
+Information: MaJ_satisfaction_FP : 498.0
+Information: Demenagement_FP : 916.0
+Information: MaJ_Agregats : 532.0
+Information: taxes ZP banaux : 8771.0
+Information: taxes ZP Hte Justice : 5804.0
+Information: taxes ZP banaux : 7884.0
+Information: taxes ZP BM Justice : 16296.0
+Information: MaJ_ZP_et_preleveurs : 31042.0
+Information: Demenagement_FP : 1033.0
+Information: MaJ_satisfaction_FP : 454.0
+Information: taxes ZP BM Justice : 10719.0
+Information: MaJ_ZP_et_preleveurs : 25526.0
+Information: taxes ZP banaux : 7109.0
+Information: MaJ_satisfaction_FP : 503.0
+Information: MaJ_Agregats : 434.0
+Information: Demenagement_FP : 1001.0
+Information: MaJ_Agregats : 585.0
+Information: Demenagement_FP : 914.0
+Information: taxes ZP Hte Justice : 7008.0
+Information: taxes ZP Hte Justice : 6034.0
+Information: taxes ZP banaux : 7886.0
+Information: taxes ZP Hte Justice : 4453.0
+Information: taxes ZP BM Justice : 7007.0
+Information: MaJ_ZP_et_preleveurs : 23723.0
+Information: taxes ZP banaux : 7288.0
+Information: MaJ_satisfaction_FP : 524.0
+Information: taxes ZP Hte Justice : 6391.0
+Information: MaJ_Agregats : 449.0
+Information: taxes ZP BM Justice : 9052.0
+Information: MaJ_ZP_et_preleveurs : 26690.0
+Information: taxes ZP banaux : 16272.0
+Information: MaJ_satisfaction_FP : 508.0
+Information: Demenagement_FP : 876.0
+Information: MaJ_Agregats : 510.0
+Information: taxes ZP Hte Justice : 5826.0
+Information: taxes ZP Hte Justice : 4629.0
+Information: Demenagement_FP : 833.0
+Information: taxes ZP BM Justice : 6752.0
+Information: MaJ_ZP_et_preleveurs : 22730.0
+Information: MaJ_satisfaction_FP : 553.0
+Information: taxes ZP banaux : 8751.0
+Information: taxes ZP banaux : 7495.0
+Information: taxes ZP BM Justice : 7571.0
+Information: MaJ_ZP_et_preleveurs : 22720.0
+Information: MaJ_Agregats : 590.0
+Information: MaJ_satisfaction_FP : 497.0
+Information: Demenagement_FP : 878.0
+Information: taxes ZP BM Justice : 7401.0
+Information: MaJ_ZP_et_preleveurs : 31736.0
+Information: MaJ_Agregats : 581.0
+Information: MaJ_satisfaction_FP : 490.0
+Information: Demenagement_FP : 898.0
+Information: taxes ZP banaux : 6827.0
+Information: MaJ_Agregats : 450.0
+Information: taxes ZP banaux : 9700.0
+Information: taxes ZP Hte Justice : 6169.0
+Information: taxes ZP banaux : 8233.0
+Information: Demenagement_FP : 985.0
+Information: taxes ZP BM Justice : 17983.0
+Information: MaJ_ZP_et_preleveurs : 33151.0
+Information: taxes ZP BM Justice : 5018.0
+Information: MaJ_ZP_et_preleveurs : 18917.0
+Information: MaJ_satisfaction_FP : 460.0
+Information: taxes ZP Hte Justice : 5754.0
+Information: MaJ_satisfaction_FP : 498.0
+Information: MaJ_Agregats : 381.0
+Information: MaJ_Agregats : 505.0
+Information: taxes ZP BM Justice : 7959.0
+Information: MaJ_ZP_et_preleveurs : 26295.0
+Information: Demenagement_FP : 854.0
+Information: Demenagement_FP : 1393.0
+Information: MaJ_satisfaction_FP : 498.0
+Information: taxes ZP banaux : 18507.0
+Information: MaJ_Agregats : 528.0
+Information: taxes ZP Hte Justice : 5666.0
+Information: Demenagement_FP : 848.0
+Information: taxes ZP Hte Justice : 5742.0
+Information: taxes ZP banaux : 8430.0
+Information: taxes ZP Hte Justice : 5920.0
+Information: taxes ZP BM Justice : 9831.0
+Information: MaJ_ZP_et_preleveurs : 29322.0
+Information: MaJ_satisfaction_FP : 517.0
+Information: taxes ZP Hte Justice : 4802.0
+Information: taxes ZP banaux : 8976.0
+Information: taxes ZP BM Justice : 10337.0
+Information: MaJ_ZP_et_preleveurs : 25330.0
+Information: MaJ_Agregats : 449.0
+Information: MaJ_satisfaction_FP : 513.0
+Information: Demenagement_FP : 936.0
+Information: taxes ZP Hte Justice : 6825.0
+Information: MaJ_Agregats : 499.0
+Information: taxes ZP banaux : 7756.0
+Information: Demenagement_FP : 893.0
+Information: taxes ZP banaux : 7005.0
+Information: taxes ZP Hte Justice : 6202.0
+Information: taxes ZP BM Justice : 7332.0
+Information: MaJ_ZP_et_preleveurs : 24616.0
+Information: taxes ZP BM Justice : 17009.0
+Information: MaJ_ZP_et_preleveurs : 31501.0
+Information: MaJ_satisfaction_FP : 553.0
+Information: MaJ_satisfaction_FP : 467.0
+Information: MaJ_Agregats : 566.0
+Information: MaJ_Agregats : 406.0
+Information: taxes ZP banaux : 8090.0
+Information: Demenagement_FP : 908.0
+Information: Demenagement_FP : 1421.0
+Information: taxes ZP BM Justice : 8638.0
+Information: MaJ_ZP_et_preleveurs : 26619.0
+Information: taxes ZP Hte Justice : 4437.0
+Information: MaJ_satisfaction_FP : 507.0
+Information: taxes ZP BM Justice : 7256.0
+Information: MaJ_ZP_et_preleveurs : 23296.0
+Information: taxes ZP BM Justice : 7375.0
+Information: MaJ_ZP_et_preleveurs : 22261.0
+Information: MaJ_Agregats : 510.0
+Information: MaJ_satisfaction_FP : 570.0
+Simulation duration: 323556ms
+Information: MaJ_satisfaction_FP : 506.0
+Information: Demenagement_FP : 815.0
+Information: taxes ZP Hte Justice : 6481.0
+Information: taxes ZP banaux : 9772.0
+Information: taxes ZP BM Justice : 17504.0
+Information: MaJ_ZP_et_preleveurs : 46822.0
+Information: MaJ_Agregats : 542.0
+Information: MaJ_satisfaction_FP : 455.0
+Information: taxes ZP BM Justice : 5010.0
+Information: MaJ_ZP_et_preleveurs : 19842.0
+Information: Demenagement_FP : 871.0
+Information: taxes ZP banaux : 15005.0
+Information: taxes ZP banaux : 8243.0
+Information: MaJ_Agregats : 511.0
+Information: MaJ_satisfaction_FP : 522.0
+Simulation duration: 327078ms
+Information: Demenagement_FP : 904.0
+Information: taxes ZP Hte Justice : 6442.0
+Information: taxes ZP Hte Justice : 6133.0
+Information: taxes ZP banaux : 8338.0
+Information: taxes ZP BM Justice : 6998.0
+Information: MaJ_ZP_et_preleveurs : 29996.0
+Information: taxes ZP Hte Justice : 5840.0
+Information: MaJ_satisfaction_FP : 493.0
+Information: taxes ZP Hte Justice : 5959.0
+Information: taxes ZP BM Justice : 7906.0
+Information: MaJ_ZP_et_preleveurs : 25729.0
+Information: taxes ZP banaux : 10086.0
+Information: MaJ_Agregats : 464.0
+Information: MaJ_satisfaction_FP : 513.0
+Information: Demenagement_FP : 947.0
+Information: MaJ_Agregats : 508.0
+Information: Demenagement_FP : 935.0
+Information: taxes ZP Hte Justice : 7004.0
+Information: taxes ZP banaux : 8431.0
+Information: taxes ZP banaux : 9270.0
+Information: taxes ZP BM Justice : 10921.0
+Information: MaJ_ZP_et_preleveurs : 25822.0
+Information: taxes ZP banaux : 7816.0
+Information: MaJ_satisfaction_FP : 528.0
+Information: taxes ZP banaux : 9541.0
+Information: taxes ZP Hte Justice : 5773.0
+Information: MaJ_Agregats : 491.0
+Information: taxes ZP BM Justice : 9446.0
+Information: MaJ_ZP_et_preleveurs : 29413.0
+Information: Demenagement_FP : 924.0
+Information: MaJ_satisfaction_FP : 521.0
+Information: MaJ_Agregats : 461.0
+Information: taxes ZP BM Justice : 7849.0
+Information: MaJ_ZP_et_preleveurs : 25087.0
+Information: taxes ZP Hte Justice : 6016.0
+Information: taxes ZP BM Justice : 22008.0
+Information: MaJ_ZP_et_preleveurs : 40492.0
+Information: Demenagement_FP : 917.0
+Information: MaJ_satisfaction_FP : 571.0
+Information: MaJ_satisfaction_FP : 488.0
+Simulation duration: 346244ms
+Information: MaJ_Agregats : 426.0
+Information: Demenagement_FP : 1155.0
+Information: taxes ZP BM Justice : 7773.0
+Information: MaJ_ZP_et_preleveurs : 23611.0
+Information: MaJ_satisfaction_FP : 518.0
+Information: taxes ZP Hte Justice : 4398.0
+Information: MaJ_Agregats : 529.0
+Information: taxes ZP BM Justice : 8655.0
+Information: MaJ_ZP_et_preleveurs : 27213.0
+Information: Demenagement_FP : 920.0
+Information: MaJ_satisfaction_FP : 632.0
+Information: MaJ_Agregats : 496.0
+Information: Demenagement_FP : 832.0
+Information: taxes ZP banaux : 7963.0
+Information: taxes ZP banaux : 12928.0
+Information: taxes ZP banaux : 18367.0
+Information: taxes ZP Hte Justice : 6441.0
+Information: taxes ZP Hte Justice : 6533.0
+Information: taxes ZP banaux : 8168.0
+Information: taxes ZP BM Justice : 21102.0
+Information: MaJ_ZP_et_preleveurs : 38627.0
+Information: taxes ZP Hte Justice : 6030.0
+Information: MaJ_satisfaction_FP : 495.0
+Information: MaJ_Agregats : 403.0
+Information: taxes ZP BM Justice : 6274.0
+Information: MaJ_ZP_et_preleveurs : 26898.0
+Information: taxes ZP BM Justice : 8319.0
+Information: MaJ_ZP_et_preleveurs : 25531.0
+Information: Demenagement_FP : 1152.0
+Information: taxes ZP Hte Justice : 5721.0
+Information: MaJ_satisfaction_FP : 510.0
+Information: MaJ_satisfaction_FP : 525.0
+Simulation duration: 365351ms
+Information: MaJ_Agregats : 494.0
+Information: Demenagement_FP : 894.0
+Information: taxes ZP banaux : 8189.0
+Information: taxes ZP banaux : 10588.0
+Information: taxes ZP banaux : 8618.0
+Information: taxes ZP BM Justice : 10833.0
+Information: MaJ_ZP_et_preleveurs : 25751.0
+Information: taxes ZP Hte Justice : 6023.0
+Information: MaJ_satisfaction_FP : 544.0
+Simulation duration: 372058ms
+Information: taxes ZP banaux : 9795.0
+Information: taxes ZP Hte Justice : 5649.0
+Information: taxes ZP BM Justice : 17260.0
+Information: MaJ_ZP_et_preleveurs : 46294.0
+Information: MaJ_satisfaction_FP : 465.0
+Information: MaJ_Agregats : 610.0
+Information: Demenagement_FP : 976.0
+Information: taxes ZP BM Justice : 9516.0
+Information: MaJ_ZP_et_preleveurs : 29998.0
+Information: taxes ZP BM Justice : 7952.0
+Information: MaJ_ZP_et_preleveurs : 24880.0
+Information: MaJ_satisfaction_FP : 531.0
+Information: MaJ_satisfaction_FP : 532.0
+Information: MaJ_Agregats : 436.0
+Information: taxes ZP banaux : 7885.0
+Information: MaJ_Agregats : 536.0
+Information: Demenagement_FP : 1035.0
+Information: Demenagement_FP : 863.0
+Information: taxes ZP BM Justice : 9366.0
+Information: MaJ_ZP_et_preleveurs : 28052.0
+Information: MaJ_satisfaction_FP : 524.0
+Information: taxes ZP BM Justice : 18277.0
+Information: MaJ_ZP_et_preleveurs : 34919.0
+Information: MaJ_Agregats : 500.0
+Information: MaJ_satisfaction_FP : 469.0
+Information: taxes ZP banaux : 12078.0
+Information: Demenagement_FP : 928.0
+Information: MaJ_Agregats : 465.0
+Information: Demenagement_FP : 1056.0
+Information: taxes ZP Hte Justice : 7032.0
+Information: taxes ZP Hte Justice : 6179.0
+Information: taxes ZP Hte Justice : 6443.0
+Information: taxes ZP BM Justice : 5967.0
+Information: MaJ_ZP_et_preleveurs : 25608.0
+Information: MaJ_satisfaction_FP : 522.0
+Information: MaJ_Agregats : 480.0
+Information: Demenagement_FP : 900.0
+Information: taxes ZP Hte Justice : 5739.0
+Information: taxes ZP Hte Justice : 6712.0
+Information: taxes ZP BM Justice : 17342.0
+Information: MaJ_ZP_et_preleveurs : 33100.0
+Information: MaJ_satisfaction_FP : 477.0
+Information: taxes ZP banaux : 8829.0
+Information: MaJ_Agregats : 441.0
+Information: Demenagement_FP : 1236.0
+Information: taxes ZP banaux : 10700.0
+Information: taxes ZP Hte Justice : 5739.0
+Information: taxes ZP banaux : 10346.0
+Information: taxes ZP banaux : 17475.0
+Information: taxes ZP BM Justice : 8110.0
+Information: MaJ_ZP_et_preleveurs : 25201.0
+Information: taxes ZP banaux : 9938.0
+Information: MaJ_satisfaction_FP : 554.0
+Simulation duration: 404726ms
+Information: taxes ZP Hte Justice : 6235.0
+Information: taxes ZP BM Justice : 10309.0
+Information: MaJ_ZP_et_preleveurs : 30909.0
+Information: MaJ_satisfaction_FP : 539.0
+Information: MaJ_Agregats : 446.0
+Information: Demenagement_FP : 1059.0
+Information: taxes ZP banaux : 12021.0
+Information: taxes ZP BM Justice : 9659.0
+Information: MaJ_ZP_et_preleveurs : 28886.0
+Information: MaJ_satisfaction_FP : 530.0
+Simulation duration: 416475ms
+Information: taxes ZP banaux : 9680.0
+Information: taxes ZP BM Justice : 6817.0
+Information: MaJ_ZP_et_preleveurs : 26608.0
+Information: MaJ_satisfaction_FP : 528.0
+Information: taxes ZP BM Justice : 16584.0
+Information: MaJ_ZP_et_preleveurs : 44903.0
+Information: MaJ_satisfaction_FP : 465.0
+Information: MaJ_Agregats : 468.0
+Information: taxes ZP Hte Justice : 6451.0
+Information: MaJ_Agregats : 539.0
+Information: Demenagement_FP : 919.0
+Information: Demenagement_FP : 1073.0
+Information: taxes ZP BM Justice : 19879.0
+Information: MaJ_ZP_et_preleveurs : 38460.0
+Information: MaJ_satisfaction_FP : 470.0
+Information: MaJ_Agregats : 490.0
+Information: Demenagement_FP : 1091.0
+Information: taxes ZP Hte Justice : 5696.0
+Information: taxes ZP banaux : 11386.0
+Information: taxes ZP Hte Justice : 6931.0
+Information: taxes ZP BM Justice : 18853.0
+Information: MaJ_ZP_et_preleveurs : 36615.0
+Information: MaJ_satisfaction_FP : 480.0
+Information: taxes ZP Hte Justice : 6297.0
+Information: MaJ_Agregats : 448.0
+Information: Demenagement_FP : 1092.0
+Information: taxes ZP banaux : 12598.0
+Information: taxes ZP BM Justice : 10633.0
+Information: MaJ_ZP_et_preleveurs : 31918.0
+Information: MaJ_satisfaction_FP : 554.0
+Simulation duration: 446904ms
+Information: taxes ZP Hte Justice : 5859.0
+Information: taxes ZP banaux : 10315.0
+Information: taxes ZP BM Justice : 6554.0
+Information: MaJ_ZP_et_preleveurs : 26770.0
+Information: MaJ_satisfaction_FP : 558.0
+Simulation duration: 452550ms
+Information: taxes ZP banaux : 17958.0
+Information: taxes ZP banaux : 9958.0
+Information: taxes ZP BM Justice : 17912.0
+Information: MaJ_ZP_et_preleveurs : 36448.0
+Information: MaJ_satisfaction_FP : 478.0
+Information: MaJ_Agregats : 408.0
+Information: Demenagement_FP : 1058.0
+Information: taxes ZP BM Justice : 15877.0
+Information: MaJ_ZP_et_preleveurs : 44520.0
+Information: MaJ_satisfaction_FP : 473.0
+Information: MaJ_Agregats : 645.0
+Information: Demenagement_FP : 961.0
+Information: taxes ZP BM Justice : 16860.0
+Information: MaJ_ZP_et_preleveurs : 34530.0
+Information: MaJ_satisfaction_FP : 487.0
+Information: MaJ_Agregats : 403.0
+Information: taxes ZP Hte Justice : 6176.0
+Information: Demenagement_FP : 1167.0
+Information: taxes ZP Hte Justice : 6862.0
+Information: taxes ZP Hte Justice : 5590.0
+Information: taxes ZP banaux : 9648.0
+Information: taxes ZP banaux : 9203.0
+Information: taxes ZP banaux : 15459.0
+Information: taxes ZP BM Justice : 18723.0
+Information: MaJ_ZP_et_preleveurs : 36467.0
+Information: MaJ_satisfaction_FP : 494.0
+Information: MaJ_Agregats : 417.0
+Information: Demenagement_FP : 1021.0
+Information: taxes ZP BM Justice : 17958.0
+Information: MaJ_ZP_et_preleveurs : 34606.0
+Information: MaJ_satisfaction_FP : 501.0
+Information: taxes ZP BM Justice : 13883.0
+Information: MaJ_ZP_et_preleveurs : 39926.0
+Information: MaJ_satisfaction_FP : 480.0
+Information: MaJ_Agregats : 409.0
+Information: MaJ_Agregats : 793.0
+Information: Demenagement_FP : 1242.0
+Information: taxes ZP Hte Justice : 5682.0
+Information: Demenagement_FP : 924.0
+Information: taxes ZP Hte Justice : 5196.0
+Information: taxes ZP banaux : 8057.0
+Information: taxes ZP Hte Justice : 6856.0
+Information: taxes ZP banaux : 7684.0
+Information: taxes ZP BM Justice : 14682.0
+Information: MaJ_ZP_et_preleveurs : 30328.0
+Information: MaJ_satisfaction_FP : 510.0
+Simulation duration: 539021ms
+Information: taxes ZP banaux : 15995.0
+Information: taxes ZP BM Justice : 14152.0
+Information: MaJ_ZP_et_preleveurs : 28868.0
+Information: MaJ_satisfaction_FP : 517.0
+Simulation duration: 544943ms
+Information: taxes ZP BM Justice : 13325.0
+Information: MaJ_ZP_et_preleveurs : 40011.0
+Information: MaJ_satisfaction_FP : 488.0
+Information: MaJ_Agregats : 761.0
+Information: Demenagement_FP : 866.0
+Information: taxes ZP Hte Justice : 6888.0
+Information: taxes ZP banaux : 16517.0
+Information: taxes ZP BM Justice : 14093.0
+Information: MaJ_ZP_et_preleveurs : 41196.0
+Information: MaJ_satisfaction_FP : 506.0
+Information: MaJ_Agregats : 687.0
+Information: Demenagement_FP : 891.0
+Information: taxes ZP Hte Justice : 6952.0
+Information: taxes ZP banaux : 17687.0
+Information: taxes ZP BM Justice : 15432.0
+Information: MaJ_ZP_et_preleveurs : 43832.0
+Information: MaJ_satisfaction_FP : 590.0
+Information: MaJ_Agregats : 573.0
+Information: Demenagement_FP : 913.0
+Information: taxes ZP Hte Justice : 7295.0
+Information: taxes ZP banaux : 17923.0
+Information: taxes ZP BM Justice : 15808.0
+Information: MaJ_ZP_et_preleveurs : 44713.0
+Information: MaJ_satisfaction_FP : 567.0
+Simulation duration: 694861ms
