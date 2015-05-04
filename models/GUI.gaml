@@ -191,4 +191,14 @@ experiment base_experiment type: gui multicore: true {
     		}
     	}	
 	}
+experiment Exp_Vide type: gui multicore: true {
+	user_command blob {
+		geometry test_poly <- polygon([{3,5}, {5,6},{1,4}]);
+		write test_poly;
+		write test_poly.points;
+		write (machine_time as_date "%h%m%s");
+		write (as_time(machine_time));
+		
+	}
+	
 }
