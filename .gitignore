@@ -1,3 +1,4 @@
 models/exports/*
 *.docx
 *.fuse*
+outputs/*
