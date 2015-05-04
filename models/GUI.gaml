@@ -9,7 +9,9 @@ model t8
 // L'ordre compte...
 import "run.gaml"
 	
-experiment base_experiment type: gui multicore: true {
+experiment Exp_Graphique type: gui multicore: true {
+	
+	parameter "Enregistrer sorties ?" var: save_outputs category: "Simulation";
 	
 	parameter "Année début simulation" var: debut_simulation category: "Simulation";
 	parameter "Année fin simulation" var: fin_simulation category: "Simulation";
@@ -191,6 +193,10 @@ experiment base_experiment type: gui multicore: true {
     		}
     	}	
 	}
+}
+
+
+
 experiment Exp_Vide type: gui multicore: true {
 	user_command blob {
 		geometry test_poly <- polygon([{3,5}, {5,6},{1,4}]);

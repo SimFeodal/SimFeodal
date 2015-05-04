@@ -8,6 +8,7 @@ model t8
 
 import "init.gaml"
 import "global.gaml"
+import "outputs.gaml"
 import "Agents/Agregats.gaml"
 import "Agents/Foyers_Paysans.gaml"
 import "Agents/Chateaux.gaml"
@@ -15,6 +16,7 @@ import "Agents/Eglises.gaml"
 import "Agents/Seigneurs.gaml"
 import "Agents/Attracteurs.gaml"
 import "Agents/Zones_Prelevement.gaml"
+
 
 global schedules: list(world) + list(Attracteurs) + list(Agregats) + list(Foyers_Paysans) + list(Chateaux) + list(Eglises) + list(Seigneurs){
     
@@ -139,6 +141,18 @@ global schedules: list(world) + list(Attracteurs) + list(Agregats) + list(Foyers
 		}
 	}
 	
+	reflex save_data when: save_outputs {
+		float t <- machine_time;
+		do save_Parameters;
+		do save_FP;
+		do save_Agregats;
+		do save_ZP;
+		do save_Chateaux;
+		do save_Seigneurs;
+		do save_Eglises;
+		do save_Paroisses;
+		write 'Output FP data : ' + string(machine_time - t);
+	}
 	
 	reflex fin_simulation {
 		if (Annee >= fin_simulation) {do pause;}
