@@ -29,13 +29,14 @@ global {
    		loop ancienAgregat over: Agregats {
    			bool encore_agregat <- false;
    			loop nouvelAgregat over: agregats_detectees {
+   				/* 
    				list compoAncien <- (ancienAgregat.fp_agregat collect int(each)) sort_by (each);
    				list compoNouveau <- (nouvelAgregat collect int(each)) sort_by (each);
    				if (compoAncien correlation compoNouveau > 0.5){
    					write "Ancien : " + string(compoAncien);
    					write "Nouveau : " + string(compoNouveau);
    					write compoAncien correlation compoNouveau;
-   				}
+   				}*/
    				//
    				//
    				//write ((ancienAgregat.fp_agregat collect int(each.name)) sort_by (each)) correlation ((nouvelAgregat collect int(each.name)) sort_by (each));
@@ -65,7 +66,7 @@ global {
 				ask (Chateaux where (each.monAgregat = ancienAgregat)) {set monAgregat <- nil;}	   				
    			}
    		}
-   		loop nouvel_agregat over: agregats_detectees{
+   		loop nouvel_agregat over: agregats_detectees {
    			create Agregats {
    				set fp_agregat <- list<Foyers_Paysans>(nouvel_agregat);
    				ask fp_agregat {
