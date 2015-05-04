@@ -141,6 +141,6 @@ global schedules: list(world) + list(Attracteurs) + list(Agregats) + list(Foyers
 	
 	
 	reflex fin_simulation {
-		if (Annee >= fin_simulation) {ask world {do halt;}}
+		if (Annee >= fin_simulation) {do pause;}
 	}
 }
