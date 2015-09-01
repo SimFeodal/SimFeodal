@@ -143,8 +143,9 @@ global {
 			to: Paroisses_file type: "csv";	
 		}
 	}
-	
-	map<string, string> dbParams <- ['dbtype'::'sqlite', 'database'::'../includes/output.db'];
+}	
+/*
+map<string, string> dbParams <- ['dbtype'::'sqlite', 'database'::'../includes/output.db'];
 	
 	action connectDB {
 		create agentDB number: 1 {
@@ -169,4 +170,4 @@ entities {
 	species agentDB parent: AgentDB {
 	
 	}	
-}
+}*/

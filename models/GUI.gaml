@@ -10,7 +10,7 @@ model t8
 import "run.gaml"
 	
 experiment Exp_Graphique type: gui multicore: true {
-	
+	float seed <-  1000.0;
 	parameter "Enregistrer sorties ?" var: save_outputs category: "Simulation";
 	
 	parameter "Année début simulation" var: debut_simulation category: "Simulation";
