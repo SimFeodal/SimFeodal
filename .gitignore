@@ -2,3 +2,5 @@ models/exports/*
 *.docx
 *.fuse*
 outputs/*
+*.project
+*.settings
