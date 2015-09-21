@@ -76,7 +76,7 @@ global {
 	int nb_seigneurs_a_creer_total <- nombre_seigneurs_objectif - (nombre_grands_seigneurs + nombre_petits_seigneurs);
 	int nb_moyen_petits_seigneurs_par_tour <- round(nb_seigneurs_a_creer_total / ((fin_simulation - debut_simulation) / 20));
 	
-	bool save_outputs <- true;
+	bool save_outputs <- false;
 	
 	const world_bounds type: geometry <- square(100 #km) translated_by {50 #km , 50 #km};
 	
