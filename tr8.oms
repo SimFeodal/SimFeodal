@@ -1,5 +1,5 @@
 // Define the number of cores/threads to use
-val env = LocalEnvironment(1)
+val env = LocalEnvironment(4)
 
 // Declare the variables
 

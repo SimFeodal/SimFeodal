@@ -213,21 +213,7 @@ experiment Exp_Vide type: gui multicore: true {
 experiment Exp_noInput type: gui {
 	parameter "Nombre seigneurs fin" var: nombre_seigneurs_objectif category: "Seigneurs";
 	output {
-		monitor "Annee" value: Annee;
-		monitor "Nombre de Foyers paysans" value: length(Foyers_Paysans);
-		monitor "Nombre FP dans agregat" value: Foyers_Paysans count (each.monAgregat != nil);
-		monitor "Nombre d'agregats" value: length(Agregats);
-
-		monitor "Nombre FP CP" value: Foyers_Paysans count (each.comm_agraire);
-		monitor "Nombre Seigneurs" value: length(Seigneurs);
-		monitor "Nombre Grands Seigneurs" value: Seigneurs count (each.type = "Grand Seigneur");
-		monitor "Nombre Chatelains" value: Seigneurs count (each.type = "Chatelain");
-		monitor "Nombre Petits Seigneurs" value: Seigneurs count (each.type = "Petit Seigneur");
-		monitor "Nombre Eglises" value: length(Eglises);
-		monitor "Nombre Eglises Paroissiales" value: Eglises count (each.eglise_paroissiale);
-		monitor nombre_chateaux value: length(Chateaux);
-		monitor "Attractivite globale" value: length(Foyers_Paysans) + sum(Chateaux collect each.attractivite);
-		monitor "Attractivite agregats" value: sum(Agregats where (!each.fake_agregat) collect each.attractivite);
+		monitor nombre_chateaux value: nb_chateaux;
 			
 	}
 }
