@@ -1,0 +1,58 @@
+// Define the number of cores/threads to use
+val env = LocalEnvironment(1)
+
+// Declare the variables
+
+// Inputs
+val seed = Val[Long]
+val nbLords = Val[Int]
+
+//Outputs
+val nbCastles = Val[Int]
+val nbCastlesAvg = Val[Double]
+val nbCastlesMin = Val[Double]
+val nbCastlesMax = Val[Double]
+val nbCastlesStd = Val[Double]
+
+
+
+// Gama task
+// The first argument is the gaml
+// The second argument of the GamaTask is the gama experiment name
+// The third argument is the number of steps
+val gama = 
+  GamaTask(workDirectory / "models", "GUI.gaml", "Exp_noInput", 18) set (
+    gamaInputs += (nbLords, "nombre_seigneurs_objectif"),
+    gamaSeed := seed,
+    gamaOutputs += ("nombre_chateaux", nbCastles)
+  )
+
+val exploration = ExplorationTask(nbLords in (20 to 400 by 10))
+val replications = ExplorationTask(seed in (UniformDistribution[Long](42) take 5))
+
+val average = 
+  ScalaTask("""
+    |val nbCastlesAvg = nbCastles.map(_.toDouble).average
+    |val nbCastlesMin = nbCastles.map(_.toDouble).min
+    |val nbCastlesMax = nbCastles.map(_.toDouble).max
+    |val nbCastlesStd = nbCastles.map(_.toDouble).rootMeanSquaredError""".stripMargin) set (
+    inputs += nbCastles.toArray,
+    outputs += nbCastlesAvg,
+    outputs += nbCastlesMin,
+    outputs += nbCastlesMax,
+    outputs += nbCastlesStd
+  )
+  
+  /*val average = 
+  ScalaTask("val nbCastlesAvg = nbCastles.map(_.toDouble).average") set (
+    inputs += nbCastles.toArray,
+    outputs += nbCastlesAvg
+  )
+  */
+  
+
+
+val csvHook = AppendToCSVFileHook(workDirectory / "result.csv", nbLords, nbCastlesAvg, nbCastlesMin, nbCastlesMax, nbCastlesStd)
+//val csvHook = AppendToCSVFileHook(workDirectory / "result.csv", nbLords, nbCastlesAvg)
+
+exploration -< Strain(Strain(replications) -< (gama on env) >- average) hook csvHook 

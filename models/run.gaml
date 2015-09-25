@@ -155,6 +155,7 @@ global schedules: list(world) + list(Attracteurs) + list(Agregats) + list(Foyers
 	}
 	
 	reflex fin_simulation {
-		if (Annee >= fin_simulation) {do pause;}
+		set nb_chateaux <- length(Chateaux);
+		if (Annee >= fin_simulation) {do halt;}
 	}
 }

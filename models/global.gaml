@@ -78,6 +78,8 @@ global {
 	
 	bool save_outputs <- false;
 	
+	int nb_chateaux ;
+	
 	const world_bounds type: geometry <- square(100 #km) translated_by {50 #km , 50 #km};
 	
 	const shape type: geometry <- envelope(world_bounds) ;
