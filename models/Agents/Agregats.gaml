@@ -20,7 +20,7 @@ global {
 	
 	action update_agregats {
     	list<list<Foyers_Paysans>> agregats_detectees <- list<list<Foyers_Paysans>>(simple_clustering_by_distance(Foyers_Paysans, distance_detection_agregats) );
-    	agregats_detectees <- agregats_detectees where (length(each) >= 5);
+    	agregats_detectees <- agregats_detectees where (length(each) >= nombre_FP_agregat);
     	
     	ask Foyers_Paysans {
     		set monAgregat <- nil ;
@@ -29,17 +29,6 @@ global {
    		loop ancienAgregat over: Agregats {
    			bool encore_agregat <- false;
    			loop nouvelAgregat over: agregats_detectees {
-   				/* 
-   				list compoAncien <- (ancienAgregat.fp_agregat collect int(each)) sort_by (each);
-   				list compoNouveau <- (nouvelAgregat collect int(each)) sort_by (each);
-   				if (compoAncien correlation compoNouveau > 0.5){
-   					write "Ancien : " + string(compoAncien);
-   					write "Nouveau : " + string(compoNouveau);
-   					write compoAncien correlation compoNouveau;
-   				}*/
-   				//
-   				//
-   				//write ((ancienAgregat.fp_agregat collect int(each.name)) sort_by (each)) correlation ((nouvelAgregat collect int(each.name)) sort_by (each));
    				list<Foyers_Paysans> FP_inclus <- nouvelAgregat;
    				geometry geom_agregat <- convex_hull(polygon(FP_inclus collect each.location));
    				if (ancienAgregat.shape intersects geom_agregat){

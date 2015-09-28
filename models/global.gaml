@@ -22,6 +22,7 @@ global {
 	int nombre_agglos_antiques <- 3 ;
 	int nombre_villages <- 20 ;
 	int nombre_foyers_villages <- 10 ;
+	int nombre_FP_agregat <- 5;
 	int nombre_eglises <- 150 ;
 	float Seuil_satisfaction <- 0.8 ;
 	float taux_renouvellement <- 0.05 ;

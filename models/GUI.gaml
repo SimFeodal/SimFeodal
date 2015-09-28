@@ -12,7 +12,6 @@ import "run.gaml"
 experiment Exp_Graphique type: gui multicore: true {
 	float seed <-  1000.0;
 	parameter "Enregistrer sorties ?" var: save_outputs category: "Simulation";
-	
 	parameter "Annee debut simulation" var: debut_simulation category: "Simulation";
 	parameter "Annee fin simulation" var: fin_simulation category: "Simulation";
 	
@@ -22,6 +21,7 @@ experiment Exp_Graphique type: gui multicore: true {
 	parameter "Annee debut besoin protection" var: debut_besoin_protection category: "Foyers Paysans";
 	
 	parameter "Distance agregats" var: distance_detection_agregats category: "Agregats";
+	parameter "Nombre de Foyers Paysans pour definir Agregat" var: nombre_FP_agregat category: "Agregats";
 	parameter "Nombre d'agglomerations secondaires antiques:" var: nombre_agglos_antiques category: "Agregats";
 	parameter "Nombre de villages:" var: nombre_villages category: "Agregats";
 	parameter "Nombre de Foyers Paysans par village:" var: nombre_foyers_villages category: "Agregats";
@@ -44,7 +44,6 @@ experiment Exp_Graphique type: gui multicore: true {
 	parameter "Probabilite creer chateau PS" var: proba_creer_chateau_PS category: "Chatelains";
 	parameter "Probabilite don chateau PS" var: proba_don_chateau_PS category: "Chatelains";
 	
-	//parameter "Nombre vise de petits seigneurs en fin de simulation" var: nombre_seigneurs_objectif category: "Petits Seigneurs";
 	parameter "Proba. don droits sur ZP" var: proba_don_partie_ZP category: "Petits Seigneurs";	
 
 	parameter "%FP payant un loyer (Petit Seigneur initial) - Borne Min" var: min_fourchette_loyers_PS_init category: "Petits Seigneurs" min: 0.0 max: 1.0;
