@@ -22,6 +22,9 @@ global {
 	int Annee <- 800 update: Annee + 20;
 	int debut_simulation <- 800;
 	int fin_simulation <- 1160;
+	int duree_step <- 20;
+	
+	// AGREGATS //
 	
 	int distance_detection_agregats <- 100;
 	int nombre_agglos_antiques <- 3 ;

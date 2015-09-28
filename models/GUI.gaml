@@ -14,6 +14,7 @@ experiment Exp_Graphique type: gui multicore: true {
 	parameter "Enregistrer sorties ?" var: save_outputs category: "Simulation";
 	parameter "Annee debut simulation" var: debut_simulation category: "Simulation";
 	parameter "Annee fin simulation" var: fin_simulation category: "Simulation";
+	parameter "Duree d'un pas de temps" var: duree_step category: "Simulation";
 	
 	parameter "Nombre de Foyers Paysans:" var: nombre_foyers_paysans category: "Foyers Paysans";
 	parameter "Taux renouvellement" var: taux_renouvellement category: "Foyers Paysans";
