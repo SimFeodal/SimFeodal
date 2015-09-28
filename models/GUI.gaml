@@ -10,17 +10,16 @@ model t8
 import "run.gaml"
 	
 experiment Exp_Graphique type: gui multicore: true {
+	
+	// GLOBAL //
+	
 	float seed <-  1000.0;
 	parameter "Enregistrer sorties ?" var: save_outputs category: "Simulation";
 	parameter "Annee debut simulation" var: debut_simulation category: "Simulation";
 	parameter "Annee fin simulation" var: fin_simulation category: "Simulation";
 	parameter "Duree d'un pas de temps" var: duree_step category: "Simulation";
 	
-	parameter "Nombre de Foyers Paysans:" var: nombre_foyers_paysans category: "Foyers Paysans";
-	parameter "Taux renouvellement" var: taux_renouvellement category: "Foyers Paysans";
-	parameter "Taux mobilite des FP" var: taux_mobilite category: "Foyers Paysans";
-	parameter "Annee debut besoin protection" var: debut_besoin_protection category: "Foyers Paysans";
-	parameter "Distance max deplacement local" var: distance_max_dem_local category: "Foyers Paysans";
+	// AGREGATS //
 	
 	parameter "Distance agregats" var: distance_detection_agregats category: "Agregats";
 	parameter "Nombre de Foyers Paysans pour definir Agregat" var: nombre_FP_agregat category: "Agregats";
@@ -29,48 +28,65 @@ experiment Exp_Graphique type: gui multicore: true {
 	parameter "Nombre de Foyers Paysans par village:" var: nombre_foyers_villages category: "Agregats";
 	parameter "Puissance Communautes Agraires" var: puissance_comm_agraire min: 0.0 max: 0.75 category: "Agregats";
 	
+	// FOYERS_PAYSANS //
 	
-	parameter "Nombre grands seigneurs" var: nombre_grands_seigneurs category: "Seigneurs - Init" min: 1 max: 2;
-	parameter "Nombre petits seigneurs" var: nombre_petits_seigneurs category: "Seigneurs - Init";
-	parameter "Nombre vise de seigneurs en fin de simulation" var: nombre_seigneurs_objectif category: "Petits Seigneurs";
+	parameter "Nombre de Foyers Paysans:" var: nombre_foyers_paysans category: "Foyers Paysans";
+	parameter "Taux renouvellement" var: taux_renouvellement category: "Foyers Paysans";
+	parameter "Taux mobilite des FP" var: taux_mobilite category: "Foyers Paysans";
+	parameter "Annee debut besoin protection" var: debut_besoin_protection category: "Foyers Paysans";
+	parameter "Distance max deplacement local" var: distance_max_dem_local category: "Foyers Paysans";
 	
-	parameter "Puissance Grand Seigneur 1" var: puissance_grand_seigneur1 category: "Grands Seigneurs";
-	parameter "Puissance Grand Seigneur 2" var: puissance_grand_seigneur2 category: "Grands Seigneurs";
-	parameter "Probabilite creer chateau GS" var: proba_creer_chateau_GS category: "Grands Seigneurs";
-	parameter "Probabilite don chateau GS" var: proba_don_chateau_GS category: "Grands Seigneurs";
+	// SEIGNEURS //
 	
-	parameter "Chatelain peut creer chateau" var: chatelain_cree_chateau category: "Seigneurs";
+	parameter "Nombre vise de seigneurs en fin de simulation" var: nombre_seigneurs_objectif category: "Seigneurs";
+	parameter "Nombre grands seigneurs" var: nombre_grands_seigneurs category: "Seigneurs" min: 1 max: 2;
+	parameter "Nombre petits seigneurs" var: nombre_petits_seigneurs category: "Seigneurs";
+	
+	parameter "Puissance Grand Seigneur 1" var: puissance_grand_seigneur1 category: "Seigneurs";
+	parameter "Puissance Grand Seigneur 2" var: puissance_grand_seigneur2 category: "Seigneurs";
+	
+	parameter "Proba d'obtenir un loyer pour la terre (Petit Seigneur nouveau)" var: proba_collecter_loyer category: "Seigneurs";
+	
+	parameter "Proba gain nouveaux droits banaux"	var: proba_creation_ZP_banaux category: "Seigneurs";
+	parameter "Proba gain nouveaux droits BM justice"	var: proba_creation_ZP_basseMoyenneJustice category: "Seigneurs";
+	
+	
+	// ZONES_PRELEVEMENT //
+	
+	parameter "Rayon min Zone Prelevement - Petits Seigneurs Init" var: rayon_min_PS_init category: "Zones Prelevement" min: 100 max: 20000;
+	parameter "Rayon max Zone Prelevement - Petits Seigneurs Init" var: rayon_max_PS_init category: "Zones Prelevement" min: 100 max: 25000;
+	parameter "%FP payant un loyer (Petit Seigneur initial) - Borne Min" var: min_fourchette_loyers_PS_init category: "Zones Prelevement" min: 0.0 max: 1.0;
+	parameter "%FP payant un loyer (Petit Seigneur initial) - Borne Max" var: max_fourchette_loyers_PS_init category: "Zones Prelevement" min: 0.0 max: 1.0;
 
-	parameter "Proba. gain droits haute justice sur chateau" var: proba_gain_droits_hauteJustice_chateau category: "Chatelains";
-	parameter "Proba. gain droits banaux sur chateau" var: proba_gain_droits_banaux_chateau category: "Chatelains";
-	parameter "Proba. gain droits BM Justice sur chateau" var: proba_gain_droits_basseMoyenneJustice_chateau category: "Chatelains";
-	parameter "Probabilite creer chateau PS" var: proba_creer_chateau_PS category: "Chatelains";
-	parameter "Probabilite don chateau PS" var: proba_don_chateau_PS category: "Chatelains";
+	parameter "Rayon min Zone Prelevement - Petits Seigneurs nouveau" var: rayon_min_PS_nouveau category: "Zones Prelevement" min: 100 max: 2000;
+	parameter "Rayon max Zone Prelevement - Petits Seigneurs nouveau" var: rayon_max_PS_nouveau category: "Zones Prelevement" min: 100 max: 10000;
+	parameter "%FP payant un loyer (Petit Seigneur nouveau) - Borne Min" var: min_fourchette_loyers_PS_nouveau category: "Zones Prelevement" min: 0.0 max: 1.0;
+	parameter "%FP payant un loyer (Petit Seigneur nouveau) - Borne Max" var: max_fourchette_loyers_PS_nouveau category: "Zones Prelevement" min: 0.0 max: 1.0;
 	
-	parameter "Proba. don droits sur ZP" var: proba_don_partie_ZP category: "Petits Seigneurs";	
+	parameter "Proba. don droits sur ZP" var: proba_don_partie_ZP category: "Zones Prelevement";	
+	
+	// CHATEAUX //
+	
+	parameter "Chatelain peut creer chateau" var: chatelain_cree_chateau category: "Chateaux";
+	
+	parameter "Probabilite creer chateau GS" var: proba_creer_chateau_GS category: "Chateaux";
+	parameter "Probabilite don chateau GS" var: proba_don_chateau_GS category: "Chateaux";
+	parameter "Probabilite creer chateau PS" var: proba_creer_chateau_PS category: "Chateaux";
+	parameter "Probabilite don chateau PS" var: proba_don_chateau_PS category: "Chateaux";
+	
+	parameter "Proba. gain droits haute justice sur chateau" var: proba_gain_droits_hauteJustice_chateau category: "Chateaux";
+	parameter "Proba. gain droits banaux sur chateau" var: proba_gain_droits_banaux_chateau category: "Chateaux";
+	parameter "Proba. gain droits BM Justice sur chateau" var: proba_gain_droits_basseMoyenneJustice_chateau category: "Chateaux";
 
-	parameter "%FP payant un loyer (Petit Seigneur initial) - Borne Min" var: min_fourchette_loyers_PS_init category: "Petits Seigneurs" min: 0.0 max: 1.0;
-	parameter "%FP payant un loyer (Petit Seigneur initial) - Borne Max" var: max_fourchette_loyers_PS_init category: "Petits Seigneurs" min: 0.0 max: 1.0;
-	parameter "Rayon min Zone Prelevement - Petits Seigneurs Init" var: rayon_min_PS_init category: "Petits Seigneurs" min: 100 max: 20000;
-	parameter "Rayon max Zone Prelevement - Petits Seigneurs Init" var: rayon_max_PS_init category: "Petits Seigneurs" min: 100 max: 25000;
-	
-	parameter "Proba gain nouveaux droits banaux"	var: proba_creation_ZP_banaux category: "Petis Seigneurs";
-	parameter "Proba gain nouveaux droits BM justice"	var: proba_creation_ZP_basseMoyenneJustice category: "Petis Seigneurs";
-
-	
-	
-
-	parameter "Proba d'obtenir un loyer pour la terre (Petit Seigneur nouveau)" var: proba_collecter_loyer category: "Petits Seigneurs";
-	parameter "%FP payant un loyer (Petit Seigneur nouveau) - Borne Min" var: min_fourchette_loyers_PS_nouveau category: "Petits Seigneurs" min: 0.0 max: 1.0;
-	parameter "%FP payant un loyer (Petit Seigneur nouveau) - Borne Max" var: max_fourchette_loyers_PS_nouveau category: "Petits Seigneurs" min: 0.0 max: 1.0;
-	parameter "Rayon min Zone Prelevement - Petits Seigneurs nouveau" var: rayon_min_PS_nouveau category: "Petits Seigneurs" min: 100 max: 2000;
-	parameter "Rayon max Zone Prelevement - Petits Seigneurs nouveau" var: rayon_max_PS_nouveau category: "Petits Seigneurs" min: 100 max: 10000;
+	// EGLISES //
 	
 	parameter "Nombre d'eglises:" var: nombre_eglises category: "Eglises";
 	parameter "Dont eglises paroissiales:" var: nb_eglises_paroissiales category: "Eglises" ;
 	parameter "Probabilite gain des droits paroissiaux" var: proba_gain_droits_paroissiaux category: "Eglises";
 	parameter "Nombre max de paroissiens" var: nb_max_paroissiens category: "Eglises";
 	parameter "Nombre min de paroissiens" var: nb_min_paroissiens category: "Eglises";	
+
+	
 
 	output {
 		monitor "Annee" value: Annee;
