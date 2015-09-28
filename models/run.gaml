@@ -26,12 +26,7 @@ global schedules: list(world) + list(Attracteurs) + list(Agregats) + list(Foyers
 		do generer_monde;
 		write 'Generation monde : ' + string(machine_time - t);
 	}
-	
-	reflex MaJ_globale {
-		do reset_globals;
-	}
-	
-	
+		
 	reflex renouvellement_monde when: (time > 0){
 		do renouvellement_FP;
 	}

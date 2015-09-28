@@ -129,11 +129,4 @@ global {
 	int nb_chateaux ;
 	
 	
-	
-    action reset_globals {
-		set nb_demenagement_local <- 0;
-		set nb_demenagement_lointain <- 0;
-		set nb_non_demenagement <- 0;
-	}
-	
 }
