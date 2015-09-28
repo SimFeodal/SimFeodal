@@ -40,7 +40,7 @@ global {
 			loop agregat over: shuffle(Agregats) {
 				if (agregat.attractivite >= attractivite_cagnotte){
 					if (length(agregat.fp_agregat) > 0) {
-						set FPlocation <- any_location_in(100 around one_of(agregat.fp_agregat).location);
+						set FPlocation <- any_location_in(distance_detection_agregats around one_of(agregat.fp_agregat).location);
 					} else {
 						set FPlocation <- any_location_in(worldextent);
 					}
@@ -175,7 +175,7 @@ entities {
 			} else {
 				point centre_gravite <- mean(attracteurs_proches collect each.location);
 				if (self distance_to centre_gravite <= 1000){
-					return(any_location_in(100 around centre_gravite));
+					return(any_location_in(distance_detection_agregats around centre_gravite));
 				} else {
 					point pointEtape <- (line([self.location, centre_gravite]) inter (1000 around self)).points[1];
 					return(pointEtape);
@@ -200,7 +200,7 @@ entities {
 				if (agregat.attractivite >= attractivite_cagnotte){
 					if (length(agregat.fp_agregat) > 0) {
 						if (agregat != monAgregat) {
-							set FPlocation <- any_location_in(100 around one_of(agregat.fp_agregat).location);
+							set FPlocation <- any_location_in(distance_detection_agregats around one_of(agregat.fp_agregat).location);
 						} else {
 							set FPlocation <- location;
 							nb_demenagement_lointain <- nb_demenagement_lointain - 1;
