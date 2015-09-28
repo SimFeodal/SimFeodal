@@ -29,15 +29,16 @@ experiment Exp_Graphique type: gui multicore: true {
 	parameter "Nombre de Foyers Paysans par village:" var: nombre_foyers_villages category: "Agregats";
 	parameter "Puissance Communautes Agraires" var: puissance_comm_agraire min: 0.0 max: 0.75 category: "Agregats";
 	
+	
 	parameter "Nombre grands seigneurs" var: nombre_grands_seigneurs category: "Seigneurs - Init" min: 1 max: 2;
 	parameter "Nombre petits seigneurs" var: nombre_petits_seigneurs category: "Seigneurs - Init";
+	parameter "Nombre vise de seigneurs en fin de simulation" var: nombre_seigneurs_objectif category: "Petits Seigneurs";
 	
 	parameter "Puissance Grand Seigneur 1" var: puissance_grand_seigneur1 category: "Grands Seigneurs";
 	parameter "Puissance Grand Seigneur 2" var: puissance_grand_seigneur2 category: "Grands Seigneurs";
 	parameter "Probabilite creer chateau GS" var: proba_creer_chateau_GS category: "Grands Seigneurs";
 	parameter "Probabilite don chateau GS" var: proba_don_chateau_GS category: "Grands Seigneurs";
 	
-	//parameter "Probabilite (FP) de devenir seigneur" var: proba_devenir_seigneur category: "Seigneurs";
 	parameter "Chatelain peut creer chateau" var: chatelain_cree_chateau category: "Seigneurs";
 
 	parameter "Proba. gain droits haute justice sur chateau" var: proba_gain_droits_hauteJustice_chateau category: "Chatelains";
@@ -58,7 +59,7 @@ experiment Exp_Graphique type: gui multicore: true {
 
 	
 	
-	parameter "Nombre vise de seigneurs en fin de simulation" var: nombre_seigneurs_objectif category: "Petits Seigneurs";
+
 	parameter "Proba d'obtenir un loyer pour la terre (Petit Seigneur nouveau)" var: proba_collecter_loyer category: "Petits Seigneurs";
 	parameter "%FP payant un loyer (Petit Seigneur nouveau) - Borne Min" var: min_fourchette_loyers_PS_nouveau category: "Petits Seigneurs" min: 0.0 max: 1.0;
 	parameter "%FP payant un loyer (Petit Seigneur nouveau) - Borne Max" var: max_fourchette_loyers_PS_nouveau category: "Petits Seigneurs" min: 0.0 max: 1.0;
