@@ -237,7 +237,7 @@ experiment Exp_noInput type: gui {
 	}
 }
 
-experiment Batch type: batch repeat: 2 keep_seed: true{
+experiment Batch type: batch repeat: 2 keep_seed: true {
    parameter "Nombre seigneurs fin" var: nombre_seigneurs_objectif min: 50 max: 300 step: 25;
 
    method exhaustive maximize: nb_chateaux;

@@ -375,20 +375,24 @@ entities {
 				int maxRayon <- 10000 ;
 				float maxPuissance <- max(Seigneurs collect each.puissance) ;
 				float minPuissance <- min(Seigneurs collect each.puissance) ;
-				float rayon_chateau <- max([minRayon,min([ maxRayon, - ( myself.puissance / (maxPuissance - minPuissance))  + ( maxPuissance / (maxPuissance - minPuissance) ) ])]);
+				int rayon_chateau <- int(max([minRayon,
+					min([ maxRayon,
+						( maxPuissance / (maxPuissance - minPuissance) - ( myself.puissance / (maxPuissance - minPuissance)))
+					])
+				]));
 				set monRayon <- rayon_chateau;
 				set location <- any_location_in(choixAgregat.shape + 500);
-				do creation_ZP_loyer(location, int(rayon_chateau), myself, 1.0);
+				do creation_ZP_loyer(location, rayon_chateau, myself, 1.0);
 				if (myself.droits_hauteJustice){
-					do creation_ZP_hauteJustice(location, int(rayon_chateau), myself, 1.0);
-					do creation_ZP_banaux(location, int(rayon_chateau), myself, 1.0);
-					do creation_ZP_basseMoyenne_Justice(location, int(rayon_chateau), myself, 1.0);
+					do creation_ZP_hauteJustice(location, rayon_chateau, myself, 1.0);
+					do creation_ZP_banaux(location, rayon_chateau, myself, 1.0);
+					do creation_ZP_basseMoyenne_Justice(location, rayon_chateau, myself, 1.0);
 				} else {
 					if (myself.droits_banaux) {
-						do creation_ZP_banaux(location, int(rayon_chateau), myself, 1.0);
+						do creation_ZP_banaux(location, rayon_chateau, myself, 1.0);
 					}
 					if (myself.droits_moyenneBasseJustice){
-						do creation_ZP_basseMoyenne_Justice(location, int(rayon_chateau), myself, 1.0);
+						do creation_ZP_basseMoyenne_Justice(location, rayon_chateau, myself, 1.0);
 					}
 				}
 			}
@@ -417,7 +421,13 @@ entities {
 					int maxRayon <- 10000 ;
 					float maxPuissance <- max(Seigneurs collect each.puissance) ;
 					float minPuissance <- min(Seigneurs collect each.puissance) ;
-					float rayon_chateau <- max([minRayon,min([ maxRayon, - ( myself.puissance / (maxPuissance - minPuissance))  + ( maxPuissance / (maxPuissance - minPuissance) ) ])]);
+					int rayon_chateau <- int(max([
+						minRayon,
+						min([
+							maxRayon,
+							( maxPuissance / (maxPuissance - minPuissance) )- ( myself.puissance / (maxPuissance - minPuissance))
+						])
+					]));
 					set monRayon <- rayon_chateau;
 					
 					do creation_ZP_loyer(location, rayon_chateau, myself, 1.0);

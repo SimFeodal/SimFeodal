@@ -57,7 +57,7 @@ global {
    		}
    		loop nouvel_agregat over: agregats_detectees {
    			create Agregats {
-   				set fp_agregat <- list<Foyers_Paysans>(nouvel_agregat);
+   				set fp_agregat <- nouvel_agregat;
    				ask fp_agregat {
    					set monAgregat <- myself;
    				}

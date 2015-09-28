@@ -57,7 +57,7 @@ entities {
 		action update_taxes_FP_HteJustice {
 			list<Foyers_Paysans> FP_proche <- Foyers_Paysans at_distance rayon_captation;
 			int nb_FP <- length(FP_proche);
-			list<Foyers_Paysans> FP_impactes <- floor(nb_FP * taux_captation) among (FP_proche);
+			list<Foyers_Paysans> FP_impactes <- int(floor(nb_FP * taux_captation)) among (FP_proche);
 			float mon_taux_FP <- (!empty(preleveurs)) ? (1.0 - sum(preleveurs.values)): 1.0;
 			if (mon_taux_FP = 1.0){
 				ask FP_impactes {
@@ -68,13 +68,13 @@ entities {
 				}
 			} else {
 				list<Foyers_Paysans> FP_a_taxer <- FP_impactes;
-				ask ((mon_taux_FP * length(FP_impactes)) among FP_impactes) {
+				ask (int(mon_taux_FP * length(FP_impactes)) among FP_impactes) {
 					set seigneur_hauteJustice <- myself.proprietaire;
 					set myself.proprietaire.FP_hauteJustice <- union(myself.proprietaire.FP_hauteJustice, FP_impactes);
 					FP_a_taxer >- self;
 				}
 				loop currentPreleveur over: (preleveurs.keys){
-					ask (((preleveurs[currentPreleveur]) * length(FP_impactes)) among FP_a_taxer) {
+					ask (int(preleveurs[currentPreleveur] * length(FP_impactes)) among FP_a_taxer) {
 						set seigneur_hauteJustice <- currentPreleveur;
 						FP_a_taxer >- self;
 						if not (self in currentPreleveur.FP_hauteJustice) {
@@ -92,7 +92,7 @@ entities {
 		action update_taxes_FP_Banaux {
 			list<Foyers_Paysans> FP_proche <- Foyers_Paysans at_distance rayon_captation;
 			int nb_FP <- length(FP_proche);
-			list<Foyers_Paysans> FP_impactes <- floor(nb_FP * taux_captation) among (FP_proche);
+			list<Foyers_Paysans> FP_impactes <- int(floor(nb_FP * taux_captation)) among (FP_proche);
 			float mon_taux_FP <- (!empty(preleveurs)) ? (1.0 - sum(preleveurs.values)): 1.0;
 			if (mon_taux_FP = 1.0){
 				ask FP_impactes {
@@ -103,13 +103,13 @@ entities {
 				}
 			} else {
 				list<Foyers_Paysans> FP_a_taxer <- FP_impactes;
-				ask ((mon_taux_FP * length(FP_impactes)) among FP_impactes) {
+				ask (int(mon_taux_FP * length(FP_impactes)) among FP_impactes) {
 					set seigneurs_banaux <- seigneurs_banaux + myself.proprietaire;
 					set myself.proprietaire.FP_banaux <- myself.proprietaire.FP_banaux + FP_impactes;
 					FP_a_taxer >- self;
 				}
 				loop currentPreleveur over: (preleveurs.keys){
-					ask (((preleveurs[currentPreleveur]) * length(FP_impactes)) among FP_a_taxer) {
+					ask (int(preleveurs[currentPreleveur] * length(FP_impactes)) among FP_a_taxer) {
 						set seigneurs_banaux <- seigneurs_banaux + currentPreleveur;
 						set currentPreleveur.FP_banaux <- currentPreleveur.FP_banaux + self;
 						set myself.proprietaire.FP_banaux_garde <- myself.proprietaire.FP_banaux_garde + self;
@@ -124,7 +124,7 @@ entities {
 		action update_taxes_FP_BM_Justice {
 			list<Foyers_Paysans> FP_proche <- Foyers_Paysans at_distance rayon_captation;
 			int nb_FP <- length(FP_proche);
-			list<Foyers_Paysans> FP_impactes <- floor(nb_FP * taux_captation) among (FP_proche);
+			list<Foyers_Paysans> FP_impactes <- int(floor(nb_FP * taux_captation)) among (FP_proche);
 			float mon_taux_FP <- (!empty(preleveurs)) ? (1.0 - sum(preleveurs.values)): 1.0;
 			if (mon_taux_FP = 1.0){
 				ask FP_impactes {
@@ -135,14 +135,14 @@ entities {
 				}
 			} else {
 				list<Foyers_Paysans> FP_a_taxer <- FP_impactes;
-				ask ((mon_taux_FP * length(FP_impactes)) among FP_impactes) {
+				ask ( int(mon_taux_FP * length(FP_impactes)) among FP_impactes) {
 					set seigneurs_basseMoyenneJustice <- seigneurs_basseMoyenneJustice + myself.proprietaire;
 					set myself.proprietaire.FP_basseMoyenneJustice <- myself.proprietaire.FP_basseMoyenneJustice + FP_impactes;
 					FP_a_taxer >- self;
 				}
 				
 				loop currentPreleveur over: (preleveurs.keys){
-					ask (((preleveurs[currentPreleveur]) * length(FP_impactes)) among FP_a_taxer) {
+					ask ( int((preleveurs[currentPreleveur]) * length(FP_impactes)) among FP_a_taxer) {
 						set seigneurs_basseMoyenneJustice <- seigneurs_basseMoyenneJustice + currentPreleveur;
 						set currentPreleveur.FP_basseMoyenneJustice <- currentPreleveur.FP_basseMoyenneJustice + self;
 						set myself.proprietaire.FP_basseMoyenneJustice_garde <- myself.proprietaire.FP_basseMoyenneJustice_garde + self;
