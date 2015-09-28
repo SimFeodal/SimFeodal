@@ -243,7 +243,7 @@ experiment Batch type: batch repeat: 50 keep_seed: true until: (Annee > fin_simu
    method exhaustive maximize: nb_chateaux;
    
    reflex info_sim {
-    write "Running a new simulation " + simulation + " -> " + Annee;
+    write string(simulation) + ' / Duration : ' + string(total_duration) + ' / Average : ' + string(average_duration);
 	}
    permanent {
             	display "Chateaux/Eglises"{

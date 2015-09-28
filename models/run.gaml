@@ -22,9 +22,9 @@ global schedules: list(world) + list(Attracteurs) + list(Agregats) + list(Foyers
     
     
 	init {
-		float t <- machine_time;
+		//float t <- machine_time;
 		do generer_monde;
-		write 'Generation monde : ' + string(machine_time - t);
+		//write 'Generation monde : ' + string(machine_time - t);
 	}
 		
 	reflex renouvellement_monde when: (time > 0){
@@ -32,22 +32,22 @@ global schedules: list(world) + list(Attracteurs) + list(Agregats) + list(Foyers
 	}
 		
 	reflex MaJ_Agregats{
-		float t <- machine_time;
+		//float t <- machine_time;
 		do update_agregats;
 		do creation_nouveaux_seigneurs;
 		if (length(Chateaux) > 0){
 			ask Agregats {do update_chateau;}
 		}
 		ask Agregats {do update_attractivite;}
-		write 'MaJ_Agregats : ' + string(machine_time - t);
+		//write 'MaJ_Agregats : ' + string(machine_time - t);
 	}
 	
 	reflex Demenagement_FP {
-		float t <- machine_time;
+		//float t <- machine_time;
 		ask Foyers_Paysans{
 			do demenagement;
 		}
-		write 'Demenagement_FP : ' + string(machine_time - t);
+		//write 'Demenagement_FP : ' + string(machine_time - t);
 		
 	}
 	
@@ -69,23 +69,23 @@ global schedules: list(world) + list(Attracteurs) + list(Agregats) + list(Foyers
 	
 	
 	reflex MaJ_ZP_et_preleveurs {
-		float t <- machine_time;
+		//float t <- machine_time;
 		ask Zones_Prelevement {do update_shape;}
 		ask Foyers_Paysans {do reset_preleveurs;}
 		ask Seigneurs {do reset_variables;}
 		do attribution_loyers_FP;
 
-		float tt1 <- machine_time;
+		//float tt1 <- machine_time;
 		ask Zones_Prelevement where (each.type_droit = "Haute_Justice"){do update_taxes_FP_HteJustice;}
-		write 'taxes ZP Hte Justice : ' + string(machine_time - tt1);
-		float tt2 <- machine_time;
+		//write 'taxes ZP Hte Justice : ' + string(machine_time - tt1);
+		//float tt2 <- machine_time;
 		ask Zones_Prelevement where (each.type_droit = "Banaux"){do update_taxes_FP_Banaux;}
-		write 'taxes ZP banaux : ' + string(machine_time - tt2);
-		float tt3 <- machine_time;
+		//write 'taxes ZP banaux : ' + string(machine_time - tt2);
+		//float tt3 <- machine_time;
 		ask Zones_Prelevement where (each.type_droit = "basseMoyenne_Justice"){do update_taxes_FP_BM_Justice;}
-		write 'taxes ZP BM Justice : ' + string(machine_time - tt3);
+		//write 'taxes ZP BM Justice : ' + string(machine_time - tt3);
 		
-		write 'MaJ_ZP_et_preleveurs : ' + string(machine_time - t);
+		//write 'MaJ_ZP_et_preleveurs : ' + string(machine_time - t);
 	}
 	
 		
@@ -110,9 +110,9 @@ global schedules: list(world) + list(Attracteurs) + list(Agregats) + list(Foyers
 	
 	
 	reflex MaJ_satisfaction_FP {
-		float t <- machine_time;
+		//float t <- machine_time;
 		ask Foyers_Paysans {do update_satisfaction;}
-		write 'MaJ_satisfaction_FP : ' + string(machine_time - t);
+		//write 'MaJ_satisfaction_FP : ' + string(machine_time - t);
 	}
 	
 	
@@ -137,7 +137,7 @@ global schedules: list(world) + list(Attracteurs) + list(Agregats) + list(Foyers
 	}
 	
 	reflex save_data when: save_outputs {
-		float t <- machine_time;
+		//float t <- machine_time;
 		do save_Parameters;
 		do save_FP;
 		do save_Agregats;
@@ -146,11 +146,14 @@ global schedules: list(world) + list(Attracteurs) + list(Agregats) + list(Foyers
 		do save_Seigneurs;
 		do save_Eglises;
 		do save_Paroisses;
-		write 'Output FP data : ' + string(machine_time - t);
+		//write 'Output FP data : ' + string(machine_time - t);
 	}
 	
 	reflex fin_simulation {
 		set nb_chateaux <- length(Chateaux);
-		if (Annee >= fin_simulation) {do halt;}
+		if (Annee >= fin_simulation) {
+			write 'Durée simulation : ' + string(total_duration);
+			do halt;
+		}
 	}
 }
