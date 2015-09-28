@@ -122,7 +122,7 @@ entities {
 		action don_droits_PS {
 			loop currentZP over: (Zones_Prelevement where (!each.ZP_chateau and each.proprietaire = self)){
 				list<Seigneurs> preleveurs_potentiels <- [];
-				float pourcentage_donne <- (rnd(20) * 10) /200; // par pas de 5%
+				float pourcentage_donne <- (rnd(20) * 10) / 200; // par pas de 5%
 				ask currentZP {
 					set preleveurs_potentiels <- Seigneurs where (each.type != "Grand Seigneur" and each != currentZP.proprietaire) at_distance 3000;
 				}
