@@ -16,16 +16,28 @@ import "Agents/Zones_Prelevement.gaml"
 
 
 global {
+	
+	
+	
 	int Annee <- 800 update: Annee + 20;
-	int nombre_foyers_paysans <- 4000 ;
+	int debut_simulation <- 800;
+	int fin_simulation <- 1160;
+	
 	int distance_detection_agregats <- 100;
 	int nombre_agglos_antiques <- 3 ;
 	int nombre_villages <- 20 ;
 	int nombre_foyers_villages <- 10 ;
 	int nombre_FP_agregat <- 5;
+	float puissance_comm_agraire <- 0.5;
+	
+	
+	int nombre_foyers_paysans <- 4000 ;
+	float taux_renouvellement <- 0.05 ;
+	int distance_max_dem_local <- 1000;
+	
 	int nombre_eglises <- 150 ;
 	float Seuil_satisfaction <- 0.8 ;
-	float taux_renouvellement <- 0.05 ;
+
 	float taux_mobilite <- 0.8;
 	int nb_demenagement_local <- 0;
 	int nb_demenagement_lointain <- 0;
@@ -42,9 +54,8 @@ global {
 	bool chatelain_cree_chateau <- false ;
 	int nombre_grands_seigneurs <- 2;
 	int nombre_petits_seigneurs <- 18;
-	int debut_simulation <- 800;
-	int fin_simulation <- 1160;
-	float puissance_comm_agraire <- 0.5;
+
+
 	int debut_besoin_protection <- 900;
 	int nombre_seigneurs_objectif <- 200;
 	int puissance_grand_seigneur1 <- 5;

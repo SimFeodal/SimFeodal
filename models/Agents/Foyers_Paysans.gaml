@@ -174,10 +174,10 @@ entities {
 				return(location);
 			} else {
 				point centre_gravite <- mean(attracteurs_proches collect each.location);
-				if (self distance_to centre_gravite <= 1000){
+				if (self distance_to centre_gravite <= distance_max_dem_local){
 					return(any_location_in(distance_detection_agregats around centre_gravite));
 				} else {
-					point pointEtape <- (line([self.location, centre_gravite]) inter (1000 around self)).points[1];
+					point pointEtape <- (line([self.location, centre_gravite]) inter (distance_max_dem_local around self)).points[1];
 					return(pointEtape);
 				}
 			}
