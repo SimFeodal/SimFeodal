@@ -237,14 +237,18 @@ experiment Exp_noInput type: gui {
 	}
 }
 
-experiment Batch type: batch repeat: 2 keep_seed: true {
-   parameter "Nombre seigneurs fin" var: nombre_seigneurs_objectif min: 50 max: 300 step: 25;
+experiment Batch type: batch repeat: 50 keep_seed: true until: (Annee > fin_simulation * 2) {
+   parameter "Nombre seigneurs fin" var: nombre_seigneurs_objectif min: 25 max: 400 step: 5;
 
    method exhaustive maximize: nb_chateaux;
+   
+   reflex info_sim {
+    write "Running a new simulation " + simulation + " -> " + Annee;
+	}
    permanent {
             	display "Chateaux/Eglises"{
     		chart "Nombre de chateaux" type: series position: {0.0,0.0} size: {1.0, 0.5}{
-    			data "Tous" value: length(Chateaux) color: #red;
+    			data "Tous" value: nb_chateaux color: #red;
     		}
     	}	
 	}	
