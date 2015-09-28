@@ -367,7 +367,12 @@ entities {
 				set gardien <- myself;
 				Agregats choixAgregat <- shuffle(agregatsPotentiel) first_with (each.monChateau = nil);
 				// FIXME : Chateaux trop proches sinon
-				if (choixAgregat distance_to (Chateaux closest_to choixAgregat) < 3000) {do die;}
+				
+
+				if (length(Chateaux) > 0){
+					if (choixAgregat distance_to (Chateaux closest_to choixAgregat) < 3000) {do die;}
+				} 
+				
 				ask choixAgregat {
 					set monChateau <- myself;
 				}
