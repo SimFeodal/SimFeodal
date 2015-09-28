@@ -21,6 +21,7 @@ experiment Exp_Graphique type: gui multicore: true {
 	parameter "Taux mobilite des FP" var: taux_mobilite category: "Foyers Paysans";
 	parameter "Annee debut besoin protection" var: debut_besoin_protection category: "Foyers Paysans";
 	
+	parameter "Distance agregats" var: distance_detection_agregats category: "Agregats";
 	parameter "Nombre d'agglomerations secondaires antiques:" var: nombre_agglos_antiques category: "Agregats";
 	parameter "Nombre de villages:" var: nombre_villages category: "Agregats";
 	parameter "Nombre de Foyers Paysans par village:" var: nombre_foyers_villages category: "Agregats";

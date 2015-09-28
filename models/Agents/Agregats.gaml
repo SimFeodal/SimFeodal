@@ -19,7 +19,7 @@ global {
 	
 	
 	action update_agregats {
-    	list<list<Foyers_Paysans>> agregats_detectees <- list<list<Foyers_Paysans>>(simple_clustering_by_distance(Foyers_Paysans, 100) );
+    	list<list<Foyers_Paysans>> agregats_detectees <- list<list<Foyers_Paysans>>(simple_clustering_by_distance(Foyers_Paysans, distance_detection_agregats) );
     	agregats_detectees <- agregats_detectees where (length(each) >= 5);
     	
     	ask Foyers_Paysans {
