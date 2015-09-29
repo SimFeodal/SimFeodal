@@ -152,7 +152,7 @@ global schedules: list(world) + list(Attracteurs) + list(Agregats) + list(Foyers
 	reflex fin_simulation {
 		set nb_chateaux <- length(Chateaux);
 		if (Annee >= fin_simulation) {
-			write 'Durée simulation : ' + string(total_duration);
+			write 'Durée simulation : ' + total_duration;
 			do halt;
 		}
 	}

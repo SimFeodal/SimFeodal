@@ -75,13 +75,9 @@ global {
 	
 	// CHATEAUX //
 	
-	
-	bool chatelain_cree_chateau <- false ;
-	
 	float proba_creer_chateau_GS <- 1.0;
 	float proba_don_chateau_GS <- 0.33;
 	float proba_creer_chateau_PS <- 1.0;
-	float proba_don_chateau_PS <- 0.15;
 	
 	float proba_gain_droits_hauteJustice_chateau <- 0.1;
 	float proba_gain_droits_banaux_chateau <- 0.1;

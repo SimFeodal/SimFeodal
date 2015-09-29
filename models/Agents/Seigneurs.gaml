@@ -348,9 +348,9 @@ entities {
 			}
 		}
 		
-		action don_chateaux_PS {
-			
-		}
+		//action don_chateaux_PS {
+		//	
+		//}
 		
 		
 		action construction_chateau_GS {

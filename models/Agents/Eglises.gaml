@@ -33,7 +33,10 @@ global {
 	action create_paroisses {
 		loop agregat over: shuffle(Agregats where (length(each.fp_agregat) > nb_min_paroissiens)) {
 			float nb_relatif_paroissiens <- length(agregat.fp_agregat) / Paroisses count (each intersects agregat) ;
-			float proba_creation <- max([0.0,min([ 1.0, - ( nb_relatif_paroissiens / (nb_max_paroissiens - nb_min_paroissiens))  + ( nb_max_paroissiens/ (nb_max_paroissiens - nb_min_paroissiens) ) ])]);
+			float proba_creation <- max([0.0,min([ 1.0,
+				(nb_max_paroissiens/ (nb_max_paroissiens - nb_min_paroissiens)) -
+				( nb_relatif_paroissiens / (nb_max_paroissiens - nb_min_paroissiens))
+			])]);
 			if flip(proba_creation) {
 				// on crée
 				create Eglises number: 1 {

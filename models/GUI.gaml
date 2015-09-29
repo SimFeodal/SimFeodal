@@ -66,13 +66,10 @@ experiment Exp_Graphique type: gui multicore: true {
 	parameter "Proba. don droits sur ZP" var: proba_don_partie_ZP category: "Zones Prelevement";	
 	
 	// CHATEAUX //
-	
-	parameter "Chatelain peut creer chateau" var: chatelain_cree_chateau category: "Chateaux";
-	
+		
 	parameter "Probabilite creer chateau GS" var: proba_creer_chateau_GS category: "Chateaux";
 	parameter "Probabilite don chateau GS" var: proba_don_chateau_GS category: "Chateaux";
 	parameter "Probabilite creer chateau PS" var: proba_creer_chateau_PS category: "Chateaux";
-	parameter "Probabilite don chateau PS" var: proba_don_chateau_PS category: "Chateaux";
 	
 	parameter "Proba. gain droits haute justice sur chateau" var: proba_gain_droits_hauteJustice_chateau category: "Chateaux";
 	parameter "Proba. gain droits banaux sur chateau" var: proba_gain_droits_banaux_chateau category: "Chateaux";
@@ -251,7 +248,7 @@ experiment Batch type: batch repeat: 50 keep_seed: true until: (Annee > fin_simu
    method exhaustive maximize: nb_chateaux;
    
    reflex info_sim {
-    write string(simulation) + ' / Duration : ' + string(total_duration) + ' / Average : ' + string(average_duration);
+    write string(simulation) + ' / Duration : ' + total_duration + ' / Average : ' + average_duration;
 	}
    permanent {
             	display "Chateaux/Eglises"{
