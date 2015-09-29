@@ -13,7 +13,7 @@ experiment Exp_Graphique type: gui multicore: true {
 	
 	// GLOBAL //
 	
-	float seed <-  1000.0;
+	float seed <- 1000.0;
 	parameter "Enregistrer sorties ?" var: save_outputs category: "Simulation";
 	parameter "Annee debut simulation" var: debut_simulation category: "Simulation";
 	parameter "Annee fin simulation" var: fin_simulation category: "Simulation";
@@ -214,6 +214,14 @@ experiment Exp_Graphique type: gui multicore: true {
 	}
 }
 
+
+experiment Bug_Finding type: gui multicore: true {
+	//float seed <- 2720054926.0 ;
+	parameter "Nombre_seigneurs_fin" var: nombre_seigneurs_objectif category: "Seigneurs";
+		output {
+			monitor nombre_chateaux value: nb_chateaux;	
+		}
+}
 
 
 experiment Exp_Vide type: gui multicore: true {
