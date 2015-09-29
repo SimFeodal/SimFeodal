@@ -369,7 +369,7 @@ entities {
 				// FIXME : Chateaux trop proches sinon
 				
 
-				if (length(Chateaux) > 0){
+				if (length(Chateaux) > 1){
 					if (choixAgregat distance_to (Chateaux closest_to choixAgregat) < 3000) {do die;}
 				} 
 				
