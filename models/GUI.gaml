@@ -26,7 +26,9 @@ experiment Exp_Graphique type: gui multicore: true {
 	parameter "Nombre d'agglomerations secondaires antiques:" var: nombre_agglos_antiques category: "Agregats";
 	parameter "Nombre de villages:" var: nombre_villages category: "Agregats";
 	parameter "Nombre de Foyers Paysans par village:" var: nombre_foyers_villages category: "Agregats";
+	parameter "Annee d'apparition des com. agraires" var: apparition_comm_agraires category: "Agregats";
 	parameter "Puissance Communautes Agraires" var: puissance_comm_agraire min: 0.0 max: 0.75 category: "Agregats";
+	parameter "Proba. apparition Comm. Agraire" var: proba_apparition_ca min: 0.0 max: 1.0 category: "Agregats";
 	
 	// FOYERS_PAYSANS //
 	
@@ -67,7 +69,13 @@ experiment Exp_Graphique type: gui multicore: true {
 	
 	// CHATEAUX //
 		
+	parameter "Annee apparition chateaux" var: apparition_chateaux	category:"Chateaux";
+	
+	//FIXME : Add doc.
+	parameter "Seuil max de puissance armée d'un chateau" var: seuil_attractivite_chateau category:"Chateaux";
+	
 	parameter "Probabilite creer chateau GS" var: proba_creer_chateau_GS category: "Chateaux";
+	parameter "Proba. qu'un chateau soit cree dans agregat" var: proba_chateau_agregat category: "Chateaux" min: 0.0 max: 1.0;
 	parameter "Probabilite don chateau GS" var: proba_don_chateau_GS category: "Chateaux";
 	parameter "Probabilite creer chateau PS" var: proba_creer_chateau_PS category: "Chateaux";
 	
@@ -91,7 +99,7 @@ experiment Exp_Graphique type: gui multicore: true {
 		monitor "Nombre FP dans agregat" value: Foyers_Paysans count (each.monAgregat != nil);
 		monitor "Nombre d'agregats" value: length(Agregats);
 
-		monitor "Nombre FP CP" value: Foyers_Paysans count (each.comm_agraire);
+		monitor "Nombre FP CA" value: Foyers_Paysans count (each.comm_agraire);
 		monitor "Nombre Seigneurs" value: length(Seigneurs);
 		monitor "Nombre Grands Seigneurs" value: Seigneurs count (each.type = "Grand Seigneur");
 		monitor "Nombre Chatelains" value: Seigneurs count (each.type = "Chatelain");
@@ -103,21 +111,38 @@ experiment Exp_Graphique type: gui multicore: true {
 		monitor "Attractivite agregats" value: sum(Agregats where (!each.fake_agregat) collect each.attractivite);
 		
 		
+		monitor "P.A. GS" value: (Seigneurs where (each.type = "Grand Seigneur")) collect each.puissance_armee;
+		
+		monitor "Mean Puissance armee" value: mean((Seigneurs where (each.type = "Chatelain")) collect (each.puissance_armee));
+		monitor "Min Puissance armee" value: min((Seigneurs where (each.type = "Chatelain")) collect (each.puissance_armee));
+		monitor "Max Puissance armee" value: max((Seigneurs where (each.type = "Chatelain")) collect (each.puissance_armee));
+		
+		monitor "Mean Puissance" value: mean(Seigneurs collect (each.puissance));
+		monitor "Min Puissance" value: min(Seigneurs collect (each.puissance));
+		monitor "Max Puissance" value: max(Seigneurs collect (each.puissance));
+		
+		monitor "% FP dispersés" value: Foyers_Paysans count (each.monAgregat = nil) / length(Foyers_Paysans) * 100;
+		
+		
+		monitor "Dist. moyenne au plus proche voisin (FP)" value: 1; // FIXME: Distance moyenne au plus proche voisin (ds même agrégat)
+		// TODO : Distribution du nombre de FP par agrégats
+		// TODO : Distribution du nombre de châteaux par seigneur
+		
 		display "Carte" {
 			species Paroisses transparency: 0.9 ;
-			species Zones_Prelevement transparency: 0.9;
-			agents "Eglises Paroissiales" value: Eglises where (each.eglise_paroissiale) aspect: base;
-			species Chateaux aspect: base ;
+			//species Zones_Prelevement transparency: 0.9;
+			agents "Eglises Paroissiales" value: Eglises where (each.eglise_paroissiale) aspect: base transparency: 0.5;
+			//species Chateaux aspect: base ;
+			species Foyers_Paysans transparency: 0.5;
 			species Agregats transparency: 0.3;
-			//species Foyers_Paysans aspect: base ;	
-		 	text string(Annee) size: 10000 position: {0, 1} color: rgb("black");
+			
+			text string(Annee) size: 10000 position: {0, 1} color: rgb("black");
 		}
-		
+//		
 	    display "Foyers Paysans" {
 	        chart "Demenagements" type: series position: {0,0} size: {0.5,0.5}{
 	            data "Local" value: nb_demenagement_local color: #blue; 
 	            data "Lointain" value: nb_demenagement_lointain color: #red;
-	            data "Non" value: nb_non_demenagement color: #black;
 	        }
 			chart "FP" type: series position: {0.0,0.5} size: {0.5,0.5}{
 	            data "Hors CA" value: Foyers_Paysans count (!each.comm_agraire) color: #blue; 
@@ -131,81 +156,94 @@ experiment Exp_Graphique type: gui multicore: true {
     		}
     	}
     	
-	    display "FP et preleveurs" {
-    		chart "Nombre de Droits acquittes" type:series position: {0,0} size: {1,1}{
-    			data "Nb Droits Max" value: max(Foyers_Paysans collect each.nb_preleveurs) color: #blue;
-    			data "Nb Droits Mean" value: mean(Foyers_Paysans collect each.nb_preleveurs) color: #green;
-    			data "Nb Droits Median" value: median(Foyers_Paysans collect each.nb_preleveurs) color: #orange;
-    			data "Nb Droits Min" value: min(Foyers_Paysans collect each.nb_preleveurs) color: #red;
-    		}
-    	}
-    	
-    	
+    	// FIXME : me marche pas (pas d'agrégation par barres)
+//    	display "Agregats2"{
+//    		chart "Composition" type: histogram {
+//				        datalist [ "Nombre FP"] value: [Agregats collect length(each.fp_agregat)] color:[°red];
+//				        //data "carry_food_ants" value:(list(ant) count (each.hasFood)) color:°green;                             
+//				}
+//    	}
+//    	
+//	    display "FP et preleveurs" {
+//    		chart "Nombre de Droits acquittes" type:series position: {0,0} size: {1,1}{
+//    			data "Nb Droits Max" value: max(Foyers_Paysans collect each.nb_preleveurs) color: #blue;
+//    			data "Nb Droits Mean" value: mean(Foyers_Paysans collect each.nb_preleveurs) color: #green;
+//    			data "Nb Droits Median" value: median(Foyers_Paysans collect each.nb_preleveurs) color: #orange;
+//    			data "Nb Droits Min" value: min(Foyers_Paysans collect each.nb_preleveurs) color: #red;
+//    		}
+//    	}
+//    	
+//    	
     	display "Seigneurs" {
-    		chart "Puissance des seigneurs" type:series position: {0,0} size: {0.33,1}{
-    			data "Min" value: min(Seigneurs collect each.puissance) color: #green;
-    			data "Mean" value: mean(Seigneurs collect each.puissance) color: #blue;
-    			data "Median" value: median(Seigneurs collect each.puissance) color: #orange;
-    			data "Max" value: max(Seigneurs collect each.puissance) color: #red;
-    		}
-    		
-    		chart "Puissance armee des seigneurs" type:series position: {0.33,0} size: {0.33,1}{
-    			data "Min" value: min(Seigneurs collect each.puissance_armee) color: #green;
-    			data "Mean" value: mean(Seigneurs collect each.puissance_armee) color: #blue;
-    			data "Med" value:  median(Seigneurs collect each.puissance_armee) color: #orange;
-    			data "Max" value: max(Seigneurs collect each.puissance_armee) color: #red;
-    		}
-    		chart "Dependance (loyer) des FP" type:series position: {0.66,0} size: {0.33,1}{
-    			data "FP payant un loyer à un GS" value: Foyers_Paysans count (each.seigneur_loyer != nil and each.seigneur_loyer.type = "Grand Seigneur") color: #green;
-    			data "FP payant un loyer à un PS initial" value: Foyers_Paysans count (each.seigneur_loyer != nil and each.seigneur_loyer.type = "Petit Seigneur" and each.seigneur_loyer.initialement_present) color: #blue;
-    			data "FP payant un loyer à un PS nouveau" value: Foyers_Paysans count (each.seigneur_loyer != nil and each.seigneur_loyer.type = "Petit Seigneur" and !each.seigneur_loyer.initialement_present) color: #red;
-    		}
+//    		chart "Puissance des seigneurs" type:series position: {0,0} size: {0.33,1}{
+//    			data "Min" value: min(Seigneurs collect each.puissance) color: #green;
+//    			data "Mean" value: mean(Seigneurs collect each.puissance) color: #blue;
+//    			data "Median" value: median(Seigneurs collect each.puissance) color: #orange;
+//    			data "Max" value: max(Seigneurs collect each.puissance) color: #red;
+//    		}
+    		// FIXME : Ne marche pas...
+//    		chart "Puissance armee des seigneurs" type:series position: {0.33,0} size: {0.33,1}{
+//    			data "Min" value: min((Seigneurs where (each.type = "Chatelain")) collect each.puissance_armee) color: #green;
+//    			data "Mean" value: mean((Seigneurs where (each.type = "Chatelain")) collect each.puissance_armee) color: #blue;
+//    			data "Med" value:  median((Seigneurs where (each.type = "Chatelain")) collect each.puissance_armee) color: #orange;
+//    			data "Max" value: max((Seigneurs where (each.type = "Chatelain")) collect each.puissance_armee) color: #red;
+//    		}
+//    		chart "Dependance (loyer) des FP" type:series position: {0.66,0} size: {0.33,1}{
+//    			data "FP payant un loyer à un GS" value: Foyers_Paysans count (each.seigneur_loyer != nil and each.seigneur_loyer.type = "Grand Seigneur") color: #green;
+//    			data "FP payant un loyer à un PS initial" value: Foyers_Paysans count (each.seigneur_loyer != nil and each.seigneur_loyer.type = "Petit Seigneur" and each.seigneur_loyer.initialement_present) color: #blue;
+//    			data "FP payant un loyer à un PS nouveau" value: Foyers_Paysans count (each.seigneur_loyer != nil and each.seigneur_loyer.type = "Petit Seigneur" and !each.seigneur_loyer.initialement_present) color: #red;
+//    		}
     	}
-    	    	
-    	display "Zones Prelevement"{
-    		chart "Nombre de ZP" type:series position: {0.0, 0.0} size: {1.0, 0.33}{
-    			data "Loyers" value: Zones_Prelevement count (each.type_droit = "Loyer") color: #blue;
-    			data "Haute Justice" value: Zones_Prelevement count (each.type_droit = "Haute_Justice") color: #red;
-    			data "Banaux" value: Zones_Prelevement count (each.type_droit = "Banaux") color: #green;
-    			data "Basse et Moyenne Justice" value: Zones_Prelevement count (each.type_droit = "basseMoyenne_Justice") color: #yellow;
-    		}
-    		chart "Nb de preleveurs" type: series position: {0, 0.33} size: {1.0, 0.33}{
-    			data "Max" value: max ( Zones_Prelevement collect (length(each.preleveurs.keys))) color: #red;
-    			data "Mean" value: mean ( Zones_Prelevement collect (length(each.preleveurs.keys))) color: #green;
-    			data "Min" value: min ( Zones_Prelevement collect (length(each.preleveurs.keys))) color: #blue;
-    			data "Med" value: median(Zones_Prelevement collect (length(each.preleveurs.keys))) color: #orange;
-    		}
-    		chart "Nb ZP / Seigneur" type: series position: {0.0, 0.66} size: {1.0, 0.33}{
-    			data "Max" value: max(Seigneurs collect each.monNbZP) color: #red;
-    			data "Mean" value: mean(Seigneurs collect each.monNbZP) color: #green;
-    			data "Median" value: median(Seigneurs collect each.monNbZP) color: #orange;
-    			data "Min" value: min(Seigneurs collect each.monNbZP) color: #blue;	
-    		}
-    	}
-    	
+//    	    	
+//    	display "Zones Prelevement"{
+//    		chart "Nombre de ZP" type:series position: {0.0, 0.0} size: {1.0, 0.33}{
+//    			data "Loyers" value: Zones_Prelevement count (each.type_droit = "Loyer") color: #blue;
+//    			data "Haute Justice" value: Zones_Prelevement count (each.type_droit = "Haute_Justice") color: #red;
+//    			data "Banaux" value: Zones_Prelevement count (each.type_droit = "Banaux") color: #green;
+//    			data "Basse et Moyenne Justice" value: Zones_Prelevement count (each.type_droit = "basseMoyenne_Justice") color: #yellow;
+//    		}
+//    		chart "Nb de preleveurs" type: series position: {0, 0.33} size: {1.0, 0.33}{
+//    			data "Max" value: max ( Zones_Prelevement collect (length(each.preleveurs.keys))) color: #red;
+//    			data "Mean" value: mean ( Zones_Prelevement collect (length(each.preleveurs.keys))) color: #green;
+//    			data "Min" value: min ( Zones_Prelevement collect (length(each.preleveurs.keys))) color: #blue;
+//    			data "Med" value: median(Zones_Prelevement collect (length(each.preleveurs.keys))) color: #orange;
+//    		}
+//    		chart "Nb ZP / Seigneur" type: series position: {0.0, 0.66} size: {1.0, 0.33}{
+//    			data "Max" value: max(Seigneurs collect each.monNbZP) color: #red;
+//    			data "Mean" value: mean(Seigneurs collect each.monNbZP) color: #green;
+//    			data "Median" value: median(Seigneurs collect each.monNbZP) color: #orange;
+//    			data "Min" value: min(Seigneurs collect each.monNbZP) color: #blue;	
+//    		}
+//    	}
+//    	
     	display "Agregats"{
-    		chart "Nombre d'agregats" type: series position: {0.0,0.0} size: {1.0, 0.5}{
+    		chart "Nombre d'agregats" type: series position: {0.0,0.0} size: {1.0, 0.33}{
     			data "Nombre d'agregats" value: length(Agregats) color: #red;
     			data "Nombre d'agregats avec CA" value: Agregats count (each.communaute_agraire) color: #blue;
     		}
-    		chart "Composition des agregats" type: series position: {0.0, 0.5} size: {1.0, 0.5}{
+    		chart "Composition des agregats" type: series position: {0.0, 0.33} size: {1.0, 0.33}{
     			data "Max" value: max(Agregats collect length(each.fp_agregat)) color: #red;
     			data "Mean" value: mean(Agregats collect length(each.fp_agregat)) color: #green;
     			data "Median" value: median(Agregats collect length(each.fp_agregat)) color: #orange;
     			data "Min" value: min(Agregats collect length(each.fp_agregat)) color: #blue;
-    			
     		}
+    		chart "Nb FP agregats" type: series position: {0.0, 0.66} size: {1.0, 0.33}{
+    			data "NB FP ds Agregats" value: Foyers_Paysans count (each.monAgregat != nil);
+    		}
+    		
     	}
     	
     	display "Chateaux/Eglises"{
-    		chart "Nombre de chateaux" type: series position: {0.0,0.0} size: {1.0, 0.5}{
+    		chart "Nombre de chateaux" type: series position: {0.0,0.0} size: {1.0, 0.33}{
     			data "Importants (>=5km)" value: Chateaux count (each.monRayon >= 5000) color: #red;
     			data "Mineurs (<5km)" value: Chateaux count (each.monRayon < 5000) color: #blue;
     		}
-    		chart "Eglises" type: series position: {0.0, 0.5} size: {1.0, 0.5}{
+    		chart "Eglises" type: series position: {0.0, 0.33} size: {1.0, 0.33}{
     			data "Batiments" value: length(Eglises) color: #red;
-    			data "Paroisses" value: Eglises count (each.eglise_paroissiale) color: #blue;
-    			
+    			data "Paroisses" value: Eglises count (each.eglise_paroissiale) color: #blue;		
+    		}
+    		chart "Eglises ds paroisses" type: series position:{0.0, 0.66} size: {1.0, 0.33 }{
+    			data "Nb eglises / paroisse Mean" value: mean(Paroisses collect length(Eglises inside (each.shape)));
     		}
     	}	
 	}

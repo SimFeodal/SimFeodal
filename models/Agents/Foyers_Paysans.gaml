@@ -166,8 +166,7 @@ entities {
 		}
 				
 		point demenagement_local {
-			int rayon_local <- 5000 ;
-			list<Attracteurs> attracteurs_proches <- Attracteurs where (each.reel) at_distance rayon_local;
+			int rayon_local <- distance_max_dem_local ;
 			
 
 			if (empty(attracteurs_proches)) {

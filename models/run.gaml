@@ -91,19 +91,19 @@ global schedules: list(world) + list(Attracteurs) + list(Agregats) + list(Foyers
 		
 	reflex Dons_des_Seigneurs {
 		// Don droits
-		if (Annee > 880) {
+		if (Annee >= 900) {
 			ask Seigneurs where (each.type = "Grand Seigneur"){ do don_droits_GS; }
 			ask Seigneurs where (each.type != "Grand Seigneur"){ do don_droits_PS; }
 		}
 		// Don châteaux
-		if (Annee > 950) {
+		if (Annee >= 950) {
 			ask Seigneurs where (each.type = "Grand Seigneur"){ do update_droits_chateaux_GS; do don_chateaux_GS; }
 		}
 		ask Seigneurs { do MaJ_puissance; do MaJ_puissance_armee; }
 	}
 	
 	
-	reflex Constructions_chateaux {
+	reflex Constructions_chateaux when: Annee >= apparition_chateaux{
 		ask Seigneurs where (each.type = "Grand Seigneur" and each.puissance > 2000) { do construction_chateau_GS;}
 		ask Seigneurs where (each.type != "Grand Seigneur" and each.puissance > 2000){ do construction_chateau_PS;}
 	}
@@ -117,20 +117,15 @@ global schedules: list(world) + list(Attracteurs) + list(Agregats) + list(Foyers
 	
 	
 	reflex MaJ_paroisses {
-		do compute_paroisses ;
-		ask Paroisses {
-			do update_fideles;
-			do update_satisfaction;
-		}
-		do create_paroisses ;
-		do compute_paroisses ;
-		do promouvoir_paroisses;
-		do compute_paroisses ;
+		do compute_paroisses ; // On redécoupe
+		do create_paroisses ; // On crée les paroisses des agrégats
+		do compute_paroisses ; // On redessine
+		do promouvoir_paroisses; // On nomme/crée de  nouvelles paroisses là où la population est mal desse
+		do compute_paroisses ; // On redessine
 	}
 	
 	
 	reflex update_plot {
-		set nb_non_demenagement <- length(Foyers_Paysans) - (nb_demenagement_local + nb_demenagement_lointain) ;
 		ask Seigneurs {
 			set monNbZP <- Zones_Prelevement count ((each.preleveurs.keys contains self) or (each.proprietaire = self));
 		}
@@ -153,7 +148,8 @@ global schedules: list(world) + list(Attracteurs) + list(Agregats) + list(Foyers
 		set nb_chateaux <- length(Chateaux);
 		if (Annee >= fin_simulation) {
 			write 'Durée simulation : ' + total_duration;
-			do halt;
+			//do halt; // Si version  batch
+			do pause; // Si version GUI
 		}
 	}
 }

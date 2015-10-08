@@ -26,8 +26,8 @@ global {
 			set mobile <- flip (taux_mobilite);
 			
 			//FP_controlles
-			list<Foyers_Paysans> pool_FP <- [self];
-			create Foyers_Paysans number: (30 - 1) {
+			list<Foyers_Paysans> pool_FP <- [self]; 
+			create Foyers_Paysans number: (30 - 1) { // TODO : Mettre en paramètre ? En aléa ?
 				pool_FP <+ self ;
 				// On choisit un des FP de la même agglo
 				agent myFP <- one_of(pool_FP);

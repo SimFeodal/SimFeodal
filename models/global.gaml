@@ -31,10 +31,12 @@ global {
 	
 	int distance_detection_agregats <- 100;
 	int nombre_FP_agregat <- 5;
-	int nombre_agglos_antiques <- 3 ;
+	int nombre_agglos_antiques <- 4 ;
 	int nombre_villages <- 20 ;
 	int nombre_foyers_villages <- 10 ;
-	float puissance_comm_agraire <- 0.5;
+	float puissance_comm_agraire <- 0.25;
+	int apparition_comm_agraires <- 800;
+	float proba_apparition_ca <- 0.2;
 	
 	// FOYERS_PAYSANS //
 	
@@ -42,7 +44,7 @@ global {
 	float taux_renouvellement <- 0.05 ;
 	float taux_mobilite <- 0.8;
 	int debut_besoin_protection <- 900;
-	int distance_max_dem_local <- 1000;
+	int distance_max_dem_local <- 7000;
 	
 	// SEIGNEURS //
 	
@@ -75,8 +77,13 @@ global {
 	
 	// CHATEAUX //
 	
-	float proba_creer_chateau_GS <- 1.0;
-	float proba_don_chateau_GS <- 0.33;
+	int apparition_chateaux <- 960;
+	
+	int seuil_attractivite_chateau <- 3000;
+	
+	float proba_creer_chateau_GS <- 0.5;
+	float proba_chateau_agregat <- 0.5; // FIXME : A appliquer aussi aux PS
+	float proba_don_chateau_GS <- 0.50; //TODO : update doc
 	float proba_creer_chateau_PS <- 1.0;
 	
 	float proba_gain_droits_hauteJustice_chateau <- 0.1;
@@ -89,7 +96,7 @@ global {
 	int nombre_eglises <- 150 ;
 	int nb_eglises_paroissiales <- 50 ;
 	float proba_gain_droits_paroissiaux <- 0.05;
-	int nb_max_paroissiens <- 60;
+	int nb_max_paroissiens <- 40;
 	int nb_min_paroissiens <- 10;
 
 
@@ -116,7 +123,6 @@ global {
 	// FP //
 	int nb_demenagement_local update: 0; // le update remet à 0 au début de chaque nouveau step
 	int nb_demenagement_lointain update: 0;
-	int nb_non_demenagement update: 0;
 	
 	// CHATEAUX //
 	int nb_chateaux ;
