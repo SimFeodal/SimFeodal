@@ -37,6 +37,7 @@ experiment Exp_Graphique type: gui multicore: true {
 	parameter "Taux mobilite des FP" var: taux_mobilite category: "Foyers Paysans";
 	parameter "Annee debut besoin protection" var: debut_besoin_protection category: "Foyers Paysans";
 	parameter "Distance max deplacement local" var: distance_max_dem_local category: "Foyers Paysans";
+	parameter "Seuil de puissance armee necessaire a protection" var: seuil_puissance_armee category: "Foyers Paysans";
 	
 	// SEIGNEURS //
 	

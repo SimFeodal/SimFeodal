@@ -32,7 +32,7 @@ global {
 	action save_Parameters {
 		if (!file_exists(Param_file)){
 			save ["Année début simulation", "Année fin simulation", "Nombre de Foyers Paysans","Taux renouvellement",
-				"Taux mobilité des FP",  "Année début besoin protection", "Nombre d'agglomérations secondaires antiques",
+				"Taux mobilité des FP",   "Nombre d'agglomérations secondaires antiques",
 				"Nombre de villages",  "Nombre de Foyers Paysans par village","Puissance Communautés Agraires",
 				"Nombre grands seigneurs", "Nombre petits seigneurs","Puissance Grand Seigneur 1", 
 				"Puissance Grand Seigneur 2", "Probabilité créer château GS", "Probabilité don château GS",
@@ -48,7 +48,7 @@ global {
 				 "Nombre d'églises", "Dont églises paroissiales", "Probabilité gain des droits paroissiaux", 
 				 "Nombre max de paroissiens", "Nombre min de paroissiens"] to: Param_file type: "csv";
 			save [debut_simulation, fin_simulation, nombre_foyers_paysans, taux_renouvellement, taux_mobilite,
-				debut_besoin_protection, nombre_agglos_antiques, nombre_villages, nombre_foyers_villages,
+				 nombre_agglos_antiques, nombre_villages, nombre_foyers_villages,
 				puissance_comm_agraire, nombre_grands_seigneurs, nombre_petits_seigneurs,
 				puissance_grand_seigneur1, puissance_grand_seigneur2, proba_creer_chateau_GS, proba_don_chateau_GS,
 				 proba_gain_droits_hauteJustice_chateau, proba_gain_droits_banaux_chateau,

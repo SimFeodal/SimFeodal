@@ -19,9 +19,10 @@ import "Zones_Prelevement.gaml"
 entities {
 	species Chateaux parent: Attracteurs  schedules: shuffle(Chateaux){
 	
-		string type;
+		string type <- "Petit Chateau";
 		list<string> fonctions_possedees;
-		int attractivite <- 0;
+		// FIXME : attractivite == int pour les attracteurs
+		float attractivite <- 0;
 		Agregats monAgregat <- nil;
 		Seigneurs proprietaire <- nil;
 		Seigneurs gardien <- nil;
@@ -33,7 +34,10 @@ entities {
 		int monRayon;
 		
 		action update_attractivite {
-			set attractivite <- length(fonctions_possedees);
+			//set attractivite <- length(fonctions_possedees);
+			// 3000 ==1 
+			// 0 == 0
+			set attractivite <- min([proprietaire.puissance_armee /  seuil_attractivite_chateau, 1]);
 		}
 		
 		action creation_ZP_loyer (point centre, int rayon, Seigneurs proprio, float taux_taxation){
@@ -85,6 +89,15 @@ entities {
 				set taux_captation <- taux_taxation;
 				set preleveurs <- map([proprio::1.0]);
 				set myself.ZP_basseMoyenneJustice <- self;
+			}
+		}
+		
+		action promotion_chateau {
+			Poles monPole <- one_of(Poles where (each.mesAttracteurs contains self));
+			if (length(monPole.mesAttracteurs) > 1){
+				set type <- flip(0.5) ? "Grand Chateau" : "Petit Chateau";
+			} else {
+				set type <- flip(0.1) ? "Grand Chateau" : "Petit Chateau";
 			}
 		}
 		

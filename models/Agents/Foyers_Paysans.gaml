@@ -133,17 +133,27 @@ entities {
 		}
 		
 		action update_satisfaction_protection {
-			if (Annee < debut_besoin_protection){
-				set satisfaction_protection <- 1.0;
-			} else {
+				Chateaux plusProcheChateau <- Chateaux closest_to self;
+				float satisfaction_distance;
+				float satisfaction_puissance;
+				// FIXME : Trop lent, à recoder (peut-être depuis point de vue chateau)
+				if (plusProcheChateau = nil) {
+					set satisfaction_distance <- 0.0;
+					set satisfaction_puissance <- 0.0;
+				} else {
 				//Chateaux plusProcheChateau <- Chateaux closest_to self;
 				float distance_chateau <- min(Chateaux collect (each distance_to self)) ;
 				//if (plusProcheChateau = nil) {return(0.0);}
 				
-				int seuil1 <- 1500 ;
-				int seuil2 <- 5000 ;
-				set satisfaction_protection <- max([0.0,min([ 1.0, - ( distance_chateau / (seuil2 - seuil1))  + ( seuil2/ (seuil2 - seuil1) ) ])]);
-			}
+						int seuil1 <- 1500 ;
+						int seuil2 <- 5000 ;
+						float distance_chateau <- plusProcheChateau distance_to self;
+						set satisfaction_distance <- max([0.0,min([ 1.0, - ( distance_chateau / (seuil2 - seuil1))  + ( seuil2/ (seuil2 - seuil1) ) ])]); // [0 -> 1]
+						set satisfaction_puissance <- min([1, plusProcheChateau.proprietaire.puissance_armee / seuil_puissance_armee ]);
+				}
+				set satisfaction_protection <- ((satisfaction_puissance + satisfaction_distance)/2)^(besoin_protection);
+				//TODO : MaJ Doc (descript. + paramètres)
+
 		}
 		
 		
@@ -152,7 +162,8 @@ entities {
 			do update_satisfaction_religieuse;
 			do update_satisfaction_protection;
 			
-			set Satisfaction <- max([0, min([satisfaction_religieuse, satisfaction_protection]) - (1 - satisfaction_materielle)]);
+			// FIXME : MaJ Doc pour satisf.
+			set Satisfaction <- min([satisfaction_religieuse, satisfaction_protection,  satisfaction_materielle]);
 		}
 		
 		action demenagement {
@@ -212,16 +223,22 @@ entities {
 				} else {
 					set attractivite_cagnotte <- attractivite_cagnotte - agregat.attractivite;
 				}
-			}
-			
-			// reset variables
-			set seigneur_loyer <- nil;
-			set seigneur_hauteJustice <- nil;
-			set seigneurs_banaux <- [];
-			set seigneurs_basseMoyenneJustice <- [];
-			
-			return FPlocation;
 		}
+		
+		// FIXME : Useless
+//		point demenagement_local {
+//			int rayon_local <- distance_max_dem_local ;
+//			list<Eglises> eglises_proches <- Eglises where (each.reel) at_distance rayon_local;
+//			list<Chateaux> chateaux_proches <- Chateaux where (each.reel) at_distance rayon_local;
+//			list<Agregats> agregats_proches <- Agregats where (each.reel) at_distance rayon_local;
+//			
+//			list<agent> attracteurs_proches <- (agents of_generic_species Attracteurs) where (each.reel) at_distance rayon_local;
+//			list<Attracteurs> attracteurs_proches <- agents_at_distance(rayon_local) of_generic_species Attracteurs where (each.reel) ;
+//			// TODO : report bug : the first one doens't work, the second does
+//			// probably because Agregats is a shape while others are points
+//			// at_distance may not work in this situation
+//			}
+			
 		
 	rgb color <- #gray ;
 	aspect base {

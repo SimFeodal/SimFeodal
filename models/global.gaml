@@ -26,6 +26,7 @@ global {
 	int debut_simulation <- 800;
 	int fin_simulation <- 1160;
 	int duree_step <- 20;
+	float besoin_protection <- 0.0;
 	
 	// AGREGATS //
 	
@@ -45,6 +46,7 @@ global {
 	float taux_mobilite <- 0.8;
 	int debut_besoin_protection <- 900;
 	int distance_max_dem_local <- 7000;
+	int seuil_puissance_armee <- 400; // P.A. d'un proprio de chateau pour que le FP soit satisfait.
 	
 	// SEIGNEURS //
 	
@@ -126,6 +128,18 @@ global {
 	
 	// CHATEAUX //
 	int nb_chateaux ;
+	
+	action update_besoin_protection{
+		switch Annee {
+			match 960 {set besoin_protection <- 0.2;}
+			match 980  {set besoin_protection <- 0.4;}
+			match 1000 {set besoin_protection <- 0.6;}
+			match 1020  {set besoin_protection <- 0.8;}
+			match 1040  {set besoin_protection <- 1.0;}
+			default {}
+		}
+		
+	}
 	
 	
 }
