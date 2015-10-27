@@ -42,7 +42,7 @@ global {
 						set monAgregat <- nouvelAgregat as Agregats;
 					}
 					do update_shape;
-					if (Annee >= apparition_communautes){do update_comm_agraire;}
+					if (Annee >= apparition_communautes){do update_communaute;}
    					}
 					agregats_detectees >> nouvelAgregat;
 					set encore_agregat <- true;
@@ -62,7 +62,7 @@ global {
    					set monAgregat <- myself;
    				}
    				do update_shape;
-   				if (Annee >= apparition_communautes){do update_comm_agraire;}
+   				if (Annee >= apparition_communautes){do update_communaute;}
    			}
    		}
     }
@@ -103,7 +103,7 @@ entities {
 		}
 		
 		
-		action update_comm_agraire {
+		action update_communaute {
 			if (!self.communaute) {
 				if (flip(proba_apparition_communaute)) {
 					set communaute <- true;
