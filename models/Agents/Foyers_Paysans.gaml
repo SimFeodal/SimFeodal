@@ -141,10 +141,6 @@ entities {
 					set satisfaction_distance <- 0.0;
 					set satisfaction_puissance <- 0.0;
 				} else {
-				//Chateaux plusProcheChateau <- Chateaux closest_to self;
-				float distance_chateau <- min(Chateaux collect (each distance_to self)) ;
-				//if (plusProcheChateau = nil) {return(0.0);}
-				
 						int seuil1 <- 1500 ;
 						int seuil2 <- 5000 ;
 						float distance_chateau <- plusProcheChateau distance_to self;

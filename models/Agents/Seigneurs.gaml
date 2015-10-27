@@ -134,7 +134,7 @@ entities {
 		}
 		
 		action MaJ_droits_Grands_Seigneurs {
-			if (Annee < 900){
+			if (Annee < 1000 and Annee >= 900){
 				if (!droits_hauteJustice) {
 					set droits_hauteJustice <- flip(0.1);
 					if (droits_hauteJustice){
@@ -166,7 +166,7 @@ entities {
 						do MaJ_ZP_chateaux(self, "basseMoyenne_Justice");
 					}
 				}
-			} else if (Annee = 900) {
+			} else if (Annee = 1000) {
 				set droits_hauteJustice <-true;
 				do MaJ_ZP_chateaux(self, "Haute_Justice");
 				set droits_banaux <- true;
@@ -351,21 +351,20 @@ entities {
 		//	
 		//}
 		
-		
+		// FIXME : moche et sans doute faux
 		action construction_chateau_GS {
-			int nbChateauxPotentiel <- int(floor(self.puissance / 2000));
+			int nbChateauxPotentiel <- int(floor(self.puissance / 5000));
 			
 			list<Agregats> agregatsPotentiel <- Agregats where (each.monChateau = nil);
 			
-			int nbChateaux <- min([rnd(nbChateauxPotentiel), length(agregatsPotentiel)]);
-			create Chateaux number: nbChateaux {
+			//int nbChateaux <- min([rnd(nbChateauxPotentiel), length(agregatsPotentiel)]);
+			create Chateaux number: nbChateauxPotentiel {
+			//create Chateaux number: nbChateaux {
 				if (!flip(proba_creer_chateau_GS)){
 					do die;
 				}
 				set proprietaire <- myself;
 				set gardien <- myself;
-				Agregats choixAgregat <- shuffle(agregatsPotentiel) first_with (each.monChateau = nil);
-				// FIXME : Chateaux trop proches sinon
 				
 
 				if (length(Chateaux) > 1){
@@ -436,7 +435,7 @@ entities {
 					
 					do creation_ZP_loyer(location, rayon_chateau, myself, 1.0);
 					
-					if (Annee > 900 and flip(proba_gain_droits_hauteJustice_chateau)){
+					if (Annee > 1000 and flip(proba_gain_droits_hauteJustice_chateau)){
 						ask myself {
 							set droits_hauteJustice <- true;
 							set droits_banaux <- true;

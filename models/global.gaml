@@ -44,7 +44,6 @@ global {
 	int nombre_foyers_paysans <- 4000 ;
 	float taux_renouvellement <- 0.05 ;
 	float taux_mobilite <- 0.8;
-	int debut_besoin_protection <- 900;
 	int distance_max_dem_local <- 7000;
 	int seuil_puissance_armee <- 400; // P.A. d'un proprio de chateau pour que le FP soit satisfait.
 	

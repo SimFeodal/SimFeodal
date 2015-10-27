@@ -31,7 +31,11 @@ global schedules: list(world) + list(Attracteurs) + list(Agregats) + list(Foyers
 		do renouvellement_FP;
 	}
 		
+	reflex MaJ_globals {
+		do update_besoin_protection;
+	}	
 	reflex MaJ_Agregats{
+		
 		//float t <- machine_time;
 		do update_agregats;
 		do creation_nouveaux_seigneurs;
