@@ -26,9 +26,9 @@ experiment Exp_Graphique type: gui multicore: true {
 	parameter "Nombre d'agglomerations secondaires antiques:" var: nombre_agglos_antiques category: "Agregats";
 	parameter "Nombre de villages:" var: nombre_villages category: "Agregats";
 	parameter "Nombre de Foyers Paysans par village:" var: nombre_foyers_villages category: "Agregats";
-	parameter "Annee d'apparition des com. agraires" var: apparition_comm_agraires category: "Agregats";
-	parameter "Puissance Communautes Agraires" var: puissance_comm_agraire min: 0.0 max: 0.75 category: "Agregats";
-	parameter "Proba. apparition Comm. Agraire" var: proba_apparition_ca min: 0.0 max: 1.0 category: "Agregats";
+	parameter "Annee d'apparition des communautes" var: apparition_communautes category: "Agregats";
+	parameter "Puissance Communautes" var: puissance_communautes min: 0.0 max: 0.75 category: "Agregats";
+	parameter "Proba. apparition Communaute" var: proba_apparition_communaute min: 0.0 max: 1.0 category: "Agregats";
 	
 	// FOYERS_PAYSANS //
 	
@@ -100,7 +100,7 @@ experiment Exp_Graphique type: gui multicore: true {
 		monitor "Nombre FP dans agregat" value: Foyers_Paysans count (each.monAgregat != nil);
 		monitor "Nombre d'agregats" value: length(Agregats);
 
-		monitor "Nombre FP CA" value: Foyers_Paysans count (each.comm_agraire);
+		monitor "Nombre FP Comm." value: Foyers_Paysans count (each.communaute);
 		monitor "Nombre Seigneurs" value: length(Seigneurs);
 		monitor "Nombre Grands Seigneurs" value: Seigneurs count (each.type = "Grand Seigneur");
 		monitor "Nombre Chatelains" value: Seigneurs count (each.type = "Chatelain");
@@ -146,8 +146,8 @@ experiment Exp_Graphique type: gui multicore: true {
 	            data "Lointain" value: nb_demenagement_lointain color: #red;
 	        }
 			chart "FP" type: series position: {0.0,0.5} size: {0.5,0.5}{
-	            data "Hors CA" value: Foyers_Paysans count (!each.comm_agraire) color: #blue; 
-	            data "Dans CA" value: Foyers_Paysans count (each.comm_agraire)  color: #red;
+	            data "Hors CA" value: Foyers_Paysans count (!each.communaute) color: #blue; 
+	            data "Dans CA" value: Foyers_Paysans count (each.communaute)  color: #red;
 	        }
     		chart "Satisfaction_FP" type:series position: {0.5,0} size: {0.5,1}{
     			data "Satisfaction Materielle" value: mean(Foyers_Paysans collect each.satisfaction_materielle) color: #blue;
@@ -220,7 +220,7 @@ experiment Exp_Graphique type: gui multicore: true {
     	display "Agregats"{
     		chart "Nombre d'agregats" type: series position: {0.0,0.0} size: {1.0, 0.33}{
     			data "Nombre d'agregats" value: length(Agregats) color: #red;
-    			data "Nombre d'agregats avec CA" value: Agregats count (each.communaute_agraire) color: #blue;
+    			data "Nombre d'agregats avec CA" value: Agregats count (each.communaute) color: #blue;
     		}
     		chart "Composition des agregats" type: series position: {0.0, 0.33} size: {1.0, 0.33}{
     			data "Max" value: max(Agregats collect length(each.fp_agregat)) color: #red;

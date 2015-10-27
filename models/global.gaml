@@ -34,10 +34,10 @@ global {
 	int nombre_FP_agregat <- 5;
 	int nombre_agglos_antiques <- 4 ;
 	int nombre_villages <- 20 ;
-	int nombre_foyers_villages <- 10 ;
-	float puissance_comm_agraire <- 0.25;
-	int apparition_comm_agraires <- 800;
-	float proba_apparition_ca <- 0.2;
+	int nombre_foyers_villages <- 5 ;
+	float puissance_communautes <- 0.25;
+	int apparition_communautes <- 800;
+	float proba_apparition_communaute <- 0.2;
 	
 	// FOYERS_PAYSANS //
 	

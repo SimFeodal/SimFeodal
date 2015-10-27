@@ -42,7 +42,7 @@ global {
 						set monAgregat <- nouvelAgregat as Agregats;
 					}
 					do update_shape;
-					if (Annee >= apparition_comm_agraires){do update_comm_agraire;}
+					if (Annee >= apparition_communautes){do update_comm_agraire;}
    					}
 					agregats_detectees >> nouvelAgregat;
 					set encore_agregat <- true;
@@ -62,7 +62,7 @@ global {
    					set monAgregat <- myself;
    				}
    				do update_shape;
-   				if (Annee >= apparition_comm_agraires){do update_comm_agraire;}
+   				if (Annee >= apparition_communautes){do update_comm_agraire;}
    			}
    		}
     }
@@ -74,7 +74,7 @@ entities {
 		bool fake_agregat <- false;
 		int attractivite <- 0;
 		list<Foyers_Paysans> fp_agregat ;
-		bool communaute_agraire <- false;
+		bool communaute <- false;
 		bool marche <- false;
 		Chateaux monChateau <- nil;
 		bool reel <- true;
@@ -104,20 +104,20 @@ entities {
 		
 		
 		action update_comm_agraire {
-			if (!self.communaute_agraire) {
-				if (flip(proba_apparition_ca)) {
-					set communaute_agraire <- true;
+			if (!self.communaute) {
+				if (flip(proba_apparition_communaute)) {
+					set communaute <- true;
 					ask self.fp_agregat {
-						set comm_agraire <- true;
+						set communaute <- true;
 					}
 				} else {
 					ask self.fp_agregat {
-						set comm_agraire <- false;
+						set communaute <- false;
 					}
 				}
 			} else {
 				ask self.fp_agregat {
-					set comm_agraire <- true;
+					set communaute <- true;
 				}
 			}
 		}

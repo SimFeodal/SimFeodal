@@ -66,7 +66,7 @@ global {
 
 entities {
 	species Foyers_Paysans schedules: shuffle(Foyers_Paysans){
-		bool comm_agraire <- false;
+		bool communaute <- false;
 		Agregats monAgregat <- nil;
 		float satisfaction_materielle;
 		float satisfaction_religieuse;
@@ -103,7 +103,7 @@ entities {
 			if (self.monAgregat = nil){
 				set S_contributions <- 0.0;
 			} else {
-				set S_contributions <- (self.comm_agraire ? puissance_comm_agraire : 0) + (self.monAgregat.marche ? 0.25 : 0);
+				set S_contributions <- (self.communaute ? puissance_communautes : 0) + (self.monAgregat.marche ? 0.25 : 0);
 			}
 			
 
