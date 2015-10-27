@@ -46,13 +46,10 @@ global schedules: list(world) + list(Attracteurs) + list(Poles)+ list(Agregats) 
 		//write 'MaJ_Agregats : ' + string(machine_time - t);
 	}
 	
-	reflex Demenagement_FP {
-		//float t <- machine_time;
-		ask Foyers_Paysans{
-			do demenagement;
+	reflex Deplacement_FP {
+		ask Foyers_Paysans where (each.mobile) {
+			do deplacement;
 		}
-		//write 'Demenagement_FP : ' + string(machine_time - t);
-		
 	}
 	
 	reflex MaJ_Chateaux {
@@ -68,7 +65,10 @@ global schedules: list(world) + list(Attracteurs) + list(Poles)+ list(Agregats) 
 	
 	reflex MaJ_Droits_Seigneurs {
 		ask Seigneurs where (each.type="Grand Seigneur"){do MaJ_droits_Grands_Seigneurs;}
-		ask Seigneurs where (each.type != "Grand Seigneur") { do MaJ_droits_Petits_Seigneurs; do gains_droits_PS; }
+		ask Seigneurs where (each.type != "Grand Seigneur") {
+			do MaJ_droits_Petits_Seigneurs;
+			do gains_droits_PS;
+		}
 	}
 	
 	

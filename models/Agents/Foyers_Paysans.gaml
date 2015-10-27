@@ -162,63 +162,44 @@ entities {
 			set Satisfaction <- min([satisfaction_religieuse, satisfaction_protection,  satisfaction_materielle]);
 		}
 		
-		action demenagement {
-				set location <- demenagement_local();
-				do update_satisfaction();
-			if (flip(1 - Satisfaction)){
-					set location <- demenagement_lointain();
-					do update_satisfaction();
-					nb_demenagement_lointain <- nb_demenagement_lointain + 1;
-			}
-		}
-				
-		point demenagement_local {
-			int rayon_local <- distance_max_dem_local ;
-			
-
-			if (empty(attracteurs_proches)) {
-				return(location);
-			} else {
-				point centre_gravite <- mean(attracteurs_proches collect each.location);
-				if (self distance_to centre_gravite <= distance_max_dem_local){
-					return(any_location_in(distance_detection_agregats around centre_gravite));
-				} else {
-					point pointEtape <- (line([self.location, centre_gravite]) inter (distance_max_dem_local around self)).points[1];
-					return(pointEtape);
-				}
-			}
+		action  deplacement {
+			set location <- flip(1 - Satisfaction) ? (flip(0.8) ? deplacement_local() : deplacement_lointain() ): location;
 		}
 		
-		// ATTENTION : Actuellement, déménagement lointain peut se faire dans même agrégat...
-		// A choisir entre deux possibilités : forcé de déménager ds un autre agrégat ou si meilleur agrégat = sien : ne bouge pas
-		point demenagement_lointain {
-			
-			int attractivite_cagnotte <- sum(Agregats collect each.attractivite);
-			//int attractivite_cagnotte <- sum((Agregats - monAgregat) collect each.attractivite);
-			
-			
-			point FPlocation <- nil;
-			
-			list<Agregats> other_Agregats <- shuffle(Agregats) ;
-			//list<Agregats> other_Agregats <- shuffle(Agregats - monAgregat);
-			
-			loop agregat over: other_Agregats {
-				if (agregat.attractivite >= attractivite_cagnotte){
-					if (length(agregat.fp_agregat) > 0) {
-						if (agregat != monAgregat) {
-							set FPlocation <- any_location_in(distance_detection_agregats around one_of(agregat.fp_agregat).location);
-						} else {
-							set FPlocation <- location;
-							nb_demenagement_lointain <- nb_demenagement_lointain - 1;
-						}
-						
-					} else {
-						set FPlocation <- any_location_in(worldextent);
-					}
-					break;
-				} else {
-					set attractivite_cagnotte <- attractivite_cagnotte - agregat.attractivite;
-				}
+		point deplacement_local {
+			point point_local;
+			list<Poles> polesLocaux <- Poles at_distance distance_max_dem_local ;
+			if (empty(polesLocaux)){ // Si pas de pole, on reste sur place
+				set point_local <- location;
+			} else if (length(polesLocaux) < 2){ // Si un seul pole, on y va
+				set point_local <- any_location_in(one_of(polesLocaux).shape);
+				// TODO : Changer nom variable
+				set nb_demenagement_local <- nb_demenagement_local + 1;
+			} else { // Si plus de 1 pole, lotterie ponderée
+				Poles poleVainqueur <- (polesLocaux sort_by (each)) at rnd_choice((polesLocaux sort_by (each)) collect (each.attractivite));
+				set point_local <- any_location_in(poleVainqueur.shape);
+				set nb_demenagement_local <- nb_demenagement_local + 1;
+			}
+			return(point_local);
+		}
+		
+		point deplacement_lointain {
+			point point_lointain;
+			list<Poles> agregatsPolarisants <- Poles where (each.monAgregat != nil);
+			// Uniquement les poles qui ne sont pas dans le rayon local
+			list<Poles> agregatsPolarisantsLointains <- agregatsPolarisants - (agregatsPolarisants at_distance distance_max_dem_local);
+			if (empty(agregatsPolarisantsLointains)){ // Si pas de pole, on reste sur place
+				set point_lointain<- location;
+			} else if (length(agregatsPolarisantsLointains) < 2){ // Si un seul pole, on y va
+				set point_lointain <- any_location_in(one_of(agregatsPolarisantsLointains).shape);
+				// TODO : Changer nom variable
+				set nb_demenagement_lointain <- nb_demenagement_lointain + 1;
+			} else { // Si plus de 1 pole, lotterie ponderée
+				Poles poleVainqueur <- (agregatsPolarisantsLointains sort_by (each)) at rnd_choice((agregatsPolarisantsLointains sort_by (each)) collect (each.attractivite));
+				set point_lointain <- any_location_in(poleVainqueur.monAgregat);
+					set nb_demenagement_lointain <- nb_demenagement_lointain + 1;
+			}
+			return(point_lointain);
 		}
 		
 		// FIXME : Useless
