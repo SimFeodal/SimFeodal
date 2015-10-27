@@ -366,14 +366,37 @@ entities {
 				set proprietaire <- myself;
 				set gardien <- myself;
 				
-
-				if (length(Chateaux) > 1){
-					if (choixAgregat distance_to (Chateaux closest_to choixAgregat) < 3000) {do die;}
-				} 
-				
-				ask choixAgregat {
-					set monChateau <- myself;
+				// FIXME : Hideux
+				if (flip(proba_chateau_agregat)){
+					Agregats choixAgregat;
+					
+					list<Agregats> agregatsPossibles;
+					// on crée le chateau dans un agrégat si possible
+					if (length(Chateaux) > 1 and agregatsPotentiel != nil){
+						set agregatsPossibles <- shuffle(agregatsPotentiel) where (each distance_to (Chateaux closest_to self) < 5000);
+					}
+					
+					if (!empty(agregatsPossibles)){
+						set choixAgregat <- one_of(agregatsPossibles);
+					} else {
+						set location <- any_location_in(reduced_worldextent - (5000 around Chateaux));
+					}
+					
+					if (choixAgregat = nil){
+						set location <- any_location_in(reduced_worldextent - (5000 around Chateaux));
+					} else {
+						ask choixAgregat {
+							set monChateau <- myself;
+						}
+						set location <- any_location_in(choixAgregat.shape);
+					}
+				} else {
+					// sinon, au hasard
+					set location <- any_location_in(reduced_worldextent - (5000 around Chateaux));	
 				}
+				
+
+//				
 				int minRayon <- 2000 ;
 				int maxRayon <- 10000 ;
 				float maxPuissance <- max(Seigneurs collect each.puissance) ;
@@ -384,7 +407,10 @@ entities {
 					])
 				]));
 				set monRayon <- rayon_chateau;
-				set location <- any_location_in(choixAgregat.shape + 500);
+				//set location <- any_location_in(choixAgregat.shape + 500);
+				
+				// FIXME : Très laid, à vérifier
+
 				do creation_ZP_loyer(location, rayon_chateau, myself, 1.0);
 				if (myself.droits_hauteJustice){
 					do creation_ZP_hauteJustice(location, rayon_chateau, myself, 1.0);
@@ -412,6 +438,7 @@ entities {
 					if (!flip(proba_creer_chateau_PS)){
 						do die;
 					}
+					write("Chateau PS");
 					set proprietaire <- myself;
 					set gardien <- myself;
 					do die;

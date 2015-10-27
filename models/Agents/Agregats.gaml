@@ -70,14 +70,14 @@ global {
 
 entities {
 
-	species Agregats parent: Attracteurs schedules: shuffle(Agregats){
+	species Agregats  schedules: shuffle(Agregats){
 		bool fake_agregat <- false;
 		int attractivite <- 0;
 		list<Foyers_Paysans> fp_agregat ;
 		bool communaute <- false;
 		bool marche <- false;
 		Chateaux monChateau <- nil;
-		bool reel <- true;
+		bool reel <- false;
 		list<Eglises> mesParoisses;
 		
 		action update_chateau {
@@ -102,6 +102,10 @@ entities {
 			// Temporairement désactivé
 			//set attractivite <- length(fp_agregat) +  sum(Chateaux where (self = each.monAgregat) collect each.attractivite);
 			set attractivite <- length(fp_agregat);
+			
+			int attrac_chateau; // 0 si 0, = S
+			int attrac_eglises;
+			set attractivite <- attrac_chateau + attrac_eglises;
 		}
 		
 		
