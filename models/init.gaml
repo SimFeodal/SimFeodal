@@ -41,7 +41,9 @@ global {
 			set mobile <- flip (taux_mobilite);
 			
 			list<Foyers_Paysans> pool_FP <- [self];
-			create Foyers_Paysans number: (nombre_foyers_villages - 1) {
+			// On crée entre 5 et nombre_foyers_villages :
+			//FIXME : MaJ Doc ou changement nom variable
+			create Foyers_Paysans number: (rnd(5, nombre_foyers_villages_max) - 1) {
 				pool_FP <+ self ;
 				// On choisit un des FP de la même agglo
 				agent myFP <- one_of(pool_FP);
@@ -50,7 +52,7 @@ global {
 			}
 		}
 		// FP isolés
-		int nb_FP_isoles <- nombre_foyers_paysans - (nombre_agglos_antiques * 30) - (nombre_villages * nombre_foyers_villages);
+		int nb_FP_isoles <- nombre_foyers_paysans - length(Foyers_Paysans);
 		create Foyers_Paysans number: nb_FP_isoles {
 			set location <- any_location_in(worldextent);
 			set mobile <- flip (taux_mobilite);

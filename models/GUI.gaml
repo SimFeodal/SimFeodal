@@ -25,7 +25,7 @@ experiment Exp_Graphique type: gui multicore: true {
 	parameter "Nombre de Foyers Paysans pour definir Agregat" var: nombre_FP_agregat category: "Agregats";
 	parameter "Nombre d'agglomerations secondaires antiques:" var: nombre_agglos_antiques category: "Agregats";
 	parameter "Nombre de villages:" var: nombre_villages category: "Agregats";
-	parameter "Nombre de Foyers Paysans par village:" var: nombre_foyers_villages category: "Agregats";
+	parameter "Nombre max de Foyers Paysans par village:" var: nombre_foyers_villages_max category: "Agregats";
 	parameter "Annee d'apparition des communautes" var: apparition_communautes category: "Agregats";
 	parameter "Puissance Communautes" var: puissance_communautes min: 0.0 max: 0.75 category: "Agregats";
 	parameter "Proba. apparition Communaute" var: proba_apparition_communaute min: 0.0 max: 1.0 category: "Agregats";
