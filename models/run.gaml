@@ -18,7 +18,7 @@ import "Agents/Attracteurs.gaml"
 import "Agents/Zones_Prelevement.gaml"
 
 
-global schedules: list(world) + list(Attracteurs) + list(Agregats) + list(Foyers_Paysans) + list(Chateaux) + list(Eglises) + list(Seigneurs){
+global schedules: list(world) + list(Attracteurs) + list(Poles)+ list(Agregats) + list(Foyers_Paysans) + list(Chateaux) + list(Eglises) + list(Seigneurs){
     
     
 	init {
@@ -126,6 +126,15 @@ global schedules: list(world) + list(Attracteurs) + list(Agregats) + list(Foyers
 		do compute_paroisses ; // On redessine
 		do promouvoir_paroisses; // On nomme/crée de  nouvelles paroisses là où la population est mal desse
 		do compute_paroisses ; // On redessine
+	}
+	
+	reflex MaJ_poles {
+		do update_poles;
+		if ( Annee >= 940 and Annee <= 1040 ){
+		ask Chateaux where (each.type = "Petit Chateau"){
+				do promotion_chateau;
+			}	
+		}
 	}
 	
 	
