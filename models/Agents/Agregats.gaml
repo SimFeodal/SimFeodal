@@ -78,6 +78,7 @@ entities {
 		bool marche <- false;
 		Chateaux monChateau <- nil;
 		bool reel <- true;
+		list<Eglises> mesParoisses;
 		
 		action update_chateau {
 			// FIXME : Chateaux trop proches sinon
@@ -94,6 +95,7 @@ entities {
 		
 		action update_shape {
 			set shape <- convex_hull(polygon(fp_agregat collect each.location));
+			set mesParoisses <- (Eglises where (each.eglise_paroissiale) inside shape);
 		}
 		
 		action update_attractivite {
@@ -107,6 +109,7 @@ entities {
 			if (!self.communaute) {
 				if (flip(proba_apparition_communaute)) {
 					set communaute <- true;
+					set reel <- true;
 					ask self.fp_agregat {
 						set communaute <- true;
 					}

@@ -106,7 +106,7 @@ global {
 
 	action generer_eglises {
 		create Eglises number: nombre_eglises {
-			set location <- any_location_in(one_of(Agregats).shape + 20000);
+			set location <- any_location_in(reduced_worldextent);
 		}
 		ask (nb_eglises_paroissiales among Eglises) {
 			set eglise_paroissiale <- true;
