@@ -39,12 +39,9 @@ global {
 				 "Proba. gain droits haute justice sur château", 
 				"Proba. gain droits banaux sur château","Proba. gain droits BM Justice sur château",
 				"Probabilité créer château PS", "Proba. don droits sur ZP",
-				"%FP payant un loyer (Petit Seigneur initial) - Borne Min", "%FP payant un loyer (Petit Seigneur initial) - Borne Max",
-				"Rayon min Zone Prélevement - Petits Seigneurs Init", "Rayon max Zone Prélevement - Petits Seigneurs Init",
+				"%FP payant un loyer (Petit Seigneur) - Borne Min", "%FP payant un loyer (Petit Seigneur) - Borne Max",
+				"Rayon min Zone Prélevement - Petits Seigneurs", "Rayon max Zone Prélevement - Petits Seigneurs",
 				 "Proba gain nouveaux droits banaux", "Proba gain nouveaux droits BM justice","Nombre visé de seigneurs en fin de simulation",
-				 "Proba d'obtenir un loyer pour la terre (Petit Seigneur nouveau)", "%FP payant un loyer (Petit Seigneur nouveau) - Borne Min",
-				 "%FP payant un loyer (Petit Seigneur nouveau) - Borne Min", "%FP payant un loyer (Petit Seigneur nouveau) - Borne Max",
-				 "Rayon min Zone Prélevement - Petits Seigneurs nouveau", "Rayon max Zone Prélevement - Petits Seigneurs nouveau",
 				 "Nombre d'églises", "Dont églises paroissiales", "Probabilité gain des droits paroissiaux", 
 				 "Nombre max de paroissiens", "Nombre min de paroissiens"] to: Param_file type: "csv";
 			save [debut_simulation, fin_simulation, nombre_foyers_paysans, taux_renouvellement, taux_mobilite,
@@ -53,10 +50,9 @@ global {
 				puissance_grand_seigneur1, puissance_grand_seigneur2, proba_creer_chateau_GS, proba_don_chateau_GS,
 				 proba_gain_droits_hauteJustice_chateau, proba_gain_droits_banaux_chateau,
 				proba_gain_droits_basseMoyenneJustice_chateau, proba_creer_chateau_PS,
-				proba_don_partie_ZP,  min_fourchette_loyers_PS_init, max_fourchette_loyers_PS_init, 
-				rayon_min_PS_init, rayon_max_PS_init,proba_creation_ZP_banaux, proba_creation_ZP_basseMoyenneJustice,
-				nombre_seigneurs_objectif, proba_collecter_loyer, min_fourchette_loyers_PS_nouveau,
-				max_fourchette_loyers_PS_nouveau, rayon_min_PS_nouveau, rayon_max_PS_nouveau,
+				proba_don_partie_ZP,  min_fourchette_loyers_PS, max_fourchette_loyers_PS, 
+				rayon_min_PS, rayon_max_PS,proba_creation_ZP_banaux, proba_creation_ZP_basseMoyenneJustice,
+				nombre_seigneurs_objectif, proba_collecter_loyer,
 				nombre_eglises,nb_eglises_paroissiales, proba_gain_droits_paroissiaux,
 				nb_max_paroissiens, nb_min_paroissiens] to: Param_file type: "csv";
 		}

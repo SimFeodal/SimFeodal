@@ -65,15 +65,10 @@ global {
 	
 	// ZONES_PRELEVEMENT //
 	
-	int rayon_min_PS_init <- 1000;
-	int rayon_max_PS_init <- 5000;
-	float min_fourchette_loyers_PS_init <- 0.05;
-	float max_fourchette_loyers_PS_init <- 0.25;
-
-	int rayon_min_PS_nouveau <- 300;
-	int rayon_max_PS_nouveau <- 2000;
-	float min_fourchette_loyers_PS_nouveau <- 0.0;
-	float max_fourchette_loyers_PS_nouveau <- 0.15;
+	int rayon_min_PS <- 1000;
+	int rayon_max_PS <- 5000;
+	float min_fourchette_loyers_PS <- 0.05;
+	float max_fourchette_loyers_PS <- 0.25;
 	
 	float proba_don_partie_ZP <- 0.33;
 	

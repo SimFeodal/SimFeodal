@@ -62,7 +62,6 @@ global {
 		create Seigneurs number: nombre_grands_seigneurs{
 			set type <- "Grand Seigneur";
 			set taux_prelevement <- 1.0;
-			set initialement_present <- true;
 			
 			set droits_loyer <-true;
 			set droits_hauteJustice <- false;
@@ -72,7 +71,6 @@ global {
 		
 		create Seigneurs number: nombre_petits_seigneurs {
 			set type <- "Petit Seigneur";
-			set initialement_present <- true;
 			set taux_prelevement <- 1.0;
 			set location <- any_location_in(one_of(Agregats collect each.shape));
 			
@@ -82,8 +80,8 @@ global {
 			set droits_banaux <- false;
 			set droits_moyenneBasseJustice <- false;
 			
-			int rayon_zone <- rayon_min_PS_init + rnd(rayon_max_PS_init - rayon_min_PS_init);
-			float txPrelev <- min_fourchette_loyers_PS_init + rnd(max_fourchette_loyers_PS_init - min_fourchette_loyers_PS_init);
+			int rayon_zone <- rayon_min_PS + rnd(rayon_max_PS - rayon_min_PS);
+			float txPrelev <- min_fourchette_loyers_PS + rnd(max_fourchette_loyers_PS - min_fourchette_loyers_PS);
 			do creer_zone_prelevement(self.location, rayon_zone, self, "Loyer", txPrelev);
 		}
 	}

@@ -24,7 +24,6 @@ global {
 		// Varie entre -1/3 et +1/3 autour de la moyenne
 		create Seigneurs number: nb_seigneurs_a_creer {
 			set type <- "Petit Seigneur";
-			set initialement_present <- false;
 			set taux_prelevement <- 1.0;
 			
 			location <- any_location_in(one_of(Agregats collect each.shape));
@@ -35,8 +34,8 @@ global {
 			set droits_moyenneBasseJustice <- false;
 			
 			if (droits_loyer){
-				int rayon_zone <- rayon_min_PS_nouveau + rnd(rayon_max_PS_nouveau - rayon_min_PS_nouveau);
-				float txPrelev <- min_fourchette_loyers_PS_nouveau + rnd(max_fourchette_loyers_PS_nouveau - min_fourchette_loyers_PS_nouveau);
+				int rayon_zone <- rayon_min_PS + rnd(rayon_max_PS - rayon_min_PS);
+				float txPrelev <- min_fourchette_loyers_PS + rnd(max_fourchette_loyers_PS - min_fourchette_loyers_PS);
 				do creer_zone_prelevement(self.location, rayon_zone, self, "Loyer", txPrelev);
 			}			
 		}
@@ -48,7 +47,6 @@ entities {
 	species Seigneurs schedules: shuffle(Seigneurs) {
 		
 		string type <- "Petit Seigneur";
-		bool initialement_present <- false;
 		float taux_prelevement <- 1.0;
 		
 		float puissance_init;
@@ -90,23 +88,23 @@ entities {
 		
 		action gains_droits_PS {
 			if (flip(proba_creation_ZP_banaux)){				
-				int rayon_ZP <- (self.initialement_present) ? (rayon_min_PS_init + rnd(rayon_max_PS_init - rayon_min_PS_init)) : (rayon_min_PS_nouveau + rnd(rayon_max_PS_nouveau - rayon_min_PS_nouveau));
-				float taux_ZP <- (self.initialement_present) ? (min_fourchette_loyers_PS_init + rnd(max_fourchette_loyers_PS_init - min_fourchette_loyers_PS_init)) : (min_fourchette_loyers_PS_nouveau + rnd(max_fourchette_loyers_PS_nouveau - min_fourchette_loyers_PS_nouveau));
+				int rayon_ZP <- rayon_min_PS + rnd(rayon_max_PS - rayon_min_PS);
+				float taux_ZP <- min_fourchette_loyers_PS + rnd(max_fourchette_loyers_PS - min_fourchette_loyers_PS);
 				do creer_zone_prelevement(any_location_in(3000 around self.location), rayon_ZP, self, "Banaux", taux_ZP);
 			}
 			
 			if flip(proba_creation_ZP_basseMoyenneJustice){
-				int rayon_ZP <- (self.initialement_present) ? (rayon_min_PS_init + rnd(rayon_max_PS_init - rayon_min_PS_init)) : (rayon_min_PS_nouveau + rnd(rayon_max_PS_nouveau - rayon_min_PS_nouveau));
-				float taux_ZP <- (self.initialement_present) ? (min_fourchette_loyers_PS_init + rnd(max_fourchette_loyers_PS_init - min_fourchette_loyers_PS_init)) : (min_fourchette_loyers_PS_nouveau + rnd(max_fourchette_loyers_PS_nouveau - min_fourchette_loyers_PS_nouveau));
+				int rayon_ZP <- rayon_min_PS + rnd(rayon_max_PS - rayon_min_PS);
+				float taux_ZP <- min_fourchette_loyers_PS + rnd(max_fourchette_loyers_PS - min_fourchette_loyers_PS);
 				do creer_zone_prelevement(any_location_in(3000 around self.location), rayon_ZP, self, "basseMoyenne_Justice", taux_ZP);
 			}
 		}
 		
 		action don_droits_GS {
-			Seigneurs choixSeigneur <- shuffle(Seigneurs) first_with (each.type != "Grand Seigneur" and each.initialement_present and ((each.monSuzerain = self or each.monSuzerain = nil))) ;
+			Seigneurs choixSeigneur <- shuffle(Seigneurs) first_with (each.type != "Grand Seigneur" and ((each.monSuzerain = self or each.monSuzerain = nil))) ;
 			string monType_droit <- flip(0.33) ? "Haute_Justice" : (flip(0.5) ? "Banaux" : "basseMoyenne_Justice");
 			Agregats choixAgregat <- one_of(Agregats);
-			int rayon_taxe <- (rayon_min_PS_init + rnd(rayon_max_PS_init - rayon_min_PS_init));
+			int rayon_taxe <- rayon_min_PS + rnd(rayon_max_PS - rayon_min_PS);
 			create Zones_Prelevement number: 1 {
 				set location <- any_location_in(choixAgregat.shape);
 				set ZP_chateau <- false;
@@ -287,7 +285,8 @@ entities {
 		action don_chateaux_GS {
 			loop chateau over: Chateaux where (each.proprietaire = self and each.gardien = self){
 				if (flip(proba_don_chateau_GS)){
-					Seigneurs choixSeigneur <- shuffle(Seigneurs) first_with (each.type != 'Grand Seigneur' and each.initialement_present and ((each.monSuzerain = self or each.monSuzerain = nil) or (each.monSuzerain.type != "Grand Seigneur")));
+					//Seigneurs choixSeigneur <- shuffle(Seigneurs) first_with (each.type != 'Grand Seigneur' and each.initialement_present and ((each.monSuzerain = self or each.monSuzerain = nil) or (each.monSuzerain.type != "Grand Seigneur")));
+					Seigneurs choixSeigneur <- shuffle(Seigneurs) first_with (each.type != 'Grand Seigneur'  and ((each.monSuzerain = self or each.monSuzerain = nil) or (each.monSuzerain.type != "Grand Seigneur")));
 					set chateau.gardien <- choixSeigneur;
 					set choixSeigneur.type <- "Chatelain";
 					set choixSeigneur.monSuzerain <- self;

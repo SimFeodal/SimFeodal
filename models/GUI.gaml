@@ -56,15 +56,10 @@ experiment Exp_Graphique type: gui multicore: true {
 	
 	// ZONES_PRELEVEMENT //
 	
-	parameter "Rayon min Zone Prelevement - Petits Seigneurs Init" var: rayon_min_PS_init category: "Zones Prelevement" min: 100 max: 20000;
-	parameter "Rayon max Zone Prelevement - Petits Seigneurs Init" var: rayon_max_PS_init category: "Zones Prelevement" min: 100 max: 25000;
-	parameter "%FP payant un loyer (Petit Seigneur initial) - Borne Min" var: min_fourchette_loyers_PS_init category: "Zones Prelevement" min: 0.0 max: 1.0;
-	parameter "%FP payant un loyer (Petit Seigneur initial) - Borne Max" var: max_fourchette_loyers_PS_init category: "Zones Prelevement" min: 0.0 max: 1.0;
-
-	parameter "Rayon min Zone Prelevement - Petits Seigneurs nouveau" var: rayon_min_PS_nouveau category: "Zones Prelevement" min: 100 max: 2000;
-	parameter "Rayon max Zone Prelevement - Petits Seigneurs nouveau" var: rayon_max_PS_nouveau category: "Zones Prelevement" min: 100 max: 10000;
-	parameter "%FP payant un loyer (Petit Seigneur nouveau) - Borne Min" var: min_fourchette_loyers_PS_nouveau category: "Zones Prelevement" min: 0.0 max: 1.0;
-	parameter "%FP payant un loyer (Petit Seigneur nouveau) - Borne Max" var: max_fourchette_loyers_PS_nouveau category: "Zones Prelevement" min: 0.0 max: 1.0;
+	parameter "Rayon min Zone Prelevement - Petits Seigneurs" var: rayon_min_PS category: "Zones Prelevement" min: 100 max: 20000;
+	parameter "Rayon max Zone Prelevement - Petits Seigneurs" var: rayon_max_PS category: "Zones Prelevement" min: 100 max: 25000;
+	parameter "%FP payant un loyer (Petit Seigneur) - Borne Min" var: min_fourchette_loyers_PS category: "Zones Prelevement" min: 0.0 max: 1.0;
+	parameter "%FP payant un loyer (Petit Seigneur) - Borne Max" var: max_fourchette_loyers_PS category: "Zones Prelevement" min: 0.0 max: 1.0;
 	
 	parameter "Proba. don droits sur ZP" var: proba_don_partie_ZP category: "Zones Prelevement";	
 	
