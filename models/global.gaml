@@ -22,6 +22,7 @@ global {
 	
 	// GLOBAL //
 	
+	bool benchmark <- false;
 	bool save_outputs <- false;
 	int debut_simulation <- 800;
 	int fin_simulation <- 1160;

@@ -58,7 +58,7 @@ global {
 					}
 				}
 				if (length(mesChateaux) > 0){
-					if (length(mesChateaux where (each.type = "Grand Chateau")) > 0){
+					if ((mesChateaux count (each.type = "Grand Chateau")) > 0){
 						set attractivite <- attractivite + 0.34;
 					} else {
 						set attractivite <- attractivite + 0.17;

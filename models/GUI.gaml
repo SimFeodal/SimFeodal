@@ -14,6 +14,7 @@ experiment Exp_Graphique type: gui multicore: true {
 	// GLOBAL //
 	
 	float seed <- 1000.0;
+	parameter "Benchmark?" var: benchmark category: "Simulation";
 	parameter "Enregistrer sorties ?" var: save_outputs category: "Simulation";
 	parameter "Annee debut simulation" var: debut_simulation category: "Simulation";
 	parameter "Annee fin simulation" var: fin_simulation category: "Simulation";

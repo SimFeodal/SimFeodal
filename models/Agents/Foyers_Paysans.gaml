@@ -133,7 +133,9 @@ entities {
 		}
 		
 		action update_satisfaction_protection {
-				Chateaux plusProcheChateau <- Chateaux closest_to self;
+				
+				Chateaux plusProcheChateau <- Chateaux with_min_of (self distance_to each);
+				
 				float satisfaction_distance;
 				float satisfaction_puissance;
 				// FIXME : Trop lent, à recoder (peut-être depuis point de vue chateau)
