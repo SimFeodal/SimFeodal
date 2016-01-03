@@ -126,9 +126,9 @@ experiment Exp_Graphique type: gui multicore: true {
 		
 		display "Carte" {
 			species Paroisses transparency: 0.9 ;
-			//species Zones_Prelevement transparency: 0.9;
+			species Zones_Prelevement transparency: 0.9;
 			agents "Eglises Paroissiales" value: Eglises where (each.eglise_paroissiale) aspect: base transparency: 0.5;
-			//species Chateaux aspect: base ;
+			species Chateaux aspect: base ;
 			species Foyers_Paysans transparency: 0.5;
 			species Agregats transparency: 0.3;
 			

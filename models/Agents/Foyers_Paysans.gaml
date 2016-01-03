@@ -103,7 +103,7 @@ entities {
 			if (self.monAgregat = nil){
 				set S_contributions <- 0.0;
 			} else {
-				set S_contributions <- (self.communaute ? puissance_communautes : 0) + (self.monAgregat.marche ? 0.25 : 0);
+				set S_contributions <- (self.communaute ? puissance_communautes : 0);
 			}
 			
 

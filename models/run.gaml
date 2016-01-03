@@ -38,6 +38,7 @@ global schedules: list(world) + list(Attracteurs) + list(Poles)+ list(Agregats) 
 		do update_besoin_protection;
 		if (benchmark){write 'MaJ_globals : ' + string(machine_time - t);}
 	}	
+
 	reflex MaJ_Agregats{
 		float t <- machine_time;
 		do update_agregats;
@@ -63,14 +64,12 @@ global schedules: list(world) + list(Attracteurs) + list(Poles)+ list(Agregats) 
 		if (benchmark){write 'MaJ_Chateaux : ' + string(machine_time - t);}
 	}
 	
-	
 	reflex MaJ_Eglises {
 		float t <- machine_time;
 		ask Eglises {do update_attractivite;}
 		//ask Eglises where (!each.eglise_paroissiale) {do update_droits_paroissiaux;}
 		if (benchmark){write 'MaJ_Eglises : ' + string(machine_time - t);}
 	}
-	
 	
 	reflex MaJ_Droits_Seigneurs {
 		float t <- machine_time;
@@ -81,7 +80,6 @@ global schedules: list(world) + list(Attracteurs) + list(Poles)+ list(Agregats) 
 		}
 		if (benchmark){write 'MaJ_Droits_Seigneurs : ' + string(machine_time - t);}
 	}
-	
 	
 	reflex MaJ_ZP_et_preleveurs {
 		float t <- machine_time;
@@ -104,7 +102,6 @@ global schedules: list(world) + list(Attracteurs) + list(Poles)+ list(Agregats) 
 		if (benchmark){write 'MaJ_ZP_et_preleveurs : ' + string(machine_time - t);}
 	}
 	
-		
 	reflex Dons_des_Seigneurs {
 		float t <- machine_time;
 		// Don droits
@@ -120,7 +117,6 @@ global schedules: list(world) + list(Attracteurs) + list(Poles)+ list(Agregats) 
 		if (benchmark){write 'Dons_des_Seigneurs : ' + string(machine_time - t);}
 	}
 	
-	
 	reflex Constructions_chateaux when: Annee >= apparition_chateaux{
 		float t <- machine_time;
 		ask Seigneurs where (each.type = "Grand Seigneur" and each.puissance > 2000) { do construction_chateau_GS;}
@@ -131,7 +127,6 @@ global schedules: list(world) + list(Attracteurs) + list(Poles)+ list(Agregats) 
 		if (benchmark){write 'Constructions_chateaux 2/2 : ' + string(machine_time - t);}
 	}
 	
-	
 	reflex MaJ_satisfaction_FP {
 		float t <- machine_time;
 		ask  Foyers_Paysans {
@@ -140,10 +135,8 @@ global schedules: list(world) + list(Attracteurs) + list(Poles)+ list(Agregats) 
 			do update_satisfaction_protection;
 			set Satisfaction <- min([satisfaction_religieuse, satisfaction_protection,  satisfaction_materielle]);
 		}
-		if (benchmark){write 'update_satis : ' + string(machine_time - t);}
-		
+		if (benchmark){write 'update_satis : ' + string(machine_time - t);}	
 	}
-	
 	
 	reflex MaJ_paroisses {
 		float t <- machine_time;
@@ -165,7 +158,6 @@ global schedules: list(world) + list(Attracteurs) + list(Poles)+ list(Agregats) 
 		}
 		if (benchmark){write 'MaJ_poles : ' + string(machine_time - t);}
 	}
-	
 	
 	reflex update_plot {
 		float t <- machine_time;
@@ -189,6 +181,13 @@ global schedules: list(world) + list(Attracteurs) + list(Poles)+ list(Agregats) 
 		//write 'Output FP data : ' + string(machine_time - t);
 		if (benchmark){write 'save_data : ' + string(machine_time - t);}
 	}
+	
+	/*
+	reflex save_test {
+		save Foyers_Paysans to: "export_FP.csv" type: "csv";
+		save world to: "export_world.csv" type: "csv";
+	}
+	*/
 	
 	reflex fin_simulation {
 		float t <- machine_time;

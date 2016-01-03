@@ -176,6 +176,7 @@ entities {
 			}
 		}
 		
+		// FIXME : A revoir, pas très logique
 		action MaJ_droits_Petits_Seigneurs {
 			if (!droits_banaux) {
 				set droits_banaux <- flip(proba_gain_droits_banaux_chateau);
@@ -194,9 +195,6 @@ entities {
 			}
 		}
 		
-		action MaJ_droits_Chatelains {
-			
-		}
 		
 		action MaJ_ZP_chateaux(Seigneurs seigneur, string type_droit){
 			switch type_droit {
