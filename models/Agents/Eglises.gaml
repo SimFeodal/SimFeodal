@@ -89,26 +89,17 @@ global {
 					set paroisse_a_creer <- shuffle(Eglises) first_with (location = (monTriangle farthest_point_to location));
 					//write("Pung");
 				}
-				
-				list<geometry> potentiel_maillage_paroissial <- voronoi((Paroisses collect each.location) + [paroisse_a_creer.location]);
-				set shape <- shuffle(potentiel_maillage_paroissial) first_with (each overlaps location);
-				do update_fideles ;
-				do update_satisfaction ;
-//				if (Satisfaction_Paroisse > ancienne_satisfaction) {
-//					ask paroisse_a_creer {
-//						set eglise_paroissiale <- true;
-//						set reel <- true;
-//					}
-//				} else {
-//					if (eglise_batie){ask paroisse_a_creer {do die;}}
-//					set shape <- ancien_shape ;
-//					set Satisfaction_Paroisse <- ancienne_satisfaction ;
-//					set mesFideles <- anciens_fideles ;
-//				}	
+				if (paroisse_a_creer != nil){
+					list<geometry> potentiel_maillage_paroissial <- voronoi((Paroisses collect each.location) + [paroisse_a_creer.location]);
+					set shape <- shuffle(potentiel_maillage_paroissial) first_with (each overlaps location);
+					do update_fideles ;
+					do update_satisfaction ;
 					ask paroisse_a_creer {
-						set eglise_paroissiale <- true;
-						set reel <- true;
+							set eglise_paroissiale <- true;
+							set reel <- true;
 					}
+				}
+
 			}
 		}
 	
