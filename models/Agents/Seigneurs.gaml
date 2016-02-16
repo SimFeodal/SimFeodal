@@ -47,6 +47,7 @@ entities {
 	species Seigneurs schedules: shuffle(Seigneurs) {
 		
 		string type <- "Petit Seigneur";
+		bool initial <- false;
 		float taux_prelevement <- 1.0;
 		
 		float puissance_init;

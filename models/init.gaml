@@ -64,6 +64,7 @@ global {
 		create Seigneurs number: nombre_grands_seigneurs{
 			set type <- "Grand Seigneur";
 			set taux_prelevement <- 1.0;
+			set initial <- true;
 			
 			set droits_loyer <-true;
 			set droits_hauteJustice <- false;
@@ -75,7 +76,7 @@ global {
 			set type <- "Petit Seigneur";
 			set taux_prelevement <- 1.0;
 			set location <- any_location_in(one_of(Agregats collect each.shape));
-			
+			set initial <- true;
 			
 			set droits_loyer <- true;
 			set droits_hauteJustice <- false;
