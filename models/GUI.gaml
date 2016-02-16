@@ -302,6 +302,53 @@ global {
 	float dist_ppv_agregat <- 0.0;
 	list<int> Chateaux_chatelains <- [];
 	list<int> reseaux_chateaux <- [];
+	reflex update_ratio_fiscal when: (Annee = 820){
+			set charge_fiscale_debut <- mean(Foyers_Paysans collect float(each.nb_preleveurs));
+	}
+	reflex update_batch_indexes when: Annee >= 820 {
+		//list<Eglises> currParoisses <- Eglises where (each.eglise_paroissiale);
+		//set distance_eglises <- mean(currParoisses collect (each distance_to (currParoisses closest_to self)));
+		list<float> distances_pp_eglise <- [];
+		ask Eglises {
+			Eglises pp_eglise <- Eglises closest_to self;
+			if (pp_eglise != nil){
+			float distEglise <- self distance_to pp_eglise;
+			set distances_pp_eglise <- distances_pp_eglise + distEglise;
+			}
+
+		}
+		
+		set distance_eglises <- mean(distances_pp_eglise);
+		set prop_FP_isoles <- Foyers_Paysans count (each.monAgregat = nil) / length(Foyers_Paysans);
+		set ratio_charge_fiscale <- mean(Foyers_Paysans collect (each.nb_preleveurs)) / charge_fiscale_debut;
+		
+		list<Foyers_Paysans> FP_Agregat <- Foyers_Paysans where (each.monAgregat != nil);
+		
+		list<float> liste_ppv_agregats <- [];
+		ask FP_Agregat {
+			list<Foyers_Paysans> mesFP <- (Foyers_Paysans where (each.monAgregat = self.monAgregat)) - self;
+			if (mesFP != nil){
+				float myDist <- self distance_to (mesFP closest_to self);
+				set liste_ppv_agregats <- liste_ppv_agregats + myDist;
+			}
+
+		}
+		set dist_ppv_agregat <- mean(liste_ppv_agregats);
+		
+		list<int> nbChateaux_chatelains <- []; 
+		ask Seigneurs where (each.type != "Petit Seigneur"){
+			list<Chateaux> mesChateaux <- Chateaux where ( (each.proprietaire = self) or (each.gardien = self) );
+			set nbChateaux_chatelains <- nbChateaux_chatelains +  length(mesChateaux);	
+		}
+		set Chateaux_chatelains <- nbChateaux_chatelains;
+		
+		list<int> nbChateaux_reseau <- [];
+		ask Seigneurs where (each.type != "Petit Seigneur"){
+			list<Chateaux> mesChateaux <- Chateaux where (each.proprietaire = self);
+			set nbChateaux_reseau <- nbChateaux_reseau +  length(mesChateaux);	
+		}
+		set reseaux_chateaux <- nbChateaux_reseau;
+	}
 }
 
 experiment Explo_TMD type: batch repeat:10 keep_seed : true until: (Annee >= fin_simulation){
