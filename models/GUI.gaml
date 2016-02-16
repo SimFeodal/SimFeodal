@@ -293,6 +293,17 @@ experiment Batch type: batch repeat: 50 keep_seed: true until: (Annee > fin_simu
 	}	
  
 }
+global {
+	float distance_eglises <- 0.0; // Moyenne des distances au plus proche voisin
+	float prop_FP_isoles <- 0.0;
+	float ratio_charge_fiscale <- 0.0;
+	float charge_fiscale_debut <- 0.0;
+	
+	float dist_ppv_agregat <- 0.0;
+	list<int> Chateaux_chatelains <- [];
+	list<int> reseaux_chateaux <- [];
+}
+
 experiment Explo_TMD type: batch repeat:10 keep_seed : true until: (Annee >= fin_simulation){
 	parameter 'distance_detection_agregats' var: distance_detection_agregats among: [ 50 , 100 , 200 ];
 	parameter 'proba_creer_chateau_GS' var: proba_creer_chateau_GS  among: [ 0.25 , 0.5,  1.0];
