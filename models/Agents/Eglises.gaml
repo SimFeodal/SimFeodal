@@ -55,9 +55,6 @@ global {
 	action promouvoir_paroisses {
 		ask Paroisses {
 			if flip(1 - Satisfaction_Paroisse){
-				float ancienne_satisfaction <- Satisfaction_Paroisse;
-				geometry ancien_shape <- shape ;
-				list<Foyers_Paysans> anciens_fideles <- mesFideles;
 				bool eglise_batie <- false ;
 				
 				Eglises paroisse_a_creer <- nil ;
