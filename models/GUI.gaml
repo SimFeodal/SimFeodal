@@ -293,6 +293,7 @@ experiment Batch type: batch repeat: 50 keep_seed: true until: (Annee > fin_simu
 	}	
  
 }
+
 global {
 	float distance_eglises <- 0.0; // Moyenne des distances au plus proche voisin
 	float prop_FP_isoles <- 0.0;
@@ -302,9 +303,70 @@ global {
 	float dist_ppv_agregat <- 0.0;
 	list<int> Chateaux_chatelains <- [];
 	list<int> reseaux_chateaux <- [];
+	
 	reflex update_ratio_fiscal when: (Annee = 820){
 			set charge_fiscale_debut <- mean(Foyers_Paysans collect float(each.nb_preleveurs));
 	}
+	
+	action save_simul {
+		if (!file_exists("../outputs/results_TMD_end.csv")){
+			// FIXME  : Add params
+			save ["distance_detection_agregats", "proba_creer_chateau_GS", "proba_gain_droits_paroissiaux", "proba_collecter_loyer", "taux_renouvellement", "puissance_communautes",
+			"Simulation", "Seed","Annee",
+			"Nb_chateaux", "Nb_Agregats", "Nb_Paroisses",
+			"Distance_entre_eglises", "Taux_FP_isoles", "Augm_charge_fisc",
+			"Dist_ppv_agregat", "nb_chateaux_chatelains"
+			] to: "../outputs/results_TMD.csv" type: "csv";
+			save [distance_detection_agregats, proba_creer_chateau_GS, proba_gain_droits_paroissiaux, proba_collecter_loyer, taux_renouvellement, puissance_communautes,
+				simulation, seed, Annee,
+				length(Chateaux), length(Agregats), Eglises count (each.eglise_paroissiale),
+				distance_eglises, prop_FP_isoles*100, ratio_charge_fiscale,
+				dist_ppv_agregat, Chateaux_chatelains
+			] to: "../outputs/results_TMD.csv" type: "csv";
+		}
+		
+	}
+	
+	action save_seigneurs {
+		if (!file_exists("../outputs/results_TMD_seigneurs.csv")){
+			save ["distance_detection_agregats", "proba_creer_chateau_GS", "proba_gain_droits_paroissiaux", "proba_collecter_loyer", "taux_renouvellement", "puissance_communautes",
+			"Simulation", "Seed", "Annee",
+			"ID_Seigneur", "type","initial", "Puissance","Puissance_armee",
+				"Loyer","HteJustice", "Banaux", "MBJustice",
+				"ID_Suzerain","Nb_FP",
+				"Nb_chateaux_garde", "Nb_chateaux_proprio",
+				"Nb_vassaux"
+				]
+			to: "../outputs/results_TMD_seigneurs.csv" type: "csv";	
+		}
+		ask Seigneurs {
+			save [distance_detection_agregats, proba_creer_chateau_GS, proba_gain_droits_paroissiaux, proba_collecter_loyer, taux_renouvellement, puissance_communautes,
+				simulation, seed, Annee, 
+				self, type, initial, puissance with_precision 3, puissance_armee with_precision 3,
+				droits_loyer, droits_hauteJustice, droits_banaux, droits_moyenneBasseJustice,
+				monSuzerain, length(FP_assujettis),
+				Chateaux count (each.gardien = self), Chateaux count (each.proprietaire = self),
+				Seigneurs count (each.monSuzerain = self)
+				]
+			to: "../outputs/results_TMD_seigneurs.csv" type: "csv";
+		}
+	}
+	
+	action save_agregats {
+		if (!file_exists("../outputs/results_TMD_agregats.csv")){
+			save ["distance_detection_agregats", "proba_creer_chateau_GS", "proba_gain_droits_paroissiaux", "proba_collecter_loyer", "taux_renouvellement", "puissance_communautes",
+			"Simulation", "Seed", "Annee",
+				 "ID_Agregat", "Nb_FP_contenus", "Nb_FP_attires"
+			] to: "../outputs/results_TMD_agregats.csv" type: "csv";
+		}
+		ask Agregats {
+			save [distance_detection_agregats, proba_creer_chateau_GS, proba_gain_droits_paroissiaux, proba_collecter_loyer, taux_renouvellement, puissance_communautes,
+				simulation, seed, Annee, 
+			self, length(fp_agregat), nb_fp_attires
+			] to: "../outputs/results_TMD_agregats.csv" type: "csv";
+		}
+	}
+	
 	reflex update_batch_indexes when: Annee >= 820 {
 		//list<Eglises> currParoisses <- Eglises where (each.eglise_paroissiale);
 		//set distance_eglises <- mean(currParoisses collect (each distance_to (currParoisses closest_to self)));
@@ -348,6 +410,9 @@ global {
 			set nbChateaux_reseau <- nbChateaux_reseau +  length(mesChateaux);	
 		}
 		set reseaux_chateaux <- nbChateaux_reseau;
+		do save_simul;
+		do save_seigneurs;
+		do save_agregats;
 	}
 }
 
