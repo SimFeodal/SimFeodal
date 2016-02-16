@@ -70,7 +70,7 @@ global {
 
 entities {
 
-	species Agregats  schedules: shuffle(Agregats){
+	species Agregats schedules: shuffle(Agregats){
 		bool fake_agregat <- false;
 		int attractivite <- 0;
 		list<Foyers_Paysans> fp_agregat ;
@@ -78,6 +78,7 @@ entities {
 		Chateaux monChateau <- nil;
 		bool reel <- false;
 		list<Eglises> mesParoisses;
+		int nb_fp_attires <- 0 update: 0;
 		
 		action update_chateau {
 			// FIXME : Chateaux trop proches sinon

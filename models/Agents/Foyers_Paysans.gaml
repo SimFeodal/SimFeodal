@@ -190,10 +190,18 @@ entities {
 			list<Poles> agregatsPolarisants <- Poles where (each.monAgregat != nil);
 			// Uniquement les poles qui ne sont pas dans le rayon local
 			list<Poles> agregatsPolarisantsLointains <- agregatsPolarisants - (agregatsPolarisants at_distance distance_max_dem_local);
-			if (empty(agregatsPolarisantsLointains)){ // Si pas de pole, on reste sur place
-				set point_lointain<- location;
-			} else if (length(agregatsPolarisantsLointains) < 2){ // Si un seul pole, on y va
-				set point_lointain <- any_location_in(one_of(agregatsPolarisantsLointains).shape);
+			if (empty(agregatsPolarisantsLointains))
+			{ // Si pas de pole, on reste sur place
+				set point_lointain <- location;
+			} else if (length(agregatsPolarisantsLointains) < 2)
+			{ // Si un seul pole, on y va
+				Poles choixPole <- one_of(agregatsPolarisantsLointains);
+				ask choixPole.monAgregat
+				{
+					set nb_fp_attires <- nb_fp_attires + 1;
+				}
+
+				set point_lointain <- any_location_in(choixPole.shape);
 				// TODO : Changer nom variable
 				set nb_demenagement_lointain <- nb_demenagement_lointain + 1;
 			} else { // Si plus de 1 pole, lotterie ponderée
