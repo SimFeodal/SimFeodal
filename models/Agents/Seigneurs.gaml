@@ -26,7 +26,12 @@ global {
 			set type <- "Petit Seigneur";
 			set taux_prelevement <- 1.0;
 			
-			location <- any_location_in(one_of(Agregats collect each.shape));
+			if (length(Agregats) > 0){
+				location <- any_location_in(one_of(Agregats collect each.shape));
+			} else {
+				location <- any_location_in(world);
+			}
+			
 			
 			set droits_loyer <- flip(proba_collecter_loyer);
 			set droits_hauteJustice <- false;
@@ -105,6 +110,7 @@ entities {
 			Seigneurs choixSeigneur <- shuffle(Seigneurs) first_with (each.type != "Grand Seigneur" and ((each.monSuzerain = self or each.monSuzerain = nil))) ;
 			string monType_droit <- flip(0.33) ? "Haute_Justice" : (flip(0.5) ? "Banaux" : "basseMoyenne_Justice");
 			Agregats choixAgregat <- one_of(Agregats);
+			if (choixAgregat != nil){
 			int rayon_taxe <- rayon_min_PS + rnd(rayon_max_PS - rayon_min_PS);
 			create Zones_Prelevement number: 1 {
 				set location <- any_location_in(choixAgregat.shape);
@@ -116,6 +122,8 @@ entities {
 				set preleveurs <- map([choixSeigneur::1.0]);
 			}
 			ask choixSeigneur { set monSuzerain <- myself;}
+			}
+
 		}
 		
 		action don_droits_PS {
