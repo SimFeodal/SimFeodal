@@ -20,10 +20,10 @@ global {
 	action update_poles {
 		ask Poles {do die;}
 		list<Eglises> eglises_paroissiales <- Eglises where (each.reel);
-		list<list<Attracteurs>> poles_uniques <- (simple_clustering_by_distance((eglises_paroissiales + Chateaux) of_generic_species Attracteurs, 200));
+		list<list> poles_uniques <- simple_clustering_by_distance((eglises_paroissiales + Chateaux) of_generic_species Attracteurs, 200);
 		loop currentPole over: poles_uniques {
 			create Poles number: 1 {
-				set mesAttracteurs <- currentPole;
+				set mesAttracteurs <- list<Attracteurs>(currentPole);
 				set shape <- convex_hull(polygon(mesAttracteurs collect each.location)) + 200; // Buffer de 200m autour du convex_hull
 			}
 		}

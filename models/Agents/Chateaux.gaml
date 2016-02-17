@@ -22,7 +22,7 @@ entities {
 		string type <- "Petit Chateau";
 		list<string> fonctions_possedees;
 		// FIXME : attractivite == int pour les attracteurs
-		float attractivite <- 0;
+		float attractivite <- 0.0;
 		Agregats monAgregat <- nil;
 		Seigneurs proprietaire <- nil;
 		Seigneurs gardien <- nil;

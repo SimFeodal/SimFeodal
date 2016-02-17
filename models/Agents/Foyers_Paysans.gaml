@@ -19,7 +19,7 @@ global
 {
 	action renouvellement_FP
 	{
-		int attractivite_totale <- length(Foyers_Paysans) + sum(Chateaux collect each.attractivite);
+		int attractivite_totale <- length(Foyers_Paysans) + int(sum(Chateaux collect each.attractivite));
 		int nb_FP_impactes <- int(taux_renouvellement * length(Foyers_Paysans));
 		ask nb_FP_impactes among Foyers_Paysans
 		{

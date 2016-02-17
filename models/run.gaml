@@ -122,9 +122,9 @@ global schedules: list(world) + list(Attracteurs) + list(Poles)+ list(Agregats) 
 		ask Seigneurs where (each.type = "Grand Seigneur" and each.puissance > 2000) { do construction_chateau_GS;}
 		if (benchmark){write 'Constructions_chateaux 1/2 : ' + string(machine_time - t);}
 		
-		float t <- machine_time;
+		float t2 <- machine_time;
 		ask Seigneurs where (each.type != "Grand Seigneur" and each.puissance > 2000){ do construction_chateau_PS;}
-		if (benchmark){write 'Constructions_chateaux 2/2 : ' + string(machine_time - t);}
+		if (benchmark){write 'Constructions_chateaux 2/2 : ' + string(machine_time - t2);}
 	}
 	
 	reflex MaJ_satisfaction_FP {
