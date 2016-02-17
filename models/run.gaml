@@ -167,6 +167,13 @@ global schedules: list(world) + list(Attracteurs) + list(Poles)+ list(Agregats) 
 		if (benchmark){write 'update_plot : ' + string(machine_time - t);}
 	}
 	
+	reflex update_outputs when: (Annee > debut_simulation){
+		if (Annee = (debut_simulation + duree_step)){
+			set charge_fiscale_debut <- mean(Foyers_Paysans collect float(each.nb_preleveurs));
+		}
+		do update_output_indexes;
+	}
+	
 	reflex save_data when: save_outputs {
 		float t <- machine_time;
 		//float t <- machine_time;
@@ -182,12 +189,11 @@ global schedules: list(world) + list(Attracteurs) + list(Poles)+ list(Agregats) 
 		if (benchmark){write 'save_data : ' + string(machine_time - t);}
 	}
 	
-	/*
-	reflex save_test {
-		save Foyers_Paysans to: "export_FP.csv" type: "csv";
-		save world to: "export_world.csv" type: "csv";
+	reflex save_TMD_data when: save_TMD {
+		do save_simul_TMD;
+		do save_seigneurs_TMD;
+		do save_agregats_TMD;
 	}
-	*/
 	
 	reflex fin_simulation {
 		float t <- machine_time;
