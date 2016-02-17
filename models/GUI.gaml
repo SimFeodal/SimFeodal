@@ -131,8 +131,9 @@ experiment Exp_Graphique type: gui multicore: true {
 			species Chateaux aspect: base ;
 			species Foyers_Paysans transparency: 0.5;
 			species Agregats transparency: 0.3;
-			
-			text string(Annee) size: 10000 position: {0, 1} color: rgb("black");
+			graphics "Annee" {
+				draw string(Annee) size: 20 at: {0, 50000} color: rgb("black") ;
+			}
 		}
 //		
 	    display "Foyers Paysans" {
