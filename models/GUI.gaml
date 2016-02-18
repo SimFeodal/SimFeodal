@@ -132,7 +132,7 @@ experiment Exp_Graphique type: gui multicore: true {
 			species Foyers_Paysans transparency: 0.5;
 			species Agregats transparency: 0.3;
 			graphics "Annee" {
-				draw string(Annee) size: 20 at: {0, 50000} color: rgb("black") ;
+				 draw string(Annee) font: font("Helvetica", 32, #bold) color: rgb("black") at: {0.0,100000};
 			}
 		}
 //		
@@ -316,3 +316,4 @@ experiment Explo_TMD type: batch repeat:10 keep_seed : true until: (Annee >= fin
 	parameter 'puissance_communautes' var: puissance_communautes among: [0.0, 0.25, 0.5];
 }
  
+
