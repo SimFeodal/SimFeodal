@@ -295,6 +295,17 @@ experiment Batch type: batch repeat: 50 keep_seed: true until: (Annee > fin_simu
  
 }
 
+ experiment test_graphics type: gui {
+ 	output {
+		display "Carte" {
+			species Foyers_Paysans transparency: 0.5;
+			graphics "Annee" position: {0.0,-(0.1)} {
+				 draw string(Annee) font: font("Helvetica", 32, #bold) color: rgb("black") ;
+			}
+		}
+ 	}
+ }
+
 experiment Explo_TMD type: batch repeat:10 keep_seed : true until: (Annee >= fin_simulation){
 	parameter 'save_TMD' var: save_TMD among: [true];
 	parameter 'distance_detection_agregats' var: distance_detection_agregats among: [ 50 , 100 , 200 ];
