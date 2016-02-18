@@ -306,14 +306,8 @@ experiment Batch type: batch repeat: 50 keep_seed: true until: (Annee > fin_simu
  	}
  }
 
-experiment Explo_TMD type: batch repeat:10 keep_seed : true until: (Annee >= fin_simulation){
+experiment Explo_TMD type: batch repeat:1 keep_seed : true until: (Annee >= fin_simulation){
 	parameter 'save_TMD' var: save_TMD among: [true];
-	parameter 'distance_detection_agregats' var: distance_detection_agregats among: [ 50 , 100 , 200 ];
-	parameter 'proba_creer_chateau_GS' var: proba_creer_chateau_GS  among: [ 0.25 , 0.5,  1.0];
-	parameter 'proba_gain_droits_paroissiaux' var: proba_gain_droits_paroissiaux  among: [0.0 , 0.05, 0.1];
-	parameter 'proba_collecter_loyer' var: proba_collecter_loyer  among: [0.0 , 0.1, 0.2];
-	parameter 'taux_renouvellement' var: taux_renouvellement  among: [0.0 , 0.05, 0.1];
-	parameter 'puissance_communautes' var: puissance_communautes among: [0.0, 0.25, 0.5];
 }
  
 

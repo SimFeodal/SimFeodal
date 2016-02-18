@@ -200,7 +200,7 @@ global schedules: list(world) + list(Attracteurs) + list(Poles)+ list(Agregats) 
 		set nb_chateaux <- length(Chateaux);
 		if (Annee >= fin_simulation) {
 			write 'Durée simulation : ' + total_duration;
-			do halt; // Si version  batch
+			//do halt; // Si version  batch
 			//do pause; // Si version GUI
 		}
 		if (benchmark){write 'fin_simulation : ' + string(machine_time - t);}
