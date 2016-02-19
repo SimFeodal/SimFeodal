@@ -310,4 +310,7 @@ experiment Explo_TMD type: batch repeat:1 keep_seed : true until: (Annee >= fin_
 	parameter 'save_TMD' var: save_TMD among: [true];
 }
  
-
+ experiment explo_TMD_manuelle type: gui multicore: false{
+ 	parameter 'save_TMD' var: save_TMD;
+ }
+ 

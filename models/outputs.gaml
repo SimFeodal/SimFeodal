@@ -142,27 +142,20 @@ global {
 	
 	action save_TMD {
 		do save_simul_TMD;
-		do save_seigneurs_TMD;
-		do save_agregats_TMD;
+		//do save_seigneurs_TMD;
+		//do save_agregats_TMD;
 	}
 	
 	action save_simul_TMD {
-		if (!file_exists("../outputs/results_TMD_end.csv")){
-			// FIXME  : Add params
-			save [
-			"Simulation", "Seed","Annee",
-			"Nb_chateaux", "Nb_Agregats", "Nb_Paroisses",
-			"Distance_entre_eglises", "Taux_FP_isoles", "Augm_charge_fisc",
-			"Dist_ppv_agregat", "nb_chateaux_chatelains"
+//		save [
+//				simulation, seed, Annee,
+//				length(Chateaux), length(Agregats), Eglises count (each.eglise_paroissiale),
+//				distance_eglises, prop_FP_isoles*100, ratio_charge_fiscale,
+//				dist_ppv_agregat, Chateaux_chatelains
+//			] to: "../outputs/results_TMD.csv" type: "csv";
+		save [
+				simulation, seed, Annee
 			] to: "../outputs/results_TMD.csv" type: "csv";
-			save [
-				simulation, seed, Annee,
-				length(Chateaux), length(Agregats), Eglises count (each.eglise_paroissiale),
-				distance_eglises, prop_FP_isoles*100, ratio_charge_fiscale,
-				dist_ppv_agregat, Chateaux_chatelains
-			] to: "../outputs/results_TMD.csv" type: "csv";
-		}
-		
 	}
 	
 	action save_seigneurs_TMD {

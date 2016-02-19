@@ -190,9 +190,7 @@ global schedules: list(world) + list(Attracteurs) + list(Poles)+ list(Agregats) 
 	}
 	
 	reflex save_TMD_data when: save_TMD {
-		do save_simul_TMD;
-		do save_seigneurs_TMD;
-		do save_agregats_TMD;
+		do save_TMD;
 	}
 	
 	reflex fin_simulation {
@@ -201,7 +199,7 @@ global schedules: list(world) + list(Attracteurs) + list(Poles)+ list(Agregats) 
 		if (Annee >= fin_simulation) {
 			write 'Durée simulation : ' + total_duration;
 			//do halt; // Si version  batch
-			//do pause; // Si version GUI
+			do pause; // Si version GUI
 		}
 		if (benchmark){write 'fin_simulation : ' + string(machine_time - t);}
 	}
