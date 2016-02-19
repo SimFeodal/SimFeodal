@@ -164,8 +164,9 @@ global {
 		list<float> liste_ppv_agregats <- [];
 		ask FP_Agregat {
 			list<Foyers_Paysans> mesFP <- (Foyers_Paysans where (each.monAgregat = self.monAgregat)) - self;
-			if (mesFP != nil){
-				float myDist <- self distance_to (mesFP closest_to self);
+			if (!empty(mesFP)){
+				//write(mesFP);
+				float myDist <- self distance_to (mesFP with_min_of (each distance_to self));
 				set liste_ppv_agregats <- liste_ppv_agregats + myDist;
 			}
 

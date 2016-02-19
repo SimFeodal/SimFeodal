@@ -151,8 +151,8 @@ entities
 		action update_satisfaction_protection
 		{
 			Chateaux plusProcheChateau <- Chateaux with_min_of (self distance_to each);
-			float satisfaction_distance;
-			float satisfaction_puissance;
+			float satisfaction_distance <- nil;
+			float satisfaction_puissance <- nil;
 			// FIXME : Trop lent, à recoder (peut-être depuis point de vue chateau)
 			if (plusProcheChateau = nil)
 			{
@@ -189,7 +189,7 @@ entities
 
 		point deplacement_local
 		{
-			point point_local;
+			point point_local <- nil;
 			list<Poles> polesLocaux <- Poles at_distance distance_max_dem_local;
 			if (empty(polesLocaux))
 			{ // Si pas de pole, on reste sur place
@@ -211,7 +211,7 @@ entities
 
 		point deplacement_lointain
 		{
-			point point_lointain;
+			point point_lointain <- nil;
 			list<Poles> agregatsPolarisants <- Poles where (each.monAgregat != nil);
 			// Uniquement les poles qui ne sont pas dans le rayon local
 			list<Poles> agregatsPolarisantsLointains <- agregatsPolarisants - (agregatsPolarisants at_distance distance_max_dem_local);

@@ -375,9 +375,9 @@ entities {
 				
 				// FIXME : Hideux
 				if (flip(proba_chateau_agregat)){
-					Agregats choixAgregat;
+					Agregats choixAgregat <- nil;
 					
-					list<Agregats> agregatsPossibles;
+					list<Agregats> agregatsPossibles <- nil;
 					// on crée le chateau dans un agrégat si possible
 					if (length(Chateaux) > 1 and agregatsPotentiel != nil){
 						set agregatsPossibles <- shuffle(agregatsPotentiel) where (each distance_to (Chateaux closest_to self) < 5000);

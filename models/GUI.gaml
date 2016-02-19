@@ -131,9 +131,8 @@ experiment Exp_Graphique type: gui multicore: true {
 			species Chateaux aspect: base ;
 			species Foyers_Paysans transparency: 0.5;
 			species Agregats transparency: 0.3;
-			graphics "Annee" {
-				 draw string(Annee) font: font("Helvetica", 32, #bold) color: rgb("black") at: {0.0,100000};
-			}
+			
+			text string(Annee) size: 10000 position: {0, 1} color: rgb("black");
 		}
 //		
 	    display "Foyers Paysans" {
@@ -299,9 +298,7 @@ experiment Batch type: batch repeat: 50 keep_seed: true until: (Annee > fin_simu
  	output {
 		display "Carte" {
 			species Foyers_Paysans transparency: 0.5;
-			graphics "Annee" position: {0.0,-(0.1)} {
-				 draw string(Annee) font: font("Helvetica", 32, #bold) color: rgb("black") ;
-			}
+			text string(Annee) size: 10000 position: {0, 1} color: rgb("black");
 		}
  	}
  }
