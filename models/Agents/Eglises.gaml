@@ -40,7 +40,7 @@ global {
 //				( nb_relatif_paroissiens / (nb_max_paroissiens - nb_min_paroissiens))
 //			])]);
 			
-			float proba_creation <- min([1.0, 1/75 * nb_relatif_paroissiens]);
+			float proba_creation <- min([1.0, 1/400 * nb_relatif_paroissiens]);
 			if flip(proba_creation) {
 				// on crée
 				create Eglises number: 1 {
