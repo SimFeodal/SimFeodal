@@ -82,6 +82,8 @@ entities {
 		
 		int monNbZP <- 0;
 		
+		list<Seigneurs> mesDebiteurs <- [];
+		
 		
 		init {
 			if (type = "Chatelain") {
@@ -122,6 +124,7 @@ entities {
 				set preleveurs <- map([choixSeigneur::1.0]);
 			}
 			ask choixSeigneur { set monSuzerain <- myself;}
+			mesDebiteurs <+ choixSeigneur;
 			}
 
 		}
@@ -135,6 +138,7 @@ entities {
 				}
 				if (flip(proba_don_partie_ZP) and (sum(currentZP.preleveurs.values) < (1.0 - pourcentage_donne) ) and !empty(preleveurs_potentiels)) {
 					Seigneurs monPreleveur <- one_of(preleveurs_potentiels);
+					mesDebiteurs <+ monPreleveur;
 					ask currentZP {
 						set preleveurs[monPreleveur] <- (preleveurs.keys contains monPreleveur) ? preleveurs[monPreleveur] + pourcentage_donne : pourcentage_donne;
 					}
@@ -297,6 +301,7 @@ entities {
 					set chateau.gardien <- choixSeigneur;
 					set choixSeigneur.type <- "Chatelain";
 					set choixSeigneur.monSuzerain <- self;
+					mesDebiteurs <+ choixSeigneur;
 					
 					if (chateau.ZP_loyer != nil) {
 						ask chateau.ZP_loyer {

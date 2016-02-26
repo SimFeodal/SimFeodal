@@ -22,6 +22,8 @@ global {
 	
 	// GLOBAL //
 	
+	float myseed <- seed;
+	
 	bool benchmark <- false;
 	bool save_outputs <- false;
 	bool save_TMD <- false;
@@ -117,10 +119,11 @@ global {
 	// OUTPUTS //
 	/////////////
 	float distance_eglises <- 0.0; // Moyenne des distances au plus proche voisin
+	float distance_eglises_paroissiales <- 0.0;
 	float prop_FP_isoles <- 0.0;
 	float ratio_charge_fiscale <- 0.0;
 	float charge_fiscale_debut <- 0.0;
-	
+	float charge_fiscale <- 0.0;
 	float dist_ppv_agregat <- 0.0;
 	list<int> Chateaux_chatelains <- [];
 	list<int> reseaux_chateaux <- [];
@@ -151,13 +154,28 @@ global {
 			Eglises pp_eglise <- Eglises closest_to self;
 			if (pp_eglise != nil){
 			float distEglise <- self distance_to pp_eglise;
-			set distances_pp_eglise <- distances_pp_eglise + distEglise;
+			distances_pp_eglise <+ distEglise;
 			}
 		}
 		
 		set distance_eglises <- mean(distances_pp_eglise);
+		
+		list<float> distances_pp_paroisses <- [];
+		list<Eglises> eglises_paroissiales <- Eglises where (each.eglise_paroissiale);
+		ask eglises_paroissiales{
+			Eglises pp_eglise <- (eglises_paroissiales - self) closest_to self;
+			if (pp_eglise != nil){
+			float distEglise <- self distance_to pp_eglise;
+			distances_pp_paroisses <+ distEglise;
+			}
+		}
+		
+		set distance_eglises_paroissiales <- mean(distances_pp_paroisses);
+		
+		
+		
 		set prop_FP_isoles <- Foyers_Paysans count (each.monAgregat = nil) / length(Foyers_Paysans);
-		set ratio_charge_fiscale <- mean(Foyers_Paysans collect (each.nb_preleveurs)) / charge_fiscale_debut;
+		set charge_fiscale <- mean(Foyers_Paysans collect float(each.nb_preleveurs));
 		
 		list<Foyers_Paysans> FP_Agregat <- Foyers_Paysans where (each.monAgregat != nil);
 		
@@ -167,11 +185,12 @@ global {
 			if (!empty(mesFP)){
 				//write(mesFP);
 				float myDist <- self distance_to (mesFP with_min_of (each distance_to self));
-				set liste_ppv_agregats <- liste_ppv_agregats + myDist;
+				liste_ppv_agregats <+ myDist;
 			}
-
 		}
+		//write(max(liste_ppv_agregats));
 		set dist_ppv_agregat <- mean(liste_ppv_agregats);
+		//write(dist_ppv_agregat);
 		
 		list<int> nbChateaux_chatelains <- []; 
 		ask Seigneurs where (each.type != "Petit Seigneur"){
@@ -186,6 +205,8 @@ global {
 			set nbChateaux_reseau <- nbChateaux_reseau +  length(mesChateaux);	
 		}
 		set reseaux_chateaux <- nbChateaux_reseau;
+		
+		//write(mean(Agregats collect (each.shape.area)));
 
 	}
 	

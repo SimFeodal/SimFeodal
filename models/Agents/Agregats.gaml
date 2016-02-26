@@ -17,7 +17,6 @@ import "Zones_Prelevement.gaml"
 
 global {
 	
-	
 	action update_agregats {
     	list<list<Foyers_Paysans>> agregats_detectees <- list<list<Foyers_Paysans>>(simple_clustering_by_distance(Foyers_Paysans, distance_detection_agregats) );
     	agregats_detectees <- agregats_detectees where (length(each) >= nombre_FP_agregat);
@@ -66,6 +65,24 @@ global {
    			}
    		}
     }
+    
+    action update_agregats_fp {
+    	ask Foyers_Paysans {
+    		set monAgregat <- nil;
+    	}
+    	
+    	ask Agregats {
+    		set nbfp_avant_dem <- length(fp_agregat);
+    		list<Foyers_Paysans> FP_proches <- Foyers_Paysans at_distance 5000;
+    		list<Foyers_Paysans> FP_inclus <- FP_proches where  (each.location intersects self.shape);
+    		ask FP_inclus {
+    			set monAgregat <- myself;
+    		}
+    		set fp_agregat <- FP_inclus;
+    	}
+    	
+    }
+    
 }
 
 entities {
@@ -79,6 +96,7 @@ entities {
 		bool reel <- false;
 		list<Eglises> mesParoisses;
 		int nb_fp_attires <- 0 update: 0;
+		int nbfp_avant_dem <- 0 update: 0;
 		
 		action update_chateau {
 			// FIXME : Chateaux trop proches sinon

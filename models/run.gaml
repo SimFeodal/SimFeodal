@@ -20,7 +20,6 @@ import "Agents/Zones_Prelevement.gaml"
 
 global schedules: list(world) + list(Attracteurs) + list(Poles)+ list(Agregats) + list(Foyers_Paysans) + list(Chateaux) + list(Eglises) + list(Seigneurs){
     
-    
 	init {
 		float t <- machine_time;
 		do generer_monde;
@@ -171,7 +170,9 @@ global schedules: list(world) + list(Attracteurs) + list(Poles)+ list(Agregats) 
 		if (Annee = (debut_simulation + duree_step)){
 			set charge_fiscale_debut <- mean(Foyers_Paysans collect float(each.nb_preleveurs));
 		}
+		do update_agregats_fp ;
 		do update_output_indexes;
+
 	}
 	
 	reflex save_data when: save_outputs {
@@ -198,8 +199,8 @@ global schedules: list(world) + list(Attracteurs) + list(Poles)+ list(Agregats) 
 		set nb_chateaux <- length(Chateaux);
 		if (Annee >= fin_simulation) {
 			write 'Durée simulation : ' + total_duration;
-			//do halt; // Si version  batch
-			do pause; // Si version GUI
+			do halt; // Si version  batch
+			//do pause; // Si version GUI
 		}
 		if (benchmark){write 'fin_simulation : ' + string(machine_time - t);}
 	}

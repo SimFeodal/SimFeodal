@@ -246,64 +246,18 @@ experiment Exp_Graphique type: gui multicore: true {
 }
 
 
-experiment Bug_Finding type: gui multicore: true {
-	//float seed <- 2720054926.0 ;
-	parameter "Nombre_seigneurs_fin" var: nombre_seigneurs_objectif category: "Seigneurs";
-		output {
-			monitor nombre_chateaux value: nb_chateaux;	
-		}
-}
 
 
-experiment Exp_Vide type: gui multicore: true {
-	user_command blob {
-		geometry test_poly <- polygon([{3,5}, {5,6},{1,4}]);
-		write test_poly;
-		write test_poly.points;
-		write (machine_time as_date "%h%m%s");
-		write (as_time(machine_time));
-		
-	}
-	
-}
-
-
-experiment Exp_noInput type: gui {
+experiment Exp_monitors type: gui {
 	parameter "Nombre seigneurs fin" var: nombre_seigneurs_objectif category: "Seigneurs";
 	output {
 		monitor nombre_chateaux value: nb_chateaux;
-			
+		monitor nombre_paroisses value: Eglises count (each.eglise_paroissiale);
 	}
 }
 
-experiment Batch type: batch repeat: 50 keep_seed: true until: (Annee > fin_simulation * 2) {
-   parameter "Nombre seigneurs fin" var: nombre_seigneurs_objectif min: 25 max: 400 step: 5;
 
-   method exhaustive maximize: nb_chateaux;
-   
-   reflex info_sim {
-    write string(simulation) + ' / Duration : ' + total_duration + ' / Average : ' + average_duration;
-	}
-   permanent {
-            	display "Chateaux/Eglises"{
-    		chart "Nombre de chateaux" type: series position: {0.0,0.0} size: {1.0, 0.5}{
-    			data "Tous" value: nb_chateaux color: #red;
-    		}
-    	}	
-	}	
- 
-}
-
- experiment test_graphics type: gui {
- 	output {
-		display "Carte" {
-			species Foyers_Paysans transparency: 0.5;
-			text string(Annee) size: 10000 position: {0, 1} color: rgb("black");
-		}
- 	}
- }
-
-experiment Explo_TMD type: batch repeat:1 keep_seed : true until: (Annee >= fin_simulation){
+experiment Explo_TMD type: batch repeat:200 keep_seed: true multicore: true until: (Annee >= fin_simulation){
 	parameter 'save_TMD' var: save_TMD among: [true];
 }
  
