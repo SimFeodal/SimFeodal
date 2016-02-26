@@ -40,7 +40,7 @@ global {
 //				( nb_relatif_paroissiens / (nb_max_paroissiens - nb_min_paroissiens))
 //			])]);
 			
-			float proba_creation <- min([1.0, 1/400 * nb_relatif_paroissiens]);
+			float proba_creation <- min([1.0, 1/75 * nb_relatif_paroissiens]);
 			if flip(proba_creation) {
 				// on crée
 				create Eglises number: 1 {
@@ -113,8 +113,7 @@ entities {
 		float Satisfaction_Paroisse <- 1.0 ;
 		
 		
-		// BUG !!!!!
-		// mesFideles ==  0 tout le temps
+
 		action update_fideles {
 			set mesFideles <- Foyers_Paysans inside self.shape ;
 			//write(length(mesFideles));
