@@ -50,21 +50,23 @@ global {
 				list<Eglises> mesEglises <- mesAttracteurs of_species Eglises;
 				list<Chateaux> mesChateaux <- mesAttracteurs of_species Chateaux;
 				set attractivite <- 0.0 ;
-				if (length(mesEglises) > 0){
-					if (length(mesEglises) < 4 ){
-						set attractivite <- length(mesEglises) * 0.17;
-					} else {
-						set attractivite <- 0.66;
-					}
+
+
+				switch length(mesEglises) {
+					match 0 {set attractivite <- attrac_0_eglises;}
+					match 1 {set attractivite <- attrac_1_eglises;}
+					match 2 {set attractivite <- attrac_2_eglises;}
+					match 3 {set attractivite <- attrac_3_eglises;}
+					default {set attractivite <- attrac_4_eglises;} // 4 et +
 				}
+				
 				if (length(mesChateaux) > 0){
-					if ((mesChateaux count (each.type = "Grand Chateau")) > 0){
-						set attractivite <- attractivite + 0.34;
+					if ( (mesChateaux count (each.type = "Grand Chateau")) > 0){
+						set attractivite <- attractivite + attrac_GC;
 					} else {
-						set attractivite <- attractivite + 0.17;
+						set attractivite <- attractivite + attrac_PC;
 					}
 				}
-				set attractivite <- min([1.0, attractivite]);
 		}
 	}	
 	

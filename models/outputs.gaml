@@ -141,7 +141,7 @@ global {
 	}
 	
 	action save_TMD {
-		string currentPrefix <- "paroisses";
+		string currentPrefix <- prefix_output;
 		do save_global_TMD(currentPrefix);
 		do save_seigneurs_TMD(currentPrefix);
 		do save_agregats_TMD(currentPrefix);

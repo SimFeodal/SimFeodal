@@ -257,11 +257,47 @@ experiment Exp_monitors type: gui {
 }
 
 
-experiment Explo_TMD type: batch repeat:200 keep_seed: true multicore: true until: (Annee >= fin_simulation){
+experiment Explo_TMD_base type: batch repeat:200 keep_seed: true multicore: true until: (Annee >= fin_simulation){
 	parameter 'save_TMD' var: save_TMD among: [true];
+	parameter 'prefix' var: prefix_output among: ["base"];
 }
- 
+
+experiment Explo_TMD_paroisses type: batch repeat:200 keep_seed: true multicore: true until: (Annee >= fin_simulation){
+	parameter 'save_TMD' var: save_TMD among: [true];
+	parameter 'prefix' var: prefix_output among: ["paroisses"];
+	parameter 'ratio_paroissiens_agregats' var: ratio_paroissiens_agregats among: [75];
+}
+
+experiment Explo_TMD_gros_chateaux type: batch repeat:200 keep_seed: true multicore: true until: (Annee >= fin_simulation){
+	parameter 'save_TMD' var: save_TMD among: [true];
+	parameter 'prefix' var: prefix_output among: ["gros_chateaux"];
+	parameter "proba_promotion_groschateau_multipole" var: proba_promotion_groschateau_multipole among: [0.75];
+	parameter "proba_promotion_groschateau_autre"  var: proba_promotion_groschateau_autre among: [0.25];
+}
+
+experiment Explo_TMD_dist_dem_local type: batch repeat:200 keep_seed: true multicore: true until: (Annee >= fin_simulation){
+	parameter 'save_TMD' var: save_TMD among: [true];
+	parameter 'prefix' var: prefix_output among: ["distdemlocal"];
+	parameter "distance_max_dem_local" var: distance_max_dem_local among: [5000];
+}
+
+experiment Explo_TMD_attrac_poles type: batch repeat:200 keep_seed: true multicore: true until: (Annee >= fin_simulation){
+	parameter 'save_TMD' var: save_TMD among: [true];
+	parameter 'prefix' var: prefix_output among: ["attrac_poles"];
+	
+	parameter "attrac_0_eglises" var: attrac_0_eglises among: [0.0];
+	parameter "attrac_1_eglises" var: attrac_1_eglises among: [0.05];
+	parameter "attrac_2_eglises" var: attrac_2_eglises among: [0.25];
+	parameter "attrac_3_eglises" var: attrac_3_eglises among: [0.55];
+	parameter "attrac_4_eglises" var: attrac_4_eglises among: [0.65];
+	parameter "attrac_GC" var: attrac_GC among: [0.35];
+	parameter "attrac_PC" var: attrac_PC among: [0.05];
+	
+	
+}
+
  experiment explo_TMD_manuelle type: gui multicore: false{
  	parameter 'save_TMD' var: save_TMD;
+	parameter 'prefix' var: prefix_output among: ["manuel"];
  }
  

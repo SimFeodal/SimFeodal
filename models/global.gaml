@@ -89,6 +89,9 @@ global {
 	float proba_gain_droits_hauteJustice_chateau <- 0.1;
 	float proba_gain_droits_banaux_chateau <- 0.1;
 	float proba_gain_droits_basseMoyenneJustice_chateau <- 0.1;
+	
+	float proba_promotion_groschateau_multipole <- 0.5;
+	float proba_promotion_groschateau_autre <- 0.1;
 
 
 	// EGLISES //
@@ -98,6 +101,16 @@ global {
 	float proba_gain_droits_paroissiaux <- 0.05;
 	int nb_max_paroissiens <- 40;
 	int nb_min_paroissiens <- 10;
+	int ratio_paroissiens_agregats <- 400;
+	
+	// POLES //
+	float attrac_0_eglises <- 0.0;
+	float attrac_1_eglises <- 0.17;
+	float attrac_2_eglises <- 0.34;
+	float attrac_3_eglises <- 0.51;
+	float attrac_4_eglises <- 0.66;
+	float attrac_GC <- 0.34;
+	float attrac_PC <- 0.17;
 
 
 	
@@ -127,6 +140,8 @@ global {
 	float dist_ppv_agregat <- 0.0;
 	list<int> Chateaux_chatelains <- [];
 	list<int> reseaux_chateaux <- [];
+	
+	string prefix_output <- nil;
 	
 	// FP //
 	int nb_demenagement_local update: 0; // le update remet à 0 au début de chaque nouveau step
