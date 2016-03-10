@@ -142,11 +142,16 @@ global {
 	list<int> Chateaux_chatelains <- [];
 	list<int> reseaux_chateaux <- [];
 	
+	
 	string prefix_output <- nil;
 	
 	// FP //
 	int nb_demenagement_local update: 0; // le update remet à 0 au début de chaque nouveau step
 	int nb_demenagement_lointain update: 0;
+	int nb_FP_sat_024 update: 0;
+	int nb_FP_sat_2549 update: 0;
+	int nb_FP_sat_5075 update: 0;
+	int nb_FP_sat_75100 update: 0;
 	
 	// CHATEAUX //
 	int nb_chateaux ;
@@ -224,6 +229,13 @@ global {
 		
 		//write(mean(Agregats collect (each.shape.area)));
 
+	}
+	
+	action update_outputs_fp {
+	set nb_FP_sat_024 <- Foyers_Paysans count (each.Satisfaction < 0.25);
+	set nb_FP_sat_2549 <- Foyers_Paysans count (each.Satisfaction >= 0.25 and each.Satisfaction < 0.5);
+	set nb_FP_sat_5075 <- Foyers_Paysans count (each.Satisfaction >= 0.5 and each.Satisfaction <= 0.75);
+	set nb_FP_sat_75100 <- Foyers_Paysans count (each.Satisfaction > 0.75);
 	}
 	
 	
