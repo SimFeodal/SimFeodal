@@ -133,7 +133,7 @@ entities {
 				int nb_paroissiens_mecontents <- mesFideles count (each.satisfaction_religieuse = 0.0);
 				//write(nb_paroissiens_mecontents);
 				//if (nb_paroissiens_mecontents > 10 or length(mesFideles) > 60){
-				if nb_paroissiens_mecontents > 5 {
+				if nb_paroissiens_mecontents > nb_paroissiens_mecontents_necessaires {
 					set Satisfaction_Paroisse <- 0.0;
 				} else {
 					set Satisfaction_Paroisse <- 1.0 ;

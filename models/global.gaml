@@ -102,6 +102,7 @@ global {
 	int nb_max_paroissiens <- 40;
 	int nb_min_paroissiens <- 10;
 	int ratio_paroissiens_agregats <- 400;
+	int nb_paroissiens_mecontents_necessaires <- 5;
 	
 	// POLES //
 	float attrac_0_eglises <- 0.0;
