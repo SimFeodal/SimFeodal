@@ -52,6 +52,8 @@ global
 					if (length(agregat.fp_agregat) > 0)
 					{
 						set FPlocation <- any_location_in(distance_detection_agregats around one_of(agregat.fp_agregat).location);
+						// FIXME : Useless as FP renewal is the first action in run, before the agregats rebuilding
+						//ask agregat {set nb_fp_attires <- nb_fp_attires + 1;}
 					} else
 					{
 						set FPlocation <- any_location_in(worldextent);
