@@ -190,7 +190,7 @@ global {
 				myseed, Annee, self,
 				length(fp_agregat), nbfp_avant_dem,
 				nb_fp_attires, shape.area
-			] to: ("../outputs/"+ prefix +"_results_TMD__agregats.csv") type: "csv";
+			] to: ("../outputs/"+ prefix +"_results_TMD_agregats.csv") type: "csv";
 		}
 	}
 	
@@ -201,22 +201,20 @@ global {
 			save [
 				myseed, Annee, self,
 				attractivite, length(mesAttracteurs), monAgregat
-			] to: ("../outputs/"+ prefix +"_results_TMD__poles.csv") type: "csv";
+			] to: ("../outputs/"+ prefix +"_results_TMD_poles.csv") type: "csv";
 		}
 		
 	}
 	
 		action save_Fp_summary_TMD(string prefix) {
 //"Seed", "Annee",
-//"NbDeplacementLocaux","NbDeplacementLointains,
+//"NbDeplacementLocaux","NbDeplacementLointains",
 //"NbSat25inf","NbSat25-49","NbSat50-75","NbSat75+"
-		ask Poles {
 			save [
 				myseed, Annee, self,
 				nb_demenagement_local, nb_demenagement_lointain,
 				nb_FP_sat_024, nb_FP_sat_2549, nb_FP_sat_5075, nb_FP_sat_75100
-			] to: ("../outputs/"+ prefix +"_results_TMD__summFP.csv") type: "csv";
-		}
+			] to: ("../outputs/"+ prefix +"_results_TMD_summFP.csv") type: "csv";
 		
 	}
 	
