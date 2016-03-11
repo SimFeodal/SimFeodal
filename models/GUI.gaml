@@ -151,67 +151,8 @@ experiment Exp_Graphique type: gui multicore: true {
     			data "Satisfaction" value: mean(Foyers_Paysans collect each.Satisfaction) color: #black;
     		}
     	}
-    	
-    	// FIXME : me marche pas (pas d'agrégation par barres)
-//    	display "Agregats2"{
-//    		chart "Composition" type: histogram {
-//				        datalist [ "Nombre FP"] value: [Agregats collect length(each.fp_agregat)] color:[°red];
-//				        //data "carry_food_ants" value:(list(ant) count (each.hasFood)) color:°green;                             
-//				}
-//    	}
-//    	
-//	    display "FP et preleveurs" {
-//    		chart "Nombre de Droits acquittes" type:series position: {0,0} size: {1,1}{
-//    			data "Nb Droits Max" value: max(Foyers_Paysans collect each.nb_preleveurs) color: #blue;
-//    			data "Nb Droits Mean" value: mean(Foyers_Paysans collect each.nb_preleveurs) color: #green;
-//    			data "Nb Droits Median" value: median(Foyers_Paysans collect each.nb_preleveurs) color: #orange;
-//    			data "Nb Droits Min" value: min(Foyers_Paysans collect each.nb_preleveurs) color: #red;
-//    		}
-//    	}
-//    	
-//    	
-    	display "Seigneurs" {
-//    		chart "Puissance des seigneurs" type:series position: {0,0} size: {0.33,1}{
-//    			data "Min" value: min(Seigneurs collect each.puissance) color: #green;
-//    			data "Mean" value: mean(Seigneurs collect each.puissance) color: #blue;
-//    			data "Median" value: median(Seigneurs collect each.puissance) color: #orange;
-//    			data "Max" value: max(Seigneurs collect each.puissance) color: #red;
-//    		}
-    		// FIXME : Ne marche pas...
-//    		chart "Puissance armee des seigneurs" type:series position: {0.33,0} size: {0.33,1}{
-//    			data "Min" value: min((Seigneurs where (each.type = "Chatelain")) collect each.puissance_armee) color: #green;
-//    			data "Mean" value: mean((Seigneurs where (each.type = "Chatelain")) collect each.puissance_armee) color: #blue;
-//    			data "Med" value:  median((Seigneurs where (each.type = "Chatelain")) collect each.puissance_armee) color: #orange;
-//    			data "Max" value: max((Seigneurs where (each.type = "Chatelain")) collect each.puissance_armee) color: #red;
-//    		}
-//    		chart "Dependance (loyer) des FP" type:series position: {0.66,0} size: {0.33,1}{
-//    			data "FP payant un loyer à un GS" value: Foyers_Paysans count (each.seigneur_loyer != nil and each.seigneur_loyer.type = "Grand Seigneur") color: #green;
-//    			data "FP payant un loyer à un PS initial" value: Foyers_Paysans count (each.seigneur_loyer != nil and each.seigneur_loyer.type = "Petit Seigneur" and each.seigneur_loyer.initialement_present) color: #blue;
-//    			data "FP payant un loyer à un PS nouveau" value: Foyers_Paysans count (each.seigneur_loyer != nil and each.seigneur_loyer.type = "Petit Seigneur" and !each.seigneur_loyer.initialement_present) color: #red;
-//    		}
-    	}
-//    	    	
-//    	display "Zones Prelevement"{
-//    		chart "Nombre de ZP" type:series position: {0.0, 0.0} size: {1.0, 0.33}{
-//    			data "Loyers" value: Zones_Prelevement count (each.type_droit = "Loyer") color: #blue;
-//    			data "Haute Justice" value: Zones_Prelevement count (each.type_droit = "Haute_Justice") color: #red;
-//    			data "Banaux" value: Zones_Prelevement count (each.type_droit = "Banaux") color: #green;
-//    			data "Basse et Moyenne Justice" value: Zones_Prelevement count (each.type_droit = "basseMoyenne_Justice") color: #yellow;
-//    		}
-//    		chart "Nb de preleveurs" type: series position: {0, 0.33} size: {1.0, 0.33}{
-//    			data "Max" value: max ( Zones_Prelevement collect (length(each.preleveurs.keys))) color: #red;
-//    			data "Mean" value: mean ( Zones_Prelevement collect (length(each.preleveurs.keys))) color: #green;
-//    			data "Min" value: min ( Zones_Prelevement collect (length(each.preleveurs.keys))) color: #blue;
-//    			data "Med" value: median(Zones_Prelevement collect (length(each.preleveurs.keys))) color: #orange;
-//    		}
-//    		chart "Nb ZP / Seigneur" type: series position: {0.0, 0.66} size: {1.0, 0.33}{
-//    			data "Max" value: max(Seigneurs collect each.monNbZP) color: #red;
-//    			data "Mean" value: mean(Seigneurs collect each.monNbZP) color: #green;
-//    			data "Median" value: median(Seigneurs collect each.monNbZP) color: #orange;
-//    			data "Min" value: min(Seigneurs collect each.monNbZP) color: #blue;	
-//    		}
-//    	}
-//    	
+
+ 	
     	display "Agregats"{
     		chart "Nombre d'agregats" type: series position: {0.0,0.0} size: {1.0, 0.33}{
     			data "Nombre d'agregats" value: length(Agregats) color: #red;
@@ -293,12 +234,6 @@ experiment Explo_TMD_attrac_poles type: batch repeat:200 keep_seed: true multico
 	parameter "attrac_GC" var: attrac_GC among: [0.35];
 	parameter "attrac_PC" var: attrac_PC among: [0.05];	
 }
-
- experiment explo_TMD_manuelle type: gui multicore: false{
- 	parameter 'save_TMD' var: save_TMD;
-	parameter 'prefix' var: prefix_output among: ["manuel"];
- }
- 
  
  experiment Explo_TMD_base2 type: batch repeat:200 keep_seed: true multicore: true until: (Annee >= fin_simulation){
 	parameter 'save_TMD' var: save_TMD among: [true];
