@@ -198,9 +198,16 @@ global {
 //"Seed", "Annee", "IdPole",
 //"Attractivité", "NbAttracteurs", "Agregat"
 		ask Poles {
+				int nbEglises <- length(mesAttracteurs of_species Eglises);
+				int nbParoisses <- (mesAttracteurs of_species Eglises) count (each.eglise_paroissiale);
+				int nbGC <- (mesAttracteurs of_species Chateaux) count (each.type = "Grand Chateau");
+				int nbPC <- (mesAttracteurs of_species Chateaux) count (each.type = "Petit Chateau");
+				
 			save [
 				myseed, Annee, self,
-				attractivite, length(mesAttracteurs), monAgregat
+				attractivite, length(mesAttracteurs), monAgregat,
+				nbEglises, nbParoisses, nbGC, nbPC
+				
 			] to: ("../outputs/"+ prefix +"_results_TMD_poles.csv") type: "csv";
 		}
 		

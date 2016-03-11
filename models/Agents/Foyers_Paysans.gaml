@@ -186,6 +186,7 @@ entities
 
 		action deplacement
 		{
+			
 			set location <- flip(1 - Satisfaction) ? (flip(0.8) ? deplacement_local() : deplacement_lointain()) : location;
 		}
 
