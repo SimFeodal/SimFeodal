@@ -263,3 +263,33 @@ experiment Explo_TMD_attrac_poles type: batch repeat:200 keep_seed: true multico
 	parameter "attrac_GC" var: attrac_GC among: [0.35];
 	parameter "attrac_PC" var: attrac_PC among: [0.05];	
 }
+
+
+ experiment Explo_TMD_base2_test type: batch repeat:10 keep_seed: true multicore: true until: (Annee >= fin_simulation){
+	parameter 'save_TMD' var: save_TMD among: [true];
+	parameter 'prefix' var: prefix_output among: ["base2_test"];
+	
+	// Seuil de paroissiens nécessaire à la création d’une nouvelle paroisse en agrégat : 200
+	parameter 'ratio_paroissiens_agregats' var: ratio_paroissiens_agregats among: [200];
+	
+	// Augmenter seuil de FP insatisfait pour promotion église : passer de 5 à 10 FP
+	parameter 'nb_paroissiens_mecontents_necessaires' var: nb_paroissiens_mecontents_necessaires among: [10];
+	
+	//  Augmenter un peu la probabilité de promotion en grand châteaux :
+	//    Probabilité qu'un château isolé devienne un gros château : 0.3
+	//    Probabilité qu'un château situé dans un pôle devienne un gros château : 0.8
+	parameter "proba_promotion_groschateau_multipole" var: proba_promotion_groschateau_multipole among: [0.8];
+	parameter "proba_promotion_groschateau_autre"  var: proba_promotion_groschateau_autre among: [0.3];
+	
+	// Distance max. de déménagement local des FP : 5 km.
+	parameter "distance_max_dem_local" var: distance_max_dem_local among: [5000];
+	
+	// Attractivité des pôles  : prendre les valeurs bien différenciées
+	parameter "attrac_0_eglises" var: attrac_0_eglises among: [0.0];
+	parameter "attrac_1_eglises" var: attrac_1_eglises among: [0.05];
+	parameter "attrac_2_eglises" var: attrac_2_eglises among: [0.25];
+	parameter "attrac_3_eglises" var: attrac_3_eglises among: [0.55];
+	parameter "attrac_4_eglises" var: attrac_4_eglises among: [0.65];
+	parameter "attrac_GC" var: attrac_GC among: [0.35];
+	parameter "attrac_PC" var: attrac_PC among: [0.05];	
+}
