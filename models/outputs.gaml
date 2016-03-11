@@ -211,7 +211,7 @@ global {
 //"NbDeplacementLocaux","NbDeplacementLointains",
 //"NbSat25inf","NbSat25-49","NbSat50-75","NbSat75+"
 			save [
-				myseed, Annee, self,
+				myseed, Annee,
 				nb_demenagement_local, nb_demenagement_lointain,
 				nb_FP_sat_024, nb_FP_sat_2549, nb_FP_sat_5075, nb_FP_sat_75100
 			] to: ("../outputs/"+ prefix +"_results_TMD_summFP.csv") type: "csv";
