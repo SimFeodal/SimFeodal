@@ -251,19 +251,6 @@ entities
 			return (point_lointain);
 		}
 
-		// FIXME : Useless
-		//		point demenagement_local {
-		//			int rayon_local <- distance_max_dem_local ;
-		//			list<Eglises> eglises_proches <- Eglises where (each.reel) at_distance rayon_local;
-		//			list<Chateaux> chateaux_proches <- Chateaux where (each.reel) at_distance rayon_local;
-		//			list<Agregats> agregats_proches <- Agregats where (each.reel) at_distance rayon_local;
-		//			
-		//			list<agent> attracteurs_proches <- (agents of_generic_species Attracteurs) where (each.reel) at_distance rayon_local;
-		//			list<Attracteurs> attracteurs_proches <- agents_at_distance(rayon_local) of_generic_species Attracteurs where (each.reel) ;
-		//			// TODO : report bug : the first one doens't work, the second does
-		//			// probably because Agregats is a shape while others are points
-		//			// at_distance may not work in this situation
-		//			}
 		rgb color <- # gray;
 		aspect base
 		{
