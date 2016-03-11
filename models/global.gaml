@@ -152,6 +152,15 @@ global {
 	int nb_FP_sat_2549 update: 0;
 	int nb_FP_sat_5075 update: 0;
 	int nb_FP_sat_75100 update: 0;
+	int nbInInIntra update: 0;
+	int nbInOutIntra update: 0;
+	int nbOutInIntra update: 0;
+	int nbOutOutIntra update: 0;
+	
+	int nbInInInter update: 0;
+	int nbInOutInter update: 0;
+	int nbOutInInter update: 0;
+	int nbOutOutInter update: 0;
 	
 	// CHATEAUX //
 	int nb_chateaux ;
@@ -236,6 +245,16 @@ global {
 	set nb_FP_sat_2549 <- Foyers_Paysans count (each.Satisfaction >= 0.25 and each.Satisfaction < 0.5);
 	set nb_FP_sat_5075 <- Foyers_Paysans count (each.Satisfaction >= 0.5 and each.Satisfaction <= 0.75);
 	set nb_FP_sat_75100 <- Foyers_Paysans count (each.Satisfaction > 0.75);
+	
+	set nbInInIntra <-  Foyers_Paysans count (each.typeIntra = "InIn");
+	set nbInOutIntra <-  Foyers_Paysans count (each.typeIntra = "InOut");
+	set nbOutInIntra <-  Foyers_Paysans count (each.typeIntra = "OutIn");
+	set nbOutOutIntra <-  Foyers_Paysans count (each.typeIntra = "OutOut");
+	
+	set nbInInInter <-  Foyers_Paysans count (each.typeInter = "InIn");
+	set nbInOutInter <-  Foyers_Paysans count (each.typeInter = "InOut");
+	set nbOutInInter <-  Foyers_Paysans count (each.typeInter = "OutIn");
+	set nbOutOutInter <-  Foyers_Paysans count (each.typeInter = "OutOut");
 	}
 	
 	

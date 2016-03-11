@@ -96,6 +96,9 @@ entities
 		list<Seigneurs> seigneurs_banaux <- [];
 		list<Seigneurs> seigneurs_basseMoyenneJustice <- [];
 		int nb_preleveurs <- 0;
+		string typeInter;
+		string typeIntra;
+		
 		action reset_preleveurs
 		{
 			set seigneur_loyer <- nil;

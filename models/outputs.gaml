@@ -147,6 +147,7 @@ global {
 		do save_agregats_TMD(currentPrefix);
 		do save_poles_TMD(currentPrefix);
 		do save_Fp_summary_TMD(currentPrefix);
+		do save_FP_all(currentPrefix);
 	}
 	
 	action save_global_TMD(string prefix) {
@@ -213,7 +214,15 @@ global {
 		
 	}
 	
-		action save_Fp_summary_TMD(string prefix) {
+	action save_FP_all(string prefix) {
+		save [
+			myseed, Annee,
+			nbInInIntra, nbInOutIntra, nbOutInIntra, nbOutOutIntra,
+			nbInInInter, nbInOutInter, nbOutInInter, nbOutOutInter
+		] to: ("../outputs/"+ prefix +"_results_TMD_FP_all.csv") type: "csv";
+	}
+	
+	action save_Fp_summary_TMD(string prefix) {
 //"Seed", "Annee",
 //"NbDeplacementLocaux","NbDeplacementLointains",
 //"NbSat25inf","NbSat25-49","NbSat50-75","NbSat75+"
