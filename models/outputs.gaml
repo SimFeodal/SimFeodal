@@ -148,6 +148,7 @@ global {
 		do save_poles_TMD(currentPrefix);
 		do save_Fp_summary_TMD(currentPrefix);
 		do save_FP_all(currentPrefix);
+		do save_paroisses_TMD(currentPrefix);
 	}
 	
 	action save_global_TMD(string prefix) {
@@ -168,13 +169,13 @@ global {
 	
 	action save_seigneurs_TMD(string prefix) {
 //"Seed", "Annee", "IdSeigneur",
-//"Type", "Initial",
+//"Type", "Initial","Puissance",
 //"NbChateauxProprio", "NbChateauxGardien",
 //"NbFpAssujetis", "NbVassaux", "NbDebiteurs"	
 		ask Seigneurs {
 			save [
 				myseed, Annee,self, 
-				type, initial, 
+				type, initial, puissance,
 				Chateaux count (each.proprietaire = self),Chateaux count (each.gardien = self),
 				length(FP_assujettis), Seigneurs count (each.monSuzerain = self), length(mesDebiteurs)
 				]
@@ -185,7 +186,7 @@ global {
 	action save_agregats_TMD(string prefix) {
 //"Seed", "Annee", "IdAgregat",
 //"NbFpContenus", "NbFContenusAvantDem",
-//"NbFpAttires", "Surface"	
+//"NbFpAttires", "Surface"
 		ask Agregats {
 			save [
 				myseed, Annee, self,
@@ -197,7 +198,8 @@ global {
 	
 	action save_poles_TMD(string prefix) {
 //"Seed", "Annee", "IdPole",
-//"Attractivité", "NbAttracteurs", "Agregat"
+//"Attractivité", "NbAttracteurs", "Agregat",
+//"NbEglises", "nbParoisses", "nbGC", "nbPC"
 		ask Poles {
 				int nbEglises <- length(mesAttracteurs of_species Eglises);
 				int nbParoisses <- (mesAttracteurs of_species Eglises) count (each.eglise_paroissiale);
@@ -233,5 +235,18 @@ global {
 			] to: ("../outputs/"+ prefix +"_results_TMD_summFP.csv") type: "csv";
 		
 	}
+	
+		action save_paroisses_TMD(string prefix) {
+//"Seed", "Annee", "IdParoisse",
+//"monEglise", "Superficie",
+//"NbParoissiens", "Satisfaction"
+			ask  Paroisses {
+				save [
+					myseed, Annee, self,
+					monEglise, shape.area,
+					length(mesFideles), Satisfaction_Paroisse with_precision 3
+				] to: ("../outputs/"+ prefix +"_results_TMD_paroisses.csv") type: "csv";
+			}
+		}
 	
 }	
