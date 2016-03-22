@@ -92,6 +92,8 @@ global torus: false{
 	
 	float proba_promotion_groschateau_multipole <- 0.5;
 	float proba_promotion_groschateau_autre <- 0.1;
+	int puissance_necessaire_creation_chateau_GS <- 2000;
+	int puissance_necessaire_creation_chateau_PS <- 2000;
 
 
 	// EGLISES //
@@ -112,6 +114,10 @@ global torus: false{
 	float attrac_4_eglises <- 0.66;
 	float attrac_GC <- 0.34;
 	float attrac_PC <- 0.17;
+	
+	bool chateaux_GS_alternate <- false;
+	bool chateaux_PS_alternate <- false;
+	bool puissance_armee_FP_alternate <- false;
 
 
 	

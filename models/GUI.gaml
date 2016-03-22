@@ -293,3 +293,59 @@ experiment Explo_TMD_attrac_poles type: batch repeat:200 keep_seed: true multico
 	parameter "attrac_GC" var: attrac_GC among: [0.35];
 	parameter "attrac_PC" var: attrac_PC among: [0.05];	
 }
+
+
+ experiment Explo_TMD_base2_compo5_2 type: batch repeat:20 keep_seed: true multicore: true until: (Annee >= fin_simulation){
+	parameter 'save_TMD' var: save_TMD among: [true];
+	parameter 'prefix' var: prefix_output among: ["base2_compo5_2"];
+	
+	// Seuil de paroissiens nécessaire à la création d’une nouvelle paroisse en agrégat : 200
+	parameter 'ratio_paroissiens_agregats' var: ratio_paroissiens_agregats among: [200];
+	
+	// Augmenter seuil de FP insatisfait pour promotion église : passer de 5 à 10 FP
+	parameter 'nb_paroissiens_mecontents_necessaires' var: nb_paroissiens_mecontents_necessaires among: [10];
+	
+	//  Augmenter un peu la probabilité de promotion en grand châteaux :
+	//    Probabilité qu'un château isolé devienne un gros château : 0.3
+	//    Probabilité qu'un château situé dans un pôle devienne un gros château : 0.8
+	parameter "proba_promotion_groschateau_multipole" var: proba_promotion_groschateau_multipole among: [0.8];
+	parameter "proba_promotion_groschateau_autre"  var: proba_promotion_groschateau_autre among: [0.3];
+	
+	
+	// Attractivité des pôles  : prendre les valeurs bien différenciées
+	parameter "attrac_0_eglises" var: attrac_0_eglises among: [0.0];
+	parameter "attrac_1_eglises" var: attrac_1_eglises among: [0.05];
+	parameter "attrac_2_eglises" var: attrac_2_eglises among: [0.25];
+	parameter "attrac_3_eglises" var: attrac_3_eglises among: [0.55];
+	parameter "attrac_4_eglises" var: attrac_4_eglises among: [0.65];
+	parameter "attrac_GC" var: attrac_GC among: [0.35];
+	parameter "attrac_PC" var: attrac_PC among: [0.05];	
+	
+	
+	// Exploration pour chap 5.2 :
+	
+	//Grands seigneurs : croissance exponentielle de la probabilité de construire un château
+	// au fur et à mesure de l'augmentation de la puissance du seigneur.
+	// Valeurs de cadrage :
+	// 		puissance inférieure à 1000 : p = 0
+	// 		puissance de 1000 : p = 0,5
+	// 		puissance de 2000 : p = 0,7
+	// 		puissance de 50 000 : p = 1.
+	// Équation : p(puissance) =  1- e-0.00064*puissance
+	// Plusieurs tirages successifs de probabilité (2) 
+	parameter "chateaux_GS_alternate" var: chateaux_GS_alternate among: [true];
+	parameter "puissance_necessaire_creation_chateau_GS" var: puissance_necessaire_creation_chateau_GS among: [1000];
+	
+	// Petits seigneurs : puissance de 0 : p = 0. Puissance de 2000 : p = 1.
+	// Croissance linéaire de la probabilité en fonction de la puissance du seigneur.
+	// Un seul tirage de probabilité.
+	parameter "chateaux_PS_alternate" var: chateaux_PS_alternate among: [true];
+	parameter "puissance_necessaire_creation_chateau_PS" var: puissance_necessaire_creation_chateau_PS among: [0];
+	
+	// Distance max. de déménagement local des FP : 2.5 km.
+	parameter "distance_max_dem_local" var: distance_max_dem_local among: [2500];
+	
+	// Pb avec la variable S_protection liée à la puissance armée du châtelain
+	// Modification du modèle : supprimer cette variable du modèle
+	parameter "puissance_armee_FP_alternate" var: puissance_armee_FP_alternate among: [true];
+}
