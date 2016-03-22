@@ -267,7 +267,7 @@ experiment Explo_TMD_attrac_poles type: batch repeat:200 keep_seed: true multico
 
  experiment Explo_TMD_base2_test2 type: batch repeat:15 keep_seed: true multicore: true until: (Annee >= fin_simulation){
 	parameter 'save_TMD' var: save_TMD among: [true];
-	parameter 'prefix' var: prefix_output among: ["base2_test2"];
+	parameter 'prefix' var: prefix_output among: ["base2_test3"];
 	
 	// Seuil de paroissiens nécessaire à la création d’une nouvelle paroisse en agrégat : 200
 	parameter 'ratio_paroissiens_agregats' var: ratio_paroissiens_agregats among: [200];
