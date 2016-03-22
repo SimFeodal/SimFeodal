@@ -15,7 +15,7 @@ import "Agents/Attracteurs.gaml"
 import "Agents/Zones_Prelevement.gaml"
 
 
-global {
+global torus: false{
 	////////////
 	// INPUTS //
 	////////////
