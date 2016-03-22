@@ -244,7 +244,7 @@ global {
 				save [
 					myseed, Annee, self,
 					monEglise, shape.area,
-					length(mesFideles), Satisfaction_Paroisse with_precision 3
+					length(mesFideles), Satisfaction_Paroisse with_precision 3, "\"" + shape.points + "\""
 				] to: ("../outputs/"+ prefix +"_results_TMD_paroisses.csv") type: "csv";
 			}
 		}
