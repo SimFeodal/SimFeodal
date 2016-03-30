@@ -369,7 +369,7 @@ entities {
 			int nbChateauxPotentiel <- int(floor(self.puissance / 5000));
 			
 			if (chateaux_GS_alternate){
-				nbChateauxPotentiel <- 2;
+				nbChateauxPotentiel <- nb_chateaux_potentiels_GS;
 				proba_creer_chateau_GS <- (1 - exp(-0.00064 * self.puissance) );
 			}
 			

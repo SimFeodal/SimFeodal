@@ -20,7 +20,14 @@ global {
 	action update_poles {
 		ask Poles {do die;}
 		list<Eglises> eglises_paroissiales <- Eglises where (each.reel);
-		list<list> poles_uniques <- simple_clustering_by_distance((eglises_paroissiales + Chateaux) of_generic_species Attracteurs, 200);
+		
+		list<list> poles_uniques <- [[]];
+		if (communautes_attractives) {
+				set poles_uniques <- simple_clustering_by_distance((eglises_paroissiales + Chateaux + (Agregats where each.communaute)) of_generic_species Attracteurs, 200);
+		}else {
+				set poles_uniques <- simple_clustering_by_distance((eglises_paroissiales + Chateaux) of_generic_species Attracteurs, 200);
+		}
+
 		loop currentPole over: poles_uniques {
 			create Poles number: 1 {
 				set mesAttracteurs <- list<Attracteurs>(currentPole);
@@ -49,6 +56,7 @@ global {
 		ask Poles {
 				list<Eglises> mesEglises <- mesAttracteurs of_species Eglises;
 				list<Chateaux> mesChateaux <- mesAttracteurs of_species Chateaux;
+				list<Agregats> mesCommunautes <- mesAttracteurs of_species Agregats;
 				set attractivite <- 0.0 ;
 
 
@@ -67,6 +75,9 @@ global {
 						set attractivite <- attractivite + attrac_PC;
 					}
 				}
+				if (length(mesCommunautes) > 0){
+					set attractivite <- attractivite + attrac_communautes;
+				}
 		}
 	}	
 	
@@ -82,6 +93,5 @@ entities {
 		float attractivite;
 		list<Attracteurs> mesAttracteurs;
 		Agregats monAgregat;
-		// TODO : Ajouter règle des poles d'agrégat
 	}
 }

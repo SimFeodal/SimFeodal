@@ -107,7 +107,7 @@ global {
 
 entities {
 
-	species Agregats schedules: shuffle(Agregats){
+	species Agregats parent: Attracteurs schedules: shuffle(Agregats){
 		bool fake_agregat <- false;
 		int attractivite <- 0;
 		list<Foyers_Paysans> fp_agregat ;

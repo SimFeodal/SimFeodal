@@ -193,8 +193,23 @@ entities
 
 		action deplacement
 		{
+			if (!deplacement_alternate){
+				set location <- flip(1 - Satisfaction) ? (flip(0.8) ? deplacement_local() : deplacement_lointain()) : location;
+			} else {
+	// 		1) Identifier le pôle le plus attractif localement
+	// 		2) p(deplacement_local) = MAX [(Attractivité du pôle le plus attractif localement - Satisfaction_FP), 0]
+	// 		3) En cas de déplacement local, pour déterminer quel pôle sera choisi par le FP pour s'y localiser,
+	// 			appliquer la loterie pondérée par l'attractivité de chaque pôle
+	// 		4) Si pas de déplacement local, p(deplacement_lointain) = 0,2 * (1 - Satisfaction_FP)
+			Poles poleLocalMaxAttrac <- (Poles at_distance distance_max_dem_local) with_max_of (each.attractivite);
+			float bestAttrac <- (poleLocalMaxAttrac = nil) ? 0.0 : poleLocalMaxAttrac.attractivite;
 			
-			set location <- flip(1 - Satisfaction) ? (flip(0.8) ? deplacement_local() : deplacement_lointain()) : location;
+			if (flip(max([ bestAttrac -  Satisfaction, 0.0]))) {
+				set location <- deplacement_local();
+			} else {
+				set location <- flip(0.2 * (1 - Satisfaction)) ? deplacement_lointain() : location;
+			}
+		}	
 		}
 
 		point deplacement_local
@@ -262,5 +277,4 @@ entities
 		}
 
 	}
-
 }

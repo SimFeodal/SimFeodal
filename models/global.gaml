@@ -50,6 +50,7 @@ global torus: false{
 	float taux_mobilite <- 0.8;
 	int distance_max_dem_local <- 7000;
 	int seuil_puissance_armee <- 400; // P.A. d'un proprio de chateau pour que le FP soit satisfait.
+	bool deplacement_alternate <- false;
 	
 	// SEIGNEURS //
 	
@@ -78,6 +79,7 @@ global torus: false{
 	// CHATEAUX //
 	
 	int apparition_chateaux <- 960;
+	int nb_chateaux_potentiels_GS <- 2;
 	
 	int seuil_attractivite_chateau <- 3000;
 	
@@ -118,7 +120,9 @@ global torus: false{
 	bool chateaux_GS_alternate <- false;
 	bool chateaux_PS_alternate <- false;
 	bool puissance_armee_FP_alternate <- false;
-
+	
+	bool communautes_attractives <- false;
+	float attrac_communautes <- 0.0;
 
 	
 	////////////
