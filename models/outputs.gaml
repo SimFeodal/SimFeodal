@@ -186,12 +186,12 @@ global {
 	action save_agregats_TMD(string prefix) {
 //"Seed", "Annee", "IdAgregat",
 //"NbFpContenus", "NbFContenusAvantDem",
-//"NbFpAttires", "Surface"
+//"NbFpAttires", "Surface", "Communaute","Geom"
 		ask Agregats {
 			save [
 				myseed, Annee, self,
 				length(fp_agregat), nbfp_avant_dem,
-				nb_fp_attires, shape.area
+				nb_fp_attires, shape.area, communaute,  "\"" + shape.location + "\""
 			] to: ("../outputs/"+ prefix +"_results_TMD_agregats.csv") type: "csv";
 		}
 	}
@@ -199,17 +199,18 @@ global {
 	action save_poles_TMD(string prefix) {
 //"Seed", "Annee", "IdPole",
 //"Attractivité", "NbAttracteurs", "Agregat",
-//"NbEglises", "nbParoisses", "nbGC", "nbPC"
+//"NbEglises", "nbParoisses", "nbGC", "nbPC", "nbCA", "Geom"
 		ask Poles {
 				int nbEglises <- length(mesAttracteurs of_species Eglises);
 				int nbParoisses <- (mesAttracteurs of_species Eglises) count (each.eglise_paroissiale);
 				int nbGC <- (mesAttracteurs of_species Chateaux) count (each.type = "Grand Chateau");
 				int nbPC <- (mesAttracteurs of_species Chateaux) count (each.type = "Petit Chateau");
+				int nbCA <- length(mesAttracteurs of_species Agregats);
 				
 			save [
 				myseed, Annee, self,
 				attractivite, length(mesAttracteurs), monAgregat,
-				nbEglises, nbParoisses, nbGC, nbPC
+				nbEglises, nbParoisses, nbGC, nbPC, nbCA, "\"" + shape.location + "\""
 				
 			] to: ("../outputs/"+ prefix +"_results_TMD_poles.csv") type: "csv";
 		}
@@ -239,7 +240,7 @@ global {
 		action save_paroisses_TMD(string prefix) {
 //"Seed", "Annee", "IdParoisse",
 //"monEglise", "Superficie",
-//"NbParoissiens", "Satisfaction"
+//"NbParoissiens", "Satisfaction", "Geom"
 			ask  Paroisses {
 				save [
 					myseed, Annee, self,
