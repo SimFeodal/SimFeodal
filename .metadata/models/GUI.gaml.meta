@@ -1,1 +1,11 @@
-msi.gama.core
+#
+#Tue Apr 05 13:03:56 CEST 2016
+plugins=msi.gama.core
+actions=die~write~tell~error~debug~_step_~_init_~pause~halt
+attributes=x~y~points~area~location~values~keys
+operators=+~as~translated_by~square~envelope~as_date~/~scaled_by~-~round~where~\=~.~inside~*~length~among~remove_duplicates~simple_clustering_by_distance~of_generic_species~convex_hull~polygon~collect~dead~intersects~of_species~>~count~rnd~any_location_in~one_of~flip~voronoi~first_with~shuffle~overlaps~min~\!~<\=~triangulate~closest_to~farthest_point_to~\!\=~sum~>\=~around~at_distance~file_exists~with_precision~distance_to~mean~empty~with_min_of~or~<~and~at~floor~?~\:~union~internal_at~not~in~circle~\:\:~contains~exp~max~^~with_max_of~sort_by~rnd_choice~median
+skills=reflex
+types=list~int~string~unknown~geometry~point~agent~rgb~float~date~bool~container~map
+statements=action~let~ask~set~remove~do~if~else~loop~create~break~switch~match~default~arg~save~add~put~return~init~aspect~draw~write~reflex~output~monitor~display~display_population~agents~text~chart~data
+constants=blue~red~green~yellow~white~gray~black~orange
+species=agent
