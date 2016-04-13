@@ -96,23 +96,23 @@ entities {
 			float mon_taux_FP <- (!empty(preleveurs)) ? (1.0 - sum(preleveurs.values)): 1.0;
 			if (mon_taux_FP = 1.0){
 				ask FP_impactes {
-					set seigneurs_banaux <- seigneurs_banaux + myself.proprietaire;
+					seigneurs_banaux <+ myself.proprietaire;
 				}
 				ask self.proprietaire {
-					set FP_banaux <- FP_banaux + FP_impactes;
+					FP_banaux <<+ FP_impactes;
 				}
 			} else {
 				list<Foyers_Paysans> FP_a_taxer <- FP_impactes;
 				ask (int(mon_taux_FP * length(FP_impactes)) among FP_impactes) {
-					set seigneurs_banaux <- seigneurs_banaux + myself.proprietaire;
-					set myself.proprietaire.FP_banaux <- myself.proprietaire.FP_banaux + FP_impactes;
+					seigneurs_banaux <+ myself.proprietaire;
+					myself.proprietaire.FP_banaux <<+ FP_impactes;
 					FP_a_taxer >- self;
 				}
 				loop currentPreleveur over: (preleveurs.keys){
 					ask (int(preleveurs[currentPreleveur] * length(FP_impactes)) among FP_a_taxer) {
-						set seigneurs_banaux <- seigneurs_banaux + currentPreleveur;
-						set currentPreleveur.FP_banaux <- currentPreleveur.FP_banaux + self;
-						set myself.proprietaire.FP_banaux_garde <- myself.proprietaire.FP_banaux_garde + self;
+						seigneurs_banaux <+ currentPreleveur;
+						currentPreleveur.FP_banaux <+ self;
+						myself.proprietaire.FP_banaux_garde <+ self;
 						FP_a_taxer >- self;
 					}
 				}
@@ -128,24 +128,24 @@ entities {
 			float mon_taux_FP <- (!empty(preleveurs)) ? (1.0 - sum(preleveurs.values)): 1.0;
 			if (mon_taux_FP = 1.0){
 				ask FP_impactes {
-					set seigneurs_basseMoyenneJustice <- seigneurs_basseMoyenneJustice + myself.proprietaire;
+					seigneurs_basseMoyenneJustice <+ myself.proprietaire;
 				}
 				ask self.proprietaire {
-					set FP_basseMoyenneJustice <- FP_basseMoyenneJustice + FP_impactes;
+				FP_basseMoyenneJustice <<+ FP_impactes;
 				}
 			} else {
 				list<Foyers_Paysans> FP_a_taxer <- FP_impactes;
 				ask ( int(mon_taux_FP * length(FP_impactes)) among FP_impactes) {
-					set seigneurs_basseMoyenneJustice <- seigneurs_basseMoyenneJustice + myself.proprietaire;
-					set myself.proprietaire.FP_basseMoyenneJustice <- myself.proprietaire.FP_basseMoyenneJustice + FP_impactes;
+					seigneurs_basseMoyenneJustice <+ myself.proprietaire;
+					myself.proprietaire.FP_basseMoyenneJustice <<+ FP_impactes;
 					FP_a_taxer >- self;
 				}
 				
 				loop currentPreleveur over: (preleveurs.keys){
 					ask ( int((preleveurs[currentPreleveur]) * length(FP_impactes)) among FP_a_taxer) {
-						set seigneurs_basseMoyenneJustice <- seigneurs_basseMoyenneJustice + currentPreleveur;
-						set currentPreleveur.FP_basseMoyenneJustice <- currentPreleveur.FP_basseMoyenneJustice + self;
-						set myself.proprietaire.FP_basseMoyenneJustice_garde <- myself.proprietaire.FP_basseMoyenneJustice_garde + self;
+						seigneurs_basseMoyenneJustice <+ currentPreleveur;
+						currentPreleveur.FP_basseMoyenneJustice <+ self;
+						myself.proprietaire.FP_basseMoyenneJustice_garde <+ self;
 						FP_a_taxer >- self;
 					}
 				}

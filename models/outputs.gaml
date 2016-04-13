@@ -141,61 +141,113 @@ global {
 	}
 	
 	action save_TMD {
-		do save_simul_TMD;
-		//do save_seigneurs_TMD;
-		//do save_agregats_TMD;
+		string currentPrefix <- prefix_output;
+		do save_global_TMD(currentPrefix);
+		do save_seigneurs_TMD(currentPrefix);
+		do save_agregats_TMD(currentPrefix);
+		do save_poles_TMD(currentPrefix);
+		do save_Fp_summary_TMD(currentPrefix);
+		do save_FP_all(currentPrefix);
+		do save_paroisses_TMD(currentPrefix);
 	}
 	
-	action save_simul_TMD {
-//		save [
-//				simulation, seed, Annee,
-//				length(Chateaux), length(Agregats), Eglises count (each.eglise_paroissiale),
-//				distance_eglises, prop_FP_isoles*100, ratio_charge_fiscale,
-//				dist_ppv_agregat, Chateaux_chatelains
-//			] to: "../outputs/results_TMD.csv" type: "csv";
+	action save_global_TMD(string prefix) {
+//"Seed", "Annee",
+//"NbChateaux", "NbGrosChateaux",
+//"NbEglises","NbEglisesParoissiales",
+//"DistPpvEglises", "DistPpvEglisesParoissiales",
+//"TxFpIsoles","ChargeFiscale","DistPpvFpAgregat","Duree"
 		save [
-				simulation, seed, Annee
-			] to: "../outputs/results_TMD.csv" type: "csv";
+				myseed, Annee,
+				length(Chateaux), Chateaux count (each.type = "Grand Chateau"),
+				length(Eglises), Eglises count (each.eglise_paroissiale),
+				distance_eglises, distance_eglises_paroissiales,
+				prop_FP_isoles, charge_fiscale,dist_ppv_agregat,total_duration
+				
+			] to: ("../outputs/"+ prefix +"_results_TMD.csv") type: "csv";
 	}
 	
-	action save_seigneurs_TMD {
-		if (!file_exists("../outputs/results_TMD_seigneurs.csv")){
-			save [
-			"Simulation", "Seed", "Annee",
-			"ID_Seigneur", "type","initial", "Puissance","Puissance_armee",
-				"Loyer","HteJustice", "Banaux", "MBJustice",
-				"ID_Suzerain","Nb_FP",
-				"Nb_chateaux_garde", "Nb_chateaux_proprio",
-				"Nb_vassaux"
-				]
-			to: "../outputs/results_TMD_seigneurs.csv" type: "csv";	
-		}
+	action save_seigneurs_TMD(string prefix) {
+//"Seed", "Annee", "IdSeigneur",
+//"Type", "Initial","Puissance",
+//"NbChateauxProprio", "NbChateauxGardien",
+//"NbFpAssujetis", "NbVassaux", "NbDebiteurs"	
 		ask Seigneurs {
 			save [
-				simulation, seed, Annee, 
-				self, type, initial, puissance with_precision 3, puissance_armee with_precision 3,
-				droits_loyer, droits_hauteJustice, droits_banaux, droits_moyenneBasseJustice,
-				monSuzerain, length(FP_assujettis),
-				Chateaux count (each.gardien = self), Chateaux count (each.proprietaire = self),
-				Seigneurs count (each.monSuzerain = self)
+				myseed, Annee,self, 
+				type, initial, puissance,
+				Chateaux count (each.proprietaire = self),Chateaux count (each.gardien = self),
+				length(FP_assujettis), Seigneurs count (each.monSuzerain = self), length(mesDebiteurs)
 				]
-			to: "../outputs/results_TMD_seigneurs.csv" type: "csv";
+			to:("../outputs/"+ prefix +"_results_TMD_seigneurs.csv") type: "csv";
 		}
 	}
 	
-	action save_agregats_TMD {
-		if (!file_exists("../outputs/results_TMD_agregats.csv")){
-			save [
-			"Simulation", "Seed", "Annee",
-				 "ID_Agregat", "Nb_FP_contenus", "Nb_FP_attires"
-			] to: "../outputs/results_TMD_agregats.csv" type: "csv";
-		}
+	action save_agregats_TMD(string prefix) {
+//"Seed", "Annee", "IdAgregat",
+//"NbFpContenus", "NbFContenusAvantDem",
+//"NbFpAttires", "Surface", "Communaute","Geom"
 		ask Agregats {
 			save [
-				simulation, seed, Annee, 
-			self, length(fp_agregat), nb_fp_attires
-			] to: "../outputs/results_TMD_agregats.csv" type: "csv";
+				myseed, Annee, self,
+				length(fp_agregat), nbfp_avant_dem,
+				nb_fp_attires, shape.area, communaute,  "\"" + shape.location + "\""
+			] to: ("../outputs/"+ prefix +"_results_TMD_agregats.csv") type: "csv";
 		}
 	}
+	
+	action save_poles_TMD(string prefix) {
+//"Seed", "Annee", "IdPole",
+//"Attractivité", "NbAttracteurs", "Agregat",
+//"NbEglises", "nbParoisses", "nbGC", "nbPC", "nbCA", "Geom"
+		ask Poles {
+				int nbEglises <- length(mesAttracteurs of_species Eglises);
+				int nbParoisses <- (mesAttracteurs of_species Eglises) count (each.eglise_paroissiale);
+				int nbGC <- (mesAttracteurs of_species Chateaux) count (each.type = "Grand Chateau");
+				int nbPC <- (mesAttracteurs of_species Chateaux) count (each.type = "Petit Chateau");
+				int nbCA <- length(mesAttracteurs of_species Agregats);
+				
+			save [
+				myseed, Annee, self,
+				attractivite, length(mesAttracteurs), monAgregat,
+				nbEglises, nbParoisses, nbGC, nbPC, nbCA, "\"" + shape.location + "\""
+				
+			] to: ("../outputs/"+ prefix +"_results_TMD_poles.csv") type: "csv";
+		}
+		
+	}
+	
+	action save_FP_all(string prefix) {
+		save [
+			myseed, Annee,
+			nbInInIntra, nbInOutIntra, nbOutInIntra, nbOutOutIntra,
+			nbInInInter, nbInOutInter, nbOutInInter, nbOutOutInter
+		] to: ("../outputs/"+ prefix +"_results_TMD_FP_all.csv") type: "csv";
+	}
+	
+	action save_Fp_summary_TMD(string prefix) {
+//"Seed", "Annee",
+//"NbDeplacementLocaux","NbDeplacementLointains",
+//"NbSat25inf","NbSat25-49","NbSat50-75","NbSat75+"
+			save [
+				myseed, Annee,
+				nb_demenagement_local, nb_demenagement_lointain,
+				nb_FP_sat_024, nb_FP_sat_2549, nb_FP_sat_5075, nb_FP_sat_75100
+			] to: ("../outputs/"+ prefix +"_results_TMD_summFP.csv") type: "csv";
+		
+	}
+	
+		action save_paroisses_TMD(string prefix) {
+//"Seed", "Annee", "IdParoisse",
+//"monEglise", "Superficie",
+//"NbParoissiens", "Satisfaction", "Geom"
+			ask  Paroisses {
+				save [
+					myseed, Annee, self,
+					monEglise, shape.area,
+					length(mesFideles), Satisfaction_Paroisse with_precision 3, "\"" + shape.points + "\""
+				] to: ("../outputs/"+ prefix +"_results_TMD_paroisses.csv") type: "csv";
+			}
+		}
 	
 }	

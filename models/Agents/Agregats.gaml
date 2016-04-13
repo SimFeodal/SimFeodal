@@ -17,12 +17,16 @@ import "Zones_Prelevement.gaml"
 
 global {
 	
-	
 	action update_agregats {
     	list<list<Foyers_Paysans>> agregats_detectees <- list<list<Foyers_Paysans>>(simple_clustering_by_distance(Foyers_Paysans, distance_detection_agregats) );
     	agregats_detectees <- agregats_detectees where (length(each) >= nombre_FP_agregat);
     	
     	ask Foyers_Paysans {
+    		if (monAgregat != nil){
+    			set typeInter <- "In";
+    		} else {
+    			set typeInter <- "Out";
+    		}
     		set monAgregat <- nil ;
     	}
    		// 2 - On parcourt la liste des anciennes agglos
@@ -36,6 +40,7 @@ global {
    						set fp_agregat <- FP_inclus;
    						ask fp_agregat {
    							set monAgregat <- myself ;
+   							set typeInter <- typeInter + "In";
    						}
 					set monChateau <- ancienAgregat.monChateau;
 					ask monChateau {
@@ -60,17 +65,49 @@ global {
    				set fp_agregat <- nouvel_agregat;
    				ask fp_agregat {
    					set monAgregat <- myself;
+   					set typeInter <- typeInter + "In";
    				}
    				do update_shape;
    				if (Annee >= apparition_communautes){do update_communaute;}
    			}
    		}
+    	ask Foyers_Paysans where (each.monAgregat = nil){
+    		set typeInter <- typeInter + "Out";
+    	}
     }
+    
+    action update_agregats_fp {
+    	
+    	ask Foyers_Paysans {
+    		if (monAgregat != nil){
+    			set typeIntra <- "In";
+    		} else {
+    			set typeIntra <- "Out";
+    		}
+    		set monAgregat <- nil;
+    	}
+    	
+    	ask Agregats {
+    		set nbfp_avant_dem <- length(fp_agregat);
+    		list<Foyers_Paysans> FP_proches <- Foyers_Paysans at_distance 5000;
+    		list<Foyers_Paysans> FP_inclus <- FP_proches where  (each.location intersects self.shape);
+    		ask FP_inclus {
+    			set monAgregat <- myself;
+    			set typeIntra <- typeIntra + "In";
+    		}
+    		set fp_agregat <- FP_inclus;
+    	}
+    	ask Foyers_Paysans where (each.monAgregat = nil){
+    		set typeIntra <- typeIntra + "Out";
+    	}
+    	
+    }
+    
 }
 
 entities {
 
-	species Agregats schedules: shuffle(Agregats){
+	species Agregats parent: Attracteurs schedules: shuffle(Agregats){
 		bool fake_agregat <- false;
 		int attractivite <- 0;
 		list<Foyers_Paysans> fp_agregat ;
@@ -79,6 +116,7 @@ entities {
 		bool reel <- false;
 		list<Eglises> mesParoisses;
 		int nb_fp_attires <- 0 update: 0;
+		int nbfp_avant_dem <- 0 update: 0;
 		
 		action update_chateau {
 			// FIXME : Chateaux trop proches sinon

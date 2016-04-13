@@ -52,6 +52,8 @@ global
 					if (length(agregat.fp_agregat) > 0)
 					{
 						set FPlocation <- any_location_in(distance_detection_agregats around one_of(agregat.fp_agregat).location);
+						// FIXME : Useless as FP renewal is the first action in run, before the agregats rebuilding
+						//ask agregat {set nb_fp_attires <- nb_fp_attires + 1;}
 					} else
 					{
 						set FPlocation <- any_location_in(worldextent);
@@ -94,6 +96,9 @@ entities
 		list<Seigneurs> seigneurs_banaux <- [];
 		list<Seigneurs> seigneurs_basseMoyenneJustice <- [];
 		int nb_preleveurs <- 0;
+		string typeInter;
+		string typeIntra;
+		
 		action reset_preleveurs
 		{
 			set seigneur_loyer <- nil;
@@ -151,8 +156,8 @@ entities
 		action update_satisfaction_protection
 		{
 			Chateaux plusProcheChateau <- Chateaux with_min_of (self distance_to each);
-			float satisfaction_distance;
-			float satisfaction_puissance;
+			float satisfaction_distance <- nil;
+			float satisfaction_puissance <- nil;
 			// FIXME : Trop lent, à recoder (peut-être depuis point de vue chateau)
 			if (plusProcheChateau = nil)
 			{
@@ -165,9 +170,13 @@ entities
 				float distance_chateau <- plusProcheChateau distance_to self;
 				set satisfaction_distance <- max([0.0, min([1.0, -(distance_chateau / (seuil2 - seuil1)) + (seuil2 / (seuil2 - seuil1))])]); // [0 -> 1]
 				set satisfaction_puissance <- min([1, plusProcheChateau.proprietaire.puissance_armee / seuil_puissance_armee]);
+				
 			}
-
-			set satisfaction_protection <- ((satisfaction_puissance + satisfaction_distance) / 2) ^ (besoin_protection);
+			if (!puissance_armee_FP_alternate){
+				set satisfaction_protection <- ((satisfaction_puissance + satisfaction_distance) / 2) ^ (besoin_protection);
+			} else {
+				set satisfaction_protection <- satisfaction_distance ^ (besoin_protection);
+			}
 			//TODO : MaJ Doc (descript. + paramètres)
 
 		}
@@ -184,12 +193,28 @@ entities
 
 		action deplacement
 		{
-			set location <- flip(1 - Satisfaction) ? (flip(0.8) ? deplacement_local() : deplacement_lointain()) : location;
+			if (!deplacement_alternate){
+				set location <- flip(1 - Satisfaction) ? (flip(0.8) ? deplacement_local() : deplacement_lointain()) : location;
+			} else {
+	// 		1) Identifier le pôle le plus attractif localement
+	// 		2) p(deplacement_local) = MAX [(Attractivité du pôle le plus attractif localement - Satisfaction_FP), 0]
+	// 		3) En cas de déplacement local, pour déterminer quel pôle sera choisi par le FP pour s'y localiser,
+	// 			appliquer la loterie pondérée par l'attractivité de chaque pôle
+	// 		4) Si pas de déplacement local, p(deplacement_lointain) = 0,2 * (1 - Satisfaction_FP)
+			Poles poleLocalMaxAttrac <- (Poles at_distance distance_max_dem_local) with_max_of (each.attractivite);
+			float bestAttrac <- (poleLocalMaxAttrac = nil) ? 0.0 : poleLocalMaxAttrac.attractivite;
+			
+			if (flip(max([ bestAttrac -  Satisfaction, 0.0]))) {
+				set location <- deplacement_local();
+			} else {
+				set location <- flip(0.2 * (1 - Satisfaction)) ? deplacement_lointain() : location;
+			}
+		}	
 		}
 
 		point deplacement_local
 		{
-			point point_local;
+			point point_local <- nil;
 			list<Poles> polesLocaux <- Poles at_distance distance_max_dem_local;
 			if (empty(polesLocaux))
 			{ // Si pas de pole, on reste sur place
@@ -211,7 +236,7 @@ entities
 
 		point deplacement_lointain
 		{
-			point point_lointain;
+			point point_lointain <- nil;
 			list<Poles> agregatsPolarisants <- Poles where (each.monAgregat != nil);
 			// Uniquement les poles qui ne sont pas dans le rayon local
 			list<Poles> agregatsPolarisantsLointains <- agregatsPolarisants - (agregatsPolarisants at_distance distance_max_dem_local);
@@ -225,7 +250,7 @@ entities
 				{
 					set nb_fp_attires <- nb_fp_attires + 1;
 				}
-
+				set monAgregat <- choixPole.monAgregat;
 				set point_lointain <- any_location_in(choixPole.shape);
 				// TODO : Changer nom variable
 				set nb_demenagement_lointain <- nb_demenagement_lointain + 1;
@@ -238,25 +263,13 @@ entities
 				}
 
 				set point_lointain <- any_location_in(poleVainqueur.monAgregat);
+				set monAgregat <- poleVainqueur.monAgregat;
 				set nb_demenagement_lointain <- nb_demenagement_lointain + 1;
 			}
 
 			return (point_lointain);
 		}
 
-		// FIXME : Useless
-		//		point demenagement_local {
-		//			int rayon_local <- distance_max_dem_local ;
-		//			list<Eglises> eglises_proches <- Eglises where (each.reel) at_distance rayon_local;
-		//			list<Chateaux> chateaux_proches <- Chateaux where (each.reel) at_distance rayon_local;
-		//			list<Agregats> agregats_proches <- Agregats where (each.reel) at_distance rayon_local;
-		//			
-		//			list<agent> attracteurs_proches <- (agents of_generic_species Attracteurs) where (each.reel) at_distance rayon_local;
-		//			list<Attracteurs> attracteurs_proches <- agents_at_distance(rayon_local) of_generic_species Attracteurs where (each.reel) ;
-		//			// TODO : report bug : the first one doens't work, the second does
-		//			// probably because Agregats is a shape while others are points
-		//			// at_distance may not work in this situation
-		//			}
 		rgb color <- # gray;
 		aspect base
 		{
@@ -264,5 +277,4 @@ entities
 		}
 
 	}
-
 }

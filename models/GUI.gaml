@@ -131,9 +131,8 @@ experiment Exp_Graphique type: gui multicore: true {
 			species Chateaux aspect: base ;
 			species Foyers_Paysans transparency: 0.5;
 			species Agregats transparency: 0.3;
-			graphics "Annee" {
-				 draw string(Annee) font: font("Helvetica", 32, #bold) color: rgb("black") at: {0.0,100000};
-			}
+			
+			text string(Annee) size: 10000 position: {0, 1} color: rgb("black");
 		}
 //		
 	    display "Foyers Paysans" {
@@ -152,67 +151,8 @@ experiment Exp_Graphique type: gui multicore: true {
     			data "Satisfaction" value: mean(Foyers_Paysans collect each.Satisfaction) color: #black;
     		}
     	}
-    	
-    	// FIXME : me marche pas (pas d'agrégation par barres)
-//    	display "Agregats2"{
-//    		chart "Composition" type: histogram {
-//				        datalist [ "Nombre FP"] value: [Agregats collect length(each.fp_agregat)] color:[°red];
-//				        //data "carry_food_ants" value:(list(ant) count (each.hasFood)) color:°green;                             
-//				}
-//    	}
-//    	
-//	    display "FP et preleveurs" {
-//    		chart "Nombre de Droits acquittes" type:series position: {0,0} size: {1,1}{
-//    			data "Nb Droits Max" value: max(Foyers_Paysans collect each.nb_preleveurs) color: #blue;
-//    			data "Nb Droits Mean" value: mean(Foyers_Paysans collect each.nb_preleveurs) color: #green;
-//    			data "Nb Droits Median" value: median(Foyers_Paysans collect each.nb_preleveurs) color: #orange;
-//    			data "Nb Droits Min" value: min(Foyers_Paysans collect each.nb_preleveurs) color: #red;
-//    		}
-//    	}
-//    	
-//    	
-    	display "Seigneurs" {
-//    		chart "Puissance des seigneurs" type:series position: {0,0} size: {0.33,1}{
-//    			data "Min" value: min(Seigneurs collect each.puissance) color: #green;
-//    			data "Mean" value: mean(Seigneurs collect each.puissance) color: #blue;
-//    			data "Median" value: median(Seigneurs collect each.puissance) color: #orange;
-//    			data "Max" value: max(Seigneurs collect each.puissance) color: #red;
-//    		}
-    		// FIXME : Ne marche pas...
-//    		chart "Puissance armee des seigneurs" type:series position: {0.33,0} size: {0.33,1}{
-//    			data "Min" value: min((Seigneurs where (each.type = "Chatelain")) collect each.puissance_armee) color: #green;
-//    			data "Mean" value: mean((Seigneurs where (each.type = "Chatelain")) collect each.puissance_armee) color: #blue;
-//    			data "Med" value:  median((Seigneurs where (each.type = "Chatelain")) collect each.puissance_armee) color: #orange;
-//    			data "Max" value: max((Seigneurs where (each.type = "Chatelain")) collect each.puissance_armee) color: #red;
-//    		}
-//    		chart "Dependance (loyer) des FP" type:series position: {0.66,0} size: {0.33,1}{
-//    			data "FP payant un loyer à un GS" value: Foyers_Paysans count (each.seigneur_loyer != nil and each.seigneur_loyer.type = "Grand Seigneur") color: #green;
-//    			data "FP payant un loyer à un PS initial" value: Foyers_Paysans count (each.seigneur_loyer != nil and each.seigneur_loyer.type = "Petit Seigneur" and each.seigneur_loyer.initialement_present) color: #blue;
-//    			data "FP payant un loyer à un PS nouveau" value: Foyers_Paysans count (each.seigneur_loyer != nil and each.seigneur_loyer.type = "Petit Seigneur" and !each.seigneur_loyer.initialement_present) color: #red;
-//    		}
-    	}
-//    	    	
-//    	display "Zones Prelevement"{
-//    		chart "Nombre de ZP" type:series position: {0.0, 0.0} size: {1.0, 0.33}{
-//    			data "Loyers" value: Zones_Prelevement count (each.type_droit = "Loyer") color: #blue;
-//    			data "Haute Justice" value: Zones_Prelevement count (each.type_droit = "Haute_Justice") color: #red;
-//    			data "Banaux" value: Zones_Prelevement count (each.type_droit = "Banaux") color: #green;
-//    			data "Basse et Moyenne Justice" value: Zones_Prelevement count (each.type_droit = "basseMoyenne_Justice") color: #yellow;
-//    		}
-//    		chart "Nb de preleveurs" type: series position: {0, 0.33} size: {1.0, 0.33}{
-//    			data "Max" value: max ( Zones_Prelevement collect (length(each.preleveurs.keys))) color: #red;
-//    			data "Mean" value: mean ( Zones_Prelevement collect (length(each.preleveurs.keys))) color: #green;
-//    			data "Min" value: min ( Zones_Prelevement collect (length(each.preleveurs.keys))) color: #blue;
-//    			data "Med" value: median(Zones_Prelevement collect (length(each.preleveurs.keys))) color: #orange;
-//    		}
-//    		chart "Nb ZP / Seigneur" type: series position: {0.0, 0.66} size: {1.0, 0.33}{
-//    			data "Max" value: max(Seigneurs collect each.monNbZP) color: #red;
-//    			data "Mean" value: mean(Seigneurs collect each.monNbZP) color: #green;
-//    			data "Median" value: median(Seigneurs collect each.monNbZP) color: #orange;
-//    			data "Min" value: min(Seigneurs collect each.monNbZP) color: #blue;	
-//    		}
-//    	}
-//    	
+
+ 	
     	display "Agregats"{
     		chart "Nombre d'agregats" type: series position: {0.0,0.0} size: {1.0, 0.33}{
     			data "Nombre d'agregats" value: length(Agregats) color: #red;
@@ -247,70 +187,387 @@ experiment Exp_Graphique type: gui multicore: true {
 }
 
 
-experiment Bug_Finding type: gui multicore: true {
-	//float seed <- 2720054926.0 ;
-	parameter "Nombre_seigneurs_fin" var: nombre_seigneurs_objectif category: "Seigneurs";
-		output {
-			monitor nombre_chateaux value: nb_chateaux;	
-		}
+
+
+experiment Exp_monitors type: gui {
+	parameter "Nombre seigneurs fin" var: nombre_seigneurs_objectif category: "Seigneurs";
+	output {
+		monitor nombre_chateaux value: nb_chateaux;
+		monitor nombre_paroisses value: Eglises count (each.eglise_paroissiale);
+	}
 }
 
 
-experiment Exp_Vide type: gui multicore: true {
-	user_command blob {
-		geometry test_poly <- polygon([{3,5}, {5,6},{1,4}]);
-		write test_poly;
-		write test_poly.points;
-		write (machine_time as_date "%h%m%s");
-		write (as_time(machine_time));
-		
-	}
+experiment Explo_TMD_base type: batch repeat:200 keep_seed: true multicore: true until: (Annee >= fin_simulation){
+	parameter 'save_TMD' var: save_TMD among: [true];
+	parameter 'prefix' var: prefix_output among: ["base"];
+}
+
+experiment Explo_TMD_paroisses type: batch repeat:200 keep_seed: true multicore: true until: (Annee >= fin_simulation){
+	parameter 'save_TMD' var: save_TMD among: [true];
+	parameter 'prefix' var: prefix_output among: ["paroisses"];
+	parameter 'ratio_paroissiens_agregats' var: ratio_paroissiens_agregats among: [75];
+}
+
+experiment Explo_TMD_gros_chateaux type: batch repeat:200 keep_seed: true multicore: true until: (Annee >= fin_simulation){
+	parameter 'save_TMD' var: save_TMD among: [true];
+	parameter 'prefix' var: prefix_output among: ["gros_chateaux"];
+	parameter "proba_promotion_groschateau_multipole" var: proba_promotion_groschateau_multipole among: [0.75];
+	parameter "proba_promotion_groschateau_autre"  var: proba_promotion_groschateau_autre among: [0.25];
+}
+
+experiment Explo_TMD_dist_dem_local type: batch repeat:200 keep_seed: true multicore: true until: (Annee >= fin_simulation){
+	parameter 'save_TMD' var: save_TMD among: [true];
+	parameter 'prefix' var: prefix_output among: ["distdemlocal"];
+	parameter "distance_max_dem_local" var: distance_max_dem_local among: [5000];
+}
+
+experiment Explo_TMD_attrac_poles type: batch repeat:200 keep_seed: true multicore: true until: (Annee >= fin_simulation){
+	parameter 'save_TMD' var: save_TMD among: [true];
+	parameter 'prefix' var: prefix_output among: ["attrac_poles"];
+	
+	parameter "attrac_0_eglises" var: attrac_0_eglises among: [0.0];
+	parameter "attrac_1_eglises" var: attrac_1_eglises among: [0.05];
+	parameter "attrac_2_eglises" var: attrac_2_eglises among: [0.25];
+	parameter "attrac_3_eglises" var: attrac_3_eglises among: [0.55];
+	parameter "attrac_4_eglises" var: attrac_4_eglises among: [0.65];
+	parameter "attrac_GC" var: attrac_GC among: [0.35];
+	parameter "attrac_PC" var: attrac_PC among: [0.05];	
+}
+ 
+ experiment Explo_TMD_base2 type: batch repeat:200 keep_seed: true multicore: true until: (Annee >= fin_simulation){
+	parameter 'save_TMD' var: save_TMD among: [true];
+	parameter 'prefix' var: prefix_output among: ["base2"];
+	
+	// Seuil de paroissiens nécessaire à la création d’une nouvelle paroisse en agrégat : 200
+	parameter 'ratio_paroissiens_agregats' var: ratio_paroissiens_agregats among: [200];
+	
+	// Augmenter seuil de FP insatisfait pour promotion église : passer de 5 à 10 FP
+	parameter 'nb_paroissiens_mecontents_necessaires' var: nb_paroissiens_mecontents_necessaires among: [10];
+	
+	//  Augmenter un peu la probabilité de promotion en grand châteaux :
+	//    Probabilité qu'un château isolé devienne un gros château : 0.3
+	//    Probabilité qu'un château situé dans un pôle devienne un gros château : 0.8
+	parameter "proba_promotion_groschateau_multipole" var: proba_promotion_groschateau_multipole among: [0.8];
+	parameter "proba_promotion_groschateau_autre"  var: proba_promotion_groschateau_autre among: [0.3];
+	
+	// Distance max. de déménagement local des FP : 5 km.
+	parameter "distance_max_dem_local" var: distance_max_dem_local among: [5000];
+	
+	// Attractivité des pôles  : prendre les valeurs bien différenciées
+	parameter "attrac_0_eglises" var: attrac_0_eglises among: [0.0];
+	parameter "attrac_1_eglises" var: attrac_1_eglises among: [0.05];
+	parameter "attrac_2_eglises" var: attrac_2_eglises among: [0.25];
+	parameter "attrac_3_eglises" var: attrac_3_eglises among: [0.55];
+	parameter "attrac_4_eglises" var: attrac_4_eglises among: [0.65];
+	parameter "attrac_GC" var: attrac_GC among: [0.35];
+	parameter "attrac_PC" var: attrac_PC among: [0.05];	
+}
+
+
+ experiment Explo_TMD_base2_test2 type: batch repeat:15 keep_seed: true multicore: true until: (Annee >= fin_simulation){
+	parameter 'save_TMD' var: save_TMD among: [true];
+	parameter 'prefix' var: prefix_output among: ["base2_test3"];
+	
+	// Seuil de paroissiens nécessaire à la création d’une nouvelle paroisse en agrégat : 200
+	parameter 'ratio_paroissiens_agregats' var: ratio_paroissiens_agregats among: [200];
+	
+	// Augmenter seuil de FP insatisfait pour promotion église : passer de 5 à 10 FP
+	parameter 'nb_paroissiens_mecontents_necessaires' var: nb_paroissiens_mecontents_necessaires among: [10];
+	
+	//  Augmenter un peu la probabilité de promotion en grand châteaux :
+	//    Probabilité qu'un château isolé devienne un gros château : 0.3
+	//    Probabilité qu'un château situé dans un pôle devienne un gros château : 0.8
+	parameter "proba_promotion_groschateau_multipole" var: proba_promotion_groschateau_multipole among: [0.8];
+	parameter "proba_promotion_groschateau_autre"  var: proba_promotion_groschateau_autre among: [0.3];
+	
+	// Distance max. de déménagement local des FP : 5 km.
+	parameter "distance_max_dem_local" var: distance_max_dem_local among: [5000];
+	
+	// Attractivité des pôles  : prendre les valeurs bien différenciées
+	parameter "attrac_0_eglises" var: attrac_0_eglises among: [0.0];
+	parameter "attrac_1_eglises" var: attrac_1_eglises among: [0.05];
+	parameter "attrac_2_eglises" var: attrac_2_eglises among: [0.25];
+	parameter "attrac_3_eglises" var: attrac_3_eglises among: [0.55];
+	parameter "attrac_4_eglises" var: attrac_4_eglises among: [0.65];
+	parameter "attrac_GC" var: attrac_GC among: [0.35];
+	parameter "attrac_PC" var: attrac_PC among: [0.05];	
+}
+
+
+ experiment Explo_TMD_base2_compo5_2 type: batch repeat:20 keep_seed: true multicore: true until: (Annee >= fin_simulation){
+	parameter 'save_TMD' var: save_TMD among: [true];
+	parameter 'prefix' var: prefix_output among: ["base2_compo5_2"];
+	
+	// Seuil de paroissiens nécessaire à la création d’une nouvelle paroisse en agrégat : 200
+	parameter 'ratio_paroissiens_agregats' var: ratio_paroissiens_agregats among: [200];
+	
+	// Augmenter seuil de FP insatisfait pour promotion église : passer de 5 à 10 FP
+	parameter 'nb_paroissiens_mecontents_necessaires' var: nb_paroissiens_mecontents_necessaires among: [10];
+	
+	//  Augmenter un peu la probabilité de promotion en grand châteaux :
+	//    Probabilité qu'un château isolé devienne un gros château : 0.3
+	//    Probabilité qu'un château situé dans un pôle devienne un gros château : 0.8
+	parameter "proba_promotion_groschateau_multipole" var: proba_promotion_groschateau_multipole among: [0.8];
+	parameter "proba_promotion_groschateau_autre"  var: proba_promotion_groschateau_autre among: [0.3];
+	
+	
+	// Attractivité des pôles  : prendre les valeurs bien différenciées
+	parameter "attrac_0_eglises" var: attrac_0_eglises among: [0.0];
+	parameter "attrac_1_eglises" var: attrac_1_eglises among: [0.05];
+	parameter "attrac_2_eglises" var: attrac_2_eglises among: [0.25];
+	parameter "attrac_3_eglises" var: attrac_3_eglises among: [0.55];
+	parameter "attrac_4_eglises" var: attrac_4_eglises among: [0.65];
+	parameter "attrac_GC" var: attrac_GC among: [0.35];
+	parameter "attrac_PC" var: attrac_PC among: [0.05];	
+	
+	
+	// Exploration pour chap 5.2 :
+	
+	//Grands seigneurs : croissance exponentielle de la probabilité de construire un château
+	// au fur et à mesure de l'augmentation de la puissance du seigneur.
+	// Valeurs de cadrage :
+	// 		puissance inférieure à 1000 : p = 0
+	// 		puissance de 1000 : p = 0,5
+	// 		puissance de 2000 : p = 0,7
+	// 		puissance de 50 000 : p = 1.
+	// Équation : p(puissance) =  1- e-0.00064*puissance
+	// Plusieurs tirages successifs de probabilité (2) 
+	parameter "chateaux_GS_alternate" var: chateaux_GS_alternate among: [true];
+	parameter "puissance_necessaire_creation_chateau_GS" var: puissance_necessaire_creation_chateau_GS among: [1000];
+	
+	// Petits seigneurs : puissance de 0 : p = 0. Puissance de 2000 : p = 1.
+	// Croissance linéaire de la probabilité en fonction de la puissance du seigneur.
+	// Un seul tirage de probabilité.
+	parameter "chateaux_PS_alternate" var: chateaux_PS_alternate among: [true];
+	parameter "puissance_necessaire_creation_chateau_PS" var: puissance_necessaire_creation_chateau_PS among: [0];
+	
+	// Distance max. de déménagement local des FP : 2.5 km.
+	parameter "distance_max_dem_local" var: distance_max_dem_local among: [2500];
+	
+	// Pb avec la variable S_protection liée à la puissance armée du châtelain
+	// Modification du modèle : supprimer cette variable du modèle
+	parameter "puissance_armee_FP_alternate" var: puissance_armee_FP_alternate among: [true];
+}
+
+experiment Explo_TMD_base2_compo5_2bis type: batch repeat:20 keep_seed: true multicore: true until: (Annee >= fin_simulation){
+	parameter 'save_TMD' var: save_TMD among: [true];
+	parameter 'prefix' var: prefix_output among: ["base2_compo5_2bis"];
+	
+	// Seuil de paroissiens nécessaire à la création d’une nouvelle paroisse en agrégat : 200
+	parameter 'ratio_paroissiens_agregats' var: ratio_paroissiens_agregats among: [200];
+	
+	// Augmenter seuil de FP insatisfait pour promotion église : passer de 5 à 10 FP
+	parameter 'nb_paroissiens_mecontents_necessaires' var: nb_paroissiens_mecontents_necessaires among: [10];
+	
+	//  Augmenter un peu la probabilité de promotion en grand châteaux :
+	//    Probabilité qu'un château isolé devienne un gros château : 0.3
+	//    Probabilité qu'un château situé dans un pôle devienne un gros château : 0.8
+	parameter "proba_promotion_groschateau_multipole" var: proba_promotion_groschateau_multipole among: [0.8];
+	parameter "proba_promotion_groschateau_autre"  var: proba_promotion_groschateau_autre among: [0.3];
+	
+	
+	// Attractivité des pôles  : prendre les valeurs bien différenciées
+	parameter "attrac_0_eglises" var: attrac_0_eglises among: [0.0];
+	parameter "attrac_1_eglises" var: attrac_1_eglises among: [0.05];
+	parameter "attrac_2_eglises" var: attrac_2_eglises among: [0.25];
+	parameter "attrac_3_eglises" var: attrac_3_eglises among: [0.55];
+	parameter "attrac_4_eglises" var: attrac_4_eglises among: [0.65];
+	parameter "attrac_GC" var: attrac_GC among: [0.35];
+	parameter "attrac_PC" var: attrac_PC among: [0.05];	
+	
+	
+	// Exploration pour chap 5.2 :
+	
+	//Grands seigneurs : croissance exponentielle de la probabilité de construire un château
+	// au fur et à mesure de l'augmentation de la puissance du seigneur.
+	// Valeurs de cadrage :
+	// 		puissance inférieure à 1000 : p = 0
+	// 		puissance de 1000 : p = 0,5
+	// 		puissance de 2000 : p = 0,7
+	// 		puissance de 50 000 : p = 1.
+	// Équation : p(puissance) =  1- e-0.00064*puissance
+	// Plusieurs tirages successifs de probabilité (2) 
+	parameter "nb_chateaux_potentiels_GS" var: nb_chateaux_potentiels_GS among: [2];
+	parameter "chateaux_GS_alternate" var: chateaux_GS_alternate among: [true];
+	parameter "puissance_necessaire_creation_chateau_GS" var: puissance_necessaire_creation_chateau_GS among: [1000];
+	
+	// Petits seigneurs : puissance de 0 : p = 0. Puissance de 2000 : p = 1.
+	// Croissance linéaire de la probabilité en fonction de la puissance du seigneur.
+	// Un seul tirage de probabilité.
+	parameter "chateaux_PS_alternate" var: chateaux_PS_alternate among: [true];
+	parameter "puissance_necessaire_creation_chateau_PS" var: puissance_necessaire_creation_chateau_PS among: [0];
+	
+	// Distance max. de déménagement local des FP : 5 km
+	parameter "distance_max_dem_local" var: distance_max_dem_local among: [5000];
+	
+	// Pb avec la variable S_protection liée à la puissance armée du châtelain
+	// Modification du modèle : supprimer cette variable du modèle
+	parameter "puissance_armee_FP_alternate" var: puissance_armee_FP_alternate among: [true];
+}
+
+
+experiment Explo_TMD_base2_compo5_2ter type: batch repeat:20 keep_seed: true multicore: true until: (Annee >= fin_simulation){
+	parameter 'save_TMD' var: save_TMD among: [true];
+	parameter 'prefix' var: prefix_output among: ["base2_compo5_2ter"];
+	
+	// Seuil de paroissiens nécessaire à la création d’une nouvelle paroisse en agrégat : 200
+	parameter 'ratio_paroissiens_agregats' var: ratio_paroissiens_agregats among: [200];
+	
+	// Augmenter seuil de FP insatisfait pour promotion église : passer de 5 à 10 FP
+	parameter 'nb_paroissiens_mecontents_necessaires' var: nb_paroissiens_mecontents_necessaires among: [10];
+	
+	//  Augmenter un peu la probabilité de promotion en grand châteaux :
+	//    Probabilité qu'un château isolé devienne un gros château : 0.3
+	//    Probabilité qu'un château situé dans un pôle devienne un gros château : 0.8
+	parameter "proba_promotion_groschateau_multipole" var: proba_promotion_groschateau_multipole among: [0.8];
+	parameter "proba_promotion_groschateau_autre"  var: proba_promotion_groschateau_autre among: [0.3];
+	
+	
+	
+	// Exploration pour chap 5.2 :
+	
+	//Grands seigneurs : croissance exponentielle de la probabilité de construire un château
+	// au fur et à mesure de l'augmentation de la puissance du seigneur.
+	// Valeurs de cadrage :
+	// 		puissance inférieure à 1000 : p = 0
+	// 		puissance de 1000 : p = 0,5
+	// 		puissance de 2000 : p = 0,7
+	// 		puissance de 50 000 : p = 1.
+	// Équation : p(puissance) =  1- e-0.00064*puissance
+	parameter "chateaux_GS_alternate" var: chateaux_GS_alternate among: [true];
+	parameter "puissance_necessaire_creation_chateau_GS" var: puissance_necessaire_creation_chateau_GS among: [1000];
+	
+	// Petits seigneurs : puissance de 0 : p = 0. Puissance de 2000 : p = 1.
+	// Croissance linéaire de la probabilité en fonction de la puissance du seigneur.
+	// Un seul tirage de probabilité.
+	parameter "chateaux_PS_alternate" var: chateaux_PS_alternate among: [true];
+	parameter "puissance_necessaire_creation_chateau_PS" var: puissance_necessaire_creation_chateau_PS among: [0];
+	
+	// Pb avec la variable S_protection liée à la puissance armée du châtelain
+	// Modification du modèle : supprimer cette variable du modèle
+	parameter "puissance_armee_FP_alternate" var: puissance_armee_FP_alternate among: [true];
+	
+	// Avec cette augmentation du rayon de déplacement des FP à 5km,
+	// la distribution rang-taille des agrégats est moins satisfaisante
+	// et le nombre de FP isolés un peu plus élevé.
+	// -> On repasse la distance max. de déménagement local des FP à 2.5 km
+	parameter "distance_max_dem_local" var: distance_max_dem_local among: [2500];
+	
+	//Modification à apporter au modèle :
+	// trois (et non deux) tirages successifs de probabilité de construire un château pour les grands seigneurs
+	parameter "nb_chateaux_potentiels_GS" var: nb_chateaux_potentiels_GS among: [3];
+	
+	// Deuxième problème : après 940, les FP deviennent majoritairement très insatisfaits, d'où un très grand nombre de déménagements.
+	// Actuellement, les attracteurs considérés dans le modèle sont les châteaux et les églises.
+	// Ajouter une nouveau type d'attracteur = les communautés (représentation possible :
+	// 		un point situé au centre de l'agrégat) avec une attractivité égale à 0,05.
+	parameter "communautes_attractives" var: communautes_attractives among:[true];
+	parameter "attrac_communautes" var:attrac_communautes among: [0.10];	
+	
+	// Concernant la modélisation des déplacements des foyers paysans :
+	// il n'y a pas de mécanisme qui leur fait comparer les aspects push (insatisfaction en leur localisation actuelle)
+	// et pull (attractivité d'autres localisations possibles)
+	// 		=> Quand ils ne peuvent être pleinement satisfaits là où ils sont (absence de pôle fortement attractif), ils ne cessent de déménager.
+	// Modification à apporter au modèle :
+	// 		1) Identifier le pôle le plus attractif localement
+	// 		2) p(deplacement_local) = MAX [(Attractivité du pôle le plus attractif localement - Satisfaction_FP), 0]
+	// 		3) En cas de déplacement local, pour déterminer quel pôle sera choisi par le FP pour s'y localiser,
+	// 			appliquer la loterie pondérée par l'attractivité de chaque pôle
+	// 		4) Si pas de déplacement local, p(deplacement_lointain) = 0,2 * (1 - Satisfaction_FP)
+	parameter "deplacement_alternate" var: deplacement_alternate among: [true];
+	
+		// Attractivité des pôles  : prendre les valeurs bien différenciées
+	parameter "attrac_0_eglises" var: attrac_0_eglises among: [0.0];
+	parameter "attrac_1_eglises" var: attrac_1_eglises among: [0.10];
+	parameter "attrac_2_eglises" var: attrac_2_eglises among: [0.25];
+	parameter "attrac_3_eglises" var: attrac_3_eglises among: [0.55];
+	parameter "attrac_4_eglises" var: attrac_4_eglises among: [0.65];
+	parameter "attrac_GC" var: attrac_GC among: [0.35];
+	parameter "attrac_PC" var: attrac_PC among: [0.10];	
+
 	
 }
 
 
-experiment Exp_noInput type: gui {
-	parameter "Nombre seigneurs fin" var: nombre_seigneurs_objectif category: "Seigneurs";
-	output {
-		monitor nombre_chateaux value: nb_chateaux;
-			
-	}
-}
 
-experiment Batch type: batch repeat: 50 keep_seed: true until: (Annee > fin_simulation * 2) {
-   parameter "Nombre seigneurs fin" var: nombre_seigneurs_objectif min: 25 max: 400 step: 5;
-
-   method exhaustive maximize: nb_chateaux;
-   
-   reflex info_sim {
-    write string(simulation) + ' / Duration : ' + total_duration + ' / Average : ' + average_duration;
-	}
-   permanent {
-            	display "Chateaux/Eglises"{
-    		chart "Nombre de chateaux" type: series position: {0.0,0.0} size: {1.0, 0.5}{
-    			data "Tous" value: nb_chateaux color: #red;
-    		}
-    	}	
-	}	
- 
-}
-
- experiment test_graphics type: gui {
- 	output {
-		display "Carte" {
-			species Foyers_Paysans transparency: 0.5;
-			graphics "Annee" position: {0.0,-(0.1)} {
-				 draw string(Annee) font: font("Helvetica", 32, #bold) color: rgb("black") ;
-			}
-		}
- 	}
- }
-
-experiment Explo_TMD type: batch repeat:1 keep_seed : true until: (Annee >= fin_simulation){
+experiment Explo_TMD_base2_compo5_2quat type: batch repeat:20 keep_seed: true multicore: true until: (Annee >= fin_simulation){
 	parameter 'save_TMD' var: save_TMD among: [true];
+	parameter 'prefix' var: prefix_output among: ["base2_compo5_2quat"];
+	
+	// Seuil de paroissiens nécessaire à la création d’une nouvelle paroisse en agrégat : 200
+	parameter 'ratio_paroissiens_agregats' var: ratio_paroissiens_agregats among: [200];
+	
+	// Augmenter seuil de FP insatisfait pour promotion église : passer de 5 à 10 FP
+	parameter 'nb_paroissiens_mecontents_necessaires' var: nb_paroissiens_mecontents_necessaires among: [10];
+	
+	//  Augmenter un peu la probabilité de promotion en grand châteaux :
+	//    Probabilité qu'un château isolé devienne un gros château : 0.3
+	//    Probabilité qu'un château situé dans un pôle devienne un gros château : 0.8
+	parameter "proba_promotion_groschateau_multipole" var: proba_promotion_groschateau_multipole among: [0.8];
+	parameter "proba_promotion_groschateau_autre"  var: proba_promotion_groschateau_autre among: [0.3];
+	
+	
+	
+	// Exploration pour chap 5.2 :
+	
+	//Grands seigneurs : croissance exponentielle de la probabilité de construire un château
+	// au fur et à mesure de l'augmentation de la puissance du seigneur.
+	// Valeurs de cadrage :
+	// 		puissance inférieure à 1000 : p = 0
+	// 		puissance de 1000 : p = 0,5
+	// 		puissance de 2000 : p = 0,7
+	// 		puissance de 50 000 : p = 1.
+	// Équation : p(puissance) =  1- e-0.00064*puissance
+	parameter "chateaux_GS_alternate" var: chateaux_GS_alternate among: [true];
+	parameter "puissance_necessaire_creation_chateau_GS" var: puissance_necessaire_creation_chateau_GS among: [1000];
+	
+	// Petits seigneurs : puissance de 0 : p = 0. Puissance de 2000 : p = 1.
+	// Croissance linéaire de la probabilité en fonction de la puissance du seigneur.
+	// Un seul tirage de probabilité.
+	parameter "chateaux_PS_alternate" var: chateaux_PS_alternate among: [true];
+	parameter "puissance_necessaire_creation_chateau_PS" var: puissance_necessaire_creation_chateau_PS among: [0];
+	
+	// Pb avec la variable S_protection liée à la puissance armée du châtelain
+	// Modification du modèle : supprimer cette variable du modèle
+	parameter "puissance_armee_FP_alternate" var: puissance_armee_FP_alternate among: [true];
+	
+	// Avec cette augmentation du rayon de déplacement des FP à 5km,
+	// la distribution rang-taille des agrégats est moins satisfaisante
+	// et le nombre de FP isolés un peu plus élevé.
+	// -> On repasse la distance max. de déménagement local des FP à 2.5 km
+	parameter "distance_max_dem_local" var: distance_max_dem_local among: [2500];
+	
+	//Modification à apporter au modèle :
+	// trois (et non deux) tirages successifs de probabilité de construire un château pour les grands seigneurs
+	parameter "nb_chateaux_potentiels_GS" var: nb_chateaux_potentiels_GS among: [3];
+	
+	// Deuxième problème : après 940, les FP deviennent majoritairement très insatisfaits, d'où un très grand nombre de déménagements.
+	// Actuellement, les attracteurs considérés dans le modèle sont les châteaux et les églises.
+	// Ajouter une nouveau type d'attracteur = les communautés (représentation possible :
+	// 		un point situé au centre de l'agrégat) avec une attractivité égale à 0,05.
+	parameter "communautes_attractives" var: communautes_attractives among:[true];
+	parameter "attrac_communautes" var:attrac_communautes among: [0.10];	
+	
+	// Concernant la modélisation des déplacements des foyers paysans :
+	// il n'y a pas de mécanisme qui leur fait comparer les aspects push (insatisfaction en leur localisation actuelle)
+	// et pull (attractivité d'autres localisations possibles)
+	// 		=> Quand ils ne peuvent être pleinement satisfaits là où ils sont (absence de pôle fortement attractif), ils ne cessent de déménager.
+	// Modification à apporter au modèle :
+	// 		1) Identifier le pôle le plus attractif localement
+	// 		2) p(deplacement_local) = MAX [(Attractivité du pôle le plus attractif localement - Satisfaction_FP), 0]
+	// 		3) En cas de déplacement local, pour déterminer quel pôle sera choisi par le FP pour s'y localiser,
+	// 			appliquer la loterie pondérée par l'attractivité de chaque pôle
+	// 		4) Si pas de déplacement local, p(deplacement_lointain) = 0,2 * (1 - Satisfaction_FP)
+	parameter "deplacement_alternate" var: deplacement_alternate among: [true];
+	
+		// Attractivité des pôles  : prendre les valeurs bien différenciées
+	parameter "attrac_0_eglises" var: attrac_0_eglises among: [0.0];
+	parameter "attrac_1_eglises" var: attrac_1_eglises among: [0.10];
+	parameter "attrac_2_eglises" var: attrac_2_eglises among: [0.25];
+	parameter "attrac_3_eglises" var: attrac_3_eglises among: [0.55];
+	parameter "attrac_4_eglises" var: attrac_4_eglises among: [0.65];
+	parameter "attrac_GC" var: attrac_GC among: [0.35];
+	parameter "attrac_PC" var: attrac_PC among: [0.10];	
+
 }
- 
- experiment explo_TMD_manuelle type: gui multicore: false{
- 	parameter 'save_TMD' var: save_TMD;
- }
- 

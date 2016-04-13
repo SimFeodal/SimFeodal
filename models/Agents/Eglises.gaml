@@ -40,7 +40,7 @@ global {
 //				( nb_relatif_paroissiens / (nb_max_paroissiens - nb_min_paroissiens))
 //			])]);
 			
-			float proba_creation <- min([1.0, 1/400 * nb_relatif_paroissiens]);
+			float proba_creation <- min([1.0, 1/ratio_paroissiens_agregats * nb_relatif_paroissiens]);
 			if flip(proba_creation) {
 				// on crée
 				create Eglises number: 1 {
@@ -113,8 +113,7 @@ entities {
 		float Satisfaction_Paroisse <- 1.0 ;
 		
 		
-		// BUG !!!!!
-		// mesFideles ==  0 tout le temps
+
 		action update_fideles {
 			set mesFideles <- Foyers_Paysans inside self.shape ;
 			//write(length(mesFideles));
@@ -134,7 +133,7 @@ entities {
 				int nb_paroissiens_mecontents <- mesFideles count (each.satisfaction_religieuse = 0.0);
 				//write(nb_paroissiens_mecontents);
 				//if (nb_paroissiens_mecontents > 10 or length(mesFideles) > 60){
-				if nb_paroissiens_mecontents > 5 {
+				if nb_paroissiens_mecontents > nb_paroissiens_mecontents_necessaires {
 					set Satisfaction_Paroisse <- 0.0;
 				} else {
 					set Satisfaction_Paroisse <- 1.0 ;

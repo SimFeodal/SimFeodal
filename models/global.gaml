@@ -15,12 +15,14 @@ import "Agents/Attracteurs.gaml"
 import "Agents/Zones_Prelevement.gaml"
 
 
-global {
+global torus: false{
 	////////////
 	// INPUTS //
 	////////////
 	
 	// GLOBAL //
+	
+	float myseed <- seed;
 	
 	bool benchmark <- false;
 	bool save_outputs <- false;
@@ -48,6 +50,7 @@ global {
 	float taux_mobilite <- 0.8;
 	int distance_max_dem_local <- 7000;
 	int seuil_puissance_armee <- 400; // P.A. d'un proprio de chateau pour que le FP soit satisfait.
+	bool deplacement_alternate <- false;
 	
 	// SEIGNEURS //
 	
@@ -76,6 +79,7 @@ global {
 	// CHATEAUX //
 	
 	int apparition_chateaux <- 960;
+	int nb_chateaux_potentiels_GS <- 2;
 	
 	int seuil_attractivite_chateau <- 3000;
 	
@@ -87,6 +91,11 @@ global {
 	float proba_gain_droits_hauteJustice_chateau <- 0.1;
 	float proba_gain_droits_banaux_chateau <- 0.1;
 	float proba_gain_droits_basseMoyenneJustice_chateau <- 0.1;
+	
+	float proba_promotion_groschateau_multipole <- 0.5;
+	float proba_promotion_groschateau_autre <- 0.1;
+	int puissance_necessaire_creation_chateau_GS <- 2000;
+	int puissance_necessaire_creation_chateau_PS <- 2000;
 
 
 	// EGLISES //
@@ -96,7 +105,24 @@ global {
 	float proba_gain_droits_paroissiaux <- 0.05;
 	int nb_max_paroissiens <- 40;
 	int nb_min_paroissiens <- 10;
-
+	int ratio_paroissiens_agregats <- 400;
+	int nb_paroissiens_mecontents_necessaires <- 5;
+	
+	// POLES //
+	float attrac_0_eglises <- 0.0;
+	float attrac_1_eglises <- 0.17;
+	float attrac_2_eglises <- 0.34;
+	float attrac_3_eglises <- 0.51;
+	float attrac_4_eglises <- 0.66;
+	float attrac_GC <- 0.34;
+	float attrac_PC <- 0.17;
+	
+	bool chateaux_GS_alternate <- false;
+	bool chateaux_PS_alternate <- false;
+	bool puissance_armee_FP_alternate <- false;
+	
+	bool communautes_attractives <- false;
+	float attrac_communautes <- 0.0;
 
 	
 	////////////
@@ -117,17 +143,34 @@ global {
 	// OUTPUTS //
 	/////////////
 	float distance_eglises <- 0.0; // Moyenne des distances au plus proche voisin
+	float distance_eglises_paroissiales <- 0.0;
 	float prop_FP_isoles <- 0.0;
 	float ratio_charge_fiscale <- 0.0;
 	float charge_fiscale_debut <- 0.0;
-	
+	float charge_fiscale <- 0.0;
 	float dist_ppv_agregat <- 0.0;
 	list<int> Chateaux_chatelains <- [];
 	list<int> reseaux_chateaux <- [];
 	
+	
+	string prefix_output <- nil;
+	
 	// FP //
 	int nb_demenagement_local update: 0; // le update remet à 0 au début de chaque nouveau step
 	int nb_demenagement_lointain update: 0;
+	int nb_FP_sat_024 update: 0;
+	int nb_FP_sat_2549 update: 0;
+	int nb_FP_sat_5075 update: 0;
+	int nb_FP_sat_75100 update: 0;
+	int nbInInIntra update: 0;
+	int nbInOutIntra update: 0;
+	int nbOutInIntra update: 0;
+	int nbOutOutIntra update: 0;
+	
+	int nbInInInter update: 0;
+	int nbInOutInter update: 0;
+	int nbOutInInter update: 0;
+	int nbOutOutInter update: 0;
 	
 	// CHATEAUX //
 	int nb_chateaux ;
@@ -151,26 +194,43 @@ global {
 			Eglises pp_eglise <- Eglises closest_to self;
 			if (pp_eglise != nil){
 			float distEglise <- self distance_to pp_eglise;
-			set distances_pp_eglise <- distances_pp_eglise + distEglise;
+			distances_pp_eglise <+ distEglise;
 			}
 		}
 		
 		set distance_eglises <- mean(distances_pp_eglise);
+		
+		list<float> distances_pp_paroisses <- [];
+		list<Eglises> eglises_paroissiales <- Eglises where (each.eglise_paroissiale);
+		ask eglises_paroissiales{
+			Eglises pp_eglise <- (eglises_paroissiales - self) closest_to self;
+			if (pp_eglise != nil){
+			float distEglise <- self distance_to pp_eglise;
+			distances_pp_paroisses <+ distEglise;
+			}
+		}
+		
+		set distance_eglises_paroissiales <- mean(distances_pp_paroisses);
+		
+		
+		
 		set prop_FP_isoles <- Foyers_Paysans count (each.monAgregat = nil) / length(Foyers_Paysans);
-		set ratio_charge_fiscale <- mean(Foyers_Paysans collect (each.nb_preleveurs)) / charge_fiscale_debut;
+		set charge_fiscale <- mean(Foyers_Paysans collect float(each.nb_preleveurs));
 		
 		list<Foyers_Paysans> FP_Agregat <- Foyers_Paysans where (each.monAgregat != nil);
 		
 		list<float> liste_ppv_agregats <- [];
 		ask FP_Agregat {
 			list<Foyers_Paysans> mesFP <- (Foyers_Paysans where (each.monAgregat = self.monAgregat)) - self;
-			if (mesFP != nil){
-				float myDist <- self distance_to (mesFP closest_to self);
-				set liste_ppv_agregats <- liste_ppv_agregats + myDist;
+			if (!empty(mesFP)){
+				//write(mesFP);
+				float myDist <- self distance_to (mesFP with_min_of (each distance_to self));
+				liste_ppv_agregats <+ myDist;
 			}
-
 		}
+		//write(max(liste_ppv_agregats));
 		set dist_ppv_agregat <- mean(liste_ppv_agregats);
+		//write(dist_ppv_agregat);
 		
 		list<int> nbChateaux_chatelains <- []; 
 		ask Seigneurs where (each.type != "Petit Seigneur"){
@@ -185,7 +245,26 @@ global {
 			set nbChateaux_reseau <- nbChateaux_reseau +  length(mesChateaux);	
 		}
 		set reseaux_chateaux <- nbChateaux_reseau;
+		
+		//write(mean(Agregats collect (each.shape.area)));
 
+	}
+	
+	action update_outputs_fp {
+	set nb_FP_sat_024 <- Foyers_Paysans count (each.Satisfaction < 0.25);
+	set nb_FP_sat_2549 <- Foyers_Paysans count (each.Satisfaction >= 0.25 and each.Satisfaction < 0.5);
+	set nb_FP_sat_5075 <- Foyers_Paysans count (each.Satisfaction >= 0.5 and each.Satisfaction <= 0.75);
+	set nb_FP_sat_75100 <- Foyers_Paysans count (each.Satisfaction > 0.75);
+	
+	set nbInInIntra <-  Foyers_Paysans count (each.typeIntra = "InIn");
+	set nbInOutIntra <-  Foyers_Paysans count (each.typeIntra = "InOut");
+	set nbOutInIntra <-  Foyers_Paysans count (each.typeIntra = "OutIn");
+	set nbOutOutIntra <-  Foyers_Paysans count (each.typeIntra = "OutOut");
+	
+	set nbInInInter <-  Foyers_Paysans count (each.typeInter = "InIn");
+	set nbInOutInter <-  Foyers_Paysans count (each.typeInter = "InOut");
+	set nbOutInInter <-  Foyers_Paysans count (each.typeInter = "OutIn");
+	set nbOutOutInter <-  Foyers_Paysans count (each.typeInter = "OutOut");
 	}
 	
 	

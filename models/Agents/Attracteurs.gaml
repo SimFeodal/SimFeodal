@@ -20,7 +20,14 @@ global {
 	action update_poles {
 		ask Poles {do die;}
 		list<Eglises> eglises_paroissiales <- Eglises where (each.reel);
-		list<list> poles_uniques <- simple_clustering_by_distance((eglises_paroissiales + Chateaux) of_generic_species Attracteurs, 200);
+		
+		list<list> poles_uniques <- [[]];
+		if (communautes_attractives) {
+				set poles_uniques <- simple_clustering_by_distance((eglises_paroissiales + Chateaux + (Agregats where each.communaute)) of_generic_species Attracteurs, 200);
+		}else {
+				set poles_uniques <- simple_clustering_by_distance((eglises_paroissiales + Chateaux) of_generic_species Attracteurs, 200);
+		}
+
 		loop currentPole over: poles_uniques {
 			create Poles number: 1 {
 				set mesAttracteurs <- list<Attracteurs>(currentPole);
@@ -49,22 +56,28 @@ global {
 		ask Poles {
 				list<Eglises> mesEglises <- mesAttracteurs of_species Eglises;
 				list<Chateaux> mesChateaux <- mesAttracteurs of_species Chateaux;
+				list<Agregats> mesCommunautes <- mesAttracteurs of_species Agregats;
 				set attractivite <- 0.0 ;
-				if (length(mesEglises) > 0){
-					if (length(mesEglises) < 4 ){
-						set attractivite <- length(mesEglises) * 0.17;
-					} else {
-						set attractivite <- 0.66;
-					}
+
+
+				switch length(mesEglises) {
+					match 0 {set attractivite <- attrac_0_eglises;}
+					match 1 {set attractivite <- attrac_1_eglises;}
+					match 2 {set attractivite <- attrac_2_eglises;}
+					match 3 {set attractivite <- attrac_3_eglises;}
+					default {set attractivite <- attrac_4_eglises;} // 4 et +
 				}
+				
 				if (length(mesChateaux) > 0){
-					if ((mesChateaux count (each.type = "Grand Chateau")) > 0){
-						set attractivite <- attractivite + 0.34;
+					if ( (mesChateaux count (each.type = "Grand Chateau")) > 0){
+						set attractivite <- attractivite + attrac_GC;
 					} else {
-						set attractivite <- attractivite + 0.17;
+						set attractivite <- attractivite + attrac_PC;
 					}
 				}
-				set attractivite <- min([1.0, attractivite]);
+				if (length(mesCommunautes) > 0){
+					set attractivite <- attractivite + attrac_communautes;
+				}
 		}
 	}	
 	
@@ -80,6 +93,5 @@ entities {
 		float attractivite;
 		list<Attracteurs> mesAttracteurs;
 		Agregats monAgregat;
-		// TODO : Ajouter règle des poles d'agrégat
 	}
 }

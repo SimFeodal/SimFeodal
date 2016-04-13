@@ -95,9 +95,9 @@ entities {
 		action promotion_chateau {
 			Poles monPole <- shuffle(Poles) first_with (each.mesAttracteurs contains self);
 			if (length(monPole.mesAttracteurs) > 1){
-				set type <- flip(0.5) ? "Grand Chateau" : "Petit Chateau";
+				set type <- flip(proba_promotion_groschateau_multipole) ? "Grand Chateau" : "Petit Chateau";
 			} else {
-				set type <- flip(0.1) ? "Grand Chateau" : "Petit Chateau";
+				set type <- flip(proba_promotion_groschateau_autre) ? "Grand Chateau" : "Petit Chateau";
 			}
 		}
 		

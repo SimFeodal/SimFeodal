@@ -20,7 +20,6 @@ import "Agents/Zones_Prelevement.gaml"
 
 global schedules: list(world) + list(Attracteurs) + list(Poles)+ list(Agregats) + list(Foyers_Paysans) + list(Chateaux) + list(Eglises) + list(Seigneurs){
     
-    
 	init {
 		float t <- machine_time;
 		do generer_monde;
@@ -119,11 +118,11 @@ global schedules: list(world) + list(Attracteurs) + list(Poles)+ list(Agregats) 
 	
 	reflex Constructions_chateaux when: Annee >= apparition_chateaux{
 		float t <- machine_time;
-		ask Seigneurs where (each.type = "Grand Seigneur" and each.puissance > 2000) { do construction_chateau_GS;}
+		ask Seigneurs where (each.type = "Grand Seigneur" and each.puissance > puissance_necessaire_creation_chateau_GS) { do construction_chateau_GS;}
 		if (benchmark){write 'Constructions_chateaux 1/2 : ' + string(machine_time - t);}
 		
 		float t2 <- machine_time;
-		ask Seigneurs where (each.type != "Grand Seigneur" and each.puissance > 2000){ do construction_chateau_PS;}
+		ask Seigneurs where (each.type != "Grand Seigneur" and each.puissance > puissance_necessaire_creation_chateau_PS){ do construction_chateau_PS;}
 		if (benchmark){write 'Constructions_chateaux 2/2 : ' + string(machine_time - t2);}
 	}
 	
@@ -171,7 +170,10 @@ global schedules: list(world) + list(Attracteurs) + list(Poles)+ list(Agregats) 
 		if (Annee = (debut_simulation + duree_step)){
 			set charge_fiscale_debut <- mean(Foyers_Paysans collect float(each.nb_preleveurs));
 		}
+		do update_agregats_fp ;
 		do update_output_indexes;
+		do update_outputs_fp;
+
 	}
 	
 	reflex save_data when: save_outputs {
@@ -198,8 +200,8 @@ global schedules: list(world) + list(Attracteurs) + list(Poles)+ list(Agregats) 
 		set nb_chateaux <- length(Chateaux);
 		if (Annee >= fin_simulation) {
 			write 'Durée simulation : ' + total_duration;
-			//do halt; // Si version  batch
-			do pause; // Si version GUI
+			do halt; // Si version  batch
+			//do pause; // Si version GUI
 		}
 		if (benchmark){write 'fin_simulation : ' + string(machine_time - t);}
 	}

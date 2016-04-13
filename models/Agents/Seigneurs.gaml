@@ -82,6 +82,8 @@ entities {
 		
 		int monNbZP <- 0;
 		
+		list<Seigneurs> mesDebiteurs <- [];
+		
 		
 		init {
 			if (type = "Chatelain") {
@@ -122,6 +124,7 @@ entities {
 				set preleveurs <- map([choixSeigneur::1.0]);
 			}
 			ask choixSeigneur { set monSuzerain <- myself;}
+			mesDebiteurs <+ choixSeigneur;
 			}
 
 		}
@@ -135,6 +138,7 @@ entities {
 				}
 				if (flip(proba_don_partie_ZP) and (sum(currentZP.preleveurs.values) < (1.0 - pourcentage_donne) ) and !empty(preleveurs_potentiels)) {
 					Seigneurs monPreleveur <- one_of(preleveurs_potentiels);
+					mesDebiteurs <+ monPreleveur;
 					ask currentZP {
 						set preleveurs[monPreleveur] <- (preleveurs.keys contains monPreleveur) ? preleveurs[monPreleveur] + pourcentage_donne : pourcentage_donne;
 					}
@@ -297,6 +301,7 @@ entities {
 					set chateau.gardien <- choixSeigneur;
 					set choixSeigneur.type <- "Chatelain";
 					set choixSeigneur.monSuzerain <- self;
+					mesDebiteurs <+ choixSeigneur;
 					
 					if (chateau.ZP_loyer != nil) {
 						ask chateau.ZP_loyer {
@@ -360,9 +365,18 @@ entities {
 		
 		// FIXME : moche et sans doute faux
 		action construction_chateau_GS {
+
 			int nbChateauxPotentiel <- int(floor(self.puissance / 5000));
 			
+			if (chateaux_GS_alternate){
+				nbChateauxPotentiel <- nb_chateaux_potentiels_GS;
+				proba_creer_chateau_GS <- (1 - exp(-0.00064 * self.puissance) );
+			}
+			
+			
 			list<Agregats> agregatsPotentiel <- Agregats where (each.monChateau = nil);
+			
+			
 			
 			//int nbChateaux <- min([rnd(nbChateauxPotentiel), length(agregatsPotentiel)]);
 			create Chateaux number: nbChateauxPotentiel {
@@ -375,9 +389,9 @@ entities {
 				
 				// FIXME : Hideux
 				if (flip(proba_chateau_agregat)){
-					Agregats choixAgregat;
+					Agregats choixAgregat <- nil;
 					
-					list<Agregats> agregatsPossibles;
+					list<Agregats> agregatsPossibles <- nil;
 					// on crée le chateau dans un agrégat si possible
 					if (length(Chateaux) > 1 and agregatsPotentiel != nil){
 						set agregatsPossibles <- shuffle(agregatsPotentiel) where (each distance_to (Chateaux closest_to self) < 5000);
@@ -442,6 +456,10 @@ entities {
 				// FIXME : Chateaux trop proches sinon
 				if (agregatPotentiel distance_to (Chateaux closest_to agregatPotentiel) < 3000) {return();}
 				create Chateaux number: 1 {
+					if (chateaux_PS_alternate){
+						proba_creer_chateau_PS <- myself.puissance / 2000;
+					}
+					
 					if (!flip(proba_creer_chateau_PS)){
 						do die;
 					}
