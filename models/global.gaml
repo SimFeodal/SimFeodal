@@ -117,12 +117,13 @@ global torus: false{
 	float attrac_GC <- 0.34;
 	float attrac_PC <- 0.17;
 	
+	float attrac_communautes <- 0.0;
+	
 	bool chateaux_GS_alternate <- false;
 	bool chateaux_PS_alternate <- false;
 	bool puissance_armee_FP_alternate <- false;
-	
 	bool communautes_attractives <- false;
-	float attrac_communautes <- 0.0;
+	
 
 	
 	////////////
