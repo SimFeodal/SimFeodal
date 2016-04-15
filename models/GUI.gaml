@@ -491,9 +491,9 @@ experiment Explo_TMD_base2_compo5_2ter type: batch repeat:20 keep_seed: true mul
 
 
 
-experiment Explo_TMD_base2_compo5_2quat type: batch repeat:20 keep_seed: true multicore: true until: (Annee >= fin_simulation){
+experiment Explo_TMD_base2_compo5_2_5 type: batch repeat:20 keep_seed: true multicore: true until: (Annee >= fin_simulation){
 	parameter 'save_TMD' var: save_TMD among: [true];
-	parameter 'prefix' var: prefix_output among: ["base2_compo5_2quat"];
+	parameter 'prefix' var: prefix_output among: ["base2_compo5_2_5"];
 	
 	// Seuil de paroissiens nécessaire à la création d’une nouvelle paroisse en agrégat : 200
 	parameter 'ratio_paroissiens_agregats' var: ratio_paroissiens_agregats among: [200];

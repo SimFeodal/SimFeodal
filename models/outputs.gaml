@@ -142,6 +142,7 @@ global {
 	
 	action save_TMD {
 		string currentPrefix <- prefix_output;
+		if (Annee = 820) {do save_parameters_TMD(currentPrefix);}
 		do save_global_TMD(currentPrefix);
 		do save_seigneurs_TMD(currentPrefix);
 		do save_agregats_TMD(currentPrefix);
@@ -149,6 +150,33 @@ global {
 		do save_Fp_summary_TMD(currentPrefix);
 		do save_FP_all(currentPrefix);
 		do save_paroisses_TMD(currentPrefix);
+	}
+	
+	action save_parameters_TMD(string prefix) {
+//		
+		save [
+				myseed, debut_simulation, fin_simulation, duree_step, besoin_protection,
+				distance_detection_agregats, nombre_FP_agregat, nombre_agglos_antiques,
+				nombre_villages, nombre_foyers_villages_max, puissance_communautes,
+				apparition_communautes, proba_apparition_communaute, nombre_foyers_paysans,
+				taux_renouvellement, taux_mobilite, distance_max_dem_local, seuil_puissance_armee,
+				deplacement_alternate, nombre_seigneurs_objectif, nombre_grands_seigneurs,
+				nombre_petits_seigneurs, puissance_grand_seigneur1, puissance_grand_seigneur2,
+				proba_collecter_loyer, proba_creation_ZP_banaux, proba_creation_ZP_basseMoyenneJustice,
+				rayon_min_PS, rayon_max_PS, min_fourchette_loyers_PS, max_fourchette_loyers_PS,
+				proba_don_partie_ZP, apparition_chateaux, nb_chateaux_potentiels_GS,
+				seuil_attractivite_chateau, proba_creer_chateau_GS, proba_chateau_agregat,
+				proba_don_chateau_GS, proba_creer_chateau_PS, proba_gain_droits_hauteJustice_chateau,
+				proba_gain_droits_banaux_chateau, proba_gain_droits_basseMoyenneJustice_chateau,
+				proba_promotion_groschateau_multipole, proba_promotion_groschateau_autre,
+				puissance_necessaire_creation_chateau_GS, puissance_necessaire_creation_chateau_PS,
+				nombre_eglises, nb_eglises_paroissiales, proba_gain_droits_paroissiaux, nb_max_paroissiens,
+				nb_min_paroissiens, ratio_paroissiens_agregats, nb_paroissiens_mecontents_necessaires,
+				attrac_0_eglises, attrac_1_eglises, attrac_2_eglises, attrac_3_eglises, attrac_4_eglises,
+				attrac_GC, attrac_PC, attrac_communautes,
+				chateaux_GS_alternate, chateaux_PS_alternate, puissance_armee_FP_alternate, communautes_attractives
+				
+			] to: ("../outputs/"+ prefix +"_parameters_TMD.csv") type: "csv";
 	}
 	
 	action save_global_TMD(string prefix) {
