@@ -251,7 +251,7 @@ entities
 					set nb_fp_attires <- nb_fp_attires + 1;
 				}
 				set monAgregat <- choixPole.monAgregat;
-				set point_lointain <- any_location_in(choixPole.shape);
+				set point_lointain <- any_location_in(monAgregat.shape);
 				// TODO : Changer nom variable
 				set nb_demenagement_lointain <- nb_demenagement_lointain + 1;
 			} else
@@ -262,7 +262,7 @@ entities
 					set nb_fp_attires <- nb_fp_attires + 1;
 				}
 
-				set point_lointain <- any_location_in(poleVainqueur.monAgregat);
+				set point_lointain <- any_location_in(poleVainqueur.monAgregat.shape);
 				set monAgregat <- poleVainqueur.monAgregat;
 				set nb_demenagement_lointain <- nb_demenagement_lointain + 1;
 			}
