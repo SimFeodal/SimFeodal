@@ -77,6 +77,43 @@ global {
     }
     
     action update_agregats_alternate {
+    	list<Eglises> eglises_paroissiales <- Eglises where (each.reel);
+    	list<list<agent>> agregats_detectes <- simple_clustering_by_distance((Foyers_Paysans + Chateaux + eglises_paroissiales), distance_detection_agregats)  where (length(each) >= nombre_FP_agregat);
+    	list<list<agent>> agregats_debut <- agregats_detectes where (length(each of_species Foyers_Paysans) >= nombre_FP_agregat);
+    	//write agregats_reels;
+    	list<list<agent>> agregats_cibles <- agregats_debut;
+    	write "Nombre detectes :" + string(length(agregats_debut));
+    	
+    	loop petitAgregat over: agregats_debut {
+    		list<agent> thisAg <- petitAgregat;
+    		list<Foyers_Paysans> thisFP <- thisAg of_species Foyers_Paysans;
+			list<Eglises> thisEglisesParoissiales <- thisAg of_species Eglises;
+			list<Chateaux> thisChateaux <- thisAg of_species Chateaux;
+			list<point> thisPoints <- (thisFP collect each.location) + (thisEglisesParoissiales collect each.location) + (thisChateaux collect each.location);
+			geometry thisPoly <- convex_hull(polygon(thisPoints));
+    		geometry thisShape <- thisPoly + 100;
+    		
+    		loop agregat_cible over: (agregats_cibles){
+    			if (thisAg != agregat_cible){
+		    		list<agent> thoseAg <- agregat_cible;
+		    		list<Foyers_Paysans> thoseFP <- thoseAg of_species Foyers_Paysans;
+					list<Eglises> thoseEglisesParoissiales <- thoseAg of_species Eglises;
+					list<Chateaux> thoseChateaux <- thoseAg of_species Chateaux;
+					list<point> thosePoints <- (thoseFP collect each.location) + (thoseEglisesParoissiales collect each.location) + (thoseChateaux collect each.location);
+					geometry thosePoly <- convex_hull(polygon(thosePoints));
+	    			geometry thoseShape <- thosePoly + 100;
+					
+					
+					if (thoseShape intersects thisShape){
+						agregats_cibles >- thisAg;
+						agregats_cibles >- thoseAg;
+						agregats_cibles <+ (thisAg + thoseAg);
+						break;
+					}
+    			}
+    		}
+    	}
+    	write "Nombre final :" + string(length(agregats_cibles));
     	
     }
     
