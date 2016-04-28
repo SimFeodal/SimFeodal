@@ -76,6 +76,10 @@ global {
     	}
     }
     
+    action update_agregats_alternate {
+    	
+    }
+    
     action update_agregats_fp {
     	
     	ask Foyers_Paysans {
@@ -132,6 +136,11 @@ entities {
 		}
 		
 		action update_shape {
+			set shape <- convex_hull(polygon(fp_agregat collect each.location));
+			set mesParoisses <- (Eglises where (each.eglise_paroissiale) inside shape);
+		}
+		
+		action update_shape_alternate {
 			set shape <- convex_hull(polygon(fp_agregat collect each.location));
 			set mesParoisses <- (Eglises where (each.eglise_paroissiale) inside shape);
 		}
