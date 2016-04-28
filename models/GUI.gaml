@@ -655,3 +655,7 @@ experiment Explo_TMD_base2_compo5_2_6 type: batch repeat:20 keep_seed: true mult
 	parameter "attrac_PC" var: attrac_PC among: [0.1];	
 
 }
+
+experiment Exp_debug type: gui {
+	parameter "update_agregats_alternate" var: update_agregats_alternate category: "Seigneurs" among: [true];
+}
