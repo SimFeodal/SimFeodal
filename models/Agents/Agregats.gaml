@@ -78,18 +78,21 @@ global {
     
     action update_agregats_alternate {
     	list<Eglises> eglises_paroissiales <- Eglises where (each.reel);
-    	list<list<agent>> agregats_detectes <- simple_clustering_by_distance((Foyers_Paysans + Chateaux + eglises_paroissiales), distance_detection_agregats)  where (length(each) >= nombre_FP_agregat);
+    	list<list<agent>> agregats_detectes <- list<list<agent>>(simple_clustering_by_distance((Foyers_Paysans + Chateaux + eglises_paroissiales), 
+    		distance_detection_agregats
+    		)  where (length(each) >= nombre_FP_agregat));
     	list<list<agent>> agregats_debut <- agregats_detectes where (length(each of_species Foyers_Paysans) >= nombre_FP_agregat);
     	//write agregats_reels;
     	list<list<agent>> agregats_cibles <- agregats_debut;
-    	write "Nombre detectes :" + string(length(agregats_debut));
     	
     	loop petitAgregat over: agregats_debut {
     		list<agent> thisAg <- petitAgregat;
     		list<Foyers_Paysans> thisFP <- thisAg of_species Foyers_Paysans;
 			list<Eglises> thisEglisesParoissiales <- thisAg of_species Eglises;
 			list<Chateaux> thisChateaux <- thisAg of_species Chateaux;
-			list<point> thisPoints <- (thisFP collect each.location) + (thisEglisesParoissiales collect each.location) + (thisChateaux collect each.location);
+			list<point> thisPoints <- (thisFP collect each.location) +
+				(thisEglisesParoissiales collect each.location) +
+				(thisChateaux collect each.location);
 			geometry thisPoly <- convex_hull(polygon(thisPoints));
     		geometry thisShape <- thisPoly + 100;
     		
@@ -99,7 +102,9 @@ global {
 		    		list<Foyers_Paysans> thoseFP <- thoseAg of_species Foyers_Paysans;
 					list<Eglises> thoseEglisesParoissiales <- thoseAg of_species Eglises;
 					list<Chateaux> thoseChateaux <- thoseAg of_species Chateaux;
-					list<point> thosePoints <- (thoseFP collect each.location) + (thoseEglisesParoissiales collect each.location) + (thoseChateaux collect each.location);
+					list<point> thosePoints <- (thoseFP collect each.location) +
+						(thoseEglisesParoissiales collect each.location) +
+						(thoseChateaux collect each.location);
 					geometry thosePoly <- convex_hull(polygon(thosePoints));
 	    			geometry thoseShape <- thosePoly + 100;
 					
@@ -113,7 +118,58 @@ global {
     			}
     		}
     	}
-    	write "Nombre final :" + string(length(agregats_cibles));
+    	
+	loop nouvelAgregat over: agregats_cibles {
+		create tmpAgregats number: 1 {
+			
+    		set mesFP <- nouvelAgregat of_species Foyers_Paysans;
+			set mesEglisesParoissiales <- nouvelAgregat of_species Eglises;
+			set mesChateaux <- nouvelAgregat of_species Chateaux;
+			
+			list<point> mesPoints <- (mesFP collect each.location) +
+				(mesEglisesParoissiales collect each.location) +
+				(mesChateaux collect each.location);
+			geometry monPoly <- convex_hull(polygon(mesPoints));
+    		set shape <- monPoly + 100;
+		}
+	}
+	
+		ask Foyers_Paysans {
+		if (monAgregat != nil){
+			set typeInter <- "In";
+		} else {
+			set typeInter <- "Out";
+		}
+		set monAgregat <- nil ;
+	}
+	
+	list<list<agent>> AgClusters <- list<list<agent>>(simple_clustering_by_distance((tmpAgregats + Agregats), 0));
+	list<tmpAgregats> nouveauxAgregats <- list<tmpAgregats>(AgClusters where ((length(each) = 1) and (length(each of_species tmpAgregats) = 1)));
+	list<Agregats> agregatsDisparus <- list<Agregats>(AgClusters where ((length(each of_species tmpAgregats) < 1)));
+	list<list<agent>> goodClusters <- AgClusters - (nouveauxAgregats + agregatsDisparus);
+	
+	ask agregatsDisparus {do die;}
+
+	loop nouvelAgregat over: nouveauxAgregats {
+		create Agregats {
+			set fp_agregat <- nouvelAgregat.mesFP;
+			ask fp_agregat {
+				set monAgregat <- myself;
+				set typeInter <- typeInter + "In";
+			}
+			set shape <- nouvelAgregat.shape;
+			set monChateau <- one_of(nouvelAgregat.mesChateaux);
+			set mesParoisses <- nouvelAgregat.mesEglisesParoissiales;
+			if (Annee >= apparition_communautes){do update_communaute;}
+		}
+	}
+	
+	loop goodCluster over: goodClusters {
+		loop goodTmpAgregat
+	}
+	
+	
+	
     	
     }
     
@@ -147,6 +203,15 @@ global {
 }
 
 entities {
+	
+	species tmpAgregats schedules: shuffle(tmpAgregats){
+		bool CA <- false;
+		geometry shape <- nil;
+		list<agent> mesAgents <- [];
+		list<Foyers_Paysans> mesFP <- [];
+		list<Eglises> mesEglisesParoissiales <- [];
+		list<Chateaux> mesChateaux <- [];
+	}
 
 	species Agregats parent: Attracteurs schedules: shuffle(Agregats){
 		bool fake_agregat <- false;
