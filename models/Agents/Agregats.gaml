@@ -212,14 +212,19 @@ global {
 			Agregats predecesseurAg <- nil;
 			
 			if (length(nouveauxAg) > 1){
+				if (length(nouveauxAg) < length(anciensAg)){
+					
+				}
 				write sample("Bug !");
-			} else 	if (length(anciensAg) = 1){
+				// TODO: Bug here, cf. github issue #32
+			} else if (length(anciensAg) = 1){
 				set predecesseurAg <- one_of(anciensAg);
 			} else if (anciensAg count (each.communaute) >= 1 ) {
 				set predecesseurAg <- (anciensAg where each.communaute) with_max_of (each.attractivite);
 			} else {
 				set predecesseurAg <- anciensAg with_max_of (each.attractivite);
 			}
+			
 			
 			ask predecesseurAg {
 				set fp_agregat <- one_of(nouveauxAg).mesFP;
