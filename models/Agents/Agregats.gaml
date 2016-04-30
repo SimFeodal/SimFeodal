@@ -161,20 +161,33 @@ global {
     	// ****************************************************** //
     	//  Detection des intersection anciens/nouveaux agrégats  //
     	// ****************************************************** //
-		list<list<tmpAgregats>> test <- list<list<tmpAgregats>>(simple_clustering_by_distance(tmpAgregats, 0)) where (length(each) > 1);
-		write sample(test);
 		
 		list<list<agent>> AgClusters <- list<list<agent>>(simple_clustering_by_distance((tmpAgregats + Agregats), 0));
-		list<tmpAgregats> nouveauxAgregats <- list<tmpAgregats>(AgClusters where ((length(each) = 1) and (length(each of_species tmpAgregats) = 1)));
-		list<Agregats> agregatsDisparus <- list<Agregats>(AgClusters where ((length(each of_species tmpAgregats) < 1)));
-		list<list<agent>> goodClusters <- AgClusters - (nouveauxAgregats + agregatsDisparus);
+		write sample(AgClusters);
+		
+		list<list<agent>> agregatsIntersectes <- AgClusters where (length(each) > 1);
+		list<list<agent>> agregatsIsoles <- AgClusters where (length(each) = 1);
+		list<tmpAgregats> nouveauxAgregats <- (agregatsIsoles accumulate each) of_species tmpAgregats;
+		list<Agregats> agregatsDisparus <- (agregatsIsoles accumulate each) of_species Agregats;
+		
 		
 		// Suppression des anciens sans intersection //
-		
 		ask agregatsDisparus {do die;}
+		list<list<agent>> goodClusters <- [];
+		
+		loop currAg over: agregatsIntersectes {
+			if (length(currAg of_species tmpAgregats) < 1){
+				ask currAg {do die;}
+			} else {
+				goodClusters <+ currAg;
+			}
+		}
+		
+		
 		
 		// Création des nouveaux sans intersection //
 		
+		write sample(nouveauxAgregats);
 		loop nouvelAgregat over: nouveauxAgregats {
 			create Agregats number: 1{
 				set fp_agregat <- nouvelAgregat.mesFP;
