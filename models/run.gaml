@@ -40,7 +40,7 @@ global schedules: list(world) + list(Attracteurs) + list(Poles)+ list(Agregats) 
 
 	reflex MaJ_Agregats{
 		float t <- machine_time;
-		if (update_agregats_alternate){
+		if (agregats_alternate){
 			do update_agregats_alternate;
 		}else {
 			do update_agregats;

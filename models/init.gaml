@@ -117,10 +117,14 @@ global {
 	
 	action generer_monde {
 		do generer_foyers_paysans;
-		do update_agregats;
+		do generer_eglises;
+		if (agregats_alternate){
+			do update_agregats_alternate;
+		}else {
+			do update_agregats;
+		}
 		do generer_seigneurs;
 		do attribuer_puissance_seigneurs;
-		do generer_eglises;
 	}
 	
 }

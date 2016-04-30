@@ -123,7 +123,7 @@ global torus: false{
 	bool chateaux_PS_alternate <- false;
 	bool puissance_armee_FP_alternate <- false;
 	bool communautes_attractives <- false;
-	bool update_agregats_alternate <- false;
+	bool agregats_alternate <- false;
 	
 
 	
