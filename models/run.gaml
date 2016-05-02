@@ -154,7 +154,7 @@ global schedules: list(world) + list(Attracteurs) + list(Poles)+ list(Agregats) 
 	
 	reflex MaJ_poles {
 		float t <- machine_time;
-		do update_poles;
+		if (poles_alternate){do update_poles_alternate;} else {do update_poles;}
 		if ( Annee >= 940 and Annee <= 1040 ){
 		ask Chateaux where (each.type = "Petit Chateau"){
 				do promotion_chateau;
