@@ -79,6 +79,16 @@ global {
 					set attractivite <- attractivite + attrac_communautes;
 				}
 		}
+	}
+	
+	action update_poles_alternate {
+		// to go with update_agregats_alternate
+		
+		// FIXME : right now, this error occur :
+		// Cannot evaluate shape as the target agent is dead
+		// in set point_loitain
+		// in poleVainqueur.monAgregat.shape
+		// -> this Agregat is already dead.
 	}	
 	
 }
