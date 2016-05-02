@@ -242,8 +242,6 @@ global {
 						cesAnciensAg >- cetAncienAg;
 					}
 				}
-				write sample("Bug !");
-				// TODO: Bug here, cf. github issue #32
 			} else if (length(anciensAg) = 1){
 				set predecesseurAg <- one_of(anciensAg);
 			} else if (anciensAg count (each.communaute) >= 1 ) {
