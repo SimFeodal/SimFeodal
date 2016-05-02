@@ -212,8 +212,35 @@ global {
 			Agregats predecesseurAg <- nil;
 			
 			if (length(nouveauxAg) > 1){
-				if (length(nouveauxAg) < length(anciensAg)){
-					
+				list<Agregats> cesAnciensAg <- anciensAg;
+				loop ceNouvelAg over: nouveauxAg {
+					if (length(cesAnciensAg) < 1){
+						create Agregats number: 1 {
+							set fp_agregat <- ceNouvelAg.mesFP;
+							ask fp_agregat {
+								set monAgregat <- myself;
+								set typeInter <- typeInter + "In";
+							}
+							set shape <- ceNouvelAg.shape;
+							set monChateau <- one_of(ceNouvelAg.mesChateaux);
+							set mesParoisses <- ceNouvelAg.mesEglisesParoissiales;
+							if (Annee >= apparition_communautes){do update_communaute;}
+						}
+					} else {
+						Agregats cetAncienAg <- one_of(cesAnciensAg);
+						ask cetAncienAg{
+							set fp_agregat <- ceNouvelAg.mesFP;
+							ask fp_agregat {
+								set monAgregat <- myself;
+								set typeInter <- typeInter + "In";
+							}
+							set shape <- ceNouvelAg.shape;
+							set monChateau <- one_of(ceNouvelAg.mesChateaux);
+							set mesParoisses <- ceNouvelAg.mesEglisesParoissiales;
+							if (Annee >= apparition_communautes){do update_communaute;}
+						}
+						cesAnciensAg >- cetAncienAg;
+					}
 				}
 				write sample("Bug !");
 				// TODO: Bug here, cf. github issue #32
