@@ -84,13 +84,11 @@ global {
     	
     	
     	// Clustering //
-    	
     	list<Eglises> eglises_paroissiales <- Eglises where (each.reel);
     	list<list<agent>> agregats_detectes <- list<list<agent>>(simple_clustering_by_distance((Foyers_Paysans + Chateaux + eglises_paroissiales), 
     		distance_detection_agregats
     		)  where (length(each) >= nombre_FP_agregat));
     	list<list<agent>> agregats_debut <- agregats_detectes where (length(each of_species Foyers_Paysans) >= nombre_FP_agregat);
-    	//write agregats_reels;
     	list<list<agent>> agregats_cibles <- agregats_debut;
     	
     	// Fusion //
@@ -133,7 +131,6 @@ global {
 	
 		loop nouvelAgregat over: agregats_cibles {
 			create tmpAgregats number: 1 {
-				
 	    		set mesFP <- nouvelAgregat of_species Foyers_Paysans;
 				set mesEglisesParoissiales <- nouvelAgregat of_species Eglises;
 				set mesChateaux <- nouvelAgregat of_species Chateaux;
@@ -147,7 +144,6 @@ global {
 		}
 	
 		// Desaffectation des FP //
-		
 		ask Foyers_Paysans {
 		if (monAgregat != nil){
 			set typeInter <- "In";
@@ -163,7 +159,6 @@ global {
     	// ****************************************************** //
 		
 		list<list<agent>> AgClusters <- list<list<agent>>(simple_clustering_by_distance((tmpAgregats + Agregats), 0));
-		write sample(AgClusters);
 		
 		list<list<agent>> agregatsIntersectes <- AgClusters where (length(each) > 1);
 		list<list<agent>> agregatsIsoles <- AgClusters where (length(each) = 1);
@@ -186,8 +181,6 @@ global {
 		
 		
 		// Création des nouveaux sans intersection //
-		
-		write sample(nouveauxAgregats);
 		loop nouvelAgregat over: nouveauxAgregats {
 			create Agregats number: 1{
 				set fp_agregat <- nouvelAgregat.mesFP;
@@ -250,18 +243,20 @@ global {
 				set predecesseurAg <- anciensAg with_max_of (each.attractivite);
 			}
 			
-			
-			ask predecesseurAg {
-				set fp_agregat <- one_of(nouveauxAg).mesFP;
-				ask fp_agregat {
-					set monAgregat <- myself;
-					set typeInter <- typeInter + "In";
-				}
-				set shape <- one_of(nouveauxAg).shape;
-				set monChateau <- one_of(one_of(nouveauxAg).mesChateaux);
-				set mesParoisses <- one_of(nouveauxAg).mesEglisesParoissiales;
-				if (Annee >= apparition_communautes){do update_communaute;}
-			}	
+			if (predecesseurAg != nil){
+				ask predecesseurAg {
+					set fp_agregat <- one_of(nouveauxAg).mesFP;
+					ask fp_agregat {
+						set monAgregat <- myself;
+						set typeInter <- typeInter + "In";
+					}
+					set shape <- one_of(nouveauxAg).shape;
+					set monChateau <- one_of(one_of(nouveauxAg).mesChateaux);
+					set mesParoisses <- one_of(nouveauxAg).mesEglisesParoissiales;
+					if (Annee >= apparition_communautes){do update_communaute;}
+				}	
+			}
+
 		}
 	
     	// ***************************** //
@@ -269,7 +264,18 @@ global {
     	// ***************************** //
     	
     	ask tmpAgregats {do die;}
-	
+		
+		ask Agregats {
+			set fp_agregat <- agents_at_distance(0) of_species Foyers_Paysans;
+			ask fp_agregat {
+				set monAgregat <- myself;
+				set typeInter <- typeInter + "In";
+			}
+		}
+		
+    	ask Foyers_Paysans where (each.monAgregat = nil){	
+    		set typeInter <- typeInter + "Out";
+    	}
     	
     }
     
@@ -286,13 +292,12 @@ global {
     	
     	ask Agregats {
     		set nbfp_avant_dem <- length(fp_agregat);
-    		list<Foyers_Paysans> FP_proches <- Foyers_Paysans at_distance 5000;
-    		list<Foyers_Paysans> FP_inclus <- FP_proches where  (each.location intersects self.shape);
-    		ask FP_inclus {
+    		set fp_agregat <- agents_at_distance(0) of_species Foyers_Paysans;
+    		ask fp_agregat {
     			set monAgregat <- myself;
     			set typeIntra <- typeIntra + "In";
     		}
-    		set fp_agregat <- FP_inclus;
+    		
     	}
     	ask Foyers_Paysans where (each.monAgregat = nil){
     		set typeIntra <- typeIntra + "Out";
