@@ -19,8 +19,10 @@ global
 {
 	action renouvellement_FP
 	{
-		int attractivite_totale <- length(Foyers_Paysans) + int(sum(Chateaux collect each.attractivite));
+		int attractivite_totale <- length(Foyers_Paysans);
 		int nb_FP_impactes <- int(taux_renouvellement * length(Foyers_Paysans));
+		int attractivite_agregats <- sum(Agregats collect each.attractivite);
+		
 		ask nb_FP_impactes among Foyers_Paysans
 		{
 			if (monAgregat != nil)
@@ -34,46 +36,18 @@ global
 
 			do die;
 		}
-
-		create Agregats number: 1
-		{
-			set fake_agregat <- true;
-			set attractivite <- attractivite_totale - sum(Agregats collect each.attractivite);
-		}
-
+		
+		list<Agregats> tousAgregats <- Agregats sort_by (each.attractivite);
+		list<int> attrac_agregats <- tousAgregats collect each.attractivite;
 		create Foyers_Paysans number: nb_FP_impactes
 		{
-			int attractivite_cagnotte <- attractivite_totale;
-			point FPlocation <- nil;
-			loop agregat over: shuffle(Agregats)
-			{
-				if (agregat.attractivite >= attractivite_cagnotte)
-				{
-					if (length(agregat.fp_agregat) > 0)
-					{
-						set FPlocation <- any_location_in(distance_detection_agregats around one_of(agregat.fp_agregat).location);
-						// FIXME : Useless as FP renewal is the first action in run, before the agregats rebuilding
-						//ask agregat {set nb_fp_attires <- nb_fp_attires + 1;}
-					} else
-					{
-						set FPlocation <- any_location_in(worldextent);
-					}
-
-					break;
-				} else
-				{
-					set attractivite_cagnotte <- attractivite_cagnotte - agregat.attractivite;
-				}
-
+			if (flip(attractivite_agregats / attractivite_totale)){ // Si dans agrégat
+				Agregats meilleurAgregat <- tousAgregats at rnd_choice(attrac_agregats);
+				set location <- any_location_in(meilleurAgregat.shape); // TODO : A documenter
+			} else { // Sinon
+				set location <- any_location_in(worldextent);
 			}
-
-			set location <- FPlocation;
 			set mobile <- flip(taux_mobilite);
-		}
-
-		ask Agregats where each.fake_agregat
-		{
-			do die;
 		}
 
 	}
