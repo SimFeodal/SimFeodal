@@ -374,7 +374,7 @@ entities {
 			}
 			
 			
-			list<Agregats> agregatsPotentiel <- Agregats where (each.monChateau = nil);
+			list<Agregats> agregatsPotentiel <- Agregats where (length(each.mesChateaux) = 0);
 			
 			
 			
@@ -407,7 +407,7 @@ entities {
 						set location <- any_location_in(reduced_worldextent - (5000 around Chateaux));
 					} else {
 						ask choixAgregat {
-							set monChateau <- myself;
+							mesChateaux <+ myself;
 						}
 						set location <- any_location_in(choixAgregat.shape);
 					}
@@ -451,7 +451,7 @@ entities {
 		action construction_chateau_PS {
 			
 			Agregats agregatPotentiel <- Agregats closest_to self;
-			set agregatPotentiel <- (agregatPotentiel.monChateau = nil) ? agregatPotentiel : nil ;
+			set agregatPotentiel <- (length(agregatPotentiel.mesChateaux) = 0) ? agregatPotentiel : nil ;
 			if (agregatPotentiel != nil) {
 				// FIXME : Chateaux trop proches sinon
 				if (agregatPotentiel distance_to (Chateaux closest_to agregatPotentiel) < 3000) {return();}
@@ -469,7 +469,7 @@ entities {
 					do die;
 					set myself.type <- "Chatelain";
 					ask agregatPotentiel {
-						set monChateau <- myself;
+						mesChateaux <+ myself;
 					}
 					set location <- any_location_in(agregatPotentiel.shape + 500);
 					int minRayon <- 2000 ;

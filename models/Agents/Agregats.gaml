@@ -42,8 +42,8 @@ global {
    							set monAgregat <- myself ;
    							set typeInter <- typeInter + "In";
    						}
-					set monChateau <- ancienAgregat.monChateau;
-					ask monChateau {
+					set mesChateaux <- ancienAgregat.mesChateaux;
+					ask mesChateaux {
 						set monAgregat <- nouvelAgregat as Agregats;
 					}
 					do update_shape;
@@ -189,7 +189,7 @@ global {
 					set typeInter <- typeInter + "In";
 				}
 				set shape <- nouvelAgregat.shape;
-				set monChateau <- one_of(nouvelAgregat.mesChateaux);
+				set mesChateaux <- nouvelAgregat.mesChateaux;
 				set mesParoisses <- nouvelAgregat.mesEglisesParoissiales;
 				if (Annee >= apparition_communautes){do update_communaute;}
 			}
@@ -215,7 +215,7 @@ global {
 								set typeInter <- typeInter + "In";
 							}
 							set shape <- ceNouvelAg.shape;
-							set monChateau <- one_of(ceNouvelAg.mesChateaux);
+							set mesChateaux <- ceNouvelAg.mesChateaux;
 							set mesParoisses <- ceNouvelAg.mesEglisesParoissiales;
 							if (Annee >= apparition_communautes){do update_communaute;}
 						}
@@ -228,7 +228,7 @@ global {
 								set typeInter <- typeInter + "In";
 							}
 							set shape <- ceNouvelAg.shape;
-							set monChateau <- one_of(ceNouvelAg.mesChateaux);
+							set mesChateaux <- ceNouvelAg.mesChateaux;
 							set mesParoisses <- ceNouvelAg.mesEglisesParoissiales;
 							if (Annee >= apparition_communautes){do update_communaute;}
 						}
@@ -251,7 +251,7 @@ global {
 						set typeInter <- typeInter + "In";
 					}
 					set shape <- one_of(nouveauxAg).shape;
-					set monChateau <- one_of(one_of(nouveauxAg).mesChateaux);
+					set mesChateaux <- one_of(nouveauxAg).mesChateaux;
 					set mesParoisses <- one_of(nouveauxAg).mesEglisesParoissiales;
 					if (Annee >= apparition_communautes){do update_communaute;}
 				}	
@@ -323,7 +323,7 @@ entities {
 		int attractivite <- 0;
 		list<Foyers_Paysans> fp_agregat ;
 		bool communaute <- false;
-		Chateaux monChateau <- nil;
+		list<Chateaux> mesChateaux <- [];
 		bool reel <- false;
 		list<Eglises> mesParoisses;
 		int nb_fp_attires <- 0 update: 0;
@@ -332,12 +332,12 @@ entities {
 		action update_chateau {
 			// FIXME : Chateaux trop proches sinon
 			
-			if (monChateau = nil or (self distance_to monChateau > 1000)) {
+			if (length(mesChateaux) = 0 or (self distance_to one_of(mesChateaux) > 1000)) {
 				list<Chateaux> Chateaux_proches <- Chateaux at_distance 1000;
 				if (empty(Chateaux_proches)) {
-					monChateau <- nil;
+					mesChateaux <- [];
 				} else {
-					monChateau <- Chateaux_proches with_min_of (each distance_to self);
+					mesChateaux <- Chateaux_proches;
 				}
 			}
 		}
