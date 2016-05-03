@@ -205,6 +205,56 @@ global {
 			Agregats predecesseurAg <- nil;
 			
 			if (length(nouveauxAg) > 1){
+				Agregats AgGagnant <- nil;
+				if (agregats_alternate2){
+					
+					list<Agregats> anciennes_comm <- anciensAg where (each.communaute);
+					
+					if (length(anciennes_comm) > 0){
+						set AgGagnant <- anciennes_comm with_max_of (each.attractivite);
+					} else {
+						set AgGagnant <- anciensAg with_max_of (each.attractivite);
+					}
+					ask AgGagnant {
+						set fp_agregat <- nouveauxAg accumulate each.mesFP;
+						ask fp_agregat {
+							set monAgregat <- myself;
+							set typeInter <- typeInter + "In";
+						}
+						set mesChateaux <- nouveauxAg accumulate each.mesChateaux;
+						set mesParoisses <- nouveauxAg accumulate each.mesEglisesParoissiales;
+						list<point> mesPoints <- (fp_agregat collect each.location) +
+							(mesParoisses collect each.location) +
+							(mesChateaux collect each.location);
+						geometry monPoly <- convex_hull(polygon(mesPoints));
+    					set shape <- monPoly + 100;
+						if (Annee >= apparition_communautes){do update_communaute;}
+					}
+				} else {
+					
+				}
+
+			} else if (length(anciensAg) = 1){
+				set predecesseurAg <- one_of(anciensAg);
+			} else if (anciensAg count (each.communaute) >= 1 ) {
+				set predecesseurAg <- (anciensAg where each.communaute) with_max_of (each.attractivite);
+			} else {
+				set predecesseurAg <- anciensAg with_max_of (each.attractivite);
+			}
+			
+			if (predecesseurAg != nil){
+				ask predecesseurAg {
+					set fp_agregat <- one_of(nouveauxAg).mesFP;
+					ask fp_agregat {
+						set monAgregat <- myself;
+						set typeInter <- typeInter + "In";
+					}
+					set shape <- one_of(nouveauxAg).shape;
+					set mesChateaux <- one_of(nouveauxAg).mesChateaux;
+					set mesParoisses <- one_of(nouveauxAg).mesEglisesParoissiales;
+					if (Annee >= apparition_communautes){do update_communaute;}
+				}	
+			}
 				list<Agregats> cesAnciensAg <- anciensAg;
 				loop ceNouvelAg over: nouveauxAg {
 					if (length(cesAnciensAg) < 1){
@@ -235,28 +285,6 @@ global {
 						cesAnciensAg >- cetAncienAg;
 					}
 				}
-			} else if (length(anciensAg) = 1){
-				set predecesseurAg <- one_of(anciensAg);
-			} else if (anciensAg count (each.communaute) >= 1 ) {
-				set predecesseurAg <- (anciensAg where each.communaute) with_max_of (each.attractivite);
-			} else {
-				set predecesseurAg <- anciensAg with_max_of (each.attractivite);
-			}
-			
-			if (predecesseurAg != nil){
-				ask predecesseurAg {
-					set fp_agregat <- one_of(nouveauxAg).mesFP;
-					ask fp_agregat {
-						set monAgregat <- myself;
-						set typeInter <- typeInter + "In";
-					}
-					set shape <- one_of(nouveauxAg).shape;
-					set mesChateaux <- one_of(nouveauxAg).mesChateaux;
-					set mesParoisses <- one_of(nouveauxAg).mesEglisesParoissiales;
-					if (Annee >= apparition_communautes){do update_communaute;}
-				}	
-			}
-
 		}
 	
     	// ***************************** //

@@ -124,6 +124,7 @@ global torus: false{
 	bool puissance_armee_FP_alternate <- false;
 	bool communautes_attractives <- false;
 	bool agregats_alternate <- false;
+	bool agregats_alternate2 <- false;
 	bool poles_alternate <- false;
 	
 
