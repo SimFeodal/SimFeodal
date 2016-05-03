@@ -463,7 +463,6 @@ entities {
 					if (!flip(proba_creer_chateau_PS)){
 						do die;
 					}
-					//write("Chateau PS");
 					set proprietaire <- myself;
 					set gardien <- myself;
 					do die;

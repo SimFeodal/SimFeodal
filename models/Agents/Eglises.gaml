@@ -65,7 +65,6 @@ global {
 					list<Eglises> eglises_proximite <- Eglises where !(each.eglise_paroissiale) inside (self.shape + 2000) ;
 					if (length(eglises_proximite) = 0){
 						// Créer nouvelle église autour du point le plus éloigné du polygone
-						//write("Ping !!!");
 						create Eglises number: 1 {
 							set location <- myself.shape farthest_point_to myself.location;
 							set paroisse_a_creer <- self ;
@@ -73,18 +72,15 @@ global {
 						set eglise_batie <- true ;
 					} else {
 						set paroisse_a_creer <- one_of(eglises_proximite) ;
-						//write("Pong !!!");
 					}
 				} else if (length(eglises_dans_polygone) <= 3) {
 					set paroisse_a_creer <- one_of(eglises_dans_polygone) ;
-					//write("Pang !!!");
 				} else {
 					// Triangulation
 					list<geometry> triangles_Delaunay <- triangulate((Eglises where !(each.eglise_paroissiale)) collect each.location);
 					// On ne peut pas faire de overlap parce qu'une paroisse peut être en dehors de la triangulation Delaunay
 					geometry monTriangle <- triangles_Delaunay closest_to location;
 					set paroisse_a_creer <- shuffle(Eglises) first_with (location = (monTriangle farthest_point_to location));
-					//write("Pung");
 				}
 				if (paroisse_a_creer != nil){
 					list<geometry> potentiel_maillage_paroissial <- voronoi((Paroisses collect each.location) + [paroisse_a_creer.location]);
@@ -116,7 +112,6 @@ entities {
 
 		action update_fideles {
 			set mesFideles <- Foyers_Paysans inside self.shape ;
-			//write(length(mesFideles));
 			
 		}
 //		action update_satisfaction {
@@ -131,7 +126,6 @@ entities {
 		action update_satisfaction {
 			if length(mesFideles) > 0 {
 				int nb_paroissiens_mecontents <- mesFideles count (each.satisfaction_religieuse = 0.0);
-				//write(nb_paroissiens_mecontents);
 				//if (nb_paroissiens_mecontents > 10 or length(mesFideles) > 60){
 				if nb_paroissiens_mecontents > nb_paroissiens_mecontents_necessaires {
 					set Satisfaction_Paroisse <- 0.0;

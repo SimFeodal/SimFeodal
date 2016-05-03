@@ -179,7 +179,7 @@ global schedules: list(world) + list(Attracteurs) + list(Poles)+ list(Agregats) 
 		do update_agregats_fp ;
 		do update_output_indexes;
 		do update_outputs_fp;
-		write sample(length(Agregats));
+		write "Seed : " + myseed + " / Annee : " + Annee + " / Nb Agregats : " + length(Agregats) + " / Nb FP : " + length(Foyers_Paysans) + " / TxIsoles : " + prop_FP_isoles;
 	}
 	
 	reflex save_data when: save_outputs {

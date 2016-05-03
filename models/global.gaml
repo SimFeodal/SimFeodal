@@ -226,14 +226,11 @@ global torus: false{
 		ask FP_Agregat {
 			list<Foyers_Paysans> mesFP <- (Foyers_Paysans where (each.monAgregat = self.monAgregat)) - self;
 			if (!empty(mesFP)){
-				//write(mesFP);
 				float myDist <- self distance_to (mesFP with_min_of (each distance_to self));
 				liste_ppv_agregats <+ myDist;
 			}
 		}
-		//write(max(liste_ppv_agregats));
 		set dist_ppv_agregat <- mean(liste_ppv_agregats);
-		//write(dist_ppv_agregat);
 		
 		list<int> nbChateaux_chatelains <- []; 
 		ask Seigneurs where (each.type != "Petit Seigneur"){
@@ -249,7 +246,6 @@ global torus: false{
 		}
 		set reseaux_chateaux <- nbChateaux_reseau;
 		
-		//write(mean(Agregats collect (each.shape.area)));
 
 	}
 	
