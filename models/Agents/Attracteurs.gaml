@@ -99,7 +99,7 @@ global {
     	list<Chateaux> chateaux_dans_poles <- list(Chateaux);
     	list<Eglises> eglises_dans_poles <- Eglises where each.reel;
     	ask Agregats {
-    		if ((length(mesChateaux) + length(mesParoisses)) > 1){
+    		if ((length(mesChateaux) + length(mesParoisses)) >= 1){
     			create Poles number: 1 {
 					set mesAttracteurs <- myself.mesChateaux + myself.mesParoisses;
 					if(myself.communaute){mesAttracteurs <+ myself;}
@@ -117,7 +117,6 @@ global {
 				set poles_uniques <- simple_clustering_by_distance((eglises_dans_poles + chateaux_dans_poles + (agregats_dans_poles where each.communaute)) of_generic_species Attracteurs, 200);
 		}
 
-		write "nb poles uniques : " + length(poles_uniques);
 		loop currentPole over: poles_uniques {
 			create Poles number: 1 {
 				set mesAttracteurs <- list<Attracteurs>(currentPole);
@@ -125,7 +124,6 @@ global {
 			}
 		}
 		
-		write "nb poles tmp : " + length(Poles);
 		loop cetAgregat over: Agregats {
 			loop cePole over: Poles {
 				if (dead(cePole)){break;}
@@ -169,7 +167,6 @@ global {
 				set attractivite <- attractivite + attrac_communautes;
 			}
 		}
-		write "nb poles fin : " + length(Poles);	
 	}
 			
 }

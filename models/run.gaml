@@ -54,6 +54,28 @@ global schedules: list(world) + list(Attracteurs) + list(Poles)+ list(Agregats) 
 		if (benchmark){write 'MaJ_Agregats : ' + string(machine_time - t);}
 	}
 	
+	reflex MaJ_paroisses {
+		float t <- machine_time;
+		do compute_paroisses ; // On redécoupe
+		do create_paroisses ; // On crée les paroisses des agrégats
+		do compute_paroisses ; // On redessine
+		do promouvoir_paroisses; // On nomme/crée de  nouvelles paroisses là où la population est mal desse
+		do compute_paroisses ; // On redessine
+		if (benchmark){write 'MaJ_paroisses : ' + string(machine_time - t);}
+	}
+	
+	reflex MaJ_poles {
+		// FIXME : Devrait être juste après MaJ agrégats.
+		float t <- machine_time;
+		if (poles_alternate){do update_poles_alternate;} else {do update_poles;}
+		if ( Annee >= 940 and Annee <= 1040 ){
+		ask Chateaux where (each.type = "Petit Chateau"){
+				do promotion_chateau;
+			}	
+		}
+		if (benchmark){write 'MaJ_poles : ' + string(machine_time - t);}
+	}
+	
 	reflex Deplacement_FP {
 		float t <- machine_time;
 		ask Foyers_Paysans where (each.mobile) {
@@ -142,27 +164,6 @@ global schedules: list(world) + list(Attracteurs) + list(Poles)+ list(Agregats) 
 		if (benchmark){write 'update_satis : ' + string(machine_time - t);}	
 	}
 	
-	reflex MaJ_paroisses {
-		float t <- machine_time;
-		do compute_paroisses ; // On redécoupe
-		do create_paroisses ; // On crée les paroisses des agrégats
-		do compute_paroisses ; // On redessine
-		do promouvoir_paroisses; // On nomme/crée de  nouvelles paroisses là où la population est mal desse
-		do compute_paroisses ; // On redessine
-		if (benchmark){write 'MaJ_paroisses : ' + string(machine_time - t);}
-	}
-	
-	reflex MaJ_poles {
-		// FIXME : Devrait être juste après MaJ agrégats.
-		float t <- machine_time;
-		if (poles_alternate){do update_poles_alternate;} else {do update_poles;}
-		if ( Annee >= 940 and Annee <= 1040 ){
-		ask Chateaux where (each.type = "Petit Chateau"){
-				do promotion_chateau;
-			}	
-		}
-		if (benchmark){write 'MaJ_poles : ' + string(machine_time - t);}
-	}
 	
 	reflex update_plot {
 		float t <- machine_time;
