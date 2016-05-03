@@ -231,9 +231,15 @@ entities
 			} else
 			{ // Si plus de 1 pole, lotterie ponderée
 				Poles poleVainqueur <- (agregatsPolarisantsLointains sort_by (each)) at rnd_choice((agregatsPolarisantsLointains sort_by (each)) collect (each.attractivite));
+
 				ask poleVainqueur.monAgregat
 				{
 					set nb_fp_attires <- nb_fp_attires + 1;
+				}
+				
+				if (dead(poleVainqueur.monAgregat)){
+					write sample(length(agregatsPolarisantsLointains));
+					write sample(poleVainqueur);
 				}
 
 				set point_lointain <- any_location_in(poleVainqueur.monAgregat.shape);

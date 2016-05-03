@@ -153,6 +153,7 @@ global schedules: list(world) + list(Attracteurs) + list(Poles)+ list(Agregats) 
 	}
 	
 	reflex MaJ_poles {
+		// FIXME : Devrait être juste après MaJ agrégats.
 		float t <- machine_time;
 		if (poles_alternate){do update_poles_alternate;} else {do update_poles;}
 		if ( Annee >= 940 and Annee <= 1040 ){
