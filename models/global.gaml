@@ -21,8 +21,9 @@ global torus: false{
 	////////////
 	
 	// GLOBAL //
-	
+	int seed <- rnd(10000000);
 	float myseed <- seed;
+	string myName <- "";
 	
 	bool benchmark <- false;
 	bool save_outputs <- false;
@@ -158,7 +159,7 @@ global torus: false{
 	list<int> reseaux_chateaux <- [];
 	
 	
-	string prefix_output <- nil;
+	string prefix_output <- "JIAP";
 	
 	// FP //
 	int nb_demenagement_local update: 0; // le update remet à 0 au début de chaque nouveau step

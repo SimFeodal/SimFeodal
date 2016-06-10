@@ -278,5 +278,17 @@ global {
 				] to: ("../outputs/"+ prefix +"_results_TMD_paroisses.csv") type: "csv";
 			}
 		}
+		
+		action save_JIAP{
+		string currentPrefix <- prefix_output;
+		if (Annee = 820) {do save_parameters_TMD(currentPrefix);}
+		do save_global_TMD(currentPrefix);
+		do save_seigneurs_TMD(currentPrefix);
+		do save_agregats_TMD(currentPrefix);
+		do save_poles_TMD(currentPrefix);
+		do save_Fp_summary_TMD(currentPrefix);
+		do save_FP_all(currentPrefix);
+		do save_paroisses_TMD(currentPrefix);
+		}
 	
 }	
