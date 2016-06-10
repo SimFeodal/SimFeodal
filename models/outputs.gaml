@@ -155,7 +155,7 @@ global {
 	action save_parameters_TMD(string prefix) {
 //		
 		save [
-				myseed, debut_simulation, fin_simulation, duree_step, besoin_protection,
+				myseed, myName,debut_simulation, fin_simulation, duree_step, besoin_protection,
 				distance_detection_agregats, nombre_FP_agregat, nombre_agglos_antiques,
 				nombre_villages, nombre_foyers_villages_max, puissance_communautes,
 				apparition_communautes, proba_apparition_communaute, nombre_foyers_paysans,
@@ -174,7 +174,8 @@ global {
 				nb_min_paroissiens, ratio_paroissiens_agregats, nb_paroissiens_mecontents_necessaires,
 				attrac_0_eglises, attrac_1_eglises, attrac_2_eglises, attrac_3_eglises, attrac_4_eglises,
 				attrac_GC, attrac_PC, attrac_communautes,
-				chateaux_GS_alternate, chateaux_PS_alternate, puissance_armee_FP_alternate, communautes_attractives
+				chateaux_GS_alternate, chateaux_PS_alternate, puissance_armee_FP_alternate, communautes_attractives,
+				agregats_alternate, poles_alternate, agregats_alternate2, recompute_agregats_at_end
 				
 			] to: ("../outputs/"+ prefix +"_parameters_TMD.csv") type: "csv";
 	}

@@ -126,6 +126,7 @@ global torus: false{
 	bool agregats_alternate <- false;
 	bool agregats_alternate2 <- false;
 	bool poles_alternate <- false;
+	bool recompute_agregats_at_end <- false;
 	
 
 	

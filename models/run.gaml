@@ -52,6 +52,8 @@ global schedules: list(world) + list(Attracteurs) + list(Poles)+ list(Agregats) 
 		}
 		ask Agregats {do update_attractivite;}
 		if (benchmark){write 'MaJ_Agregats : ' + string(machine_time - t);}
+//		write "Début (Ag): " + length(Agregats accumulate each.fp_agregat);
+//		write "Début (FP): " + Foyers_Paysans count (each.monAgregat != nil);
 	}
 	
 	reflex MaJ_paroisses {
@@ -173,6 +175,18 @@ global schedules: list(world) + list(Attracteurs) + list(Poles)+ list(Agregats) 
 		if (benchmark){write 'update_plot : ' + string(machine_time - t);}
 	}
 	
+	reflex MaJ_Agregats_end when: recompute_agregats_at_end {
+		float t <- machine_time;
+		if (agregats_alternate){
+			do update_agregats_alternate;
+		}else {
+			do update_agregats;
+		}
+		
+		ask Agregats {do update_attractivite;}
+		if (benchmark){write 'MaJ_Agregats (end): ' + string(machine_time - t);}
+	}
+	
 	reflex update_outputs when: (Annee > debut_simulation){
 		if (Annee = (debut_simulation + duree_step)){
 			set charge_fiscale_debut <- mean(Foyers_Paysans collect float(each.nb_preleveurs));
@@ -181,6 +195,15 @@ global schedules: list(world) + list(Attracteurs) + list(Poles)+ list(Agregats) 
 		do update_output_indexes;
 		do update_outputs_fp;
 		write "Seed : " + myseed + " / Annee : " + Annee + " / Nb Agregats : " + length(Agregats) + " / Nb FP : " + length(Foyers_Paysans) + " / TxIsoles : " + prop_FP_isoles;
+//		write "Fin (Ag): " + length(Agregats accumulate each.fp_agregat);
+//		write "Fin (FP): " + Foyers_Paysans count (each.monAgregat != nil);
+//		Agregats randomAg <- one_of(Agregats);
+//		ask randomAg {
+//			write sample(length(fp_agregat));
+//			write sample(fp_agregat);
+//		}
+//		write sample(Foyers_Paysans count (each.monAgregat = randomAg));
+//		write sample(Foyers_Paysans where (each.monAgregat = randomAg));
 	}
 	
 	reflex save_data when: save_outputs {
