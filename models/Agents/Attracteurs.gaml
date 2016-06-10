@@ -103,7 +103,7 @@ global {
     			create Poles number: 1 {
 					set mesAttracteurs <- myself.mesChateaux + myself.mesParoisses;
 					if(myself.communaute){mesAttracteurs <+ myself;}
-					set shape <- myself.shape; // Buffer de 200m autour du convex_hull
+					set shape <- myself.shape;
 					set monAgregat <- myself;
     			}
     			agregats_dans_poles >- self;

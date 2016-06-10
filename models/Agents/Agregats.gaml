@@ -98,9 +98,10 @@ global {
     		list<Foyers_Paysans> thisFP <- thisAg of_species Foyers_Paysans;
 			list<Eglises> thisEglisesParoissiales <- thisAg of_species Eglises;
 			list<Chateaux> thisChateaux <- thisAg of_species Chateaux;
-			list<point> thisPoints <- (thisFP collect each.location) +
-				(thisEglisesParoissiales collect each.location) +
-				(thisChateaux collect each.location);
+			list<point> thisPoints <- thisAg collect each.location;
+//			list<point> thisPoints <- (thisFP collect each.location) +
+//				(thisEglisesParoissiales collect each.location) +
+//				(thisChateaux collect each.location);
 			geometry thisPoly <- convex_hull(polygon(thisPoints));
     		geometry thisShape <- thisPoly + 100;
     		
@@ -110,9 +111,10 @@ global {
 		    		list<Foyers_Paysans> thoseFP <- thoseAg of_species Foyers_Paysans;
 					list<Eglises> thoseEglisesParoissiales <- thoseAg of_species Eglises;
 					list<Chateaux> thoseChateaux <- thoseAg of_species Chateaux;
-					list<point> thosePoints <- (thoseFP collect each.location) +
-						(thoseEglisesParoissiales collect each.location) +
-						(thoseChateaux collect each.location);
+					list<point> thosePoints <- thoseAg collect each.location;
+//					list<point> thosePoints <- (thoseFP collect each.location) +
+//						(thoseEglisesParoissiales collect each.location) +
+//						(thoseChateaux collect each.location);
 					geometry thosePoly <- convex_hull(polygon(thosePoints));
 	    			geometry thoseShape <- thosePoly + 100;
 					
@@ -131,15 +133,17 @@ global {
 	
 		loop nouvelAgregat over: agregats_cibles {
 			create tmpAgregats number: 1 {
-	    		set mesFP <- nouvelAgregat of_species Foyers_Paysans;
-				set mesEglisesParoissiales <- nouvelAgregat of_species Eglises;
-				set mesChateaux <- nouvelAgregat of_species Chateaux;
-				
-				list<point> mesPoints <- (mesFP collect each.location) +
-					(mesEglisesParoissiales collect each.location) +
-					(mesChateaux collect each.location);
+				list<point> mesPoints <- nouvelAgregat collect each.location;				
+//				list<point> mesPoints <- ((nouvelAgregat of_species Foyers_Paysans) collect each.location) +
+//					((nouvelAgregat of_species Eglises) collect each.location) +
+//					((nouvelAgregat of_species Chateaux) collect each.location);
 				geometry monPoly <- convex_hull(polygon(mesPoints));
 	    		set shape <- monPoly + 100;
+	    		set mesAgents <- agents overlapping self;
+	    		set mesFP <- mesAgents of_species Foyers_Paysans;
+	    		set mesEglisesParoissiales <- mesAgents of_species Eglises;
+	    		set mesChateaux <- mesAgents of_species Chateaux;
+	    		
 			}
 		}
 	
@@ -183,15 +187,7 @@ global {
 		// Création des nouveaux sans intersection //
 		loop nouvelAgregat over: nouveauxAgregats {
 			create Agregats number: 1{
-				set fp_agregat <- nouvelAgregat.mesFP;
-				ask fp_agregat {
-					set monAgregat <- myself;
-					set typeInter <- typeInter + "In";
-				}
 				set shape <- nouvelAgregat.shape;
-				set mesChateaux <- nouvelAgregat.mesChateaux;
-				set mesParoisses <- nouvelAgregat.mesEglisesParoissiales;
-				if (Annee >= apparition_communautes){do update_communaute;}
 			}
 		}
 		
@@ -207,7 +203,7 @@ global {
 			if (length(nouveauxAg) > 1){
 				Agregats AgGagnant <- nil;
 				if (agregats_alternate2){
-					
+					//Fusion !
 					list<Agregats> anciennes_comm <- anciensAg where (each.communaute);
 					
 					if (length(anciennes_comm) > 0){
@@ -216,22 +212,8 @@ global {
 						set AgGagnant <- anciensAg with_max_of (each.attractivite);
 					}
 					ask AgGagnant {
-						set fp_agregat <- nouveauxAg accumulate each.mesFP;
-						ask fp_agregat {
-							set monAgregat <- myself;
-							set typeInter <- typeInter + "In";
-						}
-						set mesChateaux <- nouveauxAg accumulate each.mesChateaux;
-						set mesParoisses <- nouveauxAg accumulate each.mesEglisesParoissiales;
-						list<point> mesPoints <- (fp_agregat collect each.location) +
-							(mesParoisses collect each.location) +
-							(mesChateaux collect each.location);
-						geometry monPoly <- convex_hull(polygon(mesPoints));
-    					set shape <- monPoly + 100;
-						if (Annee >= apparition_communautes){do update_communaute;}
+						set shape <- union((nouveauxAg where (!dead(each))) collect each.shape);
 					}
-				} else {
-					
 				}
 
 			} else if (length(anciensAg) = 1){
@@ -244,43 +226,19 @@ global {
 			
 			if (predecesseurAg != nil){
 				ask predecesseurAg {
-					set fp_agregat <- one_of(nouveauxAg).mesFP;
-					ask fp_agregat {
-						set monAgregat <- myself;
-						set typeInter <- typeInter + "In";
-					}
 					set shape <- one_of(nouveauxAg).shape;
-					set mesChateaux <- one_of(nouveauxAg).mesChateaux;
-					set mesParoisses <- one_of(nouveauxAg).mesEglisesParoissiales;
-					if (Annee >= apparition_communautes){do update_communaute;}
 				}	
 			}
 				list<Agregats> cesAnciensAg <- anciensAg;
 				loop ceNouvelAg over: nouveauxAg {
 					if (length(cesAnciensAg) < 1){
 						create Agregats number: 1 {
-							set fp_agregat <- ceNouvelAg.mesFP;
-							ask fp_agregat {
-								set monAgregat <- myself;
-								set typeInter <- typeInter + "In";
-							}
 							set shape <- ceNouvelAg.shape;
-							set mesChateaux <- ceNouvelAg.mesChateaux;
-							set mesParoisses <- ceNouvelAg.mesEglisesParoissiales;
-							if (Annee >= apparition_communautes){do update_communaute;}
 						}
 					} else {
 						Agregats cetAncienAg <- one_of(cesAnciensAg);
 						ask cetAncienAg{
-							set fp_agregat <- ceNouvelAg.mesFP;
-							ask fp_agregat {
-								set monAgregat <- myself;
-								set typeInter <- typeInter + "In";
-							}
 							set shape <- ceNouvelAg.shape;
-							set mesChateaux <- ceNouvelAg.mesChateaux;
-							set mesParoisses <- ceNouvelAg.mesEglisesParoissiales;
-							if (Annee >= apparition_communautes){do update_communaute;}
 						}
 						cesAnciensAg >- cetAncienAg;
 					}
@@ -294,11 +252,19 @@ global {
     	ask tmpAgregats {do die;}
 		
 		ask Agregats {
-			set fp_agregat <- agents_at_distance(0) of_species Foyers_Paysans;
+			set fp_agregat <- Foyers_Paysans overlapping self;
+			set mesChateaux <- Chateaux overlapping self;
+			set mesParoisses <- (Eglises where (each.eglise_paroissiale) overlapping self);
+			Agregats thisAg <- self;
 			ask fp_agregat {
-				set monAgregat <- myself;
+				if (monAgregat != nil) {
+					monAgregat.fp_agregat >- self;
+				}
+				set monAgregat <- thisAg;
 				set typeInter <- typeInter + "In";
 			}
+			if (Annee >= apparition_communautes){do update_communaute;}
+			//write string(self) + " - FP (Ag) : " + length(fp_agregat) + " / FP (fp) : " + (Foyers_Paysans count (each.monAgregat = thisAg));
 		}
 		
     	ask Foyers_Paysans where (each.monAgregat = nil){	
@@ -320,11 +286,12 @@ global {
     	
     	ask Agregats {
     		set nbfp_avant_dem <- length(fp_agregat);
-    		set fp_agregat <- agents_at_distance(0) of_species Foyers_Paysans;
+    		set fp_agregat <- Foyers_Paysans overlapping self;
     		ask fp_agregat {
     			set monAgregat <- myself;
     			set typeIntra <- typeIntra + "In";
     		}
+    		
     		
     	}
     	ask Foyers_Paysans where (each.monAgregat = nil){
