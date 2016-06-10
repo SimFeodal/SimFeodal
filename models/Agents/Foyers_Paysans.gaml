@@ -54,8 +54,6 @@ global
 
 }
 
-entities
-{
 	species Foyers_Paysans schedules: shuffle(Foyers_Paysans)
 	{
 		bool communaute <- false;
@@ -255,6 +253,4 @@ entities
 		{
 			draw circle(500) color: color;
 		}
-
-	}
 }

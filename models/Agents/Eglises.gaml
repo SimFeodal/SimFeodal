@@ -99,9 +99,6 @@ global {
 	}
 }
 
-
-entities {
-	
 	species Paroisses {
 		Eglises monEglise <- nil;
 		list<Foyers_Paysans> mesFideles <- nil ;
@@ -166,6 +163,3 @@ entities {
 		}
 		
 	}
-	
-
-}

@@ -48,7 +48,6 @@ global {
 }
 
 
-entities {
 	species Seigneurs schedules: shuffle(Seigneurs) {
 		
 		string type <- "Petit Seigneur";
@@ -523,4 +522,4 @@ entities {
 		}
 		
 	}
-}
+

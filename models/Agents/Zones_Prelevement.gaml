@@ -42,7 +42,6 @@ global {
 	
 }
 
-entities {
 	species Zones_Prelevement schedules: shuffle(Zones_Prelevement) {
 		bool ZP_chateau;
 		Seigneurs proprietaire <- nil;
@@ -163,4 +162,3 @@ entities {
 			}
 		}
 	}
-}

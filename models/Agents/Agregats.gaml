@@ -302,8 +302,6 @@ global {
     
 }
 
-entities {
-	
 	species tmpAgregats schedules: shuffle(tmpAgregats){
 		bool CA <- false;
 		geometry shape <- nil;
@@ -380,4 +378,3 @@ entities {
 		
 		
 	}
-}

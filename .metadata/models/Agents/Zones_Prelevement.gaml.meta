@@ -1,1 +1,11 @@
-msi.gama.core
+#
+#Fri Jun 10 12:49:36 CEST 2016
+plugins=msi.gama.core
+actions=debug~error~tell~write~die~_init_~_step_~halt~pause
+attributes=location~values~keys
+operators=translated_by~square~envelope~rnd~+~scaled_by~-~round~/~where~.~simple_clustering_by_distance~of_generic_species~as~convex_hull~polygon~collect~dead~intersects~of_species~length~>~count~\=~>\=~*~any_location_in~one_of~flip~voronoi~first_with~shuffle~overlaps~min~inside~\!~<\=~triangulate~closest_to~farthest_point_to~\!\=~overlapping~accumulate~<~with_max_of~union~sum~among~sort_by~at~rnd_choice~distance_to~mean~empty~with_min_of~or~and~around~remove_duplicates~?~\:~\:\:~at_distance~contains~internal_at~floor~exp~max~circle~^~sample~not~in
+skills=reflex
+types=string~list~int~unknown~geometry~point~agent~rgb~float~bool~date~container~map
+statements=action~ask~do~let~if~else~set~loop~create~break~switch~match~default~add~remove~arg~put~return~init~aspect~draw~write
+constants=white~blue~red~gray~green~yellow
+species=agent

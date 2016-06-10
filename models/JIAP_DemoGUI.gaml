@@ -129,7 +129,10 @@ experiment JIAP_Graphique type: gui multicore: true {
 			species Foyers_Paysans transparency: 0.5;
 			species Agregats transparency: 0.3;
 			
-			text string(Annee) size: 10000 position: {0, 1} color: rgb("black");
+			graphics "Annee" position: {0,0.9} {
+			             draw string(Annee) font: font("Helvetica", 32, #bold) color: rgb("black") at: {0,0} ;
+			}
+			//text string(Annee) size: 10000 position: {0, 1} color: rgb("black");
 		}
 	    
 		display "Foyers Paysans" {

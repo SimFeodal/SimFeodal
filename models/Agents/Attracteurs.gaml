@@ -171,8 +171,6 @@ global {
 			
 }
 
-
-entities {
 	
 	species Attracteurs schedules: shuffle(Attracteurs) {
 		int attractivite <- 0;
@@ -184,4 +182,3 @@ entities {
 		list<Attracteurs> mesAttracteurs;
 		Agregats monAgregat;
 	}
-}
