@@ -18,7 +18,10 @@ import "Agents/Attracteurs.gaml"
 import "Agents/Zones_Prelevement.gaml"
 
 
-global schedules: list(world) + list(Attracteurs) + list(Poles)+ list(Agregats) + list(Foyers_Paysans) + list(Chateaux) + list(Eglises) + list(Seigneurs){
+
+species scheduler schedules: list(world) + list(Attracteurs) + list(Poles)+ list(Agregats) + list(Foyers_Paysans) + list(Chateaux) + list(Eglises) + list(Seigneurs);
+
+global {
     
 	init {
 		float t <- machine_time;
