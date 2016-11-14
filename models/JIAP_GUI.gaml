@@ -11,7 +11,7 @@ import "run.gaml"
 
 
 
-experiment JIAP_base type: batch repeat:30 multicore: true until: (Annee >= fin_simulation){
+experiment JIAP_base type: batch repeat:30 until: (Annee >= fin_simulation){
 	parameter 'myName' var: myName among: ["JIAP_base"];
 	
 	parameter 'ratio_paroissiens_agregats' var: ratio_paroissiens_agregats among: [400];
@@ -19,7 +19,7 @@ experiment JIAP_base type: batch repeat:30 multicore: true until: (Annee >= fin_
 
 
 
-experiment JIAP_paroissiens type: batch repeat:30 multicore: true until: (Annee >= fin_simulation){ // OK
+experiment JIAP_paroissiens type: batch repeat:30 until: (Annee >= fin_simulation){ // OK
 	parameter 'myName' var: myName among: ["JIAP_paroissiens"];
 	
 	parameter 'ratio_paroissiens_agregats' var: ratio_paroissiens_agregats among: [75];
@@ -27,20 +27,20 @@ experiment JIAP_paroissiens type: batch repeat:30 multicore: true until: (Annee 
 
 
 
-experiment JIAP_gros_chateaux type: batch repeat:30 multicore: true until: (Annee >= fin_simulation){ // OK
+experiment JIAP_gros_chateaux type: batch repeat:30 until: (Annee >= fin_simulation){ // OK
 	parameter 'myName' var: myName among: ["JIAP_gros_chateaux"];
 	parameter 'ratio_paroissiens_agregats' var: ratio_paroissiens_agregats among: [400];
 	parameter "proba_promotion_groschateau_multipole" var: proba_promotion_groschateau_multipole among: [0.75];
 	parameter "proba_promotion_groschateau_autre"  var: proba_promotion_groschateau_autre among: [0.25];
 }
 
-experiment JIAP_dist_dem_local type: batch repeat:30 multicore: true until: (Annee >= fin_simulation){ // OK
+experiment JIAP_dist_dem_local type: batch repeat:30 until: (Annee >= fin_simulation){ // OK
 	parameter 'myName' var: myName among: ["JIAP_dist_dem_local"];
 	parameter 'ratio_paroissiens_agregats' var: ratio_paroissiens_agregats among: [400];
 	parameter "distance_max_dem_local" var: distance_max_dem_local among: [5000];
 }
 
-experiment JIAP_attrac_poles type: batch repeat:5 multicore: true until: (Annee >= fin_simulation){
+experiment JIAP_attrac_poles type: batch repeat:5 until: (Annee >= fin_simulation){
 	parameter 'myName' var: myName among: ["JIAP_attrac_poles"];
 	parameter 'ratio_paroissiens_agregats' var: ratio_paroissiens_agregats among: [400];	
 	
@@ -53,7 +53,7 @@ experiment JIAP_attrac_poles type: batch repeat:5 multicore: true until: (Annee 
 	parameter "attrac_PC" var: attrac_PC among: [0.05];	
 }
  
-experiment JIAP_base2 type: batch repeat:10 multicore: true until: (Annee >= fin_simulation){
+experiment JIAP_base2 type: batch repeat:10 until: (Annee >= fin_simulation){
 	parameter 'myName' var: myName among: ["JIAP_base2"];
 	
 	parameter 'ratio_paroissiens_agregats' var: ratio_paroissiens_agregats among: [200];
@@ -73,7 +73,7 @@ experiment JIAP_base2 type: batch repeat:10 multicore: true until: (Annee >= fin
 	parameter "attrac_PC" var: attrac_PC among: [0.05];	
 }
 
-experiment JIAP_base2_compo5_2 type: batch repeat:5 multicore: true until: (Annee >= fin_simulation){
+experiment JIAP_base2_compo5_2 type: batch repeat:5 until: (Annee >= fin_simulation){
 	parameter 'myName' var: myName among: ["JIAP_base2_compo5_2"];
 	
 	parameter 'ratio_paroissiens_agregats' var: ratio_paroissiens_agregats among: [200];
@@ -99,7 +99,7 @@ experiment JIAP_base2_compo5_2 type: batch repeat:5 multicore: true until: (Anne
 	parameter "distance_max_dem_local" var: distance_max_dem_local among: [2500]; // Fusion JIAP_base2_compo5_2 et JIAP_base2_compo5_2bis
 }
 
-experiment JIAP_base2_compo5_2bis type: batch repeat:10 multicore: true until: (Annee >= fin_simulation){
+experiment JIAP_base2_compo5_2bis type: batch repeat:10 until: (Annee >= fin_simulation){
 	parameter 'myName' var: myName among: ["JIAP_base2_compo5_2bis"];
 	
 	parameter 'ratio_paroissiens_agregats' var: ratio_paroissiens_agregats among: [200];
@@ -125,7 +125,7 @@ experiment JIAP_base2_compo5_2bis type: batch repeat:10 multicore: true until: (
 	parameter "distance_max_dem_local" var: distance_max_dem_local among: [5000]; // Fusion JIAP_base2_compo5_2 et JIAP_base2_compo5_2bis
 }
 
-experiment JIAP_base2_compo5_2ter type: batch repeat:30 multicore: true until: (Annee >= fin_simulation){
+experiment JIAP_base2_compo5_2ter type: batch repeat:30 until: (Annee >= fin_simulation){
 	parameter 'myName' var: myName among: ["JIAP_base2_compo5_2ter"];
 	
 	parameter 'ratio_paroissiens_agregats' var: ratio_paroissiens_agregats among: [200];
@@ -156,7 +156,7 @@ experiment JIAP_base2_compo5_2ter type: batch repeat:30 multicore: true until: (
 	parameter "attrac_PC" var: attrac_PC among: [0.10];	
 }
 
-experiment JIAP_base2_compo5_2_5 type: batch repeat:30 multicore: true until: (Annee >= fin_simulation){
+experiment JIAP_base2_compo5_2_5 type: batch repeat:30 until: (Annee >= fin_simulation){
 	parameter 'myName' var: myName among: ["JIAP_base2_compo5_2_5"];
 	
 	parameter 'ratio_paroissiens_agregats' var: ratio_paroissiens_agregats among: [200];
@@ -184,7 +184,7 @@ experiment JIAP_base2_compo5_2_5 type: batch repeat:30 multicore: true until: (A
 
 }
 
-experiment JIAP_base2_compo5_2_6 type: batch repeat:30 multicore: true until: (Annee >= fin_simulation){
+experiment JIAP_base2_compo5_2_6 type: batch repeat:30 until: (Annee >= fin_simulation){
 	parameter 'myName' var: myName among: ["JIAP_base2_compo5_2_6"];
 	
 	parameter 'ratio_paroissiens_agregats' var: ratio_paroissiens_agregats among: [300];
@@ -212,7 +212,7 @@ experiment JIAP_base2_compo5_2_6 type: batch repeat:30 multicore: true until: (A
 
 }
 
-experiment "JIAP_base3_1" type: batch repeat:30 multicore: true until: (Annee >= fin_simulation){
+experiment "JIAP_base3_1" type: batch repeat:30 until: (Annee >= fin_simulation){
 	parameter 'myName' var: myName among: ["JIAP_base3_1"];
 	
 	parameter 'ratio_paroissiens_agregats' var: ratio_paroissiens_agregats among: [300];
@@ -242,7 +242,7 @@ experiment "JIAP_base3_1" type: batch repeat:30 multicore: true until: (Annee >=
 	parameter "poles_alternate" var: poles_alternate category: "Seigneurs" among: [true];
 }
 
-experiment "JIAP_base3_2" type: batch repeat:30 multicore: true until: (Annee >= fin_simulation){
+experiment "JIAP_base3_2" type: batch repeat:30 until: (Annee >= fin_simulation){
 	parameter 'myName' var: myName among: ["JIAP_base3_2"];
 	
 	parameter 'ratio_paroissiens_agregats' var: ratio_paroissiens_agregats among: [300];
