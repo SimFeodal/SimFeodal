@@ -9,7 +9,7 @@ model t8
 // L'ordre compte...
 import "run.gaml"
 	
-experiment Exp_Graphique type: gui multicore: true {
+experiment Exp_Graphique type: gui {
 	
 	// GLOBAL //
 	
@@ -201,31 +201,31 @@ experiment Exp_monitors type: gui {
 }
 
 
-experiment Explo_TMD_base type: batch repeat:200 keep_seed: true multicore: true until: (Annee >= fin_simulation){
+experiment Explo_TMD_base type: batch repeat:200 keep_seed: true  until: (Annee >= fin_simulation){
 	parameter 'save_TMD' var: save_TMD among: [true];
 	parameter 'prefix' var: prefix_output among: ["base"];
 }
 
-experiment Explo_TMD_paroisses type: batch repeat:200 keep_seed: true multicore: true until: (Annee >= fin_simulation){
+experiment Explo_TMD_paroisses type: batch repeat:200 keep_seed: true until: (Annee >= fin_simulation){
 	parameter 'save_TMD' var: save_TMD among: [true];
 	parameter 'prefix' var: prefix_output among: ["paroisses"];
 	parameter 'ratio_paroissiens_agregats' var: ratio_paroissiens_agregats among: [75];
 }
 
-experiment Explo_TMD_gros_chateaux type: batch repeat:200 keep_seed: true multicore: true until: (Annee >= fin_simulation){
+experiment Explo_TMD_gros_chateaux type: batch repeat:200 keep_seed: true until: (Annee >= fin_simulation){
 	parameter 'save_TMD' var: save_TMD among: [true];
 	parameter 'prefix' var: prefix_output among: ["gros_chateaux"];
 	parameter "proba_promotion_groschateau_multipole" var: proba_promotion_groschateau_multipole among: [0.75];
 	parameter "proba_promotion_groschateau_autre"  var: proba_promotion_groschateau_autre among: [0.25];
 }
 
-experiment Explo_TMD_dist_dem_local type: batch repeat:200 keep_seed: true multicore: true until: (Annee >= fin_simulation){
+experiment Explo_TMD_dist_dem_local type: batch repeat:200 keep_seed: true until: (Annee >= fin_simulation){
 	parameter 'save_TMD' var: save_TMD among: [true];
 	parameter 'prefix' var: prefix_output among: ["distdemlocal"];
 	parameter "distance_max_dem_local" var: distance_max_dem_local among: [5000];
 }
 
-experiment Explo_TMD_attrac_poles type: batch repeat:200 keep_seed: true multicore: true until: (Annee >= fin_simulation){
+experiment Explo_TMD_attrac_poles type: batch repeat:200 keep_seed: true until: (Annee >= fin_simulation){
 	parameter 'save_TMD' var: save_TMD among: [true];
 	parameter 'prefix' var: prefix_output among: ["attrac_poles"];
 	
@@ -238,7 +238,7 @@ experiment Explo_TMD_attrac_poles type: batch repeat:200 keep_seed: true multico
 	parameter "attrac_PC" var: attrac_PC among: [0.05];	
 }
  
- experiment Explo_TMD_base2 type: batch repeat:200 keep_seed: true multicore: true until: (Annee >= fin_simulation){
+ experiment Explo_TMD_base2 type: batch repeat:200 keep_seed: true until: (Annee >= fin_simulation){
 	parameter 'save_TMD' var: save_TMD among: [true];
 	parameter 'prefix' var: prefix_output among: ["base2"];
 	
@@ -268,7 +268,7 @@ experiment Explo_TMD_attrac_poles type: batch repeat:200 keep_seed: true multico
 }
 
 
- experiment Explo_TMD_base2_test2 type: batch repeat:15 keep_seed: true multicore: true until: (Annee >= fin_simulation){
+ experiment Explo_TMD_base2_test2 type: batch repeat:15 keep_seed: true until: (Annee >= fin_simulation){
 	parameter 'save_TMD' var: save_TMD among: [true];
 	parameter 'prefix' var: prefix_output among: ["base2_test3"];
 	
@@ -298,7 +298,7 @@ experiment Explo_TMD_attrac_poles type: batch repeat:200 keep_seed: true multico
 }
 
 
- experiment Explo_TMD_base2_compo5_2 type: batch repeat:20 keep_seed: true multicore: true until: (Annee >= fin_simulation){
+ experiment Explo_TMD_base2_compo5_2 type: batch repeat:20 keep_seed: true until: (Annee >= fin_simulation){
 	parameter 'save_TMD' var: save_TMD among: [true];
 	parameter 'prefix' var: prefix_output among: ["base2_compo5_2"];
 	
@@ -348,12 +348,12 @@ experiment Explo_TMD_attrac_poles type: batch repeat:200 keep_seed: true multico
 	// Distance max. de déménagement local des FP : 2.5 km.
 	parameter "distance_max_dem_local" var: distance_max_dem_local among: [2500];
 	
-	// Pb avec la variable S_protection liée à la puissance armée du châtelain
+	// Pb avec la variable S_protection liée à la puissance armée du châtelaine
 	// Modification du modèle : supprimer cette variable du modèle
 	parameter "puissance_armee_FP_alternate" var: puissance_armee_FP_alternate among: [true];
 }
 
-experiment Explo_TMD_base2_compo5_2bis type: batch repeat:20 keep_seed: true multicore: true until: (Annee >= fin_simulation){
+experiment Explo_TMD_base2_compo5_2bis type: batch repeat:20 keep_seed: true until: (Annee >= fin_simulation){
 	parameter 'save_TMD' var: save_TMD among: [true];
 	parameter 'prefix' var: prefix_output among: ["base2_compo5_2bis"];
 	
@@ -410,7 +410,7 @@ experiment Explo_TMD_base2_compo5_2bis type: batch repeat:20 keep_seed: true mul
 }
 
 
-experiment Explo_TMD_base2_compo5_2ter type: batch repeat:20 keep_seed: true multicore: true until: (Annee >= fin_simulation){
+experiment Explo_TMD_base2_compo5_2ter type: batch repeat:20 keep_seed: true  until: (Annee >= fin_simulation){
 	parameter 'save_TMD' var: save_TMD among: [true];
 	parameter 'prefix' var: prefix_output among: ["base2_compo5_2ter"];
 	
@@ -494,7 +494,7 @@ experiment Explo_TMD_base2_compo5_2ter type: batch repeat:20 keep_seed: true mul
 
 
 
-experiment Explo_TMD_base2_compo5_2_5 type: batch repeat:20 keep_seed: true multicore: true until: (Annee >= fin_simulation){
+experiment Explo_TMD_base2_compo5_2_5 type: batch repeat:20 keep_seed: true until: (Annee >= fin_simulation){
 	parameter 'save_TMD' var: save_TMD among: [true];
 	parameter 'prefix' var: prefix_output among: ["base2_compo5_2_5"];
 	
@@ -578,7 +578,7 @@ experiment Explo_TMD_base2_compo5_2_5 type: batch repeat:20 keep_seed: true mult
 
 
 
-experiment Explo_TMD_base2_compo5_2_6 type: batch repeat:20 keep_seed: true multicore: true until: (Annee >= fin_simulation){
+experiment Explo_TMD_base2_compo5_2_6 type: batch repeat:20 keep_seed: true until: (Annee >= fin_simulation){
 	parameter 'save_TMD' var: save_TMD among: [true];
 	parameter 'prefix' var: prefix_output among: ["base2_compo5_2_6"];
 	
@@ -691,7 +691,7 @@ experiment Exp_debug type: gui {
 	
 }
 
-experiment "Explo_TMD_base3_1" type: batch repeat:20 keep_seed: true multicore: true until: (Annee >= fin_simulation){
+experiment "Explo_TMD_base3_1" type: batch repeat:20 keep_seed: true until: (Annee >= fin_simulation){
 	
 	parameter 'save_TMD' var: save_TMD among: [true];
 	parameter 'prefix' var: prefix_output among: ["base3_1"];
@@ -776,7 +776,7 @@ experiment "Explo_TMD_base3_1" type: batch repeat:20 keep_seed: true multicore: 
 }
 
 
-experiment "Explo_TMD_base3_2" type: batch repeat:20 keep_seed: true multicore: true until: (Annee >= fin_simulation){
+experiment "Explo_TMD_base3_2" type: batch repeat:20 keep_seed: true until: (Annee >= fin_simulation){
 	
 	parameter 'save_TMD' var: save_TMD among: [true];
 	parameter 'prefix' var: prefix_output among: ["base3_2"];
