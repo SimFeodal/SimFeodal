@@ -124,7 +124,7 @@ experiment Exp_Graphique type: gui {
 		// TODO : Distribution du nombre de FP par agrégats
 		// TODO : Distribution du nombre de châteaux par seigneur
 		
-		display "Carte" {
+		display "Carte" type: opengl{
 			species Paroisses transparency: 0.9 ;
 			species Zones_Prelevement transparency: 0.9;
 			agents "Eglises Paroissiales" value: Eglises where (each.eglise_paroissiale) aspect: base transparency: 0.5;
@@ -138,7 +138,7 @@ experiment Exp_Graphique type: gui {
 			//text string(Annee) size: 10000 position: {0, 1} color: rgb("black");
 		}
 //		
-	    display "Foyers Paysans" {
+	    display "Foyers Paysans" type: opengl{
 	        chart "Demenagements" type: series position: {0,0} size: {0.5,0.5}{
 	            data "Local" value: nb_demenagement_local color: #blue; 
 	            data "Lointain" value: nb_demenagement_lointain color: #red;
@@ -156,7 +156,7 @@ experiment Exp_Graphique type: gui {
     	}
 
  	
-    	display "Agregats"{
+    	display "Agregats" type: opengl{
     		chart "Nombre d'agregats" type: series position: {0.0,0.0} size: {1.0, 0.33}{
     			data "Nombre d'agregats" value: length(Agregats) color: #red;
     			data "Nombre d'agregats avec CA" value: Agregats count (each.communaute) color: #blue;
@@ -173,7 +173,7 @@ experiment Exp_Graphique type: gui {
     		
     	}
     	
-    	display "Chateaux/Eglises"{
+    	display "Chateaux/Eglises" type: opengl{
     		chart "Nombre de chateaux" type: series position: {0.0,0.0} size: {1.0, 0.33}{
     			data "Importants (>=5km)" value: Chateaux count (each.monRayon >= 5000) color: #red;
     			data "Mineurs (<5km)" value: Chateaux count (each.monRayon < 5000) color: #blue;
