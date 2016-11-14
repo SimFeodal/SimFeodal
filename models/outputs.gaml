@@ -17,7 +17,7 @@ import "Agents/Zones_Prelevement.gaml"
 
 global {
 	
-	string simName <- (machine_time/1000 + 2 #hours) as_date "%h%m%s";
+	string simName <- replace(replace(string(#now), " ", "_"), ":", "-");
 	string folder_prefix <- "../outputs/";
 	string file_suffix <- "_data" + simName + ".csv" ;
 	string FP_file <- folder_prefix + "FP" + file_suffix;
