@@ -73,17 +73,26 @@ global {
 					FP_a_taxer >- self;
 				}
 				loop currentPreleveur over: (preleveurs.keys){
+					list<Foyers_Paysans> FP_to_add ;
+					list<Foyers_Paysans> FP_to_add_garde ;
 					ask (int(preleveurs[currentPreleveur] * length(FP_impactes)) among FP_a_taxer) {
 						set seigneur_hauteJustice <- currentPreleveur;
 						FP_a_taxer >- self;
 						if not (self in currentPreleveur.FP_hauteJustice) {
-							set currentPreleveur.FP_hauteJustice <- currentPreleveur.FP_hauteJustice + self;
+							FP_to_add <+ self;
 						}
 						
 						if not (self in myself.proprietaire.FP_hauteJustice_garde) {
-							set myself.proprietaire.FP_hauteJustice_garde <- myself.proprietaire.FP_hauteJustice_garde + self;
+							FP_to_add_garde <+ self;
 						}
 					}
+					if length(FP_to_add) > 0 {
+						proprietaire.FP_hauteJustice <<+ FP_to_add;
+					}
+					if length(FP_to_add_garde) > 0 {
+						proprietaire.FP_hauteJustice_garde <<+ FP_to_add_garde;
+					}
+					
 				}
 			}
 		}
@@ -108,12 +117,14 @@ global {
 					FP_a_taxer >- self;
 				}
 				loop currentPreleveur over: (preleveurs.keys){
+					list<Foyers_Paysans> FP_to_remove;
 					ask (int(preleveurs[currentPreleveur] * length(FP_impactes)) among FP_a_taxer) {
 						seigneurs_banaux <+ currentPreleveur;
 						currentPreleveur.FP_banaux <+ self;
 						myself.proprietaire.FP_banaux_garde <+ self;
-						FP_a_taxer >- self;
+						FP_to_remove <+ self;
 					}
+					FP_a_taxer >>- FP_to_remove;
 				}
 			}
 		}
