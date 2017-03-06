@@ -1,11 +1,11 @@
 #
-#Fri Jun 10 12:52:18 CEST 2016
+#Thu Jan 26 22:35:23 CET 2017
 plugins=msi.gama.core
 actions=debug~error~tell~write~die~_init_~_step_~halt~pause
 attributes=location~values~keys
-operators=translated_by~square~envelope~rnd~+~scaled_by~-~round~/~where~\=~.~inside~*~length~among~remove_duplicates~>~any_location_in~one_of~collect~flip~voronoi~first_with~shuffle~overlaps~count~intersects~min~\!~<\=~triangulate~closest_to~farthest_point_to~\!\=~as~simple_clustering_by_distance~>\=~convex_hull~polygon~of_species~overlapping~accumulate~<~with_max_of~union~dead~sum~sort_by~at~rnd_choice~distance_to~mean~empty~with_min_of~or~and~around~of_generic_species~at_distance~floor~?~\:~internal_at~not~in~circle~\:\:~contains~exp~max~^~sample
+operators=-~translated_by~square~*~point~envelope~rnd~+~scaled_by~round~/~where~\=~.~inside~length~among~remove_duplicates~>~any_location_in~one_of~collect~flip~voronoi~first_with~shuffle~overlaps~count~intersects~min~as~\!~<\=~triangulate~closest_to~farthest_point_to~\!\=~simple_clustering_by_distance~>\=~convex_hull~polygon~of_species~overlapping~accumulate~<~with_max_of~union~dead~sum~sort_by~at~rnd_choice~distance_to~mean~empty~with_min_of~or~and~around~of_generic_species~at_distance~floor~?~\:~internal_at~not~in~circle~\:\:~contains~exp~max~^~sample
 skills=reflex
 types=string~list~int~unknown~geometry~point~agent~rgb~float~bool~date~container~map
 statements=action~let~ask~set~remove~create~if~else~do~arg~loop~break~add~switch~match~default~put~return~init~aspect~draw~write
-constants=blue~red~green~yellow~white~gray
 species=agent
+constants=km~blue~red~green~yellow~white~gray
