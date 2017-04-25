@@ -43,7 +43,7 @@ global {
 			list<Foyers_Paysans> pool_FP <- [self];
 			// On crée entre 5 et nombre_foyers_villages :
 			//FIXME : MaJ Doc ou changement nom variable
-			create Foyers_Paysans number: 4{
+			create Foyers_Paysans number: (nombre_FP_agregat - 1){
 				pool_FP <+ self ;
 				// On choisit un des FP de la même agglo
 				agent myFP <- one_of(pool_FP);
@@ -118,11 +118,7 @@ global {
 	action generer_monde {
 		do generer_foyers_paysans;
 		do generer_eglises;
-		if (agregats_alternate){
-			do update_agregats_alternate;
-		}else {
-			do update_agregats;
-		}
+		do update_agregats_alternate;
 		do generer_seigneurs;
 		do attribuer_puissance_seigneurs;
 	}

@@ -22,11 +22,7 @@ global {
 		list<Eglises> eglises_paroissiales <- Eglises where (each.reel);
 		
 		list<list> poles_uniques <- [[]];
-		if (communautes_attractives) {
 				set poles_uniques <- simple_clustering_by_distance((eglises_paroissiales + Chateaux + (Agregats where each.communaute)) of_generic_species Attracteurs, 200);
-		}else {
-				set poles_uniques <- simple_clustering_by_distance((eglises_paroissiales + Chateaux) of_generic_species Attracteurs, 200);
-		}
 
 		loop currentPole over: poles_uniques {
 			create Poles number: 1 {
@@ -38,8 +34,10 @@ global {
 		loop cetAgregat over: Agregats {
 			loop cePole over: Poles {
 				if (dead(cePole)){break;}
-				if (cePole.shape intersects (cetAgregat.shape + 200)){
-					set cePole.shape <- cePole.shape + (cetAgregat.shape + 200);
+				geometry cetAgregatShape <- cetAgregat.shape;
+				if (!poles_shape_simplifie) {cetAgregatShape <- cetAgregatShape + 200;}
+				if (cePole.shape intersects (cetAgregatShape)){
+					set cePole.shape <- cePole.shape + (cetAgregatShape);
 					set cePole.monAgregat <- cetAgregat;
 					loop pole_a_absorber over: (Poles - cePole) {
 						if (dead(pole_a_absorber)){break;}
@@ -112,10 +110,7 @@ global {
     		}
     	}
 		
-		list<list> poles_uniques <- [[]];
-		if (communautes_attractives) {
-				set poles_uniques <- simple_clustering_by_distance((eglises_dans_poles + chateaux_dans_poles + (agregats_dans_poles where each.communaute)) of_generic_species Attracteurs, 200);
-		}
+		list<list> poles_uniques <- simple_clustering_by_distance((eglises_dans_poles + chateaux_dans_poles + (agregats_dans_poles where each.communaute)) of_generic_species Attracteurs, 200);
 
 		loop currentPole over: poles_uniques {
 			create Poles number: 1 {
@@ -127,13 +122,14 @@ global {
 		loop cetAgregat over: Agregats {
 			loop cePole over: Poles {
 				if (dead(cePole)){break;}
-				if (cePole.shape intersects (cetAgregat.shape + 200)){
-					set cePole.shape <- cePole.shape + (cetAgregat.shape + 200);
+				if (cePole.shape intersects cetAgregat.shape){
+					set cePole.shape <- cePole.shape + cetAgregat.shape;
 					set cePole.monAgregat <- cetAgregat;
 					loop pole_a_absorber over: (Poles - cePole) {
 						if (dead(pole_a_absorber)){break;}
 						if (pole_a_absorber.shape intersects cePole.shape){
 							set cePole.mesAttracteurs <- cePole.mesAttracteurs + pole_a_absorber.mesAttracteurs;
+							set cePole.shape <- cePole.shape + pole_a_absorber.shape;
 							ask pole_a_absorber {do die;}
 						}
 					}

@@ -365,13 +365,9 @@ entities {
 		
 		// FIXME : moche et sans doute faux
 		action construction_chateau_GS {
-
-			int nbChateauxPotentiel <- int(floor(self.puissance / 5000));
 			
-			if (chateaux_GS_alternate){
-				nbChateauxPotentiel <- nb_chateaux_potentiels_GS;
+				int nbChateauxPotentiel <- nb_chateaux_potentiels_GS;
 				proba_creer_chateau_GS <- (1 - exp(-0.00064 * self.puissance) );
-			}
 			
 			
 			list<Agregats> agregatsPotentiel <- Agregats where (length(each.mesChateaux) = 0);
@@ -456,9 +452,7 @@ entities {
 				// FIXME : Chateaux trop proches sinon
 				if (agregatPotentiel distance_to (Chateaux closest_to agregatPotentiel) < 3000) {return();}
 				create Chateaux number: 1 {
-					if (chateaux_PS_alternate){
 						proba_creer_chateau_PS <- myself.puissance / 2000;
-					}
 					
 					if (!flip(proba_creer_chateau_PS)){
 						do die;

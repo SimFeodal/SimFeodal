@@ -45,7 +45,7 @@ global {
 				 "Nombre d'églises", "Dont églises paroissiales", "Probabilité gain des droits paroissiaux", 
 				 "Nombre max de paroissiens", "Nombre min de paroissiens"] to: Param_file type: "csv";
 			save [debut_simulation, fin_simulation, nombre_foyers_paysans, taux_renouvellement, taux_mobilite,
-				 nombre_agglos_antiques, nombre_villages, nombre_foyers_villages_max,
+				 nombre_agglos_antiques, nombre_villages,
 				puissance_communautes, nombre_grands_seigneurs, nombre_petits_seigneurs,
 				puissance_grand_seigneur1, puissance_grand_seigneur2, proba_creer_chateau_GS, proba_don_chateau_GS,
 				 proba_gain_droits_hauteJustice_chateau, proba_gain_droits_banaux_chateau,
@@ -155,9 +155,9 @@ global {
 	action save_parameters_TMD(string prefix) {
 //		
 		save [
-				myseed, myName,debut_simulation, fin_simulation, duree_step, besoin_protection,
+				myseed, debut_simulation, fin_simulation, duree_step, besoin_protection,
 				distance_detection_agregats, nombre_FP_agregat, nombre_agglos_antiques,
-				nombre_villages, nombre_foyers_villages_max, puissance_communautes,
+				nombre_villages, puissance_communautes,
 				apparition_communautes, proba_apparition_communaute, nombre_foyers_paysans,
 				taux_renouvellement, taux_mobilite, distance_max_dem_local, seuil_puissance_armee,
 				deplacement_alternate, nombre_seigneurs_objectif, nombre_grands_seigneurs,
@@ -174,8 +174,7 @@ global {
 				nb_min_paroissiens, ratio_paroissiens_agregats, nb_paroissiens_mecontents_necessaires,
 				attrac_0_eglises, attrac_1_eglises, attrac_2_eglises, attrac_3_eglises, attrac_4_eglises,
 				attrac_GC, attrac_PC, attrac_communautes,
-				chateaux_GS_alternate, chateaux_PS_alternate, puissance_armee_FP_alternate, communautes_attractives,
-				agregats_alternate, poles_alternate, agregats_alternate2, recompute_agregats_at_end
+				chateaux_GS_alternate, chateaux_PS_alternate, puissance_armee_FP_alternate, communautes_attractives
 				
 			] to: ("../outputs/"+ prefix +"_parameters_TMD.csv") type: "csv";
 	}
@@ -277,18 +276,6 @@ global {
 					length(mesFideles), Satisfaction_Paroisse with_precision 3, "\"" + shape.points + "\""
 				] to: ("../outputs/"+ prefix +"_results_TMD_paroisses.csv") type: "csv";
 			}
-		}
-		
-		action save_JIAP{
-		string currentPrefix <- prefix_output;
-		if (Annee = 820) {do save_parameters_TMD(currentPrefix);}
-		do save_global_TMD(currentPrefix);
-		do save_seigneurs_TMD(currentPrefix);
-		do save_agregats_TMD(currentPrefix);
-		do save_poles_TMD(currentPrefix);
-		do save_Fp_summary_TMD(currentPrefix);
-		do save_FP_all(currentPrefix);
-		do save_paroisses_TMD(currentPrefix);
 		}
 	
 }	

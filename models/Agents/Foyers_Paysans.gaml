@@ -146,12 +146,7 @@ entities
 				set satisfaction_puissance <- min([1, plusProcheChateau.proprietaire.puissance_armee / seuil_puissance_armee]);
 				
 			}
-			if (!puissance_armee_FP_alternate){
-				set satisfaction_protection <- ((satisfaction_puissance + satisfaction_distance) / 2) ^ (besoin_protection);
-			} else {
 				set satisfaction_protection <- satisfaction_distance ^ (besoin_protection);
-			}
-			//TODO : MaJ Doc (descript. + paramètres)
 
 		}
 
@@ -167,9 +162,6 @@ entities
 
 		action deplacement
 		{
-			if (!deplacement_alternate){
-				set location <- flip(1 - Satisfaction) ? (flip(0.8) ? deplacement_local() : deplacement_lointain()) : location;
-			} else {
 	// 		1) Identifier le pôle le plus attractif localement
 	// 		2) p(deplacement_local) = MAX [(Attractivité du pôle le plus attractif localement - Satisfaction_FP), 0]
 	// 		3) En cas de déplacement local, pour déterminer quel pôle sera choisi par le FP pour s'y localiser,
@@ -183,7 +175,6 @@ entities
 			} else {
 				set location <- flip(0.2 * (1 - Satisfaction)) ? deplacement_lointain() : location;
 			}
-		}	
 		}
 
 		point deplacement_local

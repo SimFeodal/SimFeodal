@@ -21,9 +21,8 @@ global torus: false{
 	////////////
 	
 	// GLOBAL //
-	int seed <- rnd(10000000);
+	
 	float myseed <- seed;
-	string myName <- "";
 	
 	bool benchmark <- false;
 	bool save_outputs <- false;
@@ -39,7 +38,6 @@ global torus: false{
 	int nombre_FP_agregat <- 5;
 	int nombre_agglos_antiques <- 4 ;
 	int nombre_villages <- 20 ;
-	int nombre_foyers_villages_max <- 5 ;
 	float puissance_communautes <- 0.25;
 	int apparition_communautes <- 800;
 	float proba_apparition_communaute <- 0.2;
@@ -51,8 +49,8 @@ global torus: false{
 	float taux_mobilite <- 0.8;
 	int distance_max_dem_local <- 7000;
 	int seuil_puissance_armee <- 400; // P.A. d'un proprio de chateau pour que le FP soit satisfait.
-	bool deplacement_alternate <- false;
-	
+	bool deplacement_alternate <- true; // Toujours activé
+	 
 	// SEIGNEURS //
 	
 	int nombre_seigneurs_objectif <- 200;
@@ -93,10 +91,10 @@ global torus: false{
 	float proba_gain_droits_banaux_chateau <- 0.1;
 	float proba_gain_droits_basseMoyenneJustice_chateau <- 0.1;
 	
-	float proba_promotion_groschateau_multipole <- 0.5;
-	float proba_promotion_groschateau_autre <- 0.1;
-	int puissance_necessaire_creation_chateau_GS <- 2000;
-	int puissance_necessaire_creation_chateau_PS <- 2000;
+	float proba_promotion_groschateau_multipole <- 0.8;
+	float proba_promotion_groschateau_autre <- 0.3;
+	int puissance_necessaire_creation_chateau_GS <- 1000;
+	int puissance_necessaire_creation_chateau_PS <- 0;
 
 
 	// EGLISES //
@@ -106,8 +104,8 @@ global torus: false{
 	float proba_gain_droits_paroissiaux <- 0.05;
 	int nb_max_paroissiens <- 40;
 	int nb_min_paroissiens <- 10;
-	int ratio_paroissiens_agregats <- 400;
-	int nb_paroissiens_mecontents_necessaires <- 5;
+	int ratio_paroissiens_agregats <- 300;
+	int nb_paroissiens_mecontents_necessaires <- 20;
 	
 	// POLES //
 	float attrac_0_eglises <- 0.0;
@@ -118,16 +116,17 @@ global torus: false{
 	float attrac_GC <- 0.34;
 	float attrac_PC <- 0.17;
 	
-	float attrac_communautes <- 0.0;
+	float attrac_communautes <- 0.1;
 	
-	bool chateaux_GS_alternate <- false;
-	bool chateaux_PS_alternate <- false;
-	bool puissance_armee_FP_alternate <- false;
-	bool communautes_attractives <- false;
-	bool agregats_alternate <- false;
+	bool chateaux_GS_alternate <- true; // Toujours activé
+	bool chateaux_PS_alternate <- true; // Toujours activé
+	bool puissance_armee_FP_alternate <- true; // Toujours activé
+	bool communautes_attractives <- true; // Toujours activé
+	bool agregats_alternate <- true; // Toujours activé
 	bool agregats_alternate2 <- false;
-	bool poles_alternate <- false;
-	bool recompute_agregats_at_end <- false;
+	bool poles_alternate <- true; // Toujours activé
+	bool agregats_simplifie <- false;
+	bool poles_shape_simplifie <- true;
 	
 
 	
@@ -159,7 +158,7 @@ global torus: false{
 	list<int> reseaux_chateaux <- [];
 	
 	
-	string prefix_output <- "JIAP";
+	string prefix_output <- nil;
 	
 	// FP //
 	int nb_demenagement_local update: 0; // le update remet à 0 au début de chaque nouveau step
