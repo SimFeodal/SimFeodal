@@ -76,67 +76,22 @@ global {
     	}
     }
     
-    action update_agregats_alternate {
-    	
-    	// ******************************* //
-    	// Detection des nouveaux agrégats //
-    	// ******************************* //
-    	
-    	
-    	// Clustering //
-    	list<Eglises> eglises_paroissiales <- Eglises where (each.reel);
-    	list<list<agent>> agregats_detectes <- list<list<agent>>(simple_clustering_by_distance((Foyers_Paysans + Chateaux + eglises_paroissiales), 
-    		distance_detection_agregats
-    		)  where (length(each) >= nombre_FP_agregat));
-    	list<list<agent>> agregats_debut <- agregats_detectes where (length(each of_species Foyers_Paysans) >= nombre_FP_agregat);
-    	list<list<agent>> agregats_cibles <- agregats_debut;
-    	
+    
+   action update_agregats_alternate {
+   	    	list<Eglises> eglises_paroissiales <- Eglises where (each.reel);
+    	list<list<agent>> agregats_detectes <- simple_clustering_by_distance((Foyers_Paysans + Chateaux + eglises_paroissiales),distance_detection_agregats);
+    	list<list<agent>> agregats_corrects <- agregats_detectes where (length(each of_species Foyers_Paysans) >= nombre_FP_agregat);
+
+    	//list<list<agent>> agregats_debut <- agregats_detectes;
+    	//list<list<agent>> agregats_cibles <- agregats_debut;
+    	//write agregats_corrects;
     	// Fusion //
     	
-    	loop petitAgregat over: agregats_debut {
-    		list<agent> thisAg <- petitAgregat;
-    		list<Foyers_Paysans> thisFP <- thisAg of_species Foyers_Paysans;
-			list<Eglises> thisEglisesParoissiales <- thisAg of_species Eglises;
-			list<Chateaux> thisChateaux <- thisAg of_species Chateaux;
-			list<point> thisPoints <- thisAg collect each.location;
-//			list<point> thisPoints <- (thisFP collect each.location) +
-//				(thisEglisesParoissiales collect each.location) +
-//				(thisChateaux collect each.location);
-			geometry thisPoly <- convex_hull(polygon(thisPoints));
-    		geometry thisShape <- thisPoly + 100;
-    		
-    		loop agregat_cible over: (agregats_cibles){
-    			if (thisAg != agregat_cible){
-		    		list<agent> thoseAg <- agregat_cible;
-		    		list<Foyers_Paysans> thoseFP <- thoseAg of_species Foyers_Paysans;
-					list<Eglises> thoseEglisesParoissiales <- thoseAg of_species Eglises;
-					list<Chateaux> thoseChateaux <- thoseAg of_species Chateaux;
-					list<point> thosePoints <- thoseAg collect each.location;
-//					list<point> thosePoints <- (thoseFP collect each.location) +
-//						(thoseEglisesParoissiales collect each.location) +
-//						(thoseChateaux collect each.location);
-					geometry thosePoly <- convex_hull(polygon(thosePoints));
-	    			geometry thoseShape <- thosePoly + 100;
-					
-					
-					if (thoseShape intersects thisShape){
-						agregats_cibles >- thisAg;
-						agregats_cibles >- thoseAg;
-						agregats_cibles <+ (thisAg + thoseAg);
-						break;
-					}
-    			}
-    		}
-    	}
-    	
-    	// Création des tmpAgregats //
-	
-		loop nouvelAgregat over: agregats_cibles {
+    	// Nouvelle règle de fusion //
+    	//write agregats_detectes;
+    	loop nouveauxAgregats over: agregats_corrects {
 			create tmpAgregats number: 1 {
-				list<point> mesPoints <- nouvelAgregat collect each.location;				
-//				list<point> mesPoints <- ((nouvelAgregat of_species Foyers_Paysans) collect each.location) +
-//					((nouvelAgregat of_species Eglises) collect each.location) +
-//					((nouvelAgregat of_species Chateaux) collect each.location);
+				list<point> mesPoints <- nouveauxAgregats collect each.location;			
 				geometry monPoly <- convex_hull(polygon(mesPoints));
 	    		set shape <- monPoly + 100;
 	    		set mesAgents <- agents overlapping self;
@@ -145,9 +100,9 @@ global {
 	    		set mesChateaux <- mesAgents of_species Chateaux;
 	    		
 			}
-		}
-	
-		// Desaffectation des FP //
+    	}
+
+    			// Desaffectation des FP //
 		ask Foyers_Paysans {
 		if (monAgregat != nil){
 			set typeInter <- "In";
@@ -158,93 +113,52 @@ global {
 		}
 		
 		
-    	// ****************************************************** //
-    	//  Detection des intersection anciens/nouveaux agrégats  //
-    	// ****************************************************** //
-		
-		list<list<agent>> AgClusters <- list<list<agent>>(simple_clustering_by_distance((tmpAgregats + Agregats), 0));
-		
-		list<list<agent>> agregatsIntersectes <- AgClusters where (length(each) > 1);
-		list<list<agent>> agregatsIsoles <- AgClusters where (length(each) = 1);
-		list<tmpAgregats> nouveauxAgregats <- (agregatsIsoles accumulate each) of_species tmpAgregats;
-		list<Agregats> agregatsDisparus <- (agregatsIsoles accumulate each) of_species Agregats;
-		
-		
-		// Suppression des anciens sans intersection //
-		ask agregatsDisparus {do die;}
-		list<list<agent>> goodClusters <- [];
-		
-		loop currAg over: agregatsIntersectes {
-			if (length(currAg of_species tmpAgregats) < 1){
-				ask currAg {do die;}
-			} else {
-				goodClusters <+ currAg;
+		ask tmpAgregats {
+			geometry myShape <- shape;
+			Agregats thisOldAgregat <- nil;
+			float thisGeomArea <- 0.0;
+			loop ancienAgregat over: Agregats {
+				if (ancienAgregat.shape intersects myShape){
+					geometry thisUnion <- ancienAgregat.shape inter myShape;
+					if (thisUnion.area > thisGeomArea) {
+						thisOldAgregat <- ancienAgregat;
+						thisGeomArea <- thisUnion.area;
+					}
+				}
+			}
+			if (thisOldAgregat != nil) {
+				if (thisOldAgregat.communaute){
+					CA <- true;
+				}
 			}
 		}
-		
-		
-		
-		// Création des nouveaux sans intersection //
-		loop nouvelAgregat over: nouveauxAgregats {
-			create Agregats number: 1{
-				set shape <- nouvelAgregat.shape;
-			}
+
+		ask Agregats {
+			do die;
 		}
-		
-		// Passation des Communautés des anciens aux nouveaux //
-		
-		
-		loop goodCluster over: goodClusters {
-			list<Agregats> anciensAg <- goodCluster of_species Agregats;
-			list<tmpAgregats> nouveauxAg <- goodCluster of_species tmpAgregats;
-			
-			Agregats predecesseurAg <- nil;
-			
-			if (length(nouveauxAg) > 1){
-				Agregats AgGagnant <- nil;
-				if (agregats_alternate2){
-					//Fusion !
-					list<Agregats> anciennes_comm <- anciensAg where (each.communaute);
-					
-					if (length(anciennes_comm) > 0){
-						set AgGagnant <- anciennes_comm with_max_of (each.attractivite);
-					} else {
-						set AgGagnant <- anciensAg with_max_of (each.attractivite);
+	
+		ask tmpAgregats {
+			geometry myShape <- shape;
+			bool recreateCA <- CA;
+			list<Eglises> cesParoisses <- mesEglisesParoissiales;
+			create Agregats number: 1 {
+				set communaute <- recreateCA;
+				set shape <- myShape;
+				set mesParoisses <- cesParoisses;
+				list<Chateaux> chateaux_proches <- Chateaux at_distance 2000;
+				geometry maGeom <- shape + 200;
+				
+				loop ceChateau over: chateaux_proches {
+					if (ceChateau intersects maGeom) {
+						self.mesChateaux <+ ceChateau; 
 					}
 					ask AgGagnant {
 						set shape <- union((nouveauxAg where (!dead(each))) collect each.shape);
 					}
 				}
-
-			} else if (length(anciensAg) = 1){
-				set predecesseurAg <- one_of(anciensAg);
-			} else if (anciensAg count (each.communaute) >= 1 ) {
-				set predecesseurAg <- (anciensAg where each.communaute) with_max_of (each.attractivite);
-			} else {
-				set predecesseurAg <- anciensAg with_max_of (each.attractivite);
+			set fp_agregat <- Foyers_Paysans overlapping self;	
 			}
-			
-			if (predecesseurAg != nil){
-				ask predecesseurAg {
-					set shape <- one_of(nouveauxAg).shape;
-				}	
-			}
-				list<Agregats> cesAnciensAg <- anciensAg;
-				loop ceNouvelAg over: nouveauxAg {
-					if (length(cesAnciensAg) < 1){
-						create Agregats number: 1 {
-							set shape <- ceNouvelAg.shape;
-						}
-					} else {
-						Agregats cetAncienAg <- one_of(cesAnciensAg);
-						ask cetAncienAg{
-							set shape <- ceNouvelAg.shape;
-						}
-						cesAnciensAg >- cetAncienAg;
-					}
-				}
 		}
-	
     	// ***************************** //
     	//  Suppression des tmpAgregats  //
     	// ***************************** //
@@ -252,9 +166,9 @@ global {
     	ask tmpAgregats {do die;}
 		
 		ask Agregats {
-			set fp_agregat <- Foyers_Paysans overlapping self;
-			set mesChateaux <- Chateaux overlapping self;
-			set mesParoisses <- (Eglises where (each.eglise_paroissiale) overlapping self);
+			
+//			set mesChateaux <- Chateaux overlapping self;
+//			set mesParoisses <- (Eglises where (each.eglise_paroissiale) overlapping self);
 			Agregats thisAg <- self;
 			ask fp_agregat {
 				if (monAgregat != nil) {
@@ -270,36 +184,238 @@ global {
     	ask Foyers_Paysans where (each.monAgregat = nil){	
     		set typeInter <- typeInter + "Out";
     	}
-    	
-    }
-    
-    action update_agregats_fp {
-    	
-    	ask Foyers_Paysans {
-    		if (monAgregat != nil){
-    			set typeIntra <- "In";
-    		} else {
-    			set typeIntra <- "Out";
-    		}
-    		set monAgregat <- nil;
-    	}
-    	
-    	ask Agregats {
-    		set nbfp_avant_dem <- length(fp_agregat);
-    		set fp_agregat <- Foyers_Paysans overlapping self;
-    		ask fp_agregat {
-    			set monAgregat <- myself;
-    			set typeIntra <- typeIntra + "In";
-    		}
-    		
-    		
-    	}
-    	ask Foyers_Paysans where (each.monAgregat = nil){
-    		set typeIntra <- typeIntra + "Out";
-    	}
-    	
-    }
-    
+
+   	}
+
+//    action update_agregats_alternate {
+//    	
+//    	// ******************************* //
+//    	// Detection des nouveaux agrégats //
+//    	// ******************************* //
+//    	
+//    	
+//    	// Clustering //
+//    	list<Eglises> eglises_paroissiales <- Eglises where (each.reel);
+//    	list<list<agent>> agregats_detectes <- list<list<agent>>(simple_clustering_by_distance((Foyers_Paysans + Chateaux + eglises_paroissiales), 
+//    		distance_detection_agregats
+//    		)  where (length(each) >= nombre_FP_agregat));
+//    	list<list<agent>> agregats_debut <- agregats_detectes where (length(each of_species Foyers_Paysans) >= nombre_FP_agregat);
+//    	list<list<agent>> agregats_cibles <- agregats_debut;
+//    	
+//    	// Fusion //
+//    	
+//    	loop petitAgregat over: agregats_debut {
+//    		list<agent> thisAg <- petitAgregat;
+//    		list<Foyers_Paysans> thisFP <- thisAg of_species Foyers_Paysans;
+//			list<Eglises> thisEglisesParoissiales <- thisAg of_species Eglises;
+//			list<Chateaux> thisChateaux <- thisAg of_species Chateaux;
+//			list<point> thisPoints <- (thisFP collect each.location) +
+//				(thisEglisesParoissiales collect each.location) +
+//				(thisChateaux collect each.location);
+//			geometry thisPoly <- convex_hull(polygon(thisPoints));
+//    		geometry thisShape <- thisPoly + 100;
+//    		
+//    		loop agregat_cible over: (agregats_cibles){
+//    			if (thisAg != agregat_cible){
+//		    		list<agent> thoseAg <- agregat_cible;
+//		    		list<Foyers_Paysans> thoseFP <- thoseAg of_species Foyers_Paysans;
+//					list<Eglises> thoseEglisesParoissiales <- thoseAg of_species Eglises;
+//					list<Chateaux> thoseChateaux <- thoseAg of_species Chateaux;
+//					list<point> thosePoints <- (thoseFP collect each.location) +
+//						(thoseEglisesParoissiales collect each.location) +
+//						(thoseChateaux collect each.location);
+//					geometry thosePoly <- convex_hull(polygon(thosePoints));
+//	    			geometry thoseShape <- thosePoly + 100;
+//					
+//					
+//					if (thoseShape intersects thisShape){
+//						agregats_cibles >- thisAg;
+//						agregats_cibles >- thoseAg;
+//						agregats_cibles <+ (thisAg + thoseAg);
+//						break;
+//					}
+//    			}
+//    		}
+//    	}
+//    	
+//    	// Création des tmpAgregats //
+//	
+//		loop nouvelAgregat over: agregats_cibles {
+//			create tmpAgregats number: 1 {
+//	    		set mesFP <- nouvelAgregat of_species Foyers_Paysans;
+//				set mesEglisesParoissiales <- nouvelAgregat of_species Eglises;
+//				set mesChateaux <- nouvelAgregat of_species Chateaux;
+//				
+//				list<point> mesPoints <- (mesFP collect each.location) +
+//					(mesEglisesParoissiales collect each.location) +
+//					(mesChateaux collect each.location);
+//				geometry monPoly <- convex_hull(polygon(mesPoints));
+//	    		set shape <- monPoly + 100;
+//			}
+//		}
+//	
+//		// Desaffectation des FP //
+//		ask Foyers_Paysans {
+//		if (monAgregat != nil){
+//			set typeInter <- "In";
+//		} else {
+//			set typeInter <- "Out";
+//		}
+//		set monAgregat <- nil ;
+//		}
+//		
+//		
+//    	// ****************************************************** //
+//    	//  Detection des intersection anciens/nouveaux agrégats  //
+//    	// ****************************************************** //
+//		
+//		list<list<agent>> AgClusters <- list<list<agent>>(simple_clustering_by_distance((tmpAgregats + Agregats), 0));
+//		
+//		list<list<agent>> agregatsIntersectes <- AgClusters where (length(each) > 1);
+//		list<list<agent>> agregatsIsoles <- AgClusters where (length(each) = 1);
+//		list<tmpAgregats> nouveauxAgregats <- (agregatsIsoles accumulate each) of_species tmpAgregats;
+//		list<Agregats> agregatsDisparus <- (agregatsIsoles accumulate each) of_species Agregats;
+//		
+//		
+//		// Suppression des anciens sans intersection //
+//		ask agregatsDisparus {do die;}
+//		list<list<agent>> goodClusters <- [];
+//		
+//		loop currAg over: agregatsIntersectes {
+//			if (length(currAg of_species tmpAgregats) < 1){
+//				ask currAg {do die;}
+//			} else {
+//				goodClusters <+ currAg;
+//			}
+//		}
+//		
+//		
+//		
+//		// Création des nouveaux sans intersection //
+//		loop nouvelAgregat over: nouveauxAgregats {
+//			create Agregats number: 1{
+//				set fp_agregat <- nouvelAgregat.mesFP;
+//				ask fp_agregat {
+//					set monAgregat <- myself;
+//					set typeInter <- typeInter + "In";
+//				}
+//				set shape <- nouvelAgregat.shape;
+//				set mesChateaux <- nouvelAgregat.mesChateaux;
+//				set mesParoisses <- nouvelAgregat.mesEglisesParoissiales;
+//				if (Annee >= apparition_communautes){do update_communaute;}
+//			}
+//		}
+//		
+//		// Passation des Communautés des anciens aux nouveaux //
+//		
+//		
+//		loop goodCluster over: goodClusters {
+//			list<Agregats> anciensAg <- goodCluster of_species Agregats;
+//			list<tmpAgregats> nouveauxAg <- goodCluster of_species tmpAgregats;
+//			
+//			Agregats predecesseurAg <- nil;
+//			
+//			if (length(nouveauxAg) > 1){
+//				list<Agregats> cesAnciensAg <- anciensAg;
+//				loop ceNouvelAg over: nouveauxAg {
+//					if (length(cesAnciensAg) < 1){
+//						create Agregats number: 1 {
+//							set fp_agregat <- ceNouvelAg.mesFP;
+//							ask fp_agregat {
+//								set monAgregat <- myself;
+//								set typeInter <- typeInter + "In";
+//							}
+//							set shape <- ceNouvelAg.shape;
+//							set mesChateaux <- ceNouvelAg.mesChateaux;
+//							set mesParoisses <- ceNouvelAg.mesEglisesParoissiales;
+//							if (Annee >= apparition_communautes){do update_communaute;}
+//						}
+//					} else {
+//						Agregats cetAncienAg <- one_of(cesAnciensAg);
+//						ask cetAncienAg{
+//							set fp_agregat <- ceNouvelAg.mesFP;
+//							ask fp_agregat {
+//								set monAgregat <- myself;
+//								set typeInter <- typeInter + "In";
+//							}
+//							set shape <- ceNouvelAg.shape;
+//							set mesChateaux <- ceNouvelAg.mesChateaux;
+//							set mesParoisses <- ceNouvelAg.mesEglisesParoissiales;
+//							if (Annee >= apparition_communautes){do update_communaute;}
+//						}
+//						cesAnciensAg >- cetAncienAg;
+//					}
+//				}
+//			} else if (length(anciensAg) = 1){
+//				set predecesseurAg <- one_of(anciensAg);
+//			} else if (anciensAg count (each.communaute) >= 1 ) {
+//				set predecesseurAg <- (anciensAg where each.communaute) with_max_of (each.attractivite);
+//			} else {
+//				set predecesseurAg <- anciensAg with_max_of (each.attractivite);
+//			}
+//			
+//			if (predecesseurAg != nil){
+//				ask predecesseurAg {
+//					set fp_agregat <- one_of(nouveauxAg).mesFP;
+//					ask fp_agregat {
+//						set monAgregat <- myself;
+//						set typeInter <- typeInter + "In";
+//					}
+//					set shape <- one_of(nouveauxAg).shape;
+//					set mesChateaux <- one_of(nouveauxAg).mesChateaux;
+//					set mesParoisses <- one_of(nouveauxAg).mesEglisesParoissiales;
+//					if (Annee >= apparition_communautes){do update_communaute;}
+//				}	
+//			}
+//
+//		}
+//	
+//    	// ***************************** //
+//    	//  Suppression des tmpAgregats  //
+//    	// ***************************** //
+//    	
+//    	ask tmpAgregats {do die;}
+//		
+//		ask Agregats {
+//			set fp_agregat <- agents_at_distance(0) of_species Foyers_Paysans;
+//			ask fp_agregat {
+//				set monAgregat <- myself;
+//				set typeInter <- typeInter + "In";
+//			}
+//		}
+//		
+//    	ask Foyers_Paysans where (each.monAgregat = nil){	
+//    		set typeInter <- typeInter + "Out";
+//    	}
+//    	
+//    }
+//    
+//    action update_agregats_fp {
+//    	
+//    	ask Foyers_Paysans {
+//    		if (monAgregat != nil){
+//    			set typeIntra <- "In";
+//    		} else {
+//    			set typeIntra <- "Out";
+//    		}
+//    		set monAgregat <- nil;
+//    	}
+//    	
+//    	ask Agregats {
+//    		set nbfp_avant_dem <- length(fp_agregat);
+//    		set fp_agregat <- agents_at_distance(0) of_species Foyers_Paysans;
+//    		ask fp_agregat {
+//    			set monAgregat <- myself;
+//    			set typeIntra <- typeIntra + "In";
+//    		}
+//    		
+//    	}
+//    	ask Foyers_Paysans where (each.monAgregat = nil){
+//    		set typeIntra <- typeIntra + "Out";
+//    	}
+//    	
+//    }
+//    
 }
 
 entities {

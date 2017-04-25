@@ -657,8 +657,8 @@ experiment Explo_TMD_base2_compo5_2_6 type: batch repeat:20 keep_seed: true mult
 }
 
 experiment Exp_debug type: gui {
-	parameter 'ratio_paroissiens_agregats' var: ratio_paroissiens_agregats among: [300];
-	parameter 'nb_paroissiens_mecontents_necessaires' var: nb_paroissiens_mecontents_necessaires among: [20];
+parameter 'ratio_paroissiens_agregats' var: ratio_paroissiens_agregats among: [300];
+parameter 'nb_paroissiens_mecontents_necessaires' var: nb_paroissiens_mecontents_necessaires among: [20];
 	parameter "proba_promotion_groschateau_multipole" var: proba_promotion_groschateau_multipole among: [0.8];
 	parameter "proba_promotion_groschateau_autre"  var: proba_promotion_groschateau_autre among: [0.3];
 	parameter "chateaux_GS_alternate" var: chateaux_GS_alternate among: [true];
@@ -680,12 +680,8 @@ experiment Exp_debug type: gui {
 	parameter "attrac_GC" var: attrac_GC among: [0.15];
 	parameter "attrac_PC" var: attrac_PC among: [0.1];	
 	
-	parameter "agregats_alternate" var: agregats_alternate among: [true];
-	parameter "poles_alternate" var: poles_alternate among: [true];
-	parameter "agregats_alternate2" var: agregats_alternate2 among: [true];
-	parameter "recompute_agregats_at_end" var: recompute_agregats_at_end among: [true];
-	
-	
+	parameter "agregats_alternate" var: agregats_alternate category: "Seigneurs" among: [true];
+	parameter "poles_alternate" var: poles_alternate category: "Seigneurs" among: [true];
 }
 
 experiment "Explo_TMD_base3_1" type: batch repeat:20 keep_seed: true multicore: true until: (Annee >= fin_simulation){

@@ -127,13 +127,14 @@ global {
 		loop cetAgregat over: Agregats {
 			loop cePole over: Poles {
 				if (dead(cePole)){break;}
-				if (cePole.shape intersects (cetAgregat.shape + 200)){
-					set cePole.shape <- cePole.shape + (cetAgregat.shape + 200);
+				if (cePole.shape intersects cetAgregat.shape){
+					set cePole.shape <- cePole.shape + cetAgregat.shape;
 					set cePole.monAgregat <- cetAgregat;
 					loop pole_a_absorber over: (Poles - cePole) {
 						if (dead(pole_a_absorber)){break;}
 						if (pole_a_absorber.shape intersects cePole.shape){
 							set cePole.mesAttracteurs <- cePole.mesAttracteurs + pole_a_absorber.mesAttracteurs;
+							set cePole.shape <- cePole.shape + pole_a_absorber.shape;
 							ask pole_a_absorber {do die;}
 						}
 					}
