@@ -43,7 +43,7 @@ global {
 			list<Foyers_Paysans> pool_FP <- [self];
 			// On crée entre 5 et nombre_foyers_villages :
 			//FIXME : MaJ Doc ou changement nom variable
-			create Foyers_Paysans number: 4{
+			create Foyers_Paysans number: (nombre_FP_agregat - 1){
 				pool_FP <+ self ;
 				// On choisit un des FP de la même agglo
 				agent myFP <- one_of(pool_FP);
