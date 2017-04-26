@@ -38,6 +38,7 @@ global torus: false{
 	int nombre_FP_agregat <- 5;
 	int nombre_agglos_antiques <- 4 ;
 	int nombre_villages <- 20 ;
+	int nombre_FP_village <- 5;
 	float puissance_communautes <- 0.25;
 	int apparition_communautes <- 800;
 	float proba_apparition_communaute <- 0.2;
@@ -126,7 +127,7 @@ global torus: false{
 	bool agregats_alternate2 <- false;
 	bool poles_alternate <- true; // Toujours activé
 	bool agregats_simplifie <- false;
-	bool poles_shape_simplifie <- true;
+	bool poles_shape_simplifie <- false;
 	
 
 	

@@ -35,7 +35,7 @@ global {
 			loop cePole over: Poles {
 				if (dead(cePole)){break;}
 				geometry cetAgregatShape <- cetAgregat.shape;
-				if (!poles_shape_simplifie) {cetAgregatShape <- cetAgregatShape + 200;}
+				cetAgregatShape <- cetAgregatShape + 200;
 				if (cePole.shape intersects (cetAgregatShape)){
 					set cePole.shape <- cePole.shape + (cetAgregatShape);
 					set cePole.monAgregat <- cetAgregat;
@@ -122,8 +122,10 @@ global {
 		loop cetAgregat over: Agregats {
 			loop cePole over: Poles {
 				if (dead(cePole)){break;}
-				if (cePole.shape intersects cetAgregat.shape){
-					set cePole.shape <- cePole.shape + cetAgregat.shape;
+				geometry cetAgregatShape <- cetAgregat.shape;
+				if (!poles_shape_simplifie) {cetAgregatShape <- cetAgregatShape + 200;}
+				if (cePole.shape intersects cetAgregatShape){
+					set cePole.shape <- cePole.shape + cetAgregatShape;
 					set cePole.monAgregat <- cetAgregat;
 					loop pole_a_absorber over: (Poles - cePole) {
 						if (dead(pole_a_absorber)){break;}

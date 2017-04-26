@@ -286,7 +286,7 @@ experiment Exp_debug type: gui {
 	
 }
 
-experiment Exp_debug_afterTMD type: gui {
+experiment Base4_1 type: gui {
 	parameter "distance_max_dem_local" var: distance_max_dem_local among: [4000];
 	parameter "attrac_communautes" var:attrac_communautes among: [0.1];	
 	parameter "attrac_0_eglises" var: attrac_0_eglises among: [0.0];
@@ -296,9 +296,95 @@ experiment Exp_debug_afterTMD type: gui {
 	parameter "attrac_4_eglises" var: attrac_4_eglises among: [0.65];
 	parameter "attrac_GC" var: attrac_GC among: [0.15];
 	parameter "attrac_PC" var: attrac_PC among: [0.1];
+	
+	parameter "agregats_alternate" var: agregats_alternate category: "Seigneurs" among: [false];
+	parameter "poles_alternate" var: poles_alternate category: "Seigneurs" among: [true];
 	parameter "agregats_alternate2" var: agregats_alternate2 among: [false];
 	parameter "poles_shape_simplifie" var: poles_shape_simplifie among: [true];
 	parameter "agregats_simplifie" var: agregats_simplifie among: [true];
 }
 
+experiment Base4_1_FPvillages type: gui {
+	parameter "distance_max_dem_local" var: distance_max_dem_local among: [4000];
+	parameter "attrac_communautes" var:attrac_communautes among: [0.1];	
+	parameter "attrac_0_eglises" var: attrac_0_eglises among: [0.0];
+	parameter "attrac_1_eglises" var: attrac_1_eglises among: [0.05];
+	parameter "attrac_2_eglises" var: attrac_2_eglises among: [0.25];
+	parameter "attrac_3_eglises" var: attrac_3_eglises among: [0.55];
+	parameter "attrac_4_eglises" var: attrac_4_eglises among: [0.65];
+	parameter "attrac_GC" var: attrac_GC among: [0.15];
+	parameter "attrac_PC" var: attrac_PC among: [0.1];
+	
+	parameter "agregats_alternate" var: agregats_alternate category: "Seigneurs" among: [false];
+	parameter "poles_alternate" var: poles_alternate category: "Seigneurs" among: [true];
+	parameter "agregats_alternate2" var: agregats_alternate2 among: [false];
+	parameter "poles_shape_simplifie" var: poles_shape_simplifie among: [true];
+	parameter "agregats_simplifie" var: agregats_simplifie among: [true];
+	parameter "nombre_FP_village" var: nombre_FP_village among: [6];
+}
 
+experiment Base4_1_FPvillages7 type: gui {
+	parameter "distance_max_dem_local" var: distance_max_dem_local among: [4000];
+	parameter "attrac_communautes" var:attrac_communautes among: [0.1];	
+	parameter "attrac_0_eglises" var: attrac_0_eglises among: [0.0];
+	parameter "attrac_1_eglises" var: attrac_1_eglises among: [0.05];
+	parameter "attrac_2_eglises" var: attrac_2_eglises among: [0.25];
+	parameter "attrac_3_eglises" var: attrac_3_eglises among: [0.55];
+	parameter "attrac_4_eglises" var: attrac_4_eglises among: [0.65];
+	parameter "attrac_GC" var: attrac_GC among: [0.15];
+	parameter "attrac_PC" var: attrac_PC among: [0.1];
+	
+	parameter "agregats_alternate" var: agregats_alternate category: "Seigneurs" among: [false];
+	parameter "poles_alternate" var: poles_alternate category: "Seigneurs" among: [true];
+	parameter "agregats_alternate2" var: agregats_alternate2 among: [false];
+	parameter "poles_shape_simplifie" var: poles_shape_simplifie among: [true];
+	parameter "agregats_simplifie" var: agregats_simplifie among: [true];
+	parameter "nombre_FP_village" var: nombre_FP_village among: [7];
+}
+
+
+experiment Base4_1_FPvillages10batch type: batch repeat:2 keep_seed: true multicore: true until: (Annee >= fin_simulation){
+	parameter 'save_TMD' var: save_TMD among: [true];
+	parameter 'prefix' var: prefix_output among: ["afterTMD_FPvillages"];
+	
+	parameter "distance_max_dem_local" var: distance_max_dem_local among: [4000];
+	parameter "attrac_communautes" var:attrac_communautes among: [0.1];	
+	parameter "attrac_0_eglises" var: attrac_0_eglises among: [0.0];
+	parameter "attrac_1_eglises" var: attrac_1_eglises among: [0.05];
+	parameter "attrac_2_eglises" var: attrac_2_eglises among: [0.25];
+	parameter "attrac_3_eglises" var: attrac_3_eglises among: [0.55];
+	parameter "attrac_4_eglises" var: attrac_4_eglises among: [0.65];
+	parameter "attrac_GC" var: attrac_GC among: [0.15];
+	parameter "attrac_PC" var: attrac_PC among: [0.1];
+	
+	parameter "agregats_alternate" var: agregats_alternate category: "Seigneurs" among: [false];
+	parameter "poles_alternate" var: poles_alternate category: "Seigneurs" among: [true];
+	parameter "agregats_alternate2" var: agregats_alternate2 among: [false];
+	parameter "poles_shape_simplifie" var: poles_shape_simplifie among: [true];
+	parameter "agregats_simplifie" var: agregats_simplifie among: [true];
+	parameter "nombre_FP_village" var: nombre_FP_village among: [10];
+}
+
+
+experiment Base4_2 type: batch repeat:2 keep_seed: true multicore: true until: (Annee >= fin_simulation) {
+	// Changement de l'ordonnancement dans le run.gaml
+	parameter 'save_TMD' var: save_TMD among: [true];
+	parameter 'prefix' var: prefix_output among: ["afterTMD_FPvillages"];
+	
+	parameter "distance_max_dem_local" var: distance_max_dem_local among: [4000];
+	parameter "attrac_communautes" var:attrac_communautes among: [0.1];	
+	parameter "attrac_0_eglises" var: attrac_0_eglises among: [0.0];
+	parameter "attrac_1_eglises" var: attrac_1_eglises among: [0.05];
+	parameter "attrac_2_eglises" var: attrac_2_eglises among: [0.25];
+	parameter "attrac_3_eglises" var: attrac_3_eglises among: [0.55];
+	parameter "attrac_4_eglises" var: attrac_4_eglises among: [0.65];
+	parameter "attrac_GC" var: attrac_GC among: [0.15];
+	parameter "attrac_PC" var: attrac_PC among: [0.1];
+	
+	parameter "agregats_alternate" var: agregats_alternate category: "Seigneurs" among: [false];
+	parameter "poles_alternate" var: poles_alternate category: "Seigneurs" among: [true];
+	parameter "agregats_alternate2" var: agregats_alternate2 among: [false];
+	parameter "poles_shape_simplifie" var: poles_shape_simplifie among: [true];
+	parameter "agregats_simplifie" var: agregats_simplifie among: [true];
+	parameter "nombre_FP_village" var: nombre_FP_village among: [10];
+}
