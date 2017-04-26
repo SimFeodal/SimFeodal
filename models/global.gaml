@@ -50,7 +50,6 @@ global torus: false{
 	float taux_mobilite <- 0.8;
 	int distance_max_dem_local <- 7000;
 	int seuil_puissance_armee <- 400; // P.A. d'un proprio de chateau pour que le FP soit satisfait.
-	bool deplacement_alternate <- true; // Toujours activé
 	 
 	// SEIGNEURS //
 	
