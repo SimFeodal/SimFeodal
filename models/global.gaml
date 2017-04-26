@@ -126,6 +126,9 @@ global torus: false{
 	bool poles_alternate <- true; // Toujours activé
 	bool agregats_simplifie <- false;
 	bool poles_shape_simplifie <- false;
+	bool augmentation_max_dem_local <- false;
+	bool deplacement_local_alternate <- false;
+	bool satisfaction_alternate <- false;
 	
 
 	
@@ -190,9 +193,17 @@ global torus: false{
 		}
 	}
 	
+	action update_distance_max_dem_local {
+		if Annee < 900 {
+			set distance_max_dem_local <- 2500;
+		} else if Annee < 1000 {
+			 set distance_max_dem_local <- 4000;
+		} else {
+			set distance_max_dem_local <- 6000;
+		}
+	}
+	
 	action update_output_indexes {
-		//list<Eglises> currParoisses <- Eglises where (each.eglise_paroissiale);
-		//set distance_eglises <- mean(currParoisses collect (each distance_to (currParoisses closest_to self)));
 		list<float> distances_pp_eglise <- [];
 		ask Eglises {
 			Eglises pp_eglise <- Eglises closest_to self;
