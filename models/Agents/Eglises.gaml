@@ -34,19 +34,15 @@ global {
 	
 	action create_paroisses {
 		loop agregat over: shuffle(Agregats where (length(each.fp_agregat) > nb_min_paroissiens)) {
-			float nb_relatif_paroissiens <- length(agregat.fp_agregat) / Paroisses count (each intersects agregat) ;
-//			float proba_creation <- max([0.0,min([ 1.0,
-//				(nb_max_paroissiens/ (nb_max_paroissiens - nb_min_paroissiens)) -
-//				( nb_relatif_paroissiens / (nb_max_paroissiens - nb_min_paroissiens))
-//			])]);
+			int nb_FP_agregat <- length(agregat.fp_agregat) ;
+			int nb_paroisses_agregat <- Paroisses count (each intersects agregat) ;
 			
-			float proba_creation <- min([1.0, 1/ratio_paroissiens_agregats * nb_relatif_paroissiens]);
-			if flip(proba_creation) {
-				// on crée
+			float proba_creation_paroisse <- min([1.0, (1/seuil_creation_paroisse) * (nb_FP_agregat / nb_paroisses_agregat)]);
+
+			if flip(proba_creation_paroisse) {
 				create Eglises number: 1 {
 					set location <- any_location_in(agregat.shape + 200) ;
 					set eglise_paroissiale <- true;
-					set reel <- true;
 				}
 			}
 		}
@@ -89,7 +85,6 @@ global {
 					do update_satisfaction ;
 					ask paroisse_a_creer {
 							set eglise_paroissiale <- true;
-							set reel <- true;
 					}
 				}
 
@@ -114,19 +109,10 @@ entities {
 			set mesFideles <- Foyers_Paysans inside self.shape ;
 			
 		}
-//		action update_satisfaction {
-//			if length(mesFideles) > 0 {
-//				float satisfaction_fideles <- mean(mesFideles collect each.satisfaction_religieuse);
-//				int nombre_fideles <- length(mesFideles) ;
-//				set Satisfaction_Paroisse <- min([1, (20/nombre_fideles)]) * satisfaction_fideles;	
-//			} else {
-//				set Satisfaction_Paroisse <- 1.0 ;
-//			}
-//		}
+
 		action update_satisfaction {
 			if length(mesFideles) > 0 {
 				int nb_paroissiens_mecontents <- mesFideles count (each.satisfaction_religieuse = 0.0);
-				//if (nb_paroissiens_mecontents > 10 or length(mesFideles) > 60){
 				if nb_paroissiens_mecontents > nb_paroissiens_mecontents_necessaires {
 					set Satisfaction_Paroisse <- 0.0;
 				} else {
@@ -147,20 +133,7 @@ entities {
 		bool eglise_paroissiale <- false;
 		int attractivite <- 0;
 		rgb color <- #blue ;
-		bool reel <- false;
-		
-		action update_attractivite {
-			//set attractivite <- length(droits_paroissiaux);
-		}
-		
-		action update_droits_paroissiaux {
-			if (!eglise_paroissiale) {
-				set eglise_paroissiale <- flip(proba_gain_droits_paroissiaux);
-				if (eglise_paroissiale) {set reel <- true;}
-			}
-		}
-		
-		
+	
 		aspect base {
 			draw circle(200) color: color ;
 		}

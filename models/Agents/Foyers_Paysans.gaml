@@ -22,29 +22,25 @@ global
 		int attractivite_totale <- length(Foyers_Paysans);
 		int nb_FP_impactes <- int(taux_renouvellement * length(Foyers_Paysans));
 		int attractivite_agregats <- sum(Agregats collect each.attractivite);
+		float proba_apparition_agregat <- attractivite_agregats / attractivite_totale;
 		
 		ask nb_FP_impactes among Foyers_Paysans
 		{
-			if (monAgregat != nil)
-			{
-				ask monAgregat
-				{
-					fp_agregat >- myself;
-				}
-
-			}
-
+			if (monAgregat != nil){ ask monAgregat { fp_agregat >- myself;}}
 			do die;
 		}
 		
 		list<Agregats> tousAgregats <- Agregats sort_by (each.attractivite);
 		list<int> attrac_agregats <- tousAgregats collect each.attractivite;
-		create Foyers_Paysans number: nb_FP_impactes
+		create Foyers_Paysans number: (nb_FP_impactes)
+		//create Foyers_Paysans number: ((attractivite_totale * 0.06) + nb_FP_impactes) // FIXME
 		{
-			if (flip(attractivite_agregats / attractivite_totale)){ // Si dans agrégat
+			if (flip(proba_apparition_agregat)){
 				Agregats meilleurAgregat <- tousAgregats at rnd_choice(attrac_agregats);
-				set location <- any_location_in(meilleurAgregat.shape); // TODO : A documenter
-			} else { // Sinon
+				set location <- any_location_in(meilleurAgregat.shape);
+				set monAgregat <- meilleurAgregat;
+				ask monAgregat {fp_agregat <+ myself;}
+			} else {
 				set location <- any_location_in(worldextent);
 			}
 			set mobile <- flip(taux_mobilite);
@@ -156,7 +152,6 @@ entities
 			do update_satisfaction_religieuse;
 			do update_satisfaction_protection;
 
-			// FIXME : MaJ Doc pour satisf.
 			set Satisfaction <- min([satisfaction_religieuse, satisfaction_protection, satisfaction_materielle]);
 		}
 

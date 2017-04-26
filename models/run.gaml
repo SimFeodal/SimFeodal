@@ -50,7 +50,7 @@ global schedules: list(world) + list(Attracteurs) + list(Poles)+ list(Agregats) 
 		do compute_paroisses ; // On redécoupe
 		do create_paroisses ; // On crée les paroisses des agrégats
 		do compute_paroisses ; // On redessine
-		do promouvoir_paroisses; // On nomme/crée de  nouvelles paroisses là où la population est mal desse
+		do promouvoir_paroisses; // On nomme/crée de  nouvelles paroisses là où la population est mal desservie
 		do compute_paroisses ; // On redessine
 	}
 	
@@ -74,11 +74,6 @@ global schedules: list(world) + list(Attracteurs) + list(Poles)+ list(Agregats) 
 		ask Chateaux {do update_attractivite;}
 	}
 	
-	reflex MaJ_Eglises {
-		ask Eglises {
-			do update_attractivite;
-		}
-	}
 	
 	reflex MaJ_Droits_Seigneurs {
 		ask Seigneurs where (each.type="Grand Seigneur"){do MaJ_droits_Grands_Seigneurs;}

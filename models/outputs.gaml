@@ -53,7 +53,7 @@ global {
 				proba_don_partie_ZP,  min_fourchette_loyers_PS, max_fourchette_loyers_PS, 
 				rayon_min_PS, rayon_max_PS,proba_creation_ZP_banaux, proba_creation_ZP_basseMoyenneJustice,
 				nombre_seigneurs_objectif, proba_collecter_loyer,
-				nombre_eglises,nb_eglises_paroissiales, proba_gain_droits_paroissiaux,
+				nombre_eglises,nb_eglises_paroissiales,
 				nb_max_paroissiens, nb_min_paroissiens] to: Param_file type: "csv";
 		}
 	}
@@ -160,7 +160,7 @@ global {
 				nombre_villages, puissance_communautes,
 				apparition_communautes, proba_apparition_communaute, nombre_foyers_paysans,
 				taux_renouvellement, taux_mobilite, distance_max_dem_local, seuil_puissance_armee,
-				deplacement_alternate, nombre_seigneurs_objectif, nombre_grands_seigneurs,
+				nombre_seigneurs_objectif, nombre_grands_seigneurs,
 				nombre_petits_seigneurs, puissance_grand_seigneur1, puissance_grand_seigneur2,
 				proba_collecter_loyer, proba_creation_ZP_banaux, proba_creation_ZP_basseMoyenneJustice,
 				rayon_min_PS, rayon_max_PS, min_fourchette_loyers_PS, max_fourchette_loyers_PS,
@@ -170,8 +170,8 @@ global {
 				proba_gain_droits_banaux_chateau, proba_gain_droits_basseMoyenneJustice_chateau,
 				proba_promotion_groschateau_multipole, proba_promotion_groschateau_autre,
 				puissance_necessaire_creation_chateau_GS, puissance_necessaire_creation_chateau_PS,
-				nombre_eglises, nb_eglises_paroissiales, proba_gain_droits_paroissiaux, nb_max_paroissiens,
-				nb_min_paroissiens, ratio_paroissiens_agregats, nb_paroissiens_mecontents_necessaires,
+				nombre_eglises, nb_eglises_paroissiales, nb_max_paroissiens,
+				nb_min_paroissiens, seuil_creation_paroisse, nb_paroissiens_mecontents_necessaires,
 				attrac_0_eglises, attrac_1_eglises, attrac_2_eglises, attrac_3_eglises, attrac_4_eglises,
 				attrac_GC, attrac_PC, attrac_communautes,
 				chateaux_GS_alternate, chateaux_PS_alternate, puissance_armee_FP_alternate, communautes_attractives

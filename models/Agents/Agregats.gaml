@@ -24,7 +24,7 @@ global {
     	
     	
     	// Clustering //
-    	list<Eglises> eglises_paroissiales <- Eglises where (each.reel);
+    	list<Eglises> eglises_paroissiales <- Eglises where (each.eglise_paroissiale);
     	list<list<agent>> agregats_detectes <- list<list<agent>>(simple_clustering_by_distance((Foyers_Paysans + Chateaux + eglises_paroissiales), 
     		distance_detection_agregats
     		)  where (length(each) >= nombre_FP_agregat));
@@ -195,7 +195,6 @@ global {
 				set typeInter <- typeInter + "In";
 			}
 			if (Annee >= apparition_communautes){do update_communaute;}
-			//write string(self) + " - FP (Ag) : " + length(fp_agregat) + " / FP (fp) : " + (Foyers_Paysans count (each.monAgregat = thisAg));
 		}
 		
     	ask Foyers_Paysans where (each.monAgregat = nil){	
@@ -205,13 +204,11 @@ global {
     }
     
      action update_agregats_simplifie {
-     	   	    	list<Eglises> eglises_paroissiales <- Eglises where (each.reel);
-    	list<list<agent>> agregats_detectes <- simple_clustering_by_distance((Foyers_Paysans + Chateaux + eglises_paroissiales),distance_detection_agregats);
+    	list<Eglises> eglises_paroissiales <- Eglises where (each.eglise_paroissiale);
+    	list<list<agent>> agregats_detectes <- simple_clustering_by_distance((Foyers_Paysans + Chateaux + eglises_paroissiales), distance_detection_agregats);
     	list<list<agent>> agregats_corrects <- agregats_detectes where (length(each of_species Foyers_Paysans) >= nombre_FP_agregat);
-    	// Fusion //
-    	
-    	// Nouvelle règle de fusion //
-    	loop nouveauxAgregats over: agregats_corrects {
+
+ 	   	loop nouveauxAgregats over: agregats_corrects {
 			create tmpAgregats number: 1 {
 				list<point> mesPoints <- nouveauxAgregats collect each.location;			
 				geometry monPoly <- convex_hull(polygon(mesPoints));
@@ -342,12 +339,10 @@ entities {
 	}
 
 	species Agregats parent: Attracteurs schedules: shuffle(Agregats){
-		bool fake_agregat <- false;
 		int attractivite <- 0;
 		list<Foyers_Paysans> fp_agregat ;
 		bool communaute <- false;
 		list<Chateaux> mesChateaux <- [];
-		bool reel <- false;
 		list<Eglises> mesParoisses;
 		int nb_fp_attires <- 0 update: 0;
 		int nbfp_avant_dem <- 0 update: 0;
@@ -365,24 +360,9 @@ entities {
 			}
 		}
 		
-		action update_shape {
-			set shape <- convex_hull(polygon(fp_agregat collect each.location));
-			set mesParoisses <- (Eglises where (each.eglise_paroissiale) inside shape);
-		}
-		
-		action update_shape_alternate {
-			set shape <- convex_hull(polygon(fp_agregat collect each.location));
-			set mesParoisses <- (Eglises where (each.eglise_paroissiale) inside shape);
-		}
 		
 		action update_attractivite {
-			// Temporairement désactivé
-			//set attractivite <- length(fp_agregat) +  sum(Chateaux where (self = each.monAgregat) collect each.attractivite);
 			set attractivite <- length(fp_agregat);
-			
-			//int attrac_chateau; // 0 si 0, = S
-			//int attrac_eglises;
-			//set attractivite <- attrac_chateau + attrac_eglises;
 		}
 		
 		
@@ -390,7 +370,6 @@ entities {
 			if (!self.communaute) {
 				if (flip(proba_apparition_communaute)) {
 					set communaute <- true;
-					set reel <- true;
 					ask self.fp_agregat {
 						set communaute <- true;
 					}

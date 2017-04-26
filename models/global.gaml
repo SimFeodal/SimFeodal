@@ -102,10 +102,9 @@ global torus: false{
 	
 	int nombre_eglises <- 150 ;
 	int nb_eglises_paroissiales <- 50 ;
-	float proba_gain_droits_paroissiaux <- 0.05;
 	int nb_max_paroissiens <- 40;
 	int nb_min_paroissiens <- 10;
-	int ratio_paroissiens_agregats <- 300;
+	int seuil_creation_paroisse <- 300;
 	int nb_paroissiens_mecontents_necessaires <- 20;
 	
 	// POLES //

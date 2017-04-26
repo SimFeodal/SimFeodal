@@ -25,11 +25,9 @@ global {
 			set location <- any_location_in(reduced_worldextent);
 			set mobile <- flip (taux_mobilite);
 			
-			//FP_controlles
 			list<Foyers_Paysans> pool_FP <- [self]; 
-			create Foyers_Paysans number: (30 - 1) { // TODO : Mettre en paramètre ? En aléa ?
+			create Foyers_Paysans number: (30 - 1) {
 				pool_FP <+ self ;
-				// On choisit un des FP de la même agglo
 				agent myFP <- one_of(pool_FP);
 				set location <- any_location_in((distance_detection_agregats -  1) around myFP.location);
 				set mobile <- flip (taux_mobilite);
@@ -41,11 +39,8 @@ global {
 			set mobile <- flip (taux_mobilite);
 			
 			list<Foyers_Paysans> pool_FP <- [self];
-			// On crée entre 5 et nombre_foyers_villages :
-			//FIXME : MaJ Doc ou changement nom variable
 			create Foyers_Paysans number: (nombre_FP_village - 1){
 				pool_FP <+ self ;
-				// On choisit un des FP de la même agglo
 				agent myFP <- one_of(pool_FP);
 				set location <- any_location_in((distance_detection_agregats -  1) around myFP.location);
 				set mobile <- flip (taux_mobilite);
@@ -111,7 +106,6 @@ global {
 		}
 		ask (nb_eglises_paroissiales among Eglises) {
 			set eglise_paroissiale <- true;
-			set reel <- true;
 		}
 	}
 	

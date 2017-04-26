@@ -82,7 +82,6 @@ experiment Exp_Graphique type: gui multicore: true {
 	
 	parameter "Nombre d'eglises:" var: nombre_eglises category: "Eglises";
 	parameter "Dont eglises paroissiales:" var: nb_eglises_paroissiales category: "Eglises" ;
-	parameter "Probabilite gain des droits paroissiaux" var: proba_gain_droits_paroissiaux category: "Eglises";
 	parameter "Nombre max de paroissiens" var: nb_max_paroissiens category: "Eglises";
 	parameter "Nombre min de paroissiens" var: nb_min_paroissiens category: "Eglises";	
 
@@ -103,7 +102,6 @@ experiment Exp_Graphique type: gui multicore: true {
 		monitor "Nombre Eglises Paroissiales" value: Eglises count (each.eglise_paroissiale);
 		monitor "Nombre Chateaux" value: length(Chateaux);
 		monitor "Attractivite globale" value: length(Foyers_Paysans) + sum(Chateaux collect each.attractivite);
-		monitor "Attractivite agregats" value: sum(Agregats where (!each.fake_agregat) collect each.attractivite);
 		
 		
 		monitor "P.A. GS" value: (Seigneurs where (each.type = "Grand Seigneur")) collect each.puissance_armee;
@@ -205,7 +203,7 @@ experiment Explo_TMD_base type: batch repeat:200 keep_seed: true multicore: true
 experiment Explo_TMD_paroisses type: batch repeat:200 keep_seed: true multicore: true until: (Annee >= fin_simulation){
 	parameter 'save_TMD' var: save_TMD among: [true];
 	parameter 'prefix' var: prefix_output among: ["paroisses"];
-	parameter 'ratio_paroissiens_agregats' var: ratio_paroissiens_agregats among: [75];
+	parameter 'seuil_creation_paroisse' var: seuil_creation_paroisse among: [75];
 }
 
 experiment Explo_TMD_gros_chateaux type: batch repeat:200 keep_seed: true multicore: true until: (Annee >= fin_simulation){
@@ -239,7 +237,7 @@ experiment Explo_TMD_attrac_poles type: batch repeat:200 keep_seed: true multico
 	parameter 'prefix' var: prefix_output among: ["base2"];
 	
 	// Seuil de paroissiens nécessaire à la création d’une nouvelle paroisse en agrégat : 200
-	parameter 'ratio_paroissiens_agregats' var: ratio_paroissiens_agregats among: [200];
+	parameter 'seuil_creation_paroisse' var: seuil_creation_paroisse among: [200];
 	
 	// Augmenter seuil de FP insatisfait pour promotion église : passer de 5 à 10 FP
 	parameter 'nb_paroissiens_mecontents_necessaires' var: nb_paroissiens_mecontents_necessaires among: [10];
@@ -269,7 +267,7 @@ experiment Explo_TMD_attrac_poles type: batch repeat:200 keep_seed: true multico
 	parameter 'prefix' var: prefix_output among: ["base2_test3"];
 	
 	// Seuil de paroissiens nécessaire à la création d’une nouvelle paroisse en agrégat : 200
-	parameter 'ratio_paroissiens_agregats' var: ratio_paroissiens_agregats among: [200];
+	parameter 'seuil_creation_paroisse' var: seuil_creation_paroisse among: [200];
 	
 	// Augmenter seuil de FP insatisfait pour promotion église : passer de 5 à 10 FP
 	parameter 'nb_paroissiens_mecontents_necessaires' var: nb_paroissiens_mecontents_necessaires among: [10];
@@ -299,7 +297,7 @@ experiment Explo_TMD_attrac_poles type: batch repeat:200 keep_seed: true multico
 	parameter 'prefix' var: prefix_output among: ["base2_compo5_2"];
 	
 	// Seuil de paroissiens nécessaire à la création d’une nouvelle paroisse en agrégat : 200
-	parameter 'ratio_paroissiens_agregats' var: ratio_paroissiens_agregats among: [200];
+	parameter 'seuil_creation_paroisse' var: seuil_creation_paroisse among: [200];
 	
 	// Augmenter seuil de FP insatisfait pour promotion église : passer de 5 à 10 FP
 	parameter 'nb_paroissiens_mecontents_necessaires' var: nb_paroissiens_mecontents_necessaires among: [10];
@@ -354,7 +352,7 @@ experiment Explo_TMD_base2_compo5_2bis type: batch repeat:20 keep_seed: true mul
 	parameter 'prefix' var: prefix_output among: ["base2_compo5_2bis"];
 	
 	// Seuil de paroissiens nécessaire à la création d’une nouvelle paroisse en agrégat : 200
-	parameter 'ratio_paroissiens_agregats' var: ratio_paroissiens_agregats among: [200];
+	parameter 'seuil_creation_paroisse' var: seuil_creation_paroisse among: [200];
 	
 	// Augmenter seuil de FP insatisfait pour promotion église : passer de 5 à 10 FP
 	parameter 'nb_paroissiens_mecontents_necessaires' var: nb_paroissiens_mecontents_necessaires among: [10];
@@ -411,7 +409,7 @@ experiment Explo_TMD_base2_compo5_2ter type: batch repeat:20 keep_seed: true mul
 	parameter 'prefix' var: prefix_output among: ["base2_compo5_2ter"];
 	
 	// Seuil de paroissiens nécessaire à la création d’une nouvelle paroisse en agrégat : 200
-	parameter 'ratio_paroissiens_agregats' var: ratio_paroissiens_agregats among: [200];
+	parameter 'seuil_creation_paroisse' var: seuil_creation_paroisse among: [200];
 	
 	// Augmenter seuil de FP insatisfait pour promotion église : passer de 5 à 10 FP
 	parameter 'nb_paroissiens_mecontents_necessaires' var: nb_paroissiens_mecontents_necessaires among: [10];
@@ -474,7 +472,7 @@ experiment Explo_TMD_base2_compo5_2ter type: batch repeat:20 keep_seed: true mul
 	// 		3) En cas de déplacement local, pour déterminer quel pôle sera choisi par le FP pour s'y localiser,
 	// 			appliquer la loterie pondérée par l'attractivité de chaque pôle
 	// 		4) Si pas de déplacement local, p(deplacement_lointain) = 0,2 * (1 - Satisfaction_FP)
-	parameter "deplacement_alternate" var: deplacement_alternate among: [true];
+	//parameter "deplacement_alternate" var: deplacement_alternate among: [true]; // -> Paramètre supprimé car devenu norme
 	
 		// Attractivité des pôles  : prendre les valeurs bien différenciées
 	parameter "attrac_0_eglises" var: attrac_0_eglises among: [0.0];
@@ -495,7 +493,7 @@ experiment Explo_TMD_base2_compo5_2_5 type: batch repeat:20 keep_seed: true mult
 	parameter 'prefix' var: prefix_output among: ["base2_compo5_2_5"];
 	
 	// Seuil de paroissiens nécessaire à la création d’une nouvelle paroisse en agrégat : 200
-	parameter 'ratio_paroissiens_agregats' var: ratio_paroissiens_agregats among: [200];
+	parameter 'seuil_creation_paroisse' var: seuil_creation_paroisse among: [200];
 	
 	// Augmenter seuil de FP insatisfait pour promotion église : passer de 5 à 10 FP
 	parameter 'nb_paroissiens_mecontents_necessaires' var: nb_paroissiens_mecontents_necessaires among: [10];
@@ -558,7 +556,7 @@ experiment Explo_TMD_base2_compo5_2_5 type: batch repeat:20 keep_seed: true mult
 	// 		3) En cas de déplacement local, pour déterminer quel pôle sera choisi par le FP pour s'y localiser,
 	// 			appliquer la loterie pondérée par l'attractivité de chaque pôle
 	// 		4) Si pas de déplacement local, p(deplacement_lointain) = 0,2 * (1 - Satisfaction_FP)
-	parameter "deplacement_alternate" var: deplacement_alternate among: [true];
+	//parameter "deplacement_alternate" var: deplacement_alternate among: [true]; // -> Paramètre supprimé car devenu norme
 	
 		// Attractivité des pôles  : prendre les valeurs bien différenciées
 	parameter "attrac_0_eglises" var: attrac_0_eglises among: [0.0];
@@ -579,9 +577,9 @@ experiment Explo_TMD_base2_compo5_2_6 type: batch repeat:20 keep_seed: true mult
 	parameter 'prefix' var: prefix_output among: ["base2_compo5_2_6"];
 	
 	// Seuil de paroissiens nécessaire à la création d’une nouvelle paroisse en agrégat : 200
-	parameter 'ratio_paroissiens_agregats' var: ratio_paroissiens_agregats among: [300];
+	parameter 'seuil_creation_paroisse' var: seuil_creation_paroisse among: [300];
 	
-	// Augmenter seuil de FP insatisfait pour promotion église : passer de 5 à 10 FP
+	// Augmenter seuil de FP insatisfait pour promotion église : passer de 10 à 20 FP
 	parameter 'nb_paroissiens_mecontents_necessaires' var: nb_paroissiens_mecontents_necessaires among: [20];
 	
 	//  Augmenter un peu la probabilité de promotion en grand châteaux :
@@ -642,7 +640,7 @@ experiment Explo_TMD_base2_compo5_2_6 type: batch repeat:20 keep_seed: true mult
 	// 		3) En cas de déplacement local, pour déterminer quel pôle sera choisi par le FP pour s'y localiser,
 	// 			appliquer la loterie pondérée par l'attractivité de chaque pôle
 	// 		4) Si pas de déplacement local, p(deplacement_lointain) = 0,2 * (1 - Satisfaction_FP)
-	parameter "deplacement_alternate" var: deplacement_alternate among: [true];
+	//parameter "deplacement_alternate" var: deplacement_alternate among: [true]; // -> Paramètre supprimé car devenu norme
 	
 		// Attractivité des pôles  : prendre les valeurs bien différenciées
 	parameter "attrac_0_eglises" var: attrac_0_eglises among: [0.0];
@@ -657,7 +655,7 @@ experiment Explo_TMD_base2_compo5_2_6 type: batch repeat:20 keep_seed: true mult
 
 experiment Exp_debug type: gui {
 	// Seuil de paroissiens nécessaire à la création d’une nouvelle paroisse en agrégat : 200
-	parameter 'ratio_paroissiens_agregats' var: ratio_paroissiens_agregats among: [300];
+	parameter 'seuil_creation_paroisse' var: seuil_creation_paroisse among: [300];
 	
 	// Augmenter seuil de FP insatisfait pour promotion église : passer de 5 à 10 FP
 	parameter 'nb_paroissiens_mecontents_necessaires' var: nb_paroissiens_mecontents_necessaires among: [20];
@@ -720,7 +718,7 @@ experiment Exp_debug type: gui {
 	// 		3) En cas de déplacement local, pour déterminer quel pôle sera choisi par le FP pour s'y localiser,
 	// 			appliquer la loterie pondérée par l'attractivité de chaque pôle
 	// 		4) Si pas de déplacement local, p(deplacement_lointain) = 0,2 * (1 - Satisfaction_FP)
-	parameter "deplacement_alternate" var: deplacement_alternate among: [true];
+	//parameter "deplacement_alternate" var: deplacement_alternate among: [true]; // -> Paramètre supprimé car devenu norme
 	
 		// Attractivité des pôles  : prendre les valeurs bien différenciées
 	parameter "attrac_0_eglises" var: attrac_0_eglises among: [0.0];
@@ -742,7 +740,7 @@ experiment "Explo_TMD_base3_1" type: batch repeat:20 keep_seed: true multicore: 
 	parameter 'prefix' var: prefix_output among: ["base3_1"];
 	
 	// Seuil de paroissiens nécessaire à la création d’une nouvelle paroisse en agrégat : 200
-	parameter 'ratio_paroissiens_agregats' var: ratio_paroissiens_agregats among: [300];
+	parameter 'seuil_creation_paroisse' var: seuil_creation_paroisse among: [300];
 	
 	// Augmenter seuil de FP insatisfait pour promotion église : passer de 5 à 10 FP
 	parameter 'nb_paroissiens_mecontents_necessaires' var: nb_paroissiens_mecontents_necessaires among: [20];
@@ -805,7 +803,7 @@ experiment "Explo_TMD_base3_1" type: batch repeat:20 keep_seed: true multicore: 
 	// 		3) En cas de déplacement local, pour déterminer quel pôle sera choisi par le FP pour s'y localiser,
 	// 			appliquer la loterie pondérée par l'attractivité de chaque pôle
 	// 		4) Si pas de déplacement local, p(deplacement_lointain) = 0,2 * (1 - Satisfaction_FP)
-	parameter "deplacement_alternate" var: deplacement_alternate among: [true];
+	//parameter "deplacement_alternate" var: deplacement_alternate among: [true]; // -> Paramètre supprimé car devenu norme
 	
 		// Attractivité des pôles  : prendre les valeurs bien différenciées
 	parameter "attrac_0_eglises" var: attrac_0_eglises among: [0.0];

@@ -19,7 +19,7 @@ import "Zones_Prelevement.gaml"
 global {
 	action update_poles {
 		ask Poles {do die;}
-		list<Eglises> eglises_paroissiales <- Eglises where (each.reel);
+		list<Eglises> eglises_paroissiales <- Eglises where (each.eglise_paroissiale);
 		
 		list<list> poles_uniques <- [[]];
 				set poles_uniques <- simple_clustering_by_distance((eglises_paroissiales + Chateaux + (Agregats where each.communaute)) of_generic_species Attracteurs, 200);
@@ -95,7 +95,7 @@ global {
     	
     	list<Agregats> agregats_dans_poles <- list(Agregats);
     	list<Chateaux> chateaux_dans_poles <- list(Chateaux);
-    	list<Eglises> eglises_dans_poles <- Eglises where each.reel;
+    	list<Eglises> eglises_dans_poles <- Eglises where each.eglise_paroissiale;
     	ask Agregats {
     		if ((length(mesChateaux) + length(mesParoisses)) >= 1){
     			create Poles number: 1 {
@@ -174,7 +174,6 @@ entities {
 	
 	species Attracteurs schedules: shuffle(Attracteurs) {
 		int attractivite <- 0;
-		bool reel <- true ;
 	}
 	
 	species Poles schedules: shuffle(Poles) {

@@ -82,7 +82,6 @@ experiment Exp_Graphique type: gui multicore: true {
 	
 	parameter "Nombre d'eglises:" var: nombre_eglises category: "Eglises";
 	parameter "Dont eglises paroissiales:" var: nb_eglises_paroissiales category: "Eglises" ;
-	parameter "Probabilite gain des droits paroissiaux" var: proba_gain_droits_paroissiaux category: "Eglises";
 	parameter "Nombre max de paroissiens" var: nb_max_paroissiens category: "Eglises";
 	parameter "Nombre min de paroissiens" var: nb_min_paroissiens category: "Eglises";	
 
@@ -103,7 +102,6 @@ experiment Exp_Graphique type: gui multicore: true {
 		monitor "Nombre Eglises Paroissiales" value: Eglises count (each.eglise_paroissiale);
 		monitor "Nombre Chateaux" value: length(Chateaux);
 		monitor "Attractivite globale" value: length(Foyers_Paysans) + sum(Chateaux collect each.attractivite);
-		monitor "Attractivite agregats" value: sum(Agregats where (!each.fake_agregat) collect each.attractivite);
 		
 		
 		monitor "P.A. GS" value: (Seigneurs where (each.type = "Grand Seigneur")) collect each.puissance_armee;
@@ -193,7 +191,7 @@ experiment "Explo_TMD_base3_1" type: batch repeat:20 keep_seed: true multicore: 
 	parameter 'prefix' var: prefix_output among: ["base3_1"];
 	
 	// Seuil de paroissiens nécessaire à la création d’une nouvelle paroisse en agrégat : 200
-	parameter 'ratio_paroissiens_agregats' var: ratio_paroissiens_agregats among: [300];
+	parameter 'seuil_creation_paroisse' var: seuil_creation_paroisse among: [300];
 	
 	// Augmenter seuil de FP insatisfait pour promotion église : passer de 5 à 10 FP
 	parameter 'nb_paroissiens_mecontents_necessaires' var: nb_paroissiens_mecontents_necessaires among: [20];
@@ -256,7 +254,7 @@ experiment "Explo_TMD_base3_1" type: batch repeat:20 keep_seed: true multicore: 
 	// 		3) En cas de déplacement local, pour déterminer quel pôle sera choisi par le FP pour s'y localiser,
 	// 			appliquer la loterie pondérée par l'attractivité de chaque pôle
 	// 		4) Si pas de déplacement local, p(deplacement_lointain) = 0,2 * (1 - Satisfaction_FP)
-	parameter "deplacement_alternate" var: deplacement_alternate among: [true];
+	//parameter "deplacement_alternate" var: deplacement_alternate among: [true]; // -> Paramètre supprimé car devenu norme
 	
 		// Attractivité des pôles  : prendre les valeurs bien différenciées
 	parameter "attrac_0_eglises" var: attrac_0_eglises among: [0.0];
@@ -368,8 +366,6 @@ experiment Base4_1_FPvillages10batch type: batch repeat:2 keep_seed: true multic
 
 experiment Base4_2 type: batch repeat:2 keep_seed: true multicore: true until: (Annee >= fin_simulation) {
 	// Changement de l'ordonnancement dans le run.gaml
-	parameter 'save_TMD' var: save_TMD among: [true];
-	parameter 'prefix' var: prefix_output among: ["afterTMD_FPvillages"];
 	
 	parameter "distance_max_dem_local" var: distance_max_dem_local among: [4000];
 	parameter "attrac_communautes" var:attrac_communautes among: [0.1];	
