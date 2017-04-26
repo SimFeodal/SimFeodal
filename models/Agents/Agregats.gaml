@@ -231,6 +231,24 @@ global {
 		set monAgregat <- nil ;
 		}
 		
+	list<tmpAgregats> tmpAgregatsRestants <- list(tmpAgregats);	
+	
+	loop cetAgregat over: tmpAgregatsRestants {
+		if (dead(cetAgregat)){tmpAgregatsRestants >- cetAgregat;break;}
+		list<agent> cetAgregatAgents <- cetAgregat.mesAgents;
+		loop autreAgregat over: (tmpAgregatsRestants - cetAgregat){
+			if (autreAgregat.shape intersects cetAgregat.shape){
+				set cetAgregat.shape <- cetAgregat.shape + autreAgregat.shape;
+				set cetAgregat.mesAgents <- cetAgregat.mesAgents + autreAgregat.mesAgents;
+				set cetAgregat.mesFP <- cetAgregat.mesFP + autreAgregat.mesFP;
+	    		set cetAgregat.mesEglisesParoissiales <- cetAgregat.mesEglisesParoissiales + autreAgregat.mesEglisesParoissiales;
+	    		set cetAgregat.mesChateaux <- cetAgregat.mesChateaux + autreAgregat.mesChateaux;
+				tmpAgregatsRestants>- autreAgregat;
+				ask autreAgregat {do die;}	
+			}
+		}
+	}
+		
 		
 		ask tmpAgregats {
 			geometry myShape <- shape;
