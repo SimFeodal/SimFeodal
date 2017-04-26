@@ -62,7 +62,9 @@ global {
 					if (length(eglises_proximite) = 0){
 						// Créer nouvelle église autour du point le plus éloigné du polygone
 						create Eglises number: 1 {
-							set location <- myself.shape farthest_point_to myself.location;
+							geometry cetteParoisse <- myself.shape;
+							geometry cetteParoisseDansMonde <- myself.shape inter worldextent;
+							set location <- cetteParoisseDansMonde farthest_point_to myself.location;
 							set paroisse_a_creer <- self ;
 						}
 						set eglise_batie <- true ;
