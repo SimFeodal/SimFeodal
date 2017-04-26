@@ -812,7 +812,7 @@ experiment "Explo_TMD_base3_1" type: batch repeat:20 keep_seed: true multicore: 
 	parameter "attrac_3_eglises" var: attrac_3_eglises among: [0.55];
 	parameter "attrac_4_eglises" var: attrac_4_eglises among: [0.65];
 	parameter "attrac_GC" var: attrac_GC among: [0.15];
-	parameter "attrac_PC" var: attrac_PC among: [0.1];	
+	parameter "attrac_PC" var: attrac_PC among: [0.05];	
 	
 	parameter "agregats_alternate" var: agregats_alternate category: "Seigneurs" among: [true];
 	parameter "poles_alternate" var: poles_alternate category: "Seigneurs" among: [true];
