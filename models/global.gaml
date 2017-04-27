@@ -26,7 +26,6 @@ global torus: false{
 	
 	bool benchmark <- false;
 	bool save_outputs <- false;
-	bool save_TMD <- false;
 	int debut_simulation <- 800;
 	int fin_simulation <- 1160;
 	int duree_step <- 20;
@@ -38,7 +37,7 @@ global torus: false{
 	int nombre_FP_agregat <- 5;
 	int nombre_agglos_antiques <- 4 ;
 	int nombre_villages <- 20 ;
-	int nombre_FP_village <- 5;
+	int nombre_FP_village <- 10;
 	float puissance_communautes <- 0.25;
 	int apparition_communautes <- 800;
 	float proba_apparition_communaute <- 0.2;
@@ -48,10 +47,9 @@ global torus: false{
 	int nombre_foyers_paysans <- 4000 ;
 	float taux_renouvellement <- 0.05 ;
 	float taux_mobilite <- 0.8;
-	int distance_max_dem_local <- 7000;
+	int distance_max_dem_local <- 4000;
 	int seuil_puissance_armee <- 400; // P.A. d'un proprio de chateau pour que le FP soit satisfait.
 	
-	bool deplacement_local_agregats_alternate <- false;
 	 
 	// SEIGNEURS //
 	
@@ -110,29 +108,14 @@ global torus: false{
 	
 	// POLES //
 	float attrac_0_eglises <- 0.0;
-	float attrac_1_eglises <- 0.17;
-	float attrac_2_eglises <- 0.34;
-	float attrac_3_eglises <- 0.51;
-	float attrac_4_eglises <- 0.66;
-	float attrac_GC <- 0.34;
-	float attrac_PC <- 0.17;
+	float attrac_1_eglises <- 0.15;
+	float attrac_2_eglises <- 0.25;
+	float attrac_3_eglises <- 0.5;
+	float attrac_4_eglises <- 0.6;
+	float attrac_GC <- 0.25;
+	float attrac_PC <- 0.15;
+	float attrac_communautes <- 0.15;
 	
-	float attrac_communautes <- 0.1;
-	
-	bool chateaux_GS_alternate <- true; // Toujours activé
-	bool chateaux_PS_alternate <- true; // Toujours activé
-	bool puissance_armee_FP_alternate <- true; // Toujours activé
-	bool communautes_attractives <- true; // Toujours activé
-	bool agregats_alternate <- true; // Toujours activé
-	bool agregats_alternate2 <- false;
-	bool poles_alternate <- true; // Toujours activé
-	bool agregats_simplifie <- false;
-	bool poles_shape_simplifie <- false;
-	bool augmentation_max_dem_local <- false;
-	bool deplacement_local_alternate <- false;
-	bool satisfaction_alternate <- false;
-	
-
 	
 	////////////
 	/// TEMP ///
@@ -198,10 +181,10 @@ global torus: false{
 	action update_distance_max_dem_local {
 		if Annee < 900 {
 			set distance_max_dem_local <- 2500;
-		} else if Annee < 1000 {
+		} else if (Annee >= 900 and Annee < 1000) {
 			 set distance_max_dem_local <- 4000;
-		} else {
-			set distance_max_dem_local <- 6000; // TODO : Changement 4_4quatro : passage de 6000 à 4000
+		} else  if (Annee >= 1000) {
+			set distance_max_dem_local <- 6000;
 		}
 	}
 	

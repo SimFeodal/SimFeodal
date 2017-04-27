@@ -112,7 +112,7 @@ global {
 	action generer_monde {
 		do generer_foyers_paysans;
 		do generer_eglises;
-		do update_agregats_alternate;
+		do update_agregats;
 		do generer_seigneurs;
 		do attribuer_puissance_seigneurs;
 	}
