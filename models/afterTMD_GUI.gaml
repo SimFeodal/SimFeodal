@@ -7,7 +7,9 @@
 model t8
 
 // L'ordre compte...
-import "run4_2.gaml"
+// import "run.gaml // Jusqu'à version 4.2
+// import "run4_2.gaml" // Jusqu'à version 4.4
+import "run4_4.gaml"	
 	
 experiment Exp_Graphique type: gui multicore: true {
 	
@@ -696,6 +698,86 @@ experiment Exp_Graphique_4_3ter type: gui {
 			species Poles transparency: 0.3;
 			
 			text string(Annee) size: 10000 position: {0, 1} color: rgb("black");
+		}
+	}
+}
+
+
+experiment Exp_Graphique_4_4 type: batch repeat: 10 keep_seed: true multicore: true until: (Annee >= fin_simulation){
+	parameter 'save_TMD' var: save_TMD among: [true];
+	parameter 'prefix' var: prefix_output among: ["4_4"];
+	parameter "benchmark" var: benchmark among: [true]; // Changement pour connaitre perfs fonctions
+	
+	parameter "augmentation_max_dem_local" var: augmentation_max_dem_local among: [true];
+	parameter "deplacement_local_alternate" var: deplacement_local_alternate among: [false];
+	parameter "satisfaction_alternate" var: satisfaction_alternate among: [true];
+	
+	
+	parameter "distance_max_dem_local" var: distance_max_dem_local among: [4000];
+	parameter "attrac_communautes" var:attrac_communautes among: [0.15];	
+	parameter "attrac_0_eglises" var: attrac_0_eglises among: [0.0];
+	parameter "attrac_1_eglises" var: attrac_1_eglises among: [0.15];
+	parameter "attrac_2_eglises" var: attrac_2_eglises among: [0.25];
+	parameter "attrac_3_eglises" var: attrac_3_eglises among: [0.5];
+	parameter "attrac_4_eglises" var: attrac_4_eglises among: [0.6];
+	parameter "attrac_GC" var: attrac_GC among: [0.25];
+	parameter "attrac_PC" var: attrac_PC among: [0.15];
+	
+	parameter "agregats_alternate" var: agregats_alternate category: "Seigneurs" among: [false];
+	parameter "poles_alternate" var: poles_alternate category: "Seigneurs" among: [true];
+	parameter "agregats_alternate2" var: agregats_alternate2 among: [false];
+	parameter "poles_shape_simplifie" var: poles_shape_simplifie among: [true];
+	parameter "agregats_simplifie" var: agregats_simplifie among: [true];
+	parameter "nombre_FP_village" var: nombre_FP_village among: [10];
+	
+
+	output {
+		monitor "Annee" value: Annee;
+		monitor "Nombre de Foyers paysans" value: length(Foyers_Paysans);
+
+		monitor "Nombre d'agregats" value: length(Agregats);
+
+		monitor "Nombre FP Comm." value: Foyers_Paysans count (each.communaute);
+		monitor "Nombre Seigneurs" value: length(Seigneurs);
+		monitor "Nombre Grands Seigneurs" value: Seigneurs count (each.type = "Grand Seigneur");
+		monitor "Nombre Petits Seigneurs" value: Seigneurs count (each.type = "Petit Seigneur");
+		monitor "Nombre Eglises" value: length(Eglises);
+		monitor "Nombre Eglises Paroissiales" value: Eglises count (each.eglise_paroissiale);
+		monitor "Nombre Chateaux" value: length(Chateaux);
+				
+		
+		monitor "% FP dispersés" value: Foyers_Paysans count (each.monAgregat = nil) / length(Foyers_Paysans) * 100;
+
+
+		
+		display "Carte" {
+			species Paroisses transparency: 0.9 ;
+			agents "Eglises Paroissiales" value: Eglises where (each.eglise_paroissiale) aspect: base transparency: 0.5;
+			species Chateaux aspect: base ;
+			species Agregats transparency: 0.3;
+			species Poles transparency: 0.3;
+			
+			text string(Annee) size: 10000 position: {0, 1} color: rgb("black");
+		}
+	}
+}
+
+
+			species Agregats transparency: 0.3;
+			species Poles transparency: 0.3;
+			
+			text string(Annee) size: 10000 position: {0, 1} color: rgb("black");
+			agents "Eglises Paroissiales" value: Eglises where (each.eglise_paroissiale) aspect: base transparency: 0.5;
+			species Chateaux aspect: base ;
+			agents "Eglises Paroissiales" value: Eglises where (each.eglise_paroissiale) aspect: base transparency: 0.5;
+			species Chateaux aspect: base ;
+			species Agregats transparency: 0.3;
+			species Poles transparency: 0.3;
+			
+			text string(Annee) size: 10000 position: {0, 1} color: rgb("black");
+		}
+	}
+}
 		}
 	}
 }

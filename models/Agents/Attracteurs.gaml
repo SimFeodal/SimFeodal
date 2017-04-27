@@ -125,6 +125,7 @@ global {
 				geometry cetAgregatShape <- cetAgregat.shape;
 				if (!poles_shape_simplifie) {cetAgregatShape <- cetAgregatShape + 200;}
 				if (cePole.shape intersects cetAgregatShape){
+					set cetAgregat.monPole <- cePole;
 					set cePole.shape <- cePole.shape + cetAgregatShape;
 					set cePole.monAgregat <- cetAgregat;
 					loop pole_a_absorber over: (Poles - cePole) {

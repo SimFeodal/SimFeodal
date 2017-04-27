@@ -50,6 +50,8 @@ global torus: false{
 	float taux_mobilite <- 0.8;
 	int distance_max_dem_local <- 7000;
 	int seuil_puissance_armee <- 400; // P.A. d'un proprio de chateau pour que le FP soit satisfait.
+	
+	bool deplacement_local_agregats_alternate <- false;
 	 
 	// SEIGNEURS //
 	
@@ -199,7 +201,7 @@ global torus: false{
 		} else if Annee < 1000 {
 			 set distance_max_dem_local <- 4000;
 		} else {
-			set distance_max_dem_local <- 6000;
+			set distance_max_dem_local <- 6000; // TODO : Changement 4_4quatro : passage de 6000 à 4000
 		}
 	}
 	

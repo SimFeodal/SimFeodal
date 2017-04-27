@@ -163,24 +163,44 @@ entities
 	// 			appliquer la loterie pondérée par l'attractivité de chaque pôle
 	// 		4) Si pas de déplacement local, p(deplacement_lointain) = 0,2 * (1 - Satisfaction_FP)
 
-			
-			if (deplacement_local_alternate){
-				if (flip(1 - Satisfaction)) {
-					set location <- deplacement_local();
+			if (deplacement_local_agregats_alternate){
+				if (monAgregat != nil and monAgregat.monPole != nil){
+					Poles meilleurPole <- (Poles at_distance distance_max_dem_local) with_max_of (each.attractivite);
+					if (monAgregat.monPole.attractivite >= meilleurPole.attractivite) { //  Si le pole de mon agrégat a une attractivié > attrac des  poles du voisinage
+					// Alors la proba de deplacement local vaut 0 et donc je m'en remet au depl. lointain sous condition etc;
+						set location <- flip(0.2 * (1 - Satisfaction)) ? deplacement_lointain() : location;
+					} else { // Si un pole du voisinage a une attrac > monAgregat.pole
+					// Alors la proba de deplacement local vaut 1 - Satisfaction
+						if (flip(1 - Satisfaction)) {
+							set location <- deplacement_local();
+						} else {
+							set location <- flip(0.2 * (1 - Satisfaction)) ? deplacement_lointain() : location;
+						}
+					}
 				} else {
-					set location <- flip(0.2 * (1 - Satisfaction)) ? deplacement_lointain() : location;
-				}
-					
+					if (flip(1 - Satisfaction)) {
+						set location <- deplacement_local();
+					} else {
+						set location <- flip(0.2 * (1 - Satisfaction)) ? deplacement_lointain() : location;
+					}		
+				}		
 			} else {
-			Poles poleLocalMaxAttrac <- (Poles at_distance distance_max_dem_local) with_max_of (each.attractivite);
-			float bestAttrac <- (poleLocalMaxAttrac = nil) ? 0.0 : poleLocalMaxAttrac.attractivite;
-			
-			// Test version 4.2 :
-			if (flip(max([ bestAttrac -  Satisfaction, 0.0]))) {
-				set location <- deplacement_local();
-			} else {
-				set location <- flip(0.2 * (1 - Satisfaction)) ? deplacement_lointain() : location;
-			}
+				if (deplacement_local_alternate){
+					if (flip(1 - Satisfaction)) {
+						set location <- deplacement_local();
+					} else {
+						set location <- flip(0.2 * (1 - Satisfaction)) ? deplacement_lointain() : location;
+					}		
+				} else {
+					Poles poleLocalMaxAttrac <- (Poles at_distance distance_max_dem_local) with_max_of (each.attractivite);
+					float bestAttrac <- (poleLocalMaxAttrac = nil) ? 0.0 : poleLocalMaxAttrac.attractivite;
+					// Test version 4.2 :
+					if (flip(max([ bestAttrac -  Satisfaction, 0.0]))) {
+						set location <- deplacement_local();
+					} else {
+						set location <- flip(0.2 * (1 - Satisfaction)) ? deplacement_lointain() : location;
+					}
+				}		
 			}
 		}
 

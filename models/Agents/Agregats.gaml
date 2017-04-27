@@ -364,6 +364,7 @@ entities {
 		list<Eglises> mesParoisses;
 		int nb_fp_attires <- 0 update: 0;
 		int nbfp_avant_dem <- 0 update: 0;
+		Poles monPole <- nil;
 		
 		action update_chateau {
 			// FIXME : Chateaux trop proches sinon
