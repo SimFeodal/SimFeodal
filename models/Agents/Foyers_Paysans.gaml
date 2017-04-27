@@ -139,7 +139,7 @@ entities
 				int seuil2 <- 5000;
 				float distance_chateau <- plusProcheChateau distance_to self;
 				set satisfaction_distance <- max([0.0, min([1.0, -(distance_chateau / (seuil2 - seuil1)) + (seuil2 / (seuil2 - seuil1))])]); // [0 -> 1]
-				set satisfaction_puissance <- min([1, plusProcheChateau.proprietaire.puissance_armee / seuil_puissance_armee]);
+				//set satisfaction_puissance <- min([1, plusProcheChateau.proprietaire.puissance_armee / seuil_puissance_armee]);
 				
 			}
 				set satisfaction_protection <- satisfaction_distance ^ (besoin_protection);

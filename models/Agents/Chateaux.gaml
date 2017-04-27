@@ -32,12 +32,6 @@ entities {
 		Zones_Prelevement ZP_basseMoyenneJustice;
 		int monRayon;
 		
-		action update_attractivite {
-			//set attractivite <- length(fonctions_possedees);
-			// 3000 ==1 
-			// 0 == 0
-			set attractivite <- min([proprietaire.puissance_armee /  seuil_attractivite_chateau, 1]);
-		}
 		
 		action creation_ZP_loyer (point centre, int rayon, Seigneurs proprio, float taux_taxation){
 			create Zones_Prelevement number: 1 {

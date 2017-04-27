@@ -58,7 +58,7 @@ global schedules: list(world) + list(Attracteurs) + list(Poles)+ list(Agregats) 
 	}
 	
 	reflex MaJ_Chateaux {
-		ask Chateaux {do update_attractivite;}
+		//ask Chateaux {do update_attractivite;}
 	}
 	
 	
