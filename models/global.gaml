@@ -125,14 +125,14 @@ global torus: false{
 	////////////
 	
 	int Annee <- debut_simulation update: Annee + duree_step;
-	const world_bounds type: geometry <- square(100 #km) translated_by {50 #km , 50 #km};
+	geometry world_bounds <- square(100 #km) translated_by {50 #km , 50 #km};
 	
-	const shape type: geometry <- envelope(world_bounds) ;
-	const worldextent type: geometry <- envelope(world_bounds) ;
-	const reduced_worldextent type: geometry<- worldextent scaled_by 0.99;
+	geometry shape <- envelope(world_bounds) ;
+	geometry worldextent <- envelope(world_bounds) ;
+	geometry reduced_worldextent <- worldextent scaled_by 0.99;
 	
-	const nb_seigneurs_a_creer_total type: int <- nombre_seigneurs_objectif - (nombre_grands_seigneurs + nombre_petits_seigneurs);
-	const nb_moyen_petits_seigneurs_par_tour type: int <- round(nb_seigneurs_a_creer_total / ((fin_simulation - debut_simulation) / duree_step));
+	int nb_seigneurs_a_creer_total <- nombre_seigneurs_objectif - (nombre_grands_seigneurs + nombre_petits_seigneurs);
+	int nb_moyen_petits_seigneurs_par_tour <- round(nb_seigneurs_a_creer_total / ((fin_simulation - debut_simulation) / duree_step));
 	
 	/////////////
 	// OUTPUTS //
