@@ -26,6 +26,7 @@ global {
 		do save_FP_summary(currentPrefix);
 		do save_FP_all(currentPrefix);
 		do save_paroisses(currentPrefix);
+		do save_FP(currentPrefix);
 	}
 	
 	action save_parameters(string prefix) {	
@@ -101,6 +102,24 @@ global {
 			] to: ("../outputs/"+ prefix +"_results_poles.csv") type: "csv" rewrite: false;
 		}
 		
+	}
+	
+	action save_FP(string prefix) {
+		ask Foyers_Paysans {
+			float sMat <- satisfaction_materielle with_precision 2;
+			float sRel <- satisfaction_materielle with_precision 2;
+			float sProt <- satisfaction_protection with_precision 2;
+			float Satis <- Satisfaction with_precision 2;
+			string myLoc <- "\"" + round(location) + "\"";
+			
+			save [
+				myseed, prefix_output, Annee, self,
+				communaute, monAgregat,
+				sMat, sRel, sProt,
+				Satis, mobile, nb_preleveurs, myLoc
+			] to: ("../outputs/"+ prefix +"_results_FP.csv") type: "csv" rewrite: false;
+		}
+
 	}
 	
 	action save_FP_all(string prefix) {
