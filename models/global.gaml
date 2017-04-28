@@ -46,9 +46,12 @@ global torus: false{
 	
 	int nombre_foyers_paysans <- 4000 ;
 	float taux_renouvellement <- 0.05 ;
+	float taux_augmentation_FP <- 0.0;
 	float taux_mobilite <- 0.8;
 	int distance_max_dem_local <- 4000;
 	int seuil_puissance_armee <- 400; // P.A. d'un proprio de chateau pour que le FP soit satisfait.
+	list<int> seuils_distance_max_dem_local <- [2500, 4000, 6000];
+	float proba_ponderee_deplacement_lointain <- 0.2;
 	
 	 
 	// SEIGNEURS //
@@ -180,11 +183,11 @@ global torus: false{
 	
 	action update_distance_max_dem_local {
 		if Annee < 900 {
-			set distance_max_dem_local <- 2500;
+			set distance_max_dem_local <- seuils_distance_max_dem_local[0];
 		} else if (Annee >= 900 and Annee < 1000) {
-			 set distance_max_dem_local <- 4000;
+			 set distance_max_dem_local <- seuils_distance_max_dem_local[1];
 		} else  if (Annee >= 1000) {
-			set distance_max_dem_local <- 6000;
+			set distance_max_dem_local <- seuils_distance_max_dem_local[2];
 		}
 	}
 	

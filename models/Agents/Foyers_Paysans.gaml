@@ -32,8 +32,7 @@ global
 		
 		list<Agregats> tousAgregats <- Agregats sort_by (each.attractivite);
 		list<int> attrac_agregats <- tousAgregats collect each.attractivite;
-		create Foyers_Paysans number: (nb_FP_impactes)
-		//create Foyers_Paysans number: ((attractivite_totale * 0.06) + nb_FP_impactes) // FIXME
+		create Foyers_Paysans number: ((length(Foyers_Paysans) * taux_augmentation_FP) + nb_FP_impactes)
 		{
 			if (flip(proba_apparition_agregat)){
 				Agregats meilleurAgregat <- tousAgregats at rnd_choice(attrac_agregats);
@@ -161,20 +160,20 @@ entities
 					Poles meilleurPole <- (Poles at_distance distance_max_dem_local) with_max_of (each.attractivite);
 					if (monAgregat.monPole.attractivite >= meilleurPole.attractivite) { //  Si le pole de mon agrégat a une attractivié > attrac des  poles du voisinage
 					// Alors la proba de deplacement local vaut 0 et donc je m'en remet au depl. lointain sous condition etc;
-						set location <- flip(0.2 * (1 - Satisfaction)) ? deplacement_lointain() : location;
+						set location <- flip(proba_ponderee_deplacement_lointain * (1 - Satisfaction)) ? deplacement_lointain() : location;
 					} else { // Si un pole du voisinage a une attrac > monAgregat.pole
 					// Alors la proba de deplacement local vaut 1 - Satisfaction
 						if (flip(1 - Satisfaction)) {
 							set location <- deplacement_local();
 						} else {
-							set location <- flip(0.2 * (1 - Satisfaction)) ? deplacement_lointain() : location;
+							set location <- flip(proba_ponderee_deplacement_lointain * (1 - Satisfaction)) ? deplacement_lointain() : location;
 						}
 					}
 				} else {
 					if (flip(1 - Satisfaction)) {
 						set location <- deplacement_local();
 					} else {
-						set location <- flip(0.2 * (1 - Satisfaction)) ? deplacement_lointain() : location;
+						set location <- flip(proba_ponderee_deplacement_lointain * (1 - Satisfaction)) ? deplacement_lointain() : location;
 					}		
 				}		
 		}
