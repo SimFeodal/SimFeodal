@@ -49,7 +49,7 @@ global {
 				nb_min_paroissiens, seuil_creation_paroisse, nb_paroissiens_mecontents_necessaires,
 				attrac_0_eglises, attrac_1_eglises, attrac_2_eglises, attrac_3_eglises, attrac_4_eglises,
 				attrac_GC, attrac_PC, attrac_communautes	
-			] to: ("../outputs/"+ prefix +"_parameters.csv") type: "csv";
+			] to: ("../outputs/"+ prefix +"_parameters.csv") type: "csv" rewrite: false;
 	}
 	
 	action save_global(string prefix) {
@@ -60,7 +60,7 @@ global {
 				distance_eglises, distance_eglises_paroissiales,
 				prop_FP_isoles, charge_fiscale,dist_ppv_agregat,total_duration
 				
-			] to: ("../outputs/"+ prefix +"_results_global.csv") type: "csv";
+			] to: ("../outputs/"+ prefix +"_results_global.csv") type: "csv" rewrite: false;
 	}
 	
 	action save_seigneurs(string prefix) {
@@ -71,7 +71,7 @@ global {
 				Chateaux count (each.proprietaire = self),Chateaux count (each.gardien = self),
 				length(FP_assujettis), Seigneurs count (each.monSuzerain = self), length(mesDebiteurs)
 				]
-			to:("../outputs/"+ prefix +"_results_seigneurs.csv") type: "csv";
+			to:("../outputs/"+ prefix +"_results_seigneurs.csv") type: "csv" rewrite: false;
 		}
 	}
 	
@@ -81,7 +81,7 @@ global {
 				myseed, prefix_output, Annee, self,
 				length(fp_agregat), nbfp_avant_dem,
 				nb_fp_attires, shape.area, communaute,  "\"" + shape.location + "\""
-			] to: ("../outputs/"+ prefix +"_results_agregats.csv") type: "csv";
+			] to: ("../outputs/"+ prefix +"_results_agregats.csv") type: "csv" rewrite: false;
 		}
 	}
 	
@@ -98,7 +98,7 @@ global {
 				attractivite, length(mesAttracteurs), monAgregat,
 				nbEglises, nbParoisses, nbGC, nbPC, nbCA, "\"" + shape.location + "\""
 				
-			] to: ("../outputs/"+ prefix +"_results_poles.csv") type: "csv";
+			] to: ("../outputs/"+ prefix +"_results_poles.csv") type: "csv" rewrite: false;
 		}
 		
 	}
@@ -108,7 +108,7 @@ global {
 			myseed, prefix_output, Annee,
 			nbInInIntra, nbInOutIntra, nbOutInIntra, nbOutOutIntra,
 			nbInInInter, nbInOutInter, nbOutInInter, nbOutOutInter
-		] to: ("../outputs/"+ prefix +"_results_FP_all.csv") type: "csv";
+		] to: ("../outputs/"+ prefix +"_results_FP_all.csv") type: "csv" rewrite: false;
 	}
 	
 	action save_FP_summary(string prefix) {
@@ -116,7 +116,7 @@ global {
 				myseed, prefix_output, Annee,
 				nb_demenagement_local, nb_demenagement_lointain,
 				nb_FP_sat_024, nb_FP_sat_2549, nb_FP_sat_5075, nb_FP_sat_75100
-			] to: ("../outputs/"+ prefix +"_results_summFP.csv") type: "csv";
+			] to: ("../outputs/"+ prefix +"_results_summFP.csv") type: "csv" rewrite: false;
 		
 	}
 	
@@ -126,7 +126,7 @@ global {
 					myseed, prefix_output, Annee, self,
 					monEglise, shape.area,
 					length(mesFideles), Satisfaction_Paroisse with_precision 3, "\"" + shape.points + "\""
-				] to: ("../outputs/"+ prefix +"_results_paroisses.csv") type: "csv";
+				] to: ("../outputs/"+ prefix +"_results_paroisses.csv") type: "csv" rewrite: false;
 			}
 		}
 	
