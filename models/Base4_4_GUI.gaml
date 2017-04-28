@@ -42,3 +42,57 @@ experiment Exp_4_4_gui type: gui multicore: true {
 	}
 }
 
+experiment Exp_4_4_A type: batch repeat: 20 keep_seed: true multicore: true until: (Annee >= fin_simulation){
+	parameter 'save_outputs' var: save_outputs among: [true];
+	parameter 'prefix' var: prefix_output among: ["4_4_A"];
+	parameter "benchmark" var: benchmark among: [false]; // Changement pour connaitre perfs fonctions
+}
+
+experiment Exp_4_4_B type: batch repeat: 20 keep_seed: true multicore: true until: (Annee >= fin_simulation){
+	//   - Modification du paramètre nombre\_FP\_village entre 5 et 9. Autres paramètres inchangés. : 5 * 20 rep
+	parameter 'save_outputs' var: save_outputs among: [true];
+	parameter 'prefix' var: prefix_output among: ["4_4_B"];
+	parameter "benchmark" var: benchmark among: [false]; // Changement pour connaitre perfs fonctions
+	
+	parameter "nombre_FP_village" var: nombre_FP_village among: [5, 6, 7, 8, 9];
+}
+
+experiment Exp_4_4_C type: batch repeat: 20 keep_seed: true multicore: true until: (Annee >= fin_simulation){
+	// rayon de la distance de déplacement local au cours du temps :
+	// 		2,5km entre 800 et 880 ; puis 4km entre 900 et 980 ; puis 4km à partir de 1000
+	// + nombre\_FP\_village égale à 5 et à 10.
+	parameter 'save_outputs' var: save_outputs among: [true];
+	parameter 'prefix' var: prefix_output among: ["4_4_C"];
+	parameter "benchmark" var: benchmark among: [false]; // Changement pour connaitre perfs fonctions
+	
+	parameter "nombre_FP_village" var: nombre_FP_village among: [5, 10];
+	parameter "seuils_distance_max_dem_local" var: seuils_distance_max_dem_local among: [[2500, 4000, 4000]];
+}
+
+experiment Exp_4_4_D type: batch repeat: 20 keep_seed: true multicore: true until: (Annee >= fin_simulation){
+	// 0,06% croissance nb FP
+	// p_depl_lointain avec paramètre à 0,2 (valeur par défaut), 0,5 et 0,7
+	// nombre\_FP\_village égale à 5 et à 10. :
+	parameter 'save_outputs' var: save_outputs among: [true];
+	parameter 'prefix' var: prefix_output among: ["4_4_D"];
+	parameter "benchmark" var: benchmark among: [false]; // Changement pour connaitre perfs fonctions
+	
+	parameter "nombre_FP_village" var: nombre_FP_village among: [5, 10];
+	parameter "taux_augmentation_FP" var: taux_augmentation_FP among: [0.06];
+	parameter "proba_ponderee_deplacement_lointain" var: proba_ponderee_deplacement_lointain among: [0.2, 0.5, 0.7];
+}
+
+experiment Exp_4_4_E type: batch repeat: 20 keep_seed: true multicore: true until: (Annee >= fin_simulation){
+	// 0,22% croissance nb FP
+	// p_depl_lointain avec paramètre à 0,2 (valeur par défaut), 0,5 et 0,7
+	// nombre\_FP\_village égale à 5 et à 10. :
+	parameter 'save_outputs' var: save_outputs among: [true];
+	parameter 'prefix' var: prefix_output among: ["4_4_E"];
+	parameter "benchmark" var: benchmark among: [false]; // Changement pour connaitre perfs fonctions
+	
+	parameter "nombre_FP_village" var: nombre_FP_village among: [5, 10];
+	parameter "taux_augmentation_FP" var: taux_augmentation_FP among: [0.22];
+	parameter "proba_ponderee_deplacement_lointain" var: proba_ponderee_deplacement_lointain among: [0.2, 0.5, 0.7];
+}
+
+
