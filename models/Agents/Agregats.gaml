@@ -35,7 +35,7 @@ global {
 			}
     	}
 
-    			// Desaffectation des FP //
+	// Desaffectation des FP //
 		ask Foyers_Paysans {
 		if (monAgregat != nil){
 			set typeInter <- "In";
@@ -44,26 +44,26 @@ global {
 		}
 		set monAgregat <- nil ;
 		}
+			
+		list<tmpAgregats> tmpAgregatsRestants <- list(tmpAgregats);	
 		
-	list<tmpAgregats> tmpAgregatsRestants <- list(tmpAgregats);	
-	
-	loop cetAgregat over: tmpAgregatsRestants {
-		if (dead(cetAgregat)){tmpAgregatsRestants >- cetAgregat;break;}
-		list<agent> cetAgregatAgents <- cetAgregat.mesAgents;
-		loop autreAgregat over: (tmpAgregatsRestants - cetAgregat){
-			if (autreAgregat.shape intersects cetAgregat.shape){
-				set cetAgregat.shape <- cetAgregat.shape + autreAgregat.shape;
-				set cetAgregat.mesAgents <- cetAgregat.mesAgents + autreAgregat.mesAgents;
-				set cetAgregat.mesFP <- cetAgregat.mesFP + autreAgregat.mesFP;
-	    		set cetAgregat.mesEglisesParoissiales <- cetAgregat.mesEglisesParoissiales + autreAgregat.mesEglisesParoissiales;
-	    		set cetAgregat.mesChateaux <- cetAgregat.mesChateaux + autreAgregat.mesChateaux;
-				tmpAgregatsRestants>- autreAgregat;
-				ask autreAgregat {do die;}	
+		loop cetAgregat over: tmpAgregatsRestants {
+			if (dead(cetAgregat)){tmpAgregatsRestants >- cetAgregat;break;}
+			list<agent> cetAgregatAgents <- cetAgregat.mesAgents;
+			loop autreAgregat over: (tmpAgregatsRestants - cetAgregat){
+				if (autreAgregat.shape intersects cetAgregat.shape){
+					set cetAgregat.shape <- cetAgregat.shape + autreAgregat.shape;
+					set cetAgregat.mesAgents <- cetAgregat.mesAgents + autreAgregat.mesAgents;
+					set cetAgregat.mesFP <- cetAgregat.mesFP + autreAgregat.mesFP;
+		    		set cetAgregat.mesEglisesParoissiales <- cetAgregat.mesEglisesParoissiales + autreAgregat.mesEglisesParoissiales;
+		    		set cetAgregat.mesChateaux <- cetAgregat.mesChateaux + autreAgregat.mesChateaux;
+					tmpAgregatsRestants>- autreAgregat;
+					ask autreAgregat {do die;}	
+				}
 			}
 		}
-	}
-		
-		
+			
+			
 		ask tmpAgregats {
 			geometry myShape <- shape;
 			Agregats thisOldAgregat <- nil;
@@ -83,7 +83,7 @@ global {
 				}
 			}
 		}
-
+	
 		ask Agregats {
 			do die;
 		}
@@ -107,12 +107,12 @@ global {
 			set fp_agregat <- Foyers_Paysans overlapping self;	
 			}
 		}
-    	// ***************************** //
-    	//  Suppression des tmpAgregats  //
-    	// ***************************** //
-    	
-    	ask tmpAgregats {do die;}
-		
+	    	// ***************************** //
+	    	//  Suppression des tmpAgregats  //
+	    	// ***************************** //
+	    	
+		ask tmpAgregats {do die;}
+			
 		ask Agregats {
 			Agregats thisAg <- self;
 			ask fp_agregat {
@@ -124,11 +124,11 @@ global {
 			}
 			if (Annee >= apparition_communautes){do update_communaute;}
 		}
-		
-    	ask Foyers_Paysans where (each.monAgregat = nil){	
-    		set typeInter <- typeInter + "Out";
-    	}
-     }
+			
+		ask Foyers_Paysans where (each.monAgregat = nil){	
+			set typeInter <- typeInter + "Out";
+		}
+ 	}
     
     action update_agregats_fp {
     	
