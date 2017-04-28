@@ -16,7 +16,6 @@ import "Attracteurs.gaml"
 import "Zones_Prelevement.gaml"
 
 
-entities {
 	species Chateaux parent: Attracteurs  schedules: shuffle(Chateaux){
 	
 		string type <- "Petit Chateau";
@@ -98,4 +97,3 @@ entities {
 			draw circle(500) color: #red ;
 		}
 	}
-}

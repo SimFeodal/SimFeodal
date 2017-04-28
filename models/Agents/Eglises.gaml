@@ -97,50 +97,46 @@ global {
 }
 
 
-entities {
+species Paroisses {
+	Eglises monEglise <- nil;
+	list<Foyers_Paysans> mesFideles <- nil ;
+	rgb color <- #white ;
+	float Satisfaction_Paroisse <- 1.0 ;
 	
-	species Paroisses {
-		Eglises monEglise <- nil;
-		list<Foyers_Paysans> mesFideles <- nil ;
-		rgb color <- #white ;
-		float Satisfaction_Paroisse <- 1.0 ;
-		
-		
+	
 
-		action update_fideles {
-			set mesFideles <- Foyers_Paysans inside self.shape ;
-			
-		}
+	action update_fideles {
+		set mesFideles <- Foyers_Paysans inside self.shape ;
+		
+	}
 
-		action update_satisfaction {
-			if length(mesFideles) > 0 {
-				int nb_paroissiens_mecontents <- mesFideles count (each.satisfaction_religieuse = 0.0);
-				if nb_paroissiens_mecontents > nb_paroissiens_mecontents_necessaires {
-					set Satisfaction_Paroisse <- 0.0;
-				} else {
-					set Satisfaction_Paroisse <- 1.0 ;
-				}
+	action update_satisfaction {
+		if length(mesFideles) > 0 {
+			int nb_paroissiens_mecontents <- mesFideles count (each.satisfaction_religieuse = 0.0);
+			if nb_paroissiens_mecontents > nb_paroissiens_mecontents_necessaires {
+				set Satisfaction_Paroisse <- 0.0;
+			} else {
+				set Satisfaction_Paroisse <- 1.0 ;
 			}
 		}
-		
-		
-		aspect base {
-			draw shape color: color;
-		}
 	}
 	
-	species Eglises parent: Attracteurs schedules: shuffle(Eglises) {
-		string type;
-		//list<string> droits_paroissiaux <- []; // ["Baptême" / "Inhumation" / "Eucharistie"]
-		bool eglise_paroissiale <- false;
-		int attractivite <- 0;
-		rgb color <- #blue ;
 	
-		aspect base {
-			draw circle(200) color: color ;
-		}
-		
+	aspect base {
+		draw shape color: color;
 	}
-	
-
 }
+
+species Eglises parent: Attracteurs schedules: shuffle(Eglises) {
+	string type;
+	//list<string> droits_paroissiaux <- []; // ["Baptême" / "Inhumation" / "Eucharistie"]
+	bool eglise_paroissiale <- false;
+	int attractivite <- 0;
+	rgb color <- #blue ;
+
+	aspect base {
+		draw circle(200) color: color ;
+	}
+	
+}
+	

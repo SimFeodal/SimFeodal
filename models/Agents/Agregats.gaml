@@ -158,8 +158,6 @@ global {
     }
     
 }
-
-entities {
 	
 	species tmpAgregats schedules: shuffle(tmpAgregats){
 		bool CA <- false;
@@ -220,4 +218,3 @@ entities {
 		
 		
 	}
-}
