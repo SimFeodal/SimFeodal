@@ -11,7 +11,7 @@ import "run.gaml"
 	
 experiment Exp_4_4_gui type: gui multicore: true {
 	parameter 'save_outputs' var: save_outputs among: [true];
-	parameter 'prefix' var: prefix_output among: ["4_4ter"];
+	parameter 'prefix' var: prefix_output among: ["4_4_gui"];
 	parameter "benchmark" var: benchmark among: [false]; // Changement pour connaitre perfs fonctions
 	
 	output {
