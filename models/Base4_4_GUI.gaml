@@ -9,7 +9,7 @@ model t8
 // L'ordre compte...
 import "run.gaml"	
 	
-experiment Exp_4_4_gui type: gui {
+experiment Exp_4_4_gui type: gui until: (Annee >= fin_simulation){
 	parameter 'save_outputs' var: save_outputs init: false;
 	parameter 'prefix' var: prefix_output init: "4_4_gui";
 	parameter "benchmark" var: benchmark init: false; // Changement pour connaitre perfs fonctions
@@ -54,7 +54,7 @@ experiment Exp_4_4_B type: batch repeat: 20 keep_seed: true until: (Annee >= fin
 	parameter 'prefix' var: prefix_output init: "4_4_B";
 	parameter "benchmark" var: benchmark init: false; // Changement pour connaitre perfs fonctions
 	
-	parameter "nombre_FP_village" var: nombre_FP_village among: [5, 6, 7, 8, 9];
+	parameter "nombre_FP_village" var: nombre_FP_village init: 5 among: [5, 6, 7, 8, 9];
 }
 
 experiment Exp_4_4_C type: batch repeat: 20 keep_seed: true until: (Annee >= fin_simulation){
