@@ -189,9 +189,8 @@ if (benchmark){write 'update_outputs : ' + string(machine_time - t);}
 		if (benchmark){write 'save_data : ' + string(machine_time - t);}
 	}
 	
-	
 	reflex fin_simulation {
-										float t <- machine_time;
+		float t <- machine_time;
 		set nb_chateaux <- length(Chateaux);
 		if (Annee >= fin_simulation) {
 			write 'Durée simulation : ' + total_duration;
