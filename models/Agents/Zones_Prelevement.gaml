@@ -57,7 +57,7 @@ species Zones_Prelevement schedules: shuffle(Zones_Prelevement) {
 		list<Foyers_Paysans> FP_proche <- Foyers_Paysans at_distance rayon_captation;
 		int nb_FP <- length(FP_proche);
 		list<Foyers_Paysans> FP_impactes <- int(floor(nb_FP * taux_captation)) among (FP_proche);
-		float mon_taux_FP <- (!empty(preleveurs)) ? (1.0 - sum(preleveurs.values)): 1.0;
+		float mon_taux_FP <- max([0.0 ,(!empty(preleveurs)) ? (1.0 - sum(preleveurs.values)): 1.0]);
 		if (mon_taux_FP = 1.0){
 			ask FP_impactes {
 				set seigneur_hauteJustice <- myself.proprietaire;
@@ -92,7 +92,7 @@ species Zones_Prelevement schedules: shuffle(Zones_Prelevement) {
 		list<Foyers_Paysans> FP_proche <- Foyers_Paysans at_distance rayon_captation;
 		int nb_FP <- length(FP_proche);
 		list<Foyers_Paysans> FP_impactes <- int(floor(nb_FP * taux_captation)) among (FP_proche);
-		float mon_taux_FP <- (!empty(preleveurs)) ? (1.0 - sum(preleveurs.values)): 1.0;
+		float mon_taux_FP <- max([0.0 ,(!empty(preleveurs)) ? (1.0 - sum(preleveurs.values)): 1.0]);
 		if (mon_taux_FP = 1.0){
 			ask FP_impactes {
 				seigneurs_banaux <+ myself.proprietaire;
@@ -124,7 +124,7 @@ species Zones_Prelevement schedules: shuffle(Zones_Prelevement) {
 		list<Foyers_Paysans> FP_proche <- Foyers_Paysans at_distance rayon_captation;
 		int nb_FP <- length(FP_proche);
 		list<Foyers_Paysans> FP_impactes <- int(floor(nb_FP * taux_captation)) among (FP_proche);
-		float mon_taux_FP <- (!empty(preleveurs)) ? (1.0 - sum(preleveurs.values)): 1.0;
+		float mon_taux_FP <- max([0.0 ,(!empty(preleveurs)) ? (1.0 - sum(preleveurs.values)): 1.0]);
 		if (mon_taux_FP = 1.0){
 			ask FP_impactes {
 				seigneurs_basseMoyenneJustice <+ myself.proprietaire;
