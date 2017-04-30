@@ -18,7 +18,8 @@ import "Agents/Attracteurs.gaml"
 import "Agents/Zones_Prelevement.gaml"
 
 
-global schedules: list(world) + list(Attracteurs) + list(Poles)+ list(Agregats) + list(Foyers_Paysans) + list(Chateaux) + list(Eglises) + list(Seigneurs){
+global //schedules: list(world) + list(Attracteurs) + list(Poles)+ list(Agregats) + list(Foyers_Paysans) + list(Chateaux) + list(Eglises) + list(Seigneurs)
+{
     
 	init {
 		float t <- machine_time;
@@ -194,8 +195,7 @@ if (benchmark){write 'update_outputs : ' + string(machine_time - t);}
 		set nb_chateaux <- length(Chateaux);
 		if (Annee >= fin_simulation) {
 			write 'Durée simulation : ' + total_duration;
-			//do halt; // Si version  batch
-			do pause; // Si version GUI
+			do halt;
 		}
 		if (benchmark){write 'fin_simulation : ' + string(machine_time - t);}
 	}
