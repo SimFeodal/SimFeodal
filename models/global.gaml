@@ -30,6 +30,7 @@ global torus: false{
 	int fin_simulation <- 1160;
 	int duree_step <- 20;
 	float besoin_protection <- 0.0;
+	string experimentType <- "batch";
 	
 	// AGREGATS //
 	

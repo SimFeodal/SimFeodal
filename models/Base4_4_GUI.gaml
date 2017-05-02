@@ -13,6 +13,7 @@ experiment Exp_4_4_gui type: gui until: (Annee >= fin_simulation){
 	parameter 'save_outputs' var: save_outputs init: false;
 	parameter 'prefix' var: prefix_output init: "4_4_gui";
 	parameter "benchmark" var: benchmark init: false; // Changement pour connaitre perfs fonctions
+	parameter "experimentType" var: experimentType init: "gui";
 	
 	output {
 		monitor "Annee" value: Annee;

@@ -195,7 +195,11 @@ if (benchmark){write 'update_outputs : ' + string(machine_time - t);}
 		set nb_chateaux <- length(Chateaux);
 		if (Annee >= fin_simulation) {
 			write 'Durée simulation : ' + total_duration;
-			do halt;
+			if (experimentType = "batch"){
+				do halt;
+			} else {
+				do pause;
+			}	
 		}
 		if (benchmark){write 'fin_simulation : ' + string(machine_time - t);}
 	}
