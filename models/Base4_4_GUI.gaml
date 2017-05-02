@@ -30,7 +30,7 @@ experiment Exp_4_4_gui type: gui until: (Annee >= fin_simulation){
 		monitor "Nombre Chateaux" value: length(Chateaux);
 		monitor "% FP dispersés" value: Foyers_Paysans count (each.monAgregat = nil) / length(Foyers_Paysans) * 100;
 		
-		display "Carte" {
+		display "Carte" type: "opengl" {
 			species Paroisses transparency: 0.9 ;
 			species Zones_Prelevement transparency: 0.9;
 			agents "Eglises Paroissiales" value: Eglises where (each.eglise_paroissiale) aspect: base transparency: 0.5;
