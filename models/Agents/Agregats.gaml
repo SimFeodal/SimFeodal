@@ -19,8 +19,8 @@ global {
     
      action update_agregats {
     	list<Eglises> eglises_paroissiales <- Eglises where (each.eglise_paroissiale);
-    	list<list<agent>> agregats_detectes <- simple_clustering_by_distance((Foyers_Paysans + Chateaux + eglises_paroissiales), distance_detection_agregats);
-    	list<list<agent>> agregats_corrects <- agregats_detectes where (length(each of_species Foyers_Paysans) >= nombre_FP_agregat);
+    	list<container<agent>> agregats_detectes <- simple_clustering_by_distance((Foyers_Paysans + Chateaux + eglises_paroissiales), distance_detection_agregats);
+    	list<container<agent>> agregats_corrects <- agregats_detectes where (length(each of_species Foyers_Paysans) >= nombre_FP_agregat);
 
  	   	loop nouveauxAgregats over: agregats_corrects {
 			create tmpAgregats number: 1 {
