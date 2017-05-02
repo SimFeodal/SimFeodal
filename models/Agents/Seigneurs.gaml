@@ -47,7 +47,7 @@ global {
 	}
 }
 
-species Seigneurs schedules: shuffle(Seigneurs) {
+species Seigneurs schedules: [] {
 	
 	string type <- "Petit Seigneur";
 	bool initial <- false;

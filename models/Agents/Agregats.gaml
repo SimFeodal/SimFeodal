@@ -159,7 +159,7 @@ global {
     
 }
 	
-	species tmpAgregats schedules: shuffle(tmpAgregats){
+	species tmpAgregats schedules: []{
 		bool CA <- false;
 		geometry shape <- nil;
 		list<agent> mesAgents <- [];
@@ -168,7 +168,7 @@ global {
 		list<Chateaux> mesChateaux <- [];
 	}
 
-	species Agregats parent: Attracteurs schedules: shuffle(Agregats){
+	species Agregats parent: Attracteurs schedules: []{
 		int attractivite <- 0;
 		list<Foyers_Paysans> fp_agregat ;
 		bool communaute <- false;

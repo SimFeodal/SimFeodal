@@ -49,7 +49,7 @@ global
 
 }
 
-species Foyers_Paysans schedules: shuffle(Foyers_Paysans)
+species Foyers_Paysans schedules: []
 {
 	bool communaute <- false;
 	Agregats monAgregat <- nil;

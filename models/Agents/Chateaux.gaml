@@ -16,7 +16,7 @@ import "Attracteurs.gaml"
 import "Zones_Prelevement.gaml"
 
 
-	species Chateaux parent: Attracteurs  schedules: shuffle(Chateaux){
+	species Chateaux parent: Attracteurs  schedules: []{
 	
 		string type <- "Petit Chateau";
 		list<string> fonctions_possedees;

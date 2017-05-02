@@ -103,11 +103,11 @@ global {
 }
 
 	
-species Attracteurs schedules: shuffle(Attracteurs) {
+species Attracteurs schedules: [] {
 	int attractivite <- 0;
 }
 
-species Poles schedules: shuffle(Poles) {
+species Poles schedules: [] {
 	float attractivite;
 	list<Attracteurs> mesAttracteurs;
 	Agregats monAgregat;

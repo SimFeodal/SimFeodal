@@ -18,7 +18,7 @@ import "Agents/Attracteurs.gaml"
 import "Agents/Zones_Prelevement.gaml"
 
 
-global //schedules: list(world) + list(Attracteurs) + list(Poles)+ list(Agregats) + list(Foyers_Paysans) + list(Chateaux) + list(Eglises) + list(Seigneurs)
+global schedules: shuffle(Attracteurs) + shuffle(Poles) + shuffle(Agregats) + shuffle(Foyers_Paysans) + shuffle(Chateaux) + shuffle(Eglises) + shuffle(Seigneurs)
 {
     
 	init {

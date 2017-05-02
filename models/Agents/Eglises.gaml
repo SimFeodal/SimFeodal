@@ -127,7 +127,7 @@ species Paroisses {
 	}
 }
 
-species Eglises parent: Attracteurs schedules: shuffle(Eglises) {
+species Eglises parent: Attracteurs schedules: [] {
 	string type;
 	//list<string> droits_paroissiaux <- []; // ["Baptême" / "Inhumation" / "Eucharistie"]
 	bool eglise_paroissiale <- false;
