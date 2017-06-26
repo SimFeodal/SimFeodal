@@ -22,6 +22,7 @@ global {
 			create Paroisses number: 1 {
 				set location <- myself.location ;
 				set monEglise <- myself ;
+				set mode_promotion <- myself.mode_promotion;
 			}
 		}
 		list<geometry> maillage_paroissial <- voronoi(Paroisses collect each.location);
@@ -43,12 +44,14 @@ global {
 				create Eglises number: 1 {
 					set location <- any_location_in(agregat.shape + 200) ;
 					set eglise_paroissiale <- true;
+					set mode_promotion <- "creation agregat";
 				}
 			}
 		}
 	}
 	
 	action promouvoir_paroisses {
+		string typePromo <- "nil";
 		ask Paroisses {
 			if flip(1 - Satisfaction_Paroisse){
 				bool eglise_batie <- false ;
@@ -66,19 +69,24 @@ global {
 							geometry cetteParoisseDansMonde <- myself.shape inter worldextent;
 							set location <- cetteParoisseDansMonde farthest_point_to myself.location;
 							set paroisse_a_creer <- self ;
+							set mode_promotion <- "creation isole";
+							set typePromo <- "creation isole";
 						}
 						set eglise_batie <- true ;
 					} else {
 						set paroisse_a_creer <- one_of(eglises_proximite) ;
+						set typePromo <- "promotion isole";
 					}
 				} else if (length(eglises_dans_polygone) <= 3) {
 					set paroisse_a_creer <- one_of(eglises_dans_polygone) ;
+					set typePromo <- "promotion isole";
 				} else {
 					// Triangulation
 					list<geometry> triangles_Delaunay <- triangulate((Eglises where !(each.eglise_paroissiale)) collect each.location);
 					// On ne peut pas faire de overlap parce qu'une paroisse peut être en dehors de la triangulation Delaunay
 					geometry monTriangle <- triangles_Delaunay closest_to location;
 					set paroisse_a_creer <- shuffle(Eglises) first_with (location = (monTriangle farthest_point_to location));
+					set typePromo <- "promotion isole";
 				}
 				if (paroisse_a_creer != nil){
 					list<geometry> potentiel_maillage_paroissial <- voronoi((Paroisses collect each.location) + [paroisse_a_creer.location]);
@@ -87,6 +95,7 @@ global {
 					do update_satisfaction ;
 					ask paroisse_a_creer {
 							set eglise_paroissiale <- true;
+							set mode_promotion <- typePromo;
 					}
 				}
 
@@ -102,6 +111,7 @@ species Paroisses {
 	list<Foyers_Paysans> mesFideles <- nil ;
 	rgb color <- #white ;
 	float Satisfaction_Paroisse <- 1.0 ;
+	string mode_promotion <- "nil" update: "nil";
 	
 	
 
@@ -133,6 +143,7 @@ species Eglises parent: Attracteurs schedules: [] {
 	bool eglise_paroissiale <- false;
 	int attractivite <- 0;
 	rgb color <- #blue ;
+	string mode_promotion <- "nil" update: "nil";
 
 	aspect base {
 		draw circle(200) color: color ;

@@ -156,7 +156,7 @@ global {
 		
 	}
 	
-		action save_paroisses(string prefix) {
+		action save_paroisses(string sim_name) {
 			ask  Paroisses {
 				int nbFideles <- length(mesFideles);
 				float SatisfactionParoisse <- Satisfaction_Paroisse with_precision 3;
@@ -164,7 +164,7 @@ global {
 				
 				save [
 					myseed, prefix_output, Annee, self,
-					monEglise, shape.area,
+					monEglise, mode_promotion, shape.area,
 					nbFideles, SatisfactionParoisse, geom
 				] to: ("../outputs/"+ prefix +"_results_paroisses.csv") type: "csv" header: true rewrite: false;
 			}
