@@ -63,8 +63,10 @@ species Foyers_Paysans schedules: []
 	list<Seigneurs> seigneurs_banaux <- [];
 	list<Seigneurs> seigneurs_basseMoyenneJustice <- [];
 	int nb_preleveurs <- 0;
-	string typeInter;
-	string typeIntra;
+	string type_deplacement <- nil; //	"fixe", lointain, local
+	string deplacement_from <- nil; //	"isole", "agregat"
+	string deplacement_to <- nil; // 		"pole local avec agregat", "pole local sans agregat", 
+	//"pole local avec agregat plus attractif",   "pole local sans agregat plus attractif", "agregat lointain unique", "agregat lointain attractif"
 	
 	action reset_preleveurs
 	{
@@ -92,8 +94,7 @@ species Foyers_Paysans schedules: []
 			set S_contributions <- (self.communaute ? puissance_communautes : 0);
 		}
 
-		float Satisfaction_materielle <- (S_redevances) ^ (1 - S_contributions);
-		set satisfaction_materielle <- Satisfaction_materielle;
+		set satisfaction_materielle <- (S_redevances) ^ (1 - S_contributions);
 	}
 
 	action update_satisfaction_religieuse
@@ -154,26 +155,56 @@ species Foyers_Paysans schedules: []
 
 	action deplacement
 	{
-			if (monAgregat != nil and monAgregat.monPole != nil){
-				Poles meilleurPole <- (Poles at_distance distance_max_dem_local) with_max_of (each.attractivite);
-				if (monAgregat.monPole.attractivite >= meilleurPole.attractivite) { //  Si le pole de mon agrégat a une attractivié > attrac des  poles du voisinage
-				// Alors la proba de deplacement local vaut 0 et donc je m'en remet au depl. lointain sous condition etc;
-					set location <- flip(proba_ponderee_deplacement_lointain * (1 - Satisfaction)) ? deplacement_lointain() : location;
-				} else { // Si un pole du voisinage a une attrac > monAgregat.pole
-				// Alors la proba de deplacement local vaut 1 - Satisfaction
-					if (flip(1 - Satisfaction)) {
-						set location <- deplacement_local();
-					} else {
-						set location <- flip(proba_ponderee_deplacement_lointain * (1 - Satisfaction)) ? deplacement_lointain() : location;
-					}
-				}
-			} else {
-				if (flip(1 - Satisfaction)) {
-					set location <- deplacement_local();
-				} else {
-					set location <- flip(proba_ponderee_deplacement_lointain * (1 - Satisfaction)) ? deplacement_lointain() : location;
-				}		
+		point oldLoc <- location;
+		set deplacement_from <- monAgregat != nil ? "agregat" : "isole";
+			if (monAgregat != nil and monAgregat.monPole != nil){ // Si dans un agrégat doté de pôle
+				do deplacement_avec_pole_agregat(oldLoc);
+			} else { // Si pas dans un agrégat doté de pôle
+				do deplacement_sans_pole_agregat(oldLoc);
 			}		
+	}
+	
+	action deplacement_avec_pole_agregat(point oldLoc) {
+		Poles meilleurPole <- (Poles at_distance distance_max_dem_local) with_max_of (each.attractivite);
+		if (monAgregat.monPole.attractivite >= meilleurPole.attractivite) { //  Si le pole de mon agrégat a une attractivié > attrac des  poles du voisinage
+		// Alors la proba de deplacement local vaut 0 et donc je m'en remet au depl. lointain sous condition etc;
+			set location <- flip(proba_ponderee_deplacement_lointain * (1 - Satisfaction)) ? deplacement_lointain() : location;
+			if (oldLoc = location){
+				set type_deplacement <- "fixe";
+			} else {
+				set type_deplacement <- "lointain";
+			}
+		} else { // Si un pole du voisinage a une attrac > monAgregat.pole
+		// Alors la proba de deplacement local vaut 1 - Satisfaction
+			if (flip(1 - Satisfaction)) {
+				set location <- deplacement_local();
+			} else {
+				set location <- flip(proba_ponderee_deplacement_lointain * (1 - Satisfaction)) ? deplacement_lointain() : location;
+				if (oldLoc = location){
+					set type_deplacement <- "fixe";
+				} else {
+					set type_deplacement <- "lointain";
+				}
+			}
+		}
+	}
+	
+	action deplacement_sans_pole_agregat(point oldLoc) {
+		if (flip(1 - Satisfaction)) {
+			set location <- deplacement_local();
+			if (oldLoc = location){
+				set type_deplacement <- "fixe";
+			} else {
+				set type_deplacement <- "local";
+			}
+		} else {
+			set location <- flip(proba_ponderee_deplacement_lointain * (1 - Satisfaction)) ? deplacement_lointain() : location;
+			if (oldLoc = location){
+				set type_deplacement <- "fixe";
+			} else {
+				set type_deplacement <- "lointain";
+			}
+		}	
 	}
 
 	point deplacement_local
@@ -186,15 +217,14 @@ species Foyers_Paysans schedules: []
 		} else if (length(polesLocaux) < 2)
 		{ // Si un seul pole, on y va
 			set point_local <- any_location_in(one_of(polesLocaux).shape);
-			// TODO : Changer nom variable
-			set nb_demenagement_local <- nb_demenagement_local + 1;
+			set deplacement_to <- one_of(polesLocaux).monAgregat != nil ? "pole local avec agregat" : "pole local sans agregat";
+			
 		} else
 		{ // Si plus de 1 pole, lotterie ponderée
 			Poles poleVainqueur <- (polesLocaux sort_by (each)) at rnd_choice((polesLocaux sort_by (each)) collect (each.attractivite));
 			set point_local <- any_location_in(poleVainqueur.shape);
-			set nb_demenagement_local <- nb_demenagement_local + 1;
+			set deplacement_to <- poleVainqueur.monAgregat != nil ? "pole local avec agregat plus attractif" : "pole local sans agregat plus attractif";
 		}
-
 		return (point_local);
 	}
 
@@ -210,32 +240,18 @@ species Foyers_Paysans schedules: []
 		} else if (length(agregatsPolarisantsLointains) < 2)
 		{ // Si un seul pole, on y va
 			Poles choixPole <- one_of(agregatsPolarisantsLointains);
-			ask choixPole.monAgregat
-			{
-				set nb_fp_attires <- nb_fp_attires + 1;
-			}
 			set monAgregat <- choixPole.monAgregat;
 			set point_lointain <- any_location_in(monAgregat.shape);
+			set deplacement_to <- "agregat lointain unique";
 			// TODO : Changer nom variable
-			set nb_demenagement_lointain <- nb_demenagement_lointain + 1;
 		} else
 		{ // Si plus de 1 pole, lotterie ponderée
 			Poles poleVainqueur <- (agregatsPolarisantsLointains sort_by (each)) at rnd_choice((agregatsPolarisantsLointains sort_by (each)) collect (each.attractivite));
 
-			ask poleVainqueur.monAgregat
-			{
-				set nb_fp_attires <- nb_fp_attires + 1;
-			}
-			
-			if (dead(poleVainqueur.monAgregat)){
-				write sample(length(agregatsPolarisantsLointains));
-				write sample(poleVainqueur);
-			}
-
 			set point_lointain <- any_location_in(poleVainqueur.monAgregat.shape);
 			set monAgregat <- poleVainqueur.monAgregat;
-			set nb_demenagement_lointain <- nb_demenagement_lointain + 1;
-		}
+			set deplacement_to <- "agregat lointain attractif";
+			}
 
 		return (point_lointain);
 	}

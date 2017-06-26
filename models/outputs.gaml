@@ -23,15 +23,13 @@ global {
 		do save_seigneurs(currentPrefix);
 		do save_agregats(currentPrefix);
 		do save_poles(currentPrefix);
-		do save_FP_summary(currentPrefix);
-		do save_FP_all(currentPrefix);
 		do save_paroisses(currentPrefix);
 		do save_FP(currentPrefix);
 	}
 	
-	action save_parameters(string prefix) {	
+	action save_parameters(string sim_name) {	
 		save [
-				myseed, prefix_output, debut_simulation, fin_simulation, duree_step, besoin_protection,
+				seed, sim_name, debut_simulation, fin_simulation, duree_step, besoin_protection,
 				distance_detection_agregats, nombre_FP_agregat, nombre_agglos_antiques,
 				nombre_villages, puissance_communautes,
 				apparition_communautes, proba_apparition_communaute, nombre_foyers_paysans,
@@ -50,26 +48,26 @@ global {
 				nb_min_paroissiens, seuil_creation_paroisse, nb_paroissiens_mecontents_necessaires,
 				attrac_0_eglises, attrac_1_eglises, attrac_2_eglises, attrac_3_eglises, attrac_4_eglises,
 				attrac_GC, attrac_PC, attrac_communautes	
-			] to: ("../outputs/"+ prefix +"_parameters.csv") type: "csv" header: true rewrite: false;
+			] to: ("../outputs/"+ sim_name +"_parameters.csv") type: "csv" header: true rewrite: false;
 	}
 	
-	action save_global(string prefix) {
+	action save_global(string sim_name) {
 		int nbChateaux <- length(Chateaux);
 		int nbGdChateaux <- Chateaux count (each.type = "Grand Chateau");
 		int nbEglises <- length(Eglises);
 		int nbEglisesParoissiales <-  Eglises count (each.eglise_paroissiale);
 		
 		save [
-				myseed, prefix_output, Annee,
+				seed, sim_name, Annee,
 				nbChateaux, nbGdChateaux,
 				nbEglises, nbEglisesParoissiales,
 				distance_eglises, distance_eglises_paroissiales,
 				prop_FP_isoles, charge_fiscale, dist_ppv_agregat,total_duration
 				
-			] to: ("../outputs/"+ prefix +"_results_global.csv") type: "csv" header: true rewrite: false;
+			] to: ("../outputs/"+ sim_name +"_results_global.csv") type: "csv" header: true rewrite: false;
 	}
 	
-	action save_seigneurs(string prefix) {
+	action save_seigneurs(string sim_name) {
 		ask Seigneurs {
 			int nbChateauxProprio <- Chateaux count (each.proprietaire = self);
 			int nbChateauxGardien <- Chateaux count (each.gardien = self);
@@ -78,12 +76,12 @@ global {
 			int nbDebiteurs <- length(mesDebiteurs);
 			
 			save [
-				myseed, prefix_output,Annee,self, 
+				seed, sim_name,Annee,self, 
 				type, initial, puissance,
 				nbChateauxProprio, nbChateauxGardien,
 				nbFPassujettis, nbVassaux, nbDebiteurs
 				]
-			to:("../outputs/"+ prefix +"_results_seigneurs.csv") type: "csv" header: true rewrite: false;
+			to:("../outputs/"+ sim_name +"_results_seigneurs.csv") type: "csv" header: true rewrite: false;
 		}
 	}
 	
@@ -91,17 +89,16 @@ global {
 		ask Agregats {
 			int nbFP <- length(fp_agregat);
 			float superficie <- shape.area;
-			string geom <- "'" + string(shape) + "'";
+			string geom <- "'" + string(shape with_precision 2) + "'";
 			
 			save [
-				myseed, prefix_output, Annee, self,
-				nbFP, nbfp_avant_dem,
-				nb_fp_attires, superficie, communaute,  geom
+				seed, prefix_output, Annee, self,
+				nbFP, superficie, communaute, monPole, geom
 			] to: ("../outputs/"+ prefix +"_results_agregats.csv") type: "csv" header: true rewrite: false;
 		}
 	}
 	
-	action save_poles(string prefix) {
+	action save_poles(string sim_name) {
 		ask Poles {
 			int nbAttracteurs <- length(mesAttracteurs);
 			int nbEglises <- length(mesAttracteurs of_species Eglises);
@@ -109,64 +106,49 @@ global {
 			int nbGC <- (mesAttracteurs of_species Chateaux) count (each.type = "Grand Chateau");
 			int nbPC <- (mesAttracteurs of_species Chateaux) count (each.type = "Petit Chateau");
 			int nbCA <- length(mesAttracteurs of_species Agregats);
-			string geom <- "'" + string(shape) + "'";
+			string geom <- "'" + string(shape with_precision 2) + "'";
 				
 			save [
-				myseed, prefix_output, Annee, self,
+				seed, sim_name, Annee, self,
 				attractivite, nbAttracteurs, monAgregat,
 				nbEglises, nbParoisses, nbGC, nbPC, nbCA, geom
 				
-			] to: ("../outputs/"+ prefix +"_results_poles.csv") type: "csv" header: true rewrite: false;
+			] to: ("../outputs/"+ sim_name +"_results_poles.csv") type: "csv" header: true rewrite: false;
 		}
 		
 	}
 	
-	action save_FP(string prefix) {
+	action save_FP(string sim_name) {
 		ask Foyers_Paysans {
 			float sMat <- satisfaction_materielle with_precision 2;
 			float sRel <- satisfaction_materielle with_precision 2;
 			float sProt <- satisfaction_protection with_precision 2;
 			float Satis <- Satisfaction with_precision 2;
-			string geom <- "'" + string(location) + "'";
+			string geom <- "'" + string(location with_precision 2) + "'";
 			
 			save [
-				myseed, prefix_output, Annee, self,
+				seed, sim_name, Annee, self,
 				communaute, monAgregat,
 				sMat, sRel, sProt,
-				Satis, mobile, nb_preleveurs, geom
-			] to: ("../outputs/"+ prefix +"_results_FP.csv") type: "csv" header: true rewrite: false;
+				Satis, mobile, type_deplacement,
+				deplacement_from, deplacement_to,
+				nb_preleveurs, geom
+			] to: ("../outputs/"+ sim_name +"_results_FP.csv") type: "csv" header: true rewrite: false;
 		}
 
-	}
-	
-	action save_FP_all(string prefix) {
-		save [
-			myseed, prefix_output, Annee,
-			nbInInIntra, nbInOutIntra, nbOutInIntra, nbOutOutIntra,
-			nbInInInter, nbInOutInter, nbOutInInter, nbOutOutInter
-		] to: ("../outputs/"+ prefix +"_results_FP_all.csv") type: "csv" header: true rewrite: false;
-	}
-	
-	action save_FP_summary(string prefix) {
-			save [
-				myseed, prefix_output, Annee,
-				nb_demenagement_local, nb_demenagement_lointain,
-				nb_FP_sat_024, nb_FP_sat_2549, nb_FP_sat_5075, nb_FP_sat_75100
-			] to: ("../outputs/"+ prefix +"_results_summFP.csv") type: "csv" header: true rewrite: false;
-		
 	}
 	
 		action save_paroisses(string sim_name) {
 			ask  Paroisses {
 				int nbFideles <- length(mesFideles);
 				float SatisfactionParoisse <- Satisfaction_Paroisse with_precision 3;
-				string geom <- "'" + string(shape) + "'";
+				string geom <- "'" + string(shape with_precision 2) + "'";
 				
 				save [
-					myseed, prefix_output, Annee, self,
+					seed, sim_name, Annee, self,
 					monEglise, mode_promotion, shape.area,
 					nbFideles, SatisfactionParoisse, geom
-				] to: ("../outputs/"+ prefix +"_results_paroisses.csv") type: "csv" header: true rewrite: false;
+				] to: ("../outputs/"+ sim_name +"_results_paroisses.csv") type: "csv" header: true rewrite: false;
 			}
 		}
 	

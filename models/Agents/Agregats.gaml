@@ -4,6 +4,8 @@
  *  Description: Les agglomérations sont des agents "persistants", mais dont on vérifie l'existence à chaque pas de temps.
  */
 
+// FIXME : en fin de step, les agrégats ne connaissent pas leurs poles
+
 model t8
 
 import "../init.gaml"
@@ -37,11 +39,6 @@ global {
 
 	// Desaffectation des FP //
 		ask Foyers_Paysans {
-		if (monAgregat != nil){
-			set typeInter <- "In";
-		} else {
-			set typeInter <- "Out";
-		}
 		set monAgregat <- nil ;
 		}
 			
@@ -80,6 +77,7 @@ global {
 			if (thisOldAgregat != nil) {
 				if (thisOldAgregat.communaute){
 					CA <- true;
+					monPole <- thisOldAgregat.monPole ;
 				}
 			}
 		}
@@ -92,10 +90,12 @@ global {
 			geometry myShape <- shape;
 			bool recreateCA <- CA;
 			list<Eglises> cesParoisses <- mesEglisesParoissiales;
+			Poles cePole <- monPole ;
 			create Agregats number: 1 {
 				set communaute <- recreateCA;
 				set shape <- myShape;
 				set mesParoisses <- cesParoisses;
+				set monPole <- cePole ;
 				list<Chateaux> chateaux_proches <- Chateaux at_distance 2000;
 				geometry maGeom <- shape + 200;
 				
@@ -120,39 +120,26 @@ global {
 					monAgregat.fp_agregat >- self;
 				}
 				set monAgregat <- thisAg;
-				set typeInter <- typeInter + "In";
 			}
 			if (Annee >= apparition_communautes){do update_communaute;}
-		}
-			
-		ask Foyers_Paysans where (each.monAgregat = nil){	
-			set typeInter <- typeInter + "Out";
 		}
  	}
     
     action update_agregats_fp {
     	
     	ask Foyers_Paysans {
-    		if (monAgregat != nil){
-    			set typeIntra <- "In";
-    		} else {
-    			set typeIntra <- "Out";
-    		}
     		set monAgregat <- nil;
     	}
     	
     	ask Agregats {
-    		set nbfp_avant_dem <- length(fp_agregat);
     		set fp_agregat <- Foyers_Paysans overlapping self;
     		ask fp_agregat {
     			set monAgregat <- myself;
-    			set typeIntra <- typeIntra + "In";
     		}
     		
     		
     	}
     	ask Foyers_Paysans where (each.monAgregat = nil){
-    		set typeIntra <- typeIntra + "Out";
     	}
     	
     }
@@ -166,6 +153,7 @@ global {
 		list<Foyers_Paysans> mesFP <- [];
 		list<Eglises> mesEglisesParoissiales <- [];
 		list<Chateaux> mesChateaux <- [];
+		Poles monPole <- nil;
 	}
 
 	species Agregats parent: Attracteurs schedules: []{
@@ -174,9 +162,7 @@ global {
 		bool communaute <- false;
 		list<Chateaux> mesChateaux <- [];
 		list<Eglises> mesParoisses;
-		int nb_fp_attires <- 0 update: 0;
-		int nbfp_avant_dem <- 0 update: 0;
-		Poles monPole <- nil;
+		Poles monPole <- nil; // FIXME : jusqu'ici, toujours nil
 		
 		action update_chateau {
 			// FIXME : Chateaux trop proches sinon
@@ -214,7 +200,5 @@ global {
 					set communaute <- true;
 				}
 			}
-		}
-		
-		
+		}	
 	}
