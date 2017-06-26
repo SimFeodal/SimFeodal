@@ -4,8 +4,6 @@
  *  Description: Les agglomérations sont des agents "persistants", mais dont on vérifie l'existence à chaque pas de temps.
  */
 
-// FIXME : en fin de step, les agrégats ne connaissent pas leurs poles
-
 model t8
 
 import "../init.gaml"
