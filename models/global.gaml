@@ -22,7 +22,7 @@ global torus: false{
 	
 	// GLOBAL //
 	
-	float myseed <- seed;
+//	float myseed <- seed;
 	
 	bool benchmark <- false;
 	bool save_outputs <- false;

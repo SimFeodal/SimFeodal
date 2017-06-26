@@ -60,13 +60,19 @@ global schedules: shuffle(Attracteurs) + shuffle(Poles) + shuffle(Agregats) + sh
 	// On déplace Satisfaction ici alors que c'était juste avant MaJ Agrégats
 	reflex MaJ_satisfaction_FP {
 		float t0 <- machine_time;
-		ask  Foyers_Paysans {	do update_satisfaction_materielle;}
+		ask  Foyers_Paysans {
+			do update_satisfaction_materielle;
+		}
 		if (benchmark){write 'update_satisfaction_materielle : ' + string(machine_time - t0);}
 		float t <- machine_time;
-		ask  Foyers_Paysans {	do update_satisfaction_religieuse;}
+		ask  Foyers_Paysans {
+			do update_satisfaction_religieuse;
+		}
 		if (benchmark){write 'update_satisfaction_religieuse : ' + string(machine_time - t);}
 		set t <- machine_time;
-		ask  Foyers_Paysans {	do update_satisfaction_protection;}
+		ask  Foyers_Paysans {
+			do update_satisfaction_protection;
+		}
 		if (benchmark){write 'update_satisfaction_protection : ' + string(machine_time - t);}
 		set t <- machine_time;
 		ask Foyers_Paysans {
@@ -83,6 +89,9 @@ global schedules: shuffle(Attracteurs) + shuffle(Poles) + shuffle(Agregats) + sh
 		float t <- machine_time;
 		ask Foyers_Paysans where (each.mobile) {
 			do deplacement;
+		}
+		ask Foyers_Paysans where (!each.mobile){
+			set type_deplacement <- "Non mobile";
 		}
 		if (benchmark){write 'Deplacement_FP : ' + string(machine_time - t);}
 	}
@@ -179,9 +188,8 @@ float t <- machine_time;
 		}
 		//do update_agregats_fp ;
 		do update_output_indexes;
-		do update_outputs_fp;
 if (benchmark){write 'update_outputs : ' + string(machine_time - t);}
-		write "Seed : " + myseed + " / Annee : " + Annee + " / Nb Agregats : " + length(Agregats) + " / TxIsoles : " + prop_FP_isoles;
+		write "Seed : " + seed + " / Annee : " + Annee + " / Nb Agregats : " + length(Agregats) + " / TxIsoles : " + prop_FP_isoles;
 	}
 	
 	reflex save_data when: save_outputs {
