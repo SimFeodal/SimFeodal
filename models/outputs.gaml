@@ -74,12 +74,14 @@ global {
 			int nbFPassujettis <- length(FP_assujettis);
 			int nbVassaux <- Seigneurs count (each.monSuzerain = self);
 			int nbDebiteurs <- length(mesDebiteurs);
+			string geom <- "'" + string(location with_precision 2) + "'";
+			
 			
 			save [
 				seed, sim_name,Annee,self, 
 				type, initial, puissance,
 				nbChateauxProprio, nbChateauxGardien,
-				nbFPassujettis, nbVassaux, nbDebiteurs
+				nbFPassujettis, nbVassaux, nbDebiteurs, monAgregat, geom
 				]
 			to:("../outputs/"+ sim_name +"_results_seigneurs.csv") type: "csv" header: true rewrite: false;
 		}

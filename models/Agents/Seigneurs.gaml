@@ -81,6 +81,7 @@ species Seigneurs schedules: [] {
 	int monNbZP <- 0;
 	
 	list<Seigneurs> mesDebiteurs <- [];
+	Agregats monAgregat <- nil;
 	
 	
 	init {
@@ -512,6 +513,13 @@ species Seigneurs schedules: [] {
 	action MaJ_puissance_armee {
 		// C'est le nombre (unique) de FP qui versent des droits à ce seigneur.
 		set puissance_armee <- length(FP_assujettis);
+	}
+	
+	action update_agregats_seigneurs {
+		set monAgregat <- nil;
+		if ((Agregats closest_to self) distance_to self < 200){
+			set monAgregat <- Agregats closest_to self;
+		}
 	}
 	
 }

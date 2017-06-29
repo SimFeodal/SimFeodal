@@ -166,6 +166,7 @@ float t <- machine_time;
 		do update_agregats;
 		
 		do creation_nouveaux_seigneurs;
+		ask Seigneurs where (each.type != "Grand Seigneur"){do update_agregats_seigneurs;}
 		if (length(Chateaux) > 0){
 			ask Agregats {do update_chateau;}
 		}
