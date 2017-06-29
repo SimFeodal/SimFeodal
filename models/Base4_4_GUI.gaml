@@ -43,7 +43,7 @@ experiment Exp_4_4_gui type: gui until: (Annee >= fin_simulation){
 	}
 }
 
-experiment Exp_4_4_A type: batch repeat: 4 keep_seed: true until: (Annee >= fin_simulation){ //  FIXME : remettre 20 replications
+experiment Exp_4_4_A type: batch repeat: 20 keep_seed: true until: (Annee >= fin_simulation){ //  FIXME : remettre 20 replications
 	parameter 'save_outputs' var: save_outputs init: true;
 	parameter 'prefix' var: prefix_output init: "4_4_A";
 	parameter "benchmark" var: benchmark init: false; // Changement pour connaitre perfs fonctions
