@@ -27,7 +27,10 @@ global {
 		do save_FP(currentPrefix);
 	}
 	
-	action save_parameters(string sim_name) {	
+	action save_parameters(string sim_name) {
+		string seuils_distance_max_dem_localSt <-  "'" + string(seuils_distance_max_dem_local) + "'";
+		
+		
 		save [
 				seed, sim_name, debut_simulation, fin_simulation, duree_step, besoin_protection,
 				distance_detection_agregats, nombre_FP_agregat, nombre_agglos_antiques,
@@ -47,7 +50,8 @@ global {
 				nombre_eglises, nb_eglises_paroissiales, nb_max_paroissiens,
 				nb_min_paroissiens, seuil_creation_paroisse, nb_paroissiens_mecontents_necessaires,
 				attrac_0_eglises, attrac_1_eglises, attrac_2_eglises, attrac_3_eglises, attrac_4_eglises,
-				attrac_GC, attrac_PC, attrac_communautes	
+				attrac_GC, attrac_PC, attrac_communautes,nombre_FP_village, seuils_distance_max_dem_localSt,
+				taux_augmentation_FP, proba_ponderee_deplacement_lointain
 			] to: ("../outputs/"+ sim_name +"_parameters.csv") type: "csv" header: true rewrite: false;
 	}
 	
