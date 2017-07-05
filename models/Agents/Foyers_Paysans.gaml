@@ -63,9 +63,9 @@ species Foyers_Paysans schedules: []
 	list<Seigneurs> seigneurs_banaux <- [];
 	list<Seigneurs> seigneurs_basseMoyenneJustice <- [];
 	int nb_preleveurs <- 0;
-	string type_deplacement <- nil; //	"fixe", lointain, local
-	string deplacement_from <- nil; //	"isole", "agregat"
-	string deplacement_to <- nil; // 		"pole local avec agregat", "pole local sans agregat", 
+	string type_deplacement <- nil update: nil; //	"fixe", lointain, local
+	string deplacement_from <- nil update: nil; //	"isole", "agregat"
+	string deplacement_to <- nil update: nil; // 		"pole local avec agregat", "pole local sans agregat", 
 	//"pole local avec agregat plus attractif",   "pole local sans agregat plus attractif", "agregat lointain unique", "agregat lointain attractif"
 	
 	action reset_preleveurs
