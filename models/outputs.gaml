@@ -87,16 +87,16 @@ global {
 		}
 	}
 	
-	action save_agregats(string prefix) {
+	action save_agregats(string sim_name) {
 		ask Agregats {
 			int nbFP <- length(fp_agregat);
 			float superficie <- shape.area;
 			string geom <- "'" + string(shape with_precision 2) + "'";
 			
 			save [
-				seed, prefix_output, Annee, self,
+				seed, sim_name, Annee, self,
 				nbFP, superficie, communaute, monPole, geom
-			] to: ("../outputs/"+ prefix +"_results_agregats.csv") type: "csv" header: true rewrite: false;
+			] to: ("../outputs/"+ sim_name +"_results_agregats.csv") type: "csv" header: true rewrite: false;
 		}
 	}
 	
