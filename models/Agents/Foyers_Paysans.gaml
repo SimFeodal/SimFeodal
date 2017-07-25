@@ -144,15 +144,6 @@ species Foyers_Paysans schedules: []
 
 	}
 
-	action update_satisfaction
-	{
-		do update_satisfaction_materielle;
-		do update_satisfaction_religieuse;
-		do update_satisfaction_protection;
-
-		set Satisfaction <- min([satisfaction_religieuse, satisfaction_protection, satisfaction_materielle]);
-	}
-
 	action deplacement
 	{
 		point oldLoc <- location;

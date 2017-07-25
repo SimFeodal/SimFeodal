@@ -67,7 +67,6 @@ species Seigneurs schedules: [] {
 	list<Foyers_Paysans> FP_assujettis <- [];
 	
 	list<Foyers_Paysans> FP_loyer <- [];
-	list<Foyers_Paysans> FP_loyer_garde <- [];
 	
 	list<Foyers_Paysans> FP_hauteJustice <- [];
 	list<Foyers_Paysans> FP_hauteJustice_garde <- [];
@@ -247,7 +246,6 @@ species Seigneurs schedules: [] {
 		set FP_assujettis <- [];
 		
 		set FP_loyer <- [];
-		set FP_loyer_garde <- [];
 	
 		set FP_hauteJustice <- [];
 		set FP_hauteJustice_garde <- [];
@@ -261,9 +259,8 @@ species Seigneurs schedules: [] {
 	
 	float MaJ_loyers {
 		float Loyers <- length(FP_loyer) * taux_prelevement * 1.0;
-		float Loyers_garde <- length(FP_loyer_garde) * taux_prelevement * 1.25;
-		set FP_assujettis <- remove_duplicates(FP_assujettis + FP_loyer + FP_loyer_garde);
-		return(Loyers + Loyers_garde);
+		set FP_assujettis <- remove_duplicates(FP_assujettis + FP_loyer);
+		return(Loyers);
 	}
 	
 	float MaJ_hauteJustice {
