@@ -53,6 +53,7 @@ global torus: false{
 	int seuil_puissance_armee <- 400; // P.A. d'un proprio de chateau pour que le FP soit satisfait.
 	list<int> seuils_distance_max_dem_local <- [2500, 4000, 6000];
 	float proba_ponderee_deplacement_lointain <- 0.2;
+	int coef_redevances <- 15;
 	
 	 
 	// SEIGNEURS //

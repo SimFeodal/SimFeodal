@@ -51,7 +51,7 @@ global {
 				nb_min_paroissiens, seuil_creation_paroisse, nb_paroissiens_mecontents_necessaires,
 				attrac_0_eglises, attrac_1_eglises, attrac_2_eglises, attrac_3_eglises, attrac_4_eglises,
 				attrac_GC, attrac_PC, attrac_communautes,nombre_FP_village, seuils_distance_max_dem_localSt,
-				taux_augmentation_FP, proba_ponderee_deplacement_lointain
+				taux_augmentation_FP, proba_ponderee_deplacement_lointain, coef_redevances
 			] to: ("../outputs/"+ sim_name +"_parameters.csv") type: "csv" header: true rewrite: false;
 	}
 	
