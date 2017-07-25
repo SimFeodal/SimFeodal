@@ -169,6 +169,21 @@ species Foyers_Paysans schedules: []
 		// Alors la proba de deplacement local vaut 1 - Satisfaction
 			if (flip(1 - Satisfaction)) {
 				set location <- deplacement_local();
+				if (oldLoc = location){
+					set type_deplacement <- "fixe";
+				} else {
+					set type_deplacement <- "local";
+				}
+			} else {
+				set location <- flip(proba_ponderee_deplacement_lointain * (1 - Satisfaction)) ? deplacement_lointain() : location;
+				if (oldLoc = location){
+					set type_deplacement <- "fixe";
+				} else {
+					set type_deplacement <- "lointain";
+				}
+			}
+		}
+	}
 			} else {
 				set location <- flip(proba_ponderee_deplacement_lointain * (1 - Satisfaction)) ? deplacement_lointain() : location;
 				if (oldLoc = location){
