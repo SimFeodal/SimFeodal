@@ -54,6 +54,7 @@ global torus: false{
 	list<int> seuils_distance_max_dem_local <- [2500, 4000, 6000];
 	float proba_ponderee_deplacement_lointain <- 0.2;
 	int coef_redevances <- 15;
+	bool serfs_mobiles <- false;
 	
 	 
 	// SEIGNEURS //

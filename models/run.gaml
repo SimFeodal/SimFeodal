@@ -90,9 +90,16 @@ global schedules: shuffle(Attracteurs) + shuffle(Poles) + shuffle(Agregats) + sh
 		ask Foyers_Paysans where (each.mobile) {
 			do deplacement;
 		}
-		ask Foyers_Paysans where (!each.mobile){
-			set type_deplacement <- "Non mobile";
+		if (serfs_mobiles){
+			ask Foyers_Paysans where (!each.mobile){
+				do deplacement_serfs;
+			}
+		} else {
+			ask Foyers_Paysans where (!each.mobile){
+				set type_deplacement <- "Non mobile";
+			}
 		}
+
 		if (benchmark){write 'Deplacement_FP : ' + string(machine_time - t);}
 	}
 	
