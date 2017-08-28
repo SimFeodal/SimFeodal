@@ -31,7 +31,10 @@ global {
 		}
 		
 		ask Seigneurs where (each.type = "Grand Seigneur") {
-			int nbFP_concernes <- round(self.puissance_init * length(FP_dispos));
+			set nbFP_concernes <- round(self.puissance_init * length(FP_dispos));
+		}
+			
+		ask Seigneurs where (each.type = "Grand Seigneur") {
 			ask nbFP_concernes among FP_dispos {
 				set seigneur_loyer <- myself;
 				set myself.FP_loyer <- remove_duplicates(myself.FP_loyer + self);

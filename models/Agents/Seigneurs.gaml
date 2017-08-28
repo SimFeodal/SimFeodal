@@ -64,6 +64,8 @@ species Seigneurs schedules: [] {
 	
 	Seigneurs monSuzerain <- nil;
 	
+	int nbFP_concernes <- 0 ;
+	
 	list<Foyers_Paysans> FP_assujettis <- [];
 	
 	list<Foyers_Paysans> FP_loyer <- [];

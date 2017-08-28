@@ -192,6 +192,14 @@ float t <- machine_time;
 	reflex update_outputs when: (Annee > debut_simulation){
 								float t <- machine_time;
 		if (Annee = (debut_simulation + duree_step)){
+			ask Foyers_Paysans {
+				int loyer <- (self.seigneur_loyer != nil) ? 1 : 0;
+				int hauteJustice <- (self.seigneur_hauteJustice != nil) ? 1 : 0;
+				int banaux <- length(self.seigneurs_banaux);
+				int basseMoyenneJustice <- length(self.seigneurs_basseMoyenneJustice);
+				int nb_seigneurs <- loyer + hauteJustice + banaux + basseMoyenneJustice;
+				set nb_preleveurs <- nb_seigneurs;
+			}
 			set charge_fiscale_debut <- mean(Foyers_Paysans collect float(each.nb_preleveurs));
 		}
 		//do update_agregats_fp ;
