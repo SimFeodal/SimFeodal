@@ -31,6 +31,9 @@ global torus: false{
 	int duree_step <- 20;
 	float besoin_protection <- 0.0;
 	string experimentType <- "batch";
+	bool summarised_outputs <- false;
+	string sensibility_parameter <- "";
+	string sensibility_value <- "" ;
 	
 	// AGREGATS //
 	
@@ -149,10 +152,20 @@ global torus: false{
 	float dist_ppv_agregat <- 0.0;
 	list<int> Chateaux_chatelains <- [];
 	list<int> reseaux_chateaux <- [];
-	
-	
+
 	string prefix_output <- nil;
 	
+	// OpenMole outputs //
+	int nb_agregats_om <- 0 ;
+	int nb_chateaux_om <- 0 ;
+	int nb_gros_chateaux_om <- 0 ;
+	int nb_seigneurs_om <- 0 ;
+	int nb_eglises_om <- 0 ;
+	int nb_eglises_paroissiales_om <- 0 ;
+	int distance_eglises_paroissiales_om <- 0 ;
+	float proportion_fp_isoles_om <- 0.0 ;
+	float augmentation_charge_fiscale_om <- 0.0 ;
+		
 	// FP //
 	int nb_demenagement_local update: 0; // le update remet à 0 au début de chaque nouveau step
 	int nb_demenagement_lointain update: 0;
