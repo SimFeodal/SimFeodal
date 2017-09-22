@@ -44,7 +44,7 @@ experiment Exp_4_5_gui type: gui until: (Annee >= fin_simulation){
 	}
 }
 
-experiment Exp_4_5_A type: batch repeat: 10 keep_seed: false until: (Annee >= fin_simulation){
+experiment Exp_4_5_A type: batch repeat: 20 keep_seed: false until: (Annee >= fin_simulation){
 	parameter 'save_outputs' var: save_outputs init: true;
 	parameter 'prefix' var: prefix_output init: "4_5_A";
 	parameter "benchmark" var: benchmark init: false; // Changement pour connaitre perfs fonctions

@@ -1,0 +1,88 @@
+	int distance_detection_agregats <- 100;
+	int nombre_FP_agregat <- 5;
+	int nombre_agglos_antiques <- 4 ;
+	int nombre_villages <- 20 ;
+	int nombre_FP_village <- 10;
+	float puissance_communautes <- 0.25;
+	int apparition_communautes <- 800;
+	float proba_apparition_communaute <- 0.2;
+	
+	// FOYERS_PAYSANS //
+	
+	int nombre_foyers_paysans <- 4000 ;
+	float taux_renouvellement <- 0.05 ;
+	float taux_augmentation_FP <- 0.0;
+	float taux_mobilite <- 0.8;
+	int distance_max_dem_local <- 4000;
+	int seuil_puissance_armee <- 400; // P.A. d'un proprio de chateau pour que le FP soit satisfait.
+	list<int> seuils_distance_max_dem_local <- [2500, 4000, 6000];
+	float proba_ponderee_deplacement_lointain <- 0.2;
+	int coef_redevances <- 15;
+	bool serfs_mobiles <- false;
+	
+	 
+	// SEIGNEURS //
+	
+	int nombre_seigneurs_objectif <- 200;
+	int nombre_grands_seigneurs <- 2;
+	int nombre_petits_seigneurs <- 18;
+	
+	int puissance_grand_seigneur1 <- 5;
+	int puissance_grand_seigneur2 <- 5;
+	
+	float proba_collecter_loyer <- 0.1;
+	
+	float proba_creation_ZP_banaux <- 0.05;
+	float proba_creation_ZP_basseMoyenneJustice <- 0.05;
+
+	
+	// ZONES_PRELEVEMENT //
+	
+	int rayon_min_PS <- 1000;
+	int rayon_max_PS <- 5000;
+	float min_fourchette_loyers_PS <- 0.05;
+	float max_fourchette_loyers_PS <- 0.25;
+	
+	float proba_don_partie_ZP <- 0.33;
+	
+	// CHATEAUX //
+	
+	int apparition_chateaux <- 960;
+	int nb_chateaux_potentiels_GS <- 2;
+	
+	int seuil_attractivite_chateau <- 3000;
+	
+	float proba_creer_chateau_GS <- 0.5;
+	float proba_chateau_agregat <- 0.5; // FIXME : A appliquer aussi aux PS
+	float proba_don_chateau_GS <- 0.50; //TODO : update doc
+	float proba_creer_chateau_PS <- 1.0;
+	
+	float proba_gain_droits_hauteJustice_chateau <- 0.1;
+	float proba_gain_droits_banaux_chateau <- 0.1;
+	float proba_gain_droits_basseMoyenneJustice_chateau <- 0.1;
+	
+	float proba_promotion_groschateau_multipole <- 0.8;
+	float proba_promotion_groschateau_autre <- 0.3;
+	int puissance_necessaire_creation_chateau_GS <- 1000;
+	int puissance_necessaire_creation_chateau_PS <- 0;
+
+
+	// EGLISES //
+	
+	int nombre_eglises <- 150 ;
+	int nb_eglises_paroissiales <- 50 ;
+	int nb_max_paroissiens <- 40;
+	int nb_min_paroissiens <- 10;
+	int seuil_creation_paroisse <- 300;
+	int nb_paroissiens_mecontents_necessaires <- 20;
+	
+	// POLES //
+	float attrac_0_eglises <- 0.0;
+	float attrac_1_eglises <- 0.15;
+	float attrac_2_eglises <- 0.25;
+	float attrac_3_eglises <- 0.5;
+	float attrac_4_eglises <- 0.6;
+	float attrac_GC <- 0.25;
+	float attrac_PC <- 0.15;
+	float attrac_communautes <- 0.15;
+	
