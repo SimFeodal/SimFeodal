@@ -30,9 +30,8 @@ global {
 	action save_parameters(string sim_name) {
 		string seuils_distance_max_dem_localSt <-  "'" + string(seuils_distance_max_dem_local) + "'";
 		
-		
 		save [
-				seed, sim_name, debut_simulation, fin_simulation, duree_step, besoin_protection,
+				string(seed), sim_name, debut_simulation, fin_simulation, duree_step, besoin_protection,
 				distance_detection_agregats, nombre_FP_agregat, nombre_agglos_antiques,
 				nombre_villages, puissance_communautes,
 				apparition_communautes, proba_apparition_communaute, nombre_foyers_paysans,
@@ -62,7 +61,7 @@ global {
 		int nbEglisesParoissiales <-  Eglises count (each.eglise_paroissiale);
 		
 		save [
-				seed, sim_name, Annee,
+				string(seed), sim_name, Annee,
 				nbChateaux, nbGdChateaux,
 				nbEglises, nbEglisesParoissiales,
 				distance_eglises, distance_eglises_paroissiales,
@@ -82,7 +81,7 @@ global {
 			
 			
 			save [
-				seed, sim_name,Annee,self, 
+				string(seed), sim_name,Annee,self, 
 				type, initial, puissance,
 				nbChateauxProprio, nbChateauxGardien,
 				nbFPassujettis, nbVassaux, nbDebiteurs, monAgregat, geom
@@ -98,7 +97,7 @@ global {
 			string geom <- "'" + string(shape with_precision 2) + "'";
 			
 			save [
-				seed, sim_name, Annee, self,
+				string(seed), sim_name, Annee, self,
 				nbFP, superficie, communaute, monPole, geom
 			] to: ("../outputs/"+ sim_name +"_results_agregats.csv") type: "csv" header: true rewrite: false;
 		}
@@ -115,7 +114,7 @@ global {
 			string geom <- "'" + string(shape with_precision 2) + "'";
 				
 			save [
-				seed, sim_name, Annee, self,
+				string(seed), sim_name, Annee, self,
 				attractivite, nbAttracteurs, monAgregat,
 				nbEglises, nbParoisses, nbGC, nbPC, nbCA, geom
 				
@@ -133,7 +132,7 @@ global {
 			string geom <- "'" + string(location with_precision 2) + "'";
 			
 			save [
-				seed, sim_name, Annee, self,
+				string(seed), sim_name, Annee, self,
 				communaute, monAgregat,
 				sMat, sRel, sProt,
 				Satis, mobile, type_deplacement,
@@ -151,7 +150,7 @@ global {
 				string geom <- "'" + string(shape with_precision 2) + "'";
 				
 				save [
-					seed, sim_name, Annee, self,
+					string(seed), sim_name, Annee, self,
 					monEglise, mode_promotion, shape.area,
 					nbFideles, SatisfactionParoisse, geom
 				] to: ("../outputs/"+ sim_name +"_results_paroisses.csv") type: "csv" header: true rewrite: false;

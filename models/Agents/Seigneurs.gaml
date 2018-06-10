@@ -24,12 +24,11 @@ global {
 		// Varie entre -1/3 et +1/3 autour de la moyenne
 		create Seigneurs number: nb_seigneurs_a_creer {
 			set type <- "Petit Seigneur";
-			set taux_prelevement <- 1.0;
 			
 			if (length(Agregats) > 0){
-				location <- any_location_in(one_of(Agregats collect each.shape));
+				location <- any_location_in(one_of(Agregats collect each.shape) inter reduced_worldextent);
 			} else {
-				location <- any_location_in(world);
+				location <- any_location_in(reduced_worldextent);
 			}
 			
 			
@@ -51,7 +50,6 @@ species Seigneurs schedules: [] {
 	
 	string type <- "Petit Seigneur";
 	bool initial <- false;
-	float taux_prelevement <- 1.0;
 	
 	float puissance_init;
 	float puissance <- 0.0;
@@ -98,13 +96,13 @@ species Seigneurs schedules: [] {
 		if (flip(proba_creation_ZP_banaux)){				
 			int rayon_ZP <- rayon_min_PS + rnd(rayon_max_PS - rayon_min_PS);
 			float taux_ZP <- min_fourchette_loyers_PS + rnd(max_fourchette_loyers_PS - min_fourchette_loyers_PS);
-			do creer_zone_prelevement(any_location_in(3000 around self.location), rayon_ZP, self, "Banaux", taux_ZP);
+			do creer_zone_prelevement(any_location_in(3000 around self.location inter reduced_worldextent), rayon_ZP, self, "Banaux", taux_ZP);
 		}
 		
 		if flip(proba_creation_ZP_basseMoyenneJustice){
 			int rayon_ZP <- rayon_min_PS + rnd(rayon_max_PS - rayon_min_PS);
 			float taux_ZP <- min_fourchette_loyers_PS + rnd(max_fourchette_loyers_PS - min_fourchette_loyers_PS);
-			do creer_zone_prelevement(any_location_in(3000 around self.location), rayon_ZP, self, "basseMoyenne_Justice", taux_ZP);
+			do creer_zone_prelevement(any_location_in(3000 around self.location inter reduced_worldextent), rayon_ZP, self, "basseMoyenne_Justice", taux_ZP);
 		}
 	}
 	
@@ -115,7 +113,7 @@ species Seigneurs schedules: [] {
 		if (choixAgregat != nil){
 		int rayon_taxe <- rayon_min_PS + rnd(rayon_max_PS - rayon_min_PS);
 		create Zones_Prelevement number: 1 {
-			set location <- any_location_in(choixAgregat.shape);
+			set location <- any_location_in(choixAgregat.shape inter worldextent);
 			set ZP_chateau <- false;
 			set proprietaire <- myself;
 			set type_droit <- monType_droit ;
@@ -260,28 +258,28 @@ species Seigneurs schedules: [] {
 	}
 	
 	float MaJ_loyers {
-		float Loyers <- length(FP_loyer) * taux_prelevement * 1.0;
+		float Loyers <- length(FP_loyer) * 1.0;
 		set FP_assujettis <- remove_duplicates(FP_assujettis + FP_loyer);
 		return(Loyers);
 	}
 	
 	float MaJ_hauteJustice {
-		float HteJustice <- length(FP_hauteJustice) * taux_prelevement * 1.0;
-		float HteJustice_garde <- length(FP_hauteJustice_garde) * taux_prelevement * 1.25;
+		float HteJustice <- length(FP_hauteJustice) * 1.0;
+		float HteJustice_garde <- length(FP_hauteJustice_garde) * 1.25;
 		set FP_assujettis <- remove_duplicates(FP_assujettis + FP_hauteJustice + FP_hauteJustice_garde);
 		return(HteJustice + HteJustice_garde);
 	}
 	
 	float MaJ_banaux {
-		float Banaux <- length(FP_banaux) * taux_prelevement * 0.25;
-		float Banaux_garde <- length(FP_banaux_garde) * taux_prelevement * 0.35;
+		float Banaux <- length(FP_banaux) * 0.25;
+		float Banaux_garde <- length(FP_banaux_garde) * 0.35;
 		set FP_assujettis <- remove_duplicates(FP_assujettis + FP_banaux + FP_banaux_garde);
 		return(Banaux + Banaux_garde);
 	}
 	
 	float MaJ_moyenneBasseJustice {
-		float moyenneBasseJustice <- length(FP_basseMoyenneJustice) * taux_prelevement * 0.25;
-		float moyenneBasseJustice_garde <- length(FP_basseMoyenneJustice_garde) * taux_prelevement * 0.35;
+		float moyenneBasseJustice <- length(FP_basseMoyenneJustice) * 0.25;
+		float moyenneBasseJustice_garde <- length(FP_basseMoyenneJustice_garde) * 0.35;
 		set FP_assujettis <- remove_duplicates(FP_assujettis + FP_basseMoyenneJustice + FP_basseMoyenneJustice_garde);
 		return(moyenneBasseJustice + moyenneBasseJustice_garde);
 	}
@@ -462,7 +460,7 @@ species Seigneurs schedules: [] {
 				ask agregatPotentiel {
 					mesChateaux <+ myself;
 				}
-				set location <- any_location_in(agregatPotentiel.shape + 500);
+				set location <- any_location_in((agregatPotentiel.shape + 500) inter reduced_worldextent);
 				int minRayon <- 2000 ;
 				int maxRayon <- 10000 ;
 				float maxPuissance <- max(Seigneurs collect each.puissance) ;

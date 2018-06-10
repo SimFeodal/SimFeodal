@@ -36,11 +36,11 @@ global
 		{
 			if (flip(proba_apparition_agregat)){
 				Agregats meilleurAgregat <- tousAgregats at rnd_choice(attrac_agregats);
-				set location <- any_location_in(meilleurAgregat.shape);
+				set location <- any_location_in(meilleurAgregat.shape inter worldextent);
 				set monAgregat <- meilleurAgregat;
 				ask monAgregat {fp_agregat <+ myself;}
 			} else {
-				set location <- any_location_in(worldextent);
+				set location <- any_location_in(reduced_worldextent);
 			}
 			set mobile <- flip(taux_mobilite);
 		}
@@ -279,13 +279,13 @@ species Foyers_Paysans schedules: []
 			set point_local <- location;
 		} else if (length(polesLocaux) < 2)
 		{ // Si un seul pole, on y va
-			set point_local <- any_location_in(one_of(polesLocaux).shape);
+			set point_local <- any_location_in(one_of(polesLocaux).shape inter worldextent);
 			set deplacement_to <- one_of(polesLocaux).monAgregat != nil ? "pole local avec agregat" : "pole local sans agregat";
 			
 		} else
 		{ // Si plus de 1 pole, lotterie ponderée
 			Poles poleVainqueur <- (polesLocaux sort_by (each)) at rnd_choice((polesLocaux sort_by (each)) collect (each.attractivite));
-			set point_local <- any_location_in(poleVainqueur.shape);
+			set point_local <- any_location_in(poleVainqueur.shape inter worldextent);
 			set deplacement_to <- poleVainqueur.monAgregat != nil ? "pole local avec agregat plus attractif" : "pole local sans agregat plus attractif";
 		}
 		return (point_local);
@@ -304,14 +304,14 @@ species Foyers_Paysans schedules: []
 		{ // Si un seul pole, on y va
 			Poles choixPole <- one_of(agregatsPolarisantsLointains);
 			set monAgregat <- choixPole.monAgregat;
-			set point_lointain <- any_location_in(monAgregat.shape);
+			set point_lointain <- any_location_in(monAgregat.shape inter worldextent);
 			set deplacement_to <- "agregat lointain unique";
 			// TODO : Changer nom variable
 		} else
 		{ // Si plus de 1 pole, lotterie ponderée
 			Poles poleVainqueur <- (agregatsPolarisantsLointains sort_by (each)) at rnd_choice((agregatsPolarisantsLointains sort_by (each)) collect (each.attractivite));
 
-			set point_lointain <- any_location_in(poleVainqueur.monAgregat.shape);
+			set point_lointain <- any_location_in(poleVainqueur.monAgregat.shape inter worldextent);
 			set monAgregat <- poleVainqueur.monAgregat;
 			set deplacement_to <- "agregat lointain attractif";
 			}

@@ -29,7 +29,7 @@ global {
 			create Foyers_Paysans number: (30 - 1) {
 				pool_FP <+ self ;
 				agent myFP <- one_of(pool_FP);
-				set location <- any_location_in((distance_detection_agregats -  1) around myFP.location);
+				set location <- any_location_in(((distance_detection_agregats -  1) around myFP.location) inter reduced_worldextent);
 				set mobile <- flip (taux_mobilite);
 			}
 		}
@@ -42,14 +42,14 @@ global {
 			create Foyers_Paysans number: (nombre_FP_village - 1){
 				pool_FP <+ self ;
 				agent myFP <- one_of(pool_FP);
-				set location <- any_location_in((distance_detection_agregats -  1) around myFP.location);
+				set location <- any_location_in(((distance_detection_agregats -  1) around myFP.location) inter reduced_worldextent);
 				set mobile <- flip (taux_mobilite);
 			}
 		}
 		// FP isolés
 		int nb_FP_isoles <- nombre_foyers_paysans - length(Foyers_Paysans);
 		create Foyers_Paysans number: nb_FP_isoles {
-			set location <- any_location_in(worldextent);
+			set location <- any_location_in(reduced_worldextent);
 			set mobile <- flip (taux_mobilite);
 		}
 	}
@@ -58,7 +58,6 @@ global {
 	action generer_seigneurs {
 		create Seigneurs number: nombre_grands_seigneurs{
 			set type <- "Grand Seigneur";
-			set taux_prelevement <- 1.0;
 			set initial <- true;
 			
 			set droits_loyer <-true;
@@ -69,8 +68,7 @@ global {
 		
 		create Seigneurs number: nombre_petits_seigneurs {
 			set type <- "Petit Seigneur";
-			set taux_prelevement <- 1.0;
-			set location <- any_location_in(one_of(Agregats collect each.shape));
+			set location <- any_location_in(one_of(Agregats collect each.shape) inter reduced_worldextent);
 			set initial <- true;
 			
 			set droits_loyer <- true;

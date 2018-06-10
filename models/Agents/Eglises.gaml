@@ -42,7 +42,7 @@ global {
 
 			if flip(proba_creation_paroisse) {
 				create Eglises number: 1 {
-					set location <- any_location_in(agregat.shape + 200) ;
+					set location <- any_location_in((agregat.shape + 200) inter worldextent) ;
 					set eglise_paroissiale <- true;
 					set mode_promotion <- "creation agregat";
 				}
