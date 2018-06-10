@@ -42,7 +42,7 @@ global {
 
 			if flip(proba_creation_paroisse) {
 				create Eglises number: 1 {
-					set location <- any_location_in((agregat.shape + 200) inter worldextent) ;
+					set location <- any_location_in((agregat.shape + 200) inter reduced_worldextent) ;
 					set eglise_paroissiale <- true;
 					set mode_promotion <- "creation agregat";
 				}
@@ -66,7 +66,7 @@ global {
 						// Créer nouvelle église autour du point le plus éloigné du polygone
 						create Eglises number: 1 {
 							geometry cetteParoisse <- myself.shape;
-							geometry cetteParoisseDansMonde <- myself.shape inter worldextent;
+							geometry cetteParoisseDansMonde <- myself.shape inter reduced_worldextent;
 							set location <- cetteParoisseDansMonde farthest_point_to myself.location;
 							set paroisse_a_creer <- self ;
 							set mode_promotion <- "creation isole";

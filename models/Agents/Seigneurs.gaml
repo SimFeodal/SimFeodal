@@ -26,7 +26,14 @@ global {
 			set type <- "Petit Seigneur";
 			
 			if (length(Agregats) > 0){
-				location <- any_location_in(one_of(Agregats collect each.shape) inter reduced_worldextent);
+				Agregats cetAgregat <- one_of(Agregats);
+				geometry thisShape <- cetAgregat.shape inter reduced_worldextent;
+				if (thisShape = nil){
+					write "shape : " + cetAgregat.shape;
+					write "reduced shape : " + thisShape;
+				}
+				point thisLocation <- any_location_in(cetAgregat.shape inter reduced_worldextent);
+				location <- thisLocation;
 			} else {
 				location <- any_location_in(reduced_worldextent);
 			}
@@ -113,7 +120,7 @@ species Seigneurs schedules: [] {
 		if (choixAgregat != nil){
 		int rayon_taxe <- rayon_min_PS + rnd(rayon_max_PS - rayon_min_PS);
 		create Zones_Prelevement number: 1 {
-			set location <- any_location_in(choixAgregat.shape inter worldextent);
+			set location <- any_location_in(choixAgregat.shape inter reduced_worldextent);
 			set ZP_chateau <- false;
 			set proprietaire <- myself;
 			set type_droit <- monType_droit ;

@@ -27,10 +27,10 @@ global {
 			
 			list<Foyers_Paysans> pool_FP <- [self]; 
 			create Foyers_Paysans number: (30 - 1) {
-				pool_FP <+ self ;
 				agent myFP <- one_of(pool_FP);
 				set location <- any_location_in(((distance_detection_agregats -  1) around myFP.location) inter reduced_worldextent);
 				set mobile <- flip (taux_mobilite);
+				pool_FP <+ self ;
 			}
 		}
 		// Villages
@@ -40,10 +40,10 @@ global {
 			
 			list<Foyers_Paysans> pool_FP <- [self];
 			create Foyers_Paysans number: (nombre_FP_village - 1){
-				pool_FP <+ self ;
 				agent myFP <- one_of(pool_FP);
 				set location <- any_location_in(((distance_detection_agregats -  1) around myFP.location) inter reduced_worldextent);
 				set mobile <- flip (taux_mobilite);
+				pool_FP <+ self ;
 			}
 		}
 		// FP isolés
