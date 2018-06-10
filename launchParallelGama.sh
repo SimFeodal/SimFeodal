@@ -1,7 +1,7 @@
 #!/bin/bash
-cd /home/robin/Gama/headless
+cd /home/robin/gama17git/headless
 
-experimentPath="/home/robin/transition8/models/myExperiment.xml"
+experimentPath="/home/robin/transition8/models/expe_5_0.xml"
 outputPath="/home/robin/myOutputs/sim"
 # Cluster got 24 cores
 # We launch each simulation on 2 cores, so, 8 simulations

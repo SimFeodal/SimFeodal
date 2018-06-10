@@ -92,23 +92,12 @@ experiment Exp_5_0_Test_09_10 type: batch repeat: 20 keep_seed: false until: (An
 	parameter "seuils_distance_max_dem_local" var: seuils_distance_max_dem_local init: [2500, 4000, 4000];
 }
 
-experiment Exp_5_0_Test_11_16 type: batch repeat: 20 keep_seed: false until: (Annee >= fin_simulation){
+experiment Exp_5_0_Test_11_35 type: batch repeat: 20 keep_seed: false until: (Annee >= fin_simulation){
 	parameter 'save_outputs' var: save_outputs init: true;
-	parameter 'prefix' var: prefix_output init: "5_0_Test_11_16";
+	parameter 'prefix' var: prefix_output init: "5_0_Test_11_35";
 	parameter "benchmark" var: benchmark init: false; // Changement pour connaitre perfs fonctions
 	parameter "serfs_mobiles" var: serfs_mobiles init: true;
 	parameter "nombre_fp_villages" var: nombre_FP_village among: [5, 10];
-	parameter "taux_augmentation_FP" var: taux_augmentation_FP init: 0.06; // FIXME
+	parameter "taux_augmentation_FP" var: taux_augmentation_FP among: [0.01, 0.03, 0.05, 0.1];
 	parameter "proba_ponderee_deplacement_lointain" var: proba_ponderee_deplacement_lointain among: [0.2, 0.5, 0.7];
 }
-
-experiment Exp_5_0_Test_17_22 type: batch repeat: 20 keep_seed: false until: (Annee >= fin_simulation){
-	parameter 'save_outputs' var: save_outputs init: true;
-	parameter 'prefix' var: prefix_output init: "5_0_Test_17_22";
-	parameter "benchmark" var: benchmark init: false; // Changement pour connaitre perfs fonctions
-	parameter "serfs_mobiles" var: serfs_mobiles init: true;
-	parameter "nombre_fp_villages" var: nombre_FP_village among: [5, 10];
-	parameter "taux_augmentation_FP" var: taux_augmentation_FP init: 0.22; // FIXME
-	parameter "proba_ponderee_deplacement_lointain" var: proba_ponderee_deplacement_lointain among: [0.2, 0.5, 0.7];
-}
-
