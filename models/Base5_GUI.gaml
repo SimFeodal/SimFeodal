@@ -3,8 +3,8 @@
  *  Author: Robin
  *  Description: Modelisation de la transition 800-1100, première version
  * Version 5.0 (ex 4.5)
- * Run with : gama 1.7 git : commit : 9484b484f0e07981670fcab6122209292c0c3f5a
- * (Gama 1.7 git 2017-07-12 14h35h09 +0700)
+ * Run with : gama 1.7 git : commit : f7c66274e29eadfd294c94f2a8018e4aa0c46788
+ * (Gama 1.7 git 2017-10-04 10h39h15 +0700) # Solve headless doing useless simulations
  */
 
 model t8

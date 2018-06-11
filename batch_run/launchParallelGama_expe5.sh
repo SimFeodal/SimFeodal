@@ -2,7 +2,7 @@
 # Local
 #cd /home/robin/gama_1.7git_simfeodal5/headless
 # Server
-cd /home/robin/gama17git/headless
+cd /home/robin/gama17git_simfeodal/headless
 #experimentPath="/home/robin/SimFeodal/experiments/expe_5_0_T_01-06.xml"
 experimentPath="/home/robin/SimFeodal/experiments/expe_5_0_T_07-08.xml"
 #experimentPath="/home/robin/SimFeodal/experiments/expe_5_0_T_09-10.xml"
