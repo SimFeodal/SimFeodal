@@ -3,15 +3,3 @@
 	<Parameters>
 	</Parameters>
 </Simulation>
-<Simulation id="2" sourcePath="Base5_GUI.gaml" finalstep="18" experiment="Exp_5_0_Test_07_08">
-	<Parameters>
-	</Parameters>
-</Simulation>
-<Simulation id="3" sourcePath="Base5_GUI.gaml" finalstep="18" experiment="Exp_5_0_Test_09_10">
-	<Parameters>
-	</Parameters>
-</Simulation>
-<Simulation id="4" sourcePath="Base5_GUI.gaml" finalstep="18" experiment="Exp_5_0_Test_11_35">
-	<Parameters>
-	</Parameters>
-</Simulation>
