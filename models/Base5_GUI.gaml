@@ -67,7 +67,7 @@ experiment Exp_5_0_A_OM type: gui {
 	parameter "summarised_outputs" var: summarised_outputs init:true;
 }
 
-experiment Exp_5_0_Test_01_06 type: batch repeat: 20 keep_seed: false until: (Annee >= fin_simulation){
+experiment Exp_5_0_Test_01_06 type: batch repeat: 5 keep_seed: false until: (Annee >= fin_simulation){
 	parameter 'save_outputs' var: save_outputs init: true;
 	parameter 'prefix' var: prefix_output init: "5_0_Test_01_06";
 	parameter "benchmark" var: benchmark init: false; // Changement pour connaitre perfs fonctions
