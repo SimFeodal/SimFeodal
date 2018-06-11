@@ -95,7 +95,7 @@ experiment Exp_5_0_Test_09_10 type: batch repeat: 4 keep_seed: false until: (Ann
 	parameter "seuils_distance_max_dem_local" var: seuils_distance_max_dem_local init: [2500, 4000, 4000];
 }
 
-experiment Exp_5_0_Test_11_35 type: batch repeat: 4 keep_seed: false until: (Annee >= fin_simulation){
+experiment Exp_5_0_Test_11_34 type: batch repeat: 4 keep_seed: false until: (Annee >= fin_simulation){
 	parameter 'save_outputs' var: save_outputs init: true;
 	parameter 'prefix' var: prefix_output init: "5_0_Test_11_35";
 	parameter "benchmark" var: benchmark init: false; // Changement pour connaitre perfs fonctions
