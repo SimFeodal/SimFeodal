@@ -76,6 +76,7 @@ experiment Exp_5_0_Test_01_06 type: batch repeat: 4 keep_seed: false until: (Ann
 	parameter "benchmark" var: benchmark init: false; // Changement pour connaitre perfs fonctions
 	parameter "serfs_mobiles" var: serfs_mobiles init: true;
 	parameter "nombre_fp_villages" var: nombre_FP_village among: [10, 9, 8, 7, 6, 5];
+	// 6 experiments
 }
 
 experiment Exp_5_0_Test_07_08 type: batch repeat: 2 keep_seed: false until: (Annee >= fin_simulation){
@@ -84,6 +85,7 @@ experiment Exp_5_0_Test_07_08 type: batch repeat: 2 keep_seed: false until: (Ann
 	parameter "benchmark" var: benchmark init: false; // Changement pour connaitre perfs fonctions
 	parameter "serfs_mobiles" var: serfs_mobiles init: true;
 	parameter "proba_ponderee_deplacement_lointain" var: proba_ponderee_deplacement_lointain among: [0.5, 0.7];
+	// 2 experiments
 }
 
 experiment Exp_5_0_Test_09_10 type: batch repeat: 2 keep_seed: false until: (Annee >= fin_simulation){
@@ -93,14 +95,16 @@ experiment Exp_5_0_Test_09_10 type: batch repeat: 2 keep_seed: false until: (Ann
 	parameter "serfs_mobiles" var: serfs_mobiles init: true;
 	parameter "nombre_fp_villages" var: nombre_FP_village among: [5, 10];
 	parameter "seuils_distance_max_dem_local" var: seuils_distance_max_dem_local init: [2500, 4000, 4000];
+	// 2 experiments
 }
 
 experiment Exp_5_0_Test_11_34 type: batch repeat: 2 keep_seed: false until: (Annee >= fin_simulation){
 	parameter 'save_outputs' var: save_outputs init: true;
-	parameter 'prefix' var: prefix_output init: "5_0_Test_11_35";
+	parameter 'prefix' var: prefix_output init: "5_0_Test_11_34";
 	parameter "benchmark" var: benchmark init: false; // Changement pour connaitre perfs fonctions
 	parameter "serfs_mobiles" var: serfs_mobiles init: true;
 	parameter "nombre_fp_villages" var: nombre_FP_village among: [5, 10];
 	parameter "taux_augmentation_FP" var: taux_augmentation_FP among: [0.01, 0.03, 0.05, 0.1];
 	parameter "proba_ponderee_deplacement_lointain" var: proba_ponderee_deplacement_lointain among: [0.2, 0.5, 0.7];
+	// 2 (nombre_fp_villages) * 4 (taux_augmentation_FP) * 3(proba_ponderee_deplacement_lointain) = 24 experiments
 }
