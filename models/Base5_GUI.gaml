@@ -70,7 +70,7 @@ experiment Exp_5_0_A_OM type: gui {
 	parameter "summarised_outputs" var: summarised_outputs init:true;
 }
 
-experiment Exp_5_0_Test_01_06 type: batch repeat: 4 keep_seed: false until: (Annee >= fin_simulation){
+experiment Exp_5_0_Test_01_06 type: batch repeat: 2 keep_seed: false until: (Annee >= fin_simulation){
 	parameter 'save_outputs' var: save_outputs init: true;
 	parameter 'prefix' var: prefix_output init: "5_0_Test_01_06";
 	parameter "benchmark" var: benchmark init: false; // Changement pour connaitre perfs fonctions
@@ -107,4 +107,34 @@ experiment Exp_5_0_Test_11_34 type: batch repeat: 2 keep_seed: false until: (Ann
 	parameter "taux_augmentation_FP" var: taux_augmentation_FP among: [0.01, 0.03, 0.05, 0.1];
 	parameter "proba_ponderee_deplacement_lointain" var: proba_ponderee_deplacement_lointain among: [0.2, 0.5, 0.7];
 	// 2 (nombre_fp_villages) * 4 (taux_augmentation_FP) * 3(proba_ponderee_deplacement_lointain) = 24 experiments
+}
+
+experiment Exp_5_0_Base type: batch repeat: 2 keep_seed: false until: (Annee >= fin_simulation){
+	parameter 'save_outputs' var: save_outputs init: true;
+	parameter 'prefix' var: prefix_output init: "5_0_Base";
+	parameter "benchmark" var: benchmark init: false; // Changement pour connaitre perfs fonctions
+	parameter "serfs_mobiles" var: serfs_mobiles init: true;
+	parameter "nombre_fp_villages" var: nombre_FP_village init: 10;
+	// 1 experiment
+}
+
+experiment Exp_5_0_Test_35 type: batch repeat: 2 keep_seed: false until: (Annee >= fin_simulation){
+	parameter 'save_outputs' var: save_outputs init: true;
+	parameter 'prefix' var: prefix_output init: "5_0_Test";
+	parameter "benchmark" var: benchmark init: false; // Changement pour connaitre perfs fonctions
+	parameter "serfs_mobiles" var: serfs_mobiles init: true;
+	parameter "taux_augmentation_FP" var: taux_augmentation_FP init: 0.1;
+	parameter "seuils_distance_max_dem_local" var: seuils_distance_max_dem_local init: [2500, 4000, 4000];
+	// 1 experiment
+}
+
+experiment Exp_5_0_Test_36 type: batch repeat: 2 keep_seed: false until: (Annee >= fin_simulation){
+	parameter 'save_outputs' var: save_outputs init: true;
+	parameter 'prefix' var: prefix_output init: "5_0_Test";
+	parameter "benchmark" var: benchmark init: false; // Changement pour connaitre perfs fonctions
+	parameter "serfs_mobiles" var: serfs_mobiles init: true;
+	parameter "taux_augmentation_FP" var: taux_augmentation_FP init: 0.03;
+	parameter "seuils_distance_max_dem_local" var: seuils_distance_max_dem_local init: [2500, 4000, 4000];
+	parameter "proba_ponderee_deplacement_lointain" var: proba_ponderee_deplacement_lointain init: 0.7;
+	// 1 experiment
 }
