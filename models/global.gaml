@@ -153,7 +153,7 @@ global torus: false{
 	list<int> Chateaux_chatelains <- [];
 	list<int> reseaux_chateaux <- [];
 
-	string prefix_output <- nil;
+	string prefix_output <- "global";
 	
 	// OpenMole outputs //
 	int nb_agregats_om <- 0 ;
