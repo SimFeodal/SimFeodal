@@ -81,7 +81,7 @@ experiment Exp_5_0_Test_01_06 type: batch repeat: 2 keep_seed: false until: (Ann
 
 experiment Exp_5_0_Test_07_08 type: batch repeat: 2 keep_seed: false until: (Annee >= fin_simulation){
 	parameter 'save_outputs' var: save_outputs init: true;
-	parameter 'prefix' var: prefix_output init: "5_0_Test_07_08";
+	parameter 'prefix' var: prefix_output among: ["5_0_Test_07_08"];
 	parameter "benchmark" var: benchmark init: false; // Changement pour connaitre perfs fonctions
 	parameter "serfs_mobiles" var: serfs_mobiles init: true;
 	parameter "proba_ponderee_deplacement_lointain" var: proba_ponderee_deplacement_lointain init: 0.5 among: [0.5, 0.7];
