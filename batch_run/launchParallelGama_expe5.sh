@@ -4,9 +4,12 @@
 # Server
 cd /home/robin/gama17git_simfeodal/headless
 #experimentPath="/home/robin/SimFeodal/experiments/expe_5_0_T_01-06.xml"
-experimentPath="/home/robin/SimFeodal/experiments/expe_5_0_T_07-08.xml"
+#experimentPath="/home/robin/SimFeodal/experiments/expe_5_0_T_07-08.xml"
 #experimentPath="/home/robin/SimFeodal/experiments/expe_5_0_T_09-10.xml"
 #experimentPath="/home/robin/SimFeodal/experiments/expe_5_0_T_11-34.xml"
+#experimentPath="/home/robin/SimFeodal/experiments/expe_5_0_T_35.xml"
+experimentPath="/home/robin/SimFeodal/experiments/expe_5_0_T_36.xml"
+
 outputPath="/home/robin/myOutputs/sim"
 # Cluster got 24 cores
 # We launch each simulation on 2 cores, so, 10 simulations
