@@ -7,7 +7,7 @@
 model t8
 
 // L'ordre compte...
-import "run.gaml"	
+import "../run.gaml"	
 	
 experiment Exp_4_5_gui type: gui until: (Annee >= fin_simulation){
 	parameter 'save_outputs' var: save_outputs init: false;
