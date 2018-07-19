@@ -177,3 +177,15 @@ experiment Exp_5_0_Test_MondeReduit_fix2 type: batch repeat: 1 keep_seed: false 
 	parameter "seuil_creation_paroisse" var: seuil_creation_paroisse init: 600;
 	// 1 experiment
 }
+
+experiment Exp_5_0_Test_MondeReduit_fix3 type: batch repeat: 1 keep_seed: false until: (Annee >= fin_simulation){
+	parameter 'save_outputs' var: save_outputs init: true;
+	parameter 'prefix' var: prefix_output among: ["5_0_MondeReduit_fix3s"];
+	parameter "benchmark" var: benchmark init: false; // Changement pour connaitre perfs fonctions
+	parameter "serfs_mobiles" var: serfs_mobiles init: true;
+	parameter "taux_augmentation_FP" var: taux_augmentation_FP init: 0.12;
+	parameter "seuils_distance_max_dem_local" var: seuils_distance_max_dem_local init: [2500, 2500, 2500];
+	parameter "taille_cote_monde" var: taille_cote_monde init: 80;
+	parameter "seuil_creation_paroisse" var: seuil_creation_paroisse init: 600;
+	// 1 experiment
+}
