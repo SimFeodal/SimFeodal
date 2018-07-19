@@ -54,7 +54,7 @@ species Foyers_Paysans schedules: []
 	bool communaute <- false;
 	Agregats monAgregat <- nil;
 	float satisfaction_materielle;
-	float satisfaction_religieuse;
+	float satisfaction_religieuse <- 1.0;
 	float satisfaction_protection;
 	float Satisfaction;
 	bool mobile; // Si true : ce FP peut se déplacer / si false, serf/esclave, pas de déplacement
@@ -322,7 +322,7 @@ species Foyers_Paysans schedules: []
 	rgb color <- # gray;
 	aspect base
 	{
-		draw circle(500) color: color;
+		draw geometry:circle(10) color:#black;
 	}
 
 }

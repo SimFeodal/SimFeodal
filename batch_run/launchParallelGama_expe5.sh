@@ -9,7 +9,8 @@ cd /home/robin/gama17git_simfeodal/headless
 #experimentPath="/home/robin/SimFeodal/experiments/expe_5_0_T_11-34.xml"
 #experimentPath="/home/robin/SimFeodal/experiments/expe_5_0_T_35.xml"
 #experimentPath="/home/robin/SimFeodal/experiments/expe_5_0_T_36.xml"
-experimentPath="/home/robin/SimFeodal/experiments/expe_5_0_T_MondeReduit.xml"
+#experimentPath="/home/robin/SimFeodal/experiments/expe_5_0_T_MondeReduit.xml"
+experimentPath="/home/robin/SimFeodal/experiments/expe_5_0_T_MondeReduit_fix.xml"
 
 outputPath="/home/robin/myOutputs/sim"
 # Cluster got 24 cores

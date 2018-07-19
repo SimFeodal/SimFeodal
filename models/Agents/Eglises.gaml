@@ -52,6 +52,9 @@ global {
 	
 	action promouvoir_paroisses {
 		string typePromo <- "nil";
+	/* ask Paroisses {
+			write string(self )+ "  : " + string(Satisfaction_Paroisse);
+		} */
 		ask Paroisses {
 			if flip(1 - Satisfaction_Paroisse){
 				bool eglise_batie <- false ;
@@ -123,6 +126,7 @@ species Paroisses {
 	action update_satisfaction {
 		if length(mesFideles) > 0 {
 			int nb_paroissiens_mecontents <- mesFideles count (each.satisfaction_religieuse = 0.0);
+			// write string(self) + " : Nb Paroissiens : " + string(length(mesFideles)) + " / Mecontents : "+ string(nb_paroissiens_mecontents);
 			if nb_paroissiens_mecontents > nb_paroissiens_mecontents_necessaires {
 				set Satisfaction_Paroisse <- 0.0;
 			} else {
