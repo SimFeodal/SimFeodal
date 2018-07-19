@@ -18,9 +18,11 @@ experiment Exp_5_0_A_gui type: gui until: (Annee >= fin_simulation){
 	parameter "benchmark" var: benchmark init: false; // Changement pour connaitre perfs fonctions
 	parameter "experimentType" var: experimentType init: "gui";
 	parameter "serfs_mobiles" var: serfs_mobiles init: true;
-	parameter "taux_augmentation_FP" var: taux_augmentation_FP init: 0.12;
+	/*
+	 parameter "taux_augmentation_FP" var: taux_augmentation_FP init: 0.12;
 	parameter "seuils_distance_max_dem_local" var: seuils_distance_max_dem_local init: [2500, 4000, 4000];
 	parameter "taille_cote_monde" var: taille_cote_monde init: 80;
+	*/
 	
 	output {
 		monitor "Annee" value: Annee;
@@ -161,5 +163,17 @@ experiment Exp_5_0_Test_MondeReduit_fix type: batch repeat: 2 keep_seed: false u
 	parameter "taux_augmentation_FP" var: taux_augmentation_FP init: 0.12;
 	parameter "seuils_distance_max_dem_local" var: seuils_distance_max_dem_local init: [2500, 4000, 4000];
 	parameter "taille_cote_monde" var: taille_cote_monde init: 80;
+	// 1 experiment
+}
+
+experiment Exp_5_0_Test_MondeReduit_fix2 type: batch repeat: 1 keep_seed: false until: (Annee >= fin_simulation){
+	parameter 'save_outputs' var: save_outputs init: true;
+	parameter 'prefix' var: prefix_output among: ["5_0_MondeReduit_fix2"];
+	parameter "benchmark" var: benchmark init: false; // Changement pour connaitre perfs fonctions
+	parameter "serfs_mobiles" var: serfs_mobiles init: true;
+	parameter "taux_augmentation_FP" var: taux_augmentation_FP init: 0.12;
+	parameter "seuils_distance_max_dem_local" var: seuils_distance_max_dem_local init: [2500, 4000, 4000];
+	parameter "taille_cote_monde" var: taille_cote_monde init: 80;
+	parameter "seuil_creation_paroisse" var: seuil_creation_paroisse init: 600;
 	// 1 experiment
 }
