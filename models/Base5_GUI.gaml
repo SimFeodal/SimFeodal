@@ -39,6 +39,7 @@ experiment Exp_5_0_A_gui type: gui until: (Annee >= fin_simulation){
 		monitor "Nombre Eglises Paroissiales" value: Eglises count (each.eglise_paroissiale);
 		monitor "Nombre Chateaux" value: length(Chateaux);
 		monitor "% FP dispersés" value: Foyers_Paysans count (each.monAgregat = nil) / length(Foyers_Paysans) * 100;
+		monitor "Sat moyenne" value: mean(Foyers_Paysans collect each.Satisfaction);
 		
 		display "Carte" type: "opengl" {
 			species Paroisses transparency: 0.9 ;
