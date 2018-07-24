@@ -18,8 +18,11 @@ import "Zones_Prelevement.gaml"
 global {
     
      action update_agregats {
+     	
+     	// On crée un graphe de distance sur FP + Chateaux + eglises paroissiales
     	list<Eglises> eglises_paroissiales <- Eglises where (each.eglise_paroissiale);
     	list<container<agent>> agregats_detectes <- simple_clustering_by_distance((Foyers_Paysans + Chateaux + eglises_paroissiales), distance_detection_agregats);
+    	// On ne conserve que les composantes constituées de > 5 (parametre) FP
     	list<container<agent>> agregats_corrects <- agregats_detectes where (length(each of_species Foyers_Paysans) >= nombre_FP_agregat);
 
  	   	loop nouveauxAgregats over: agregats_corrects {
@@ -34,30 +37,29 @@ global {
 	    		
 			}
     	}
-
 	// Desaffectation des FP //
 		ask Foyers_Paysans {
 		set monAgregat <- nil ;
-		}
-			
-		list<tmpAgregats> tmpAgregatsRestants <- list(tmpAgregats);	
-		
-		loop cetAgregat over: tmpAgregatsRestants {
-			if (dead(cetAgregat)){tmpAgregatsRestants >- cetAgregat;break;}
-			list<agent> cetAgregatAgents <- cetAgregat.mesAgents;
-			loop autreAgregat over: (tmpAgregatsRestants - cetAgregat){
+		}	
+
+		loop cetAgregat over: tmpAgregats {
+			if (!dead(cetAgregat)){
+			list<tmpAgregats> autresAgregats <- list(tmpAgregats) - cetAgregat;
+			loop autreAgregat over: autresAgregats {
 				if (autreAgregat.shape intersects cetAgregat.shape){
 					set cetAgregat.shape <- cetAgregat.shape + autreAgregat.shape;
-					set cetAgregat.mesAgents <- cetAgregat.mesAgents + autreAgregat.mesAgents;
-					set cetAgregat.mesFP <- cetAgregat.mesFP + autreAgregat.mesFP;
-		    		set cetAgregat.mesEglisesParoissiales <- cetAgregat.mesEglisesParoissiales + autreAgregat.mesEglisesParoissiales;
-		    		set cetAgregat.mesChateaux <- cetAgregat.mesChateaux + autreAgregat.mesChateaux;
-					tmpAgregatsRestants>- autreAgregat;
-					ask autreAgregat {do die;}	
+					set cetAgregat.mesAgents <- distinct(cetAgregat.mesAgents + autreAgregat.mesAgents);
+					set cetAgregat.mesFP <- distinct(cetAgregat.mesFP + autreAgregat.mesFP);
+					set cetAgregat.mesEglisesParoissiales <- distinct(cetAgregat.mesEglisesParoissiales + autreAgregat.mesEglisesParoissiales);
+					set cetAgregat.mesChateaux <- distinct(cetAgregat.mesChateaux + autreAgregat.mesChateaux);
+					ask autreAgregat {
+						do die;
+					}
 				}
 			}
+			}
+
 		}
-			
 			
 		ask tmpAgregats {
 			geometry myShape <- shape;
