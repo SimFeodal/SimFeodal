@@ -79,7 +79,7 @@ global {
 				}
 			}
 		}
-	
+		
 		ask Agregats {
 			do die;
 		}
@@ -107,8 +107,7 @@ global {
 		}
 	    	// ***************************** //
 	    	//  Suppression des tmpAgregats  //
-	    	// ***************************** //
-	    	
+	    	// ***************************** //	
 		ask tmpAgregats {do die;}
 			
 		ask Agregats {

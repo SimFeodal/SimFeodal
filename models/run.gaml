@@ -168,10 +168,12 @@ float t <- machine_time;
 			if (benchmark){write 'Constructions_chateaux : ' + string(machine_time - t);}
 	}
 	
+	
+	
 	reflex MaJ_Agregats{
 		float t <- machine_time;
 		do update_agregats;
-		
+//		
 		do creation_nouveaux_seigneurs;
 		ask Seigneurs where (each.type != "Grand Seigneur"){do update_agregats_seigneurs;}
 		if (length(Chateaux) > 0){
@@ -180,7 +182,7 @@ float t <- machine_time;
 		ask Agregats {do update_attractivite;}
 					if (benchmark){write 'MaJ_Agregats : ' + string(machine_time - t);}
 	}
-	
+	 
 	reflex update_plot {
 						float t <- machine_time;
 		ask Seigneurs {
@@ -190,7 +192,7 @@ float t <- machine_time;
 	}
 	
 	reflex update_outputs when: (Annee > debut_simulation){
-								float t <- machine_time;
+		float t <- machine_time;
 		if (Annee = (debut_simulation + duree_step)){
 			ask Foyers_Paysans {
 				int loyer <- (self.seigneur_loyer != nil) ? 1 : 0;
@@ -202,9 +204,11 @@ float t <- machine_time;
 			}
 			set charge_fiscale_debut <- mean(Foyers_Paysans collect float(each.nb_preleveurs));
 		}
+		if (benchmark){write 'update_outputs 1: ' + string(machine_time - t);}
+		float t <- machine_time;
 		//do update_agregats_fp ;
 		do update_output_indexes;
-if (benchmark){write 'update_outputs : ' + string(machine_time - t);}
+		if (benchmark){write 'update_outputs 2: ' + string(machine_time - t);}
 		write "Seed : " + seed + " / Annee : " + Annee + " / Nb Agregats : " + length(Agregats) + " / TxIsoles : " + prop_FP_isoles;
 	}
 	
