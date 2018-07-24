@@ -226,18 +226,18 @@ global torus: false{
 		set charge_fiscale <- mean(Foyers_Paysans collect float(each.nb_preleveurs));
 		
 		list<Foyers_Paysans> FP_Agregat <- Foyers_Paysans where (each.monAgregat != nil);
-		
-		list<float> liste_ppv_agregats <- [];
-		ask FP_Agregat {
-			list<Foyers_Paysans> mesFP <- (Foyers_Paysans where (each.monAgregat = self.monAgregat)) - self;
-			if (!empty(mesFP)){
-				float myDist <- self distance_to (mesFP with_min_of (each distance_to self));
-				liste_ppv_agregats <+ myDist;
-			}
-		}
-		set dist_ppv_agregat <- mean(liste_ppv_agregats);
-		
 		if (benchmark){write 'update_output_indexes_3 : ' + string(machine_time - t);}
+//		float t <- machine_time;
+//		list<float> liste_ppv_agregats <- [];
+//		ask FP_Agregat {
+//			list<Foyers_Paysans> mesFP <- (Foyers_Paysans where (each.monAgregat = self.monAgregat)) - self;
+//			if (!empty(mesFP)){
+//				float myDist <- self distance_to (mesFP with_min_of (each distance_to self));
+//				liste_ppv_agregats <+ myDist;
+//			}
+//		}
+//		set dist_ppv_agregat <- mean(liste_ppv_agregats);
+//		if (benchmark){write 'update_output_indexes_4 : ' + string(machine_time - t);}
 		float t <- machine_time;
 		list<int> nbChateaux_chatelains <- []; 
 		ask Seigneurs where (each.type != "Petit Seigneur"){
