@@ -56,8 +56,6 @@ global schedules: shuffle(Attracteurs) + shuffle(Poles) + shuffle(Agregats) + sh
 		if (benchmark){write 'MaJ_poles : ' + string(machine_time - t);}
 	}
 	
-	// Changement 4_4 ! TODO
-	// On déplace Satisfaction ici alors que c'était juste avant MaJ Agrégats
 	reflex MaJ_satisfaction_FP {
 		float t0 <- machine_time;
 		ask  Foyers_Paysans {
@@ -147,8 +145,6 @@ float t <- machine_time;
 	if (benchmark){write 'Dons_des_Seigneurs : ' + string(machine_time - t);}
 	}
 	
-	// Changement 4_4 ! TODO
-	// La promotion était juste après MaJ Poles et arrive encore plus tard 
 	reflex Promotion_Chateaux when: (Annee >= 940 and Annee <= 1040){
 		float t <- machine_time;
 			ask Chateaux where (each.type = "Petit Chateau"){
@@ -205,7 +201,7 @@ float t <- machine_time;
 			set charge_fiscale_debut <- mean(Foyers_Paysans collect float(each.nb_preleveurs));
 		}
 		if (benchmark){write 'update_outputs 1: ' + string(machine_time - t);}
-		float t <- machine_time;
+		set t <- machine_time;
 		//do update_agregats_fp ;
 		do update_output_indexes;
 		if (benchmark){write 'update_outputs 2: ' + string(machine_time - t);}

@@ -126,7 +126,7 @@ species Foyers_Paysans schedules: []
 		Chateaux plusProcheChateau <- Chateaux with_min_of (self distance_to each);
 		float satisfaction_distance <- nil;
 		float satisfaction_puissance <- nil;
-		// FIXME : Trop lent, à recoder (peut-être depuis point de vue chateau)
+
 		if (plusProcheChateau = nil)
 		{
 			set satisfaction_distance <- 0.0;

@@ -207,7 +207,7 @@ global torus: false{
 		}
 		set distance_eglises <- mean(distances_pp_eglise);
 		if (benchmark){write 'update_output_indexes_1 : ' + string(machine_time - t);}
-		float t <- machine_time;
+		set t <- machine_time;
 		list<float> distances_pp_paroisses <- [];
 		list<Eglises> eglises_paroissiales <- Eglises where (each.eglise_paroissiale);
 		ask eglises_paroissiales{
@@ -220,7 +220,7 @@ global torus: false{
 		
 		set distance_eglises_paroissiales <- mean(distances_pp_paroisses);
 		if (benchmark){write 'update_output_indexes_2 : ' + string(machine_time - t);}
-		float t <- machine_time;
+		set t <- machine_time;
 		
 		set prop_FP_isoles <- Foyers_Paysans count (each.monAgregat = nil) / length(Foyers_Paysans);
 		set charge_fiscale <- mean(Foyers_Paysans collect float(each.nb_preleveurs));
@@ -238,7 +238,7 @@ global torus: false{
 //		}
 //		set dist_ppv_agregat <- mean(liste_ppv_agregats);
 //		if (benchmark){write 'update_output_indexes_4 : ' + string(machine_time - t);}
-		float t <- machine_time;
+		set t <- machine_time;
 		list<int> nbChateaux_chatelains <- []; 
 		ask Seigneurs where (each.type != "Petit Seigneur"){
 			list<Chateaux> mesChateaux <- Chateaux where ( (each.proprietaire = self) or (each.gardien = self) );
@@ -246,7 +246,7 @@ global torus: false{
 		}
 		set Chateaux_chatelains <- nbChateaux_chatelains;
 		if (benchmark){write 'update_output_indexes_5 : ' + string(machine_time - t);}
-		float t <- machine_time;
+		set t <- machine_time;
 		list<int> nbChateaux_reseau <- [];
 		ask Seigneurs where (each.type != "Petit Seigneur"){
 			list<Chateaux> mesChateaux <- Chateaux where (each.proprietaire = self);
