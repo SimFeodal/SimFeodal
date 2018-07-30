@@ -105,7 +105,7 @@ global {
 			float superficie <- shape.area;
 			string geom <- enquote(shape with_precision 2);
 			int id_agregat <- int(replace(self.name, 'Agregats', ''));
-			int monpole <- int(replace(monPole.name, 'Poles', ''));
+			int monpole <- (monPole != nil) ? int(replace(monPole.name, 'Poles', '')) : nil;
 			
 			save [
 				myseed, sim_name, Annee, id_agregat,
@@ -125,7 +125,7 @@ global {
 			int nbCA <- length(mesAttracteurs of_species Agregats);
 			string geom <- enquote(shape with_precision 2);
 			int id_pole <- int(replace(self.name, 'Poles', ''));
-			int monagregat <- int(replace(monAgregat.name, 'Agregats', ''));
+			int monagregat <- (monAgregat != nil) ? int(replace(monAgregat.name, 'Agregats', '')) : nil;
 				
 			save [
 				myseed, sim_name, Annee, id_pole,
@@ -146,7 +146,7 @@ global {
 			float Satis <- Satisfaction with_precision 2;
 			string geom <- enquote(location with_precision 2);
 			int id_fp <- int(replace(self.name, 'Foyers_Paysans', ''));
-			int monagregat <- int(replace(monAgregat.name, 'Agregats', ''));
+			int monagregat <- (monAgregat != nil) ? int(replace(monAgregat.name, 'Agregats', '')) : nil;
 			
 			save [
 				myseed, sim_name, Annee, id_fp,
@@ -167,8 +167,8 @@ global {
 				float SatisfactionParoisse <- Satisfaction_Paroisse with_precision 3;
 				string geom <- enquote(shape with_precision 2);
 				int id_paroisse <- int(replace(self.name, 'Paroisses', ''));
-				int moneglise <- int(replace(monEglise.name, 'Eglises', ''));
-				
+				int moneglise <- (monEglise != nil) ? int(replace(monEglise.name, 'Agregats', '')) : nil;
+
 				save [
 					myseed, sim_name, Annee, id_paroisse,
 					moneglise, mode_promotion, shape.area,
