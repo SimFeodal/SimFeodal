@@ -163,6 +163,10 @@ global {
 		list<Eglises> mesParoisses;
 		Poles monPole <- nil; // FIXME : jusqu'ici, toujours nil
 		
+	action enquote (unknown text) {
+		return '"' + string(text) + '"';
+	}
+		
 		action update_chateau {
 			// FIXME : Chateaux trop proches sinon
 			

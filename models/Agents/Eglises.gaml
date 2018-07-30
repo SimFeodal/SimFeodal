@@ -116,7 +116,9 @@ species Paroisses {
 	float Satisfaction_Paroisse <- 1.0 ;
 	string mode_promotion <- "nil" update: "nil";
 	
-	
+	action enquote (unknown text) {
+		return '"' + string(text) + '"';
+	}
 
 	action update_fideles {
 		set mesFideles <- Foyers_Paysans inside self.shape ;

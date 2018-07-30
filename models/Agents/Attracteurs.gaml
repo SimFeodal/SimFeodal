@@ -111,4 +111,7 @@ species Poles schedules: [] {
 	float attractivite;
 	list<Attracteurs> mesAttracteurs;
 	Agregats monAgregat;
+	action enquote (unknown text) {
+		return '"' + string(text) + '"';
+	}
 }

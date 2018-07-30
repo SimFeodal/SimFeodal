@@ -16,6 +16,11 @@ import "Agents/Zones_Prelevement.gaml"
 
 global {
 	
+	action enquote (unknown text) {
+		return '"' + string(text) + '"';
+	}
+	
+	
 	action save_outputs_data {
 		string currentPrefix <- prefix_output;
 		if (Annee = 820) {do save_parameters(currentPrefix);}
@@ -28,10 +33,11 @@ global {
 	}
 	
 	action save_parameters(string sim_name) {
-		string seuils_distance_max_dem_localSt <-  "'" + string(seuils_distance_max_dem_local) + "'";
+		string seuils_distance_max_dem_localSt <-  enquote(seuils_distance_max_dem_local);
+		string myseed <- enquote(seed);
 		
 		save [
-				string(seed), sim_name, debut_simulation, fin_simulation, duree_step, besoin_protection,
+				myseed, sim_name, debut_simulation, fin_simulation, duree_step, besoin_protection,
 				distance_detection_agregats, nombre_FP_agregat, nombre_agglos_antiques,
 				nombre_villages, puissance_communautes,
 				apparition_communautes, proba_apparition_communaute, nombre_foyers_paysans,
@@ -60,9 +66,9 @@ global {
 		int nbGdChateaux <- Chateaux count (each.type = "Grand Chateau");
 		int nbEglises <- length(Eglises);
 		int nbEglisesParoissiales <-  Eglises count (each.eglise_paroissiale);
-		
+		string myseed <- enquote(seed);
 		save [
-				string(seed), sim_name, Annee,
+				myseed, sim_name, Annee,
 				nbChateaux, nbGdChateaux,
 				nbEglises, nbEglisesParoissiales,
 				distance_eglises, distance_eglises_paroissiales,
@@ -72,17 +78,18 @@ global {
 	}
 	
 	action save_seigneurs(string sim_name) {
+		string myseed <- enquote(seed);
 		ask Seigneurs {
+			int id_seigneur <- int(replace(self.name, 'Seigneurs', ''));
 			int nbChateauxProprio <- Chateaux count (each.proprietaire = self);
 			int nbChateauxGardien <- Chateaux count (each.gardien = self);
 			int nbFPassujettis <- length(FP_assujettis);
 			int nbVassaux <- Seigneurs count (each.monSuzerain = self);
 			int nbDebiteurs <- length(mesDebiteurs);
-			string geom <- "'" + string(location with_precision 2) + "'";
-			
-			
+			string geom <- enquote(location with_precision 2);
+
 			save [
-				string(seed), sim_name,Annee,self, 
+				myseed, sim_name,Annee,id_seigneur, 
 				type, initial, puissance,
 				nbChateauxProprio, nbChateauxGardien,
 				nbFPassujettis, nbVassaux, nbDebiteurs, monAgregat, geom
@@ -92,19 +99,23 @@ global {
 	}
 	
 	action save_agregats(string sim_name) {
+		string myseed <- enquote(seed);
 		ask Agregats {
 			int nbFP <- length(fp_agregat);
 			float superficie <- shape.area;
-			string geom <- "'" + string(shape with_precision 2) + "'";
+			string geom <- enquote(shape with_precision 2);
+			int id_agregat <- int(replace(self.name, 'Agregats', ''));
+			int monpole <- int(replace(monPole.name, 'Poles', ''));
 			
 			save [
-				string(seed), sim_name, Annee, self,
-				nbFP, superficie, communaute, monPole, geom
+				myseed, sim_name, Annee, id_agregat,
+				nbFP, superficie, communaute, monpole, geom
 			] to: ("../outputs/"+ sim_name +"_results_agregats.csv") type: "csv" header: true rewrite: false;
 		}
 	}
 	
 	action save_poles(string sim_name) {
+		string myseed <- enquote(seed);
 		ask Poles {
 			int nbAttracteurs <- length(mesAttracteurs);
 			int nbEglises <- length(mesAttracteurs of_species Eglises);
@@ -112,11 +123,13 @@ global {
 			int nbGC <- (mesAttracteurs of_species Chateaux) count (each.type = "Grand Chateau");
 			int nbPC <- (mesAttracteurs of_species Chateaux) count (each.type = "Petit Chateau");
 			int nbCA <- length(mesAttracteurs of_species Agregats);
-			string geom <- "'" + string(shape with_precision 2) + "'";
+			string geom <- enquote(shape with_precision 2);
+			int id_pole <- int(replace(self.name, 'Poles', ''));
+			int monagregat <- int(replace(monAgregat.name, 'Agregats', ''));
 				
 			save [
-				string(seed), sim_name, Annee, self,
-				attractivite, nbAttracteurs, monAgregat,
+				myseed, sim_name, Annee, id_pole,
+				attractivite, nbAttracteurs, monagregat,
 				nbEglises, nbParoisses, nbGC, nbPC, nbCA, geom
 				
 			] to: ("../outputs/"+ sim_name +"_results_poles.csv") type: "csv" header: true rewrite: false;
@@ -125,16 +138,19 @@ global {
 	}
 	
 	action save_FP(string sim_name) {
+		string myseed <- enquote(seed);
 		ask Foyers_Paysans {
 			float sMat <- satisfaction_materielle with_precision 2;
 			float sRel <- satisfaction_materielle with_precision 2;
 			float sProt <- satisfaction_protection with_precision 2;
 			float Satis <- Satisfaction with_precision 2;
-			string geom <- "'" + string(location with_precision 2) + "'";
+			string geom <- enquote(location with_precision 2);
+			int id_fp <- int(replace(self.name, 'Foyers_Paysans', ''));
+			int monagregat <- int(replace(monAgregat.name, 'Agregats', ''));
 			
 			save [
-				string(seed), sim_name, Annee, self,
-				communaute, monAgregat,
+				myseed, sim_name, Annee, id_fp,
+				communaute, monagregat,
 				sMat, sRel, sProt,
 				Satis, mobile, type_deplacement,
 				deplacement_from, deplacement_to,
@@ -145,14 +161,17 @@ global {
 	}
 	
 		action save_paroisses(string sim_name) {
+			string myseed <- enquote(seed);
 			ask  Paroisses {
 				int nbFideles <- length(mesFideles);
 				float SatisfactionParoisse <- Satisfaction_Paroisse with_precision 3;
-				string geom <- "'" + string(shape with_precision 2) + "'";
+				string geom <- enquote(shape with_precision 2);
+				int id_paroisse <- int(replace(self.name, 'Paroisses', ''));
+				int moneglise <- int(replace(monEglise.name, 'Eglises', ''));
 				
 				save [
-					string(seed), sim_name, Annee, self,
-					monEglise, mode_promotion, shape.area,
+					myseed, sim_name, Annee, id_paroisse,
+					moneglise, mode_promotion, shape.area,
 					nbFideles, SatisfactionParoisse, geom
 				] to: ("../outputs/"+ sim_name +"_results_paroisses.csv") type: "csv" header: true rewrite: false;
 			}

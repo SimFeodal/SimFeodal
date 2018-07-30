@@ -67,7 +67,9 @@ species Foyers_Paysans schedules: []
 	string deplacement_from <- nil update: nil; //	"isole", "agregat"
 	string deplacement_to <- nil update: nil; // 		"pole local avec agregat", "pole local sans agregat", 
 	//"pole local avec agregat plus attractif",   "pole local sans agregat plus attractif", "agregat lointain unique", "agregat lointain attractif"
-	
+	action enquote (unknown text) {
+		return '"' + string(text) + '"';
+	}
 	action reset_preleveurs
 	{
 		set seigneur_loyer <- nil;
