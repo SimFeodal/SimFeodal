@@ -22,6 +22,7 @@ global schedules: shuffle(Attracteurs) + shuffle(Poles) + shuffle(Agregats) + sh
 {
     
 	init {
+		gama.pref_errors_warnings_errors <- false; // Les warnings ne doivent pas stopper le modèle
 		float t <- machine_time;
 		do generer_monde;
 		if (benchmark){write 'init : ' + string(machine_time - t);}
@@ -177,6 +178,12 @@ float t <- machine_time;
 		}
 		ask Agregats {do update_attractivite;}
 					if (benchmark){write 'MaJ_Agregats : ' + string(machine_time - t);}
+	}
+	
+	reflex MaJ_poles_bis {
+		float t <- machine_time;
+		do update_poles;
+		if (benchmark){write 'MaJ_poles_bis : ' + string(machine_time - t);}
 	}
 	 
 	reflex update_plot {
