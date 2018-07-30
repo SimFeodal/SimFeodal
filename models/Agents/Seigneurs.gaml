@@ -453,8 +453,8 @@ species Seigneurs schedules: [] {
 		set agregatPotentiel <- (length(agregatPotentiel.mesChateaux) = 0) ? agregatPotentiel : nil ;
 		if (agregatPotentiel != nil) {
 			// FIXME : Chateaux trop proches sinon
-			if (agregatPotentiel distance_to (Chateaux closest_to agregatPotentiel) < 3000) {return();}
-			create Chateaux number: 1 {
+			if (agregatPotentiel distance_to (Chateaux closest_to agregatPotentiel) >= 3000){
+				create Chateaux number: 1 {
 					proba_creer_chateau_PS <- myself.puissance / 2000;
 				
 				if (!flip(proba_creer_chateau_PS)){
@@ -503,6 +503,7 @@ species Seigneurs schedules: [] {
 					do creation_ZP_basseMoyenne_Justice(location, rayon_chateau, myself, 1.0);
 				}
 			}
+			}	
 		}
 	}
 	
