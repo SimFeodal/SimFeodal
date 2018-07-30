@@ -155,6 +155,7 @@ global torus: false{
 	list<int> reseaux_chateaux <- [];
 
 	string prefix_output <- "global";
+	string output_folder_path <- "/home/robin/SimFeodal/outputs/";
 	
 	// OpenMole outputs //
 	int nb_agregats_om <- 0 ;

@@ -190,3 +190,12 @@ experiment Exp_5_0_Test_MondeReduit_fix3 type: batch repeat: 1 keep_seed: false 
 	parameter "seuil_creation_paroisse" var: seuil_creation_paroisse init: 600;
 	// 1 experiment
 }
+
+experiment Exp_5_0_Debug type: batch repeat: 1 keep_seed: false until: (Annee >= fin_simulation){
+	parameter 'save_outputs' var: save_outputs init: true;
+	parameter 'prefix' var: prefix_output init: "5_0_Debug";
+	parameter "benchmark" var: benchmark init: false; // Changement pour connaitre perfs fonctions
+	parameter "serfs_mobiles" var: serfs_mobiles init: true;
+	parameter "nombre_fp_villages" var: nombre_FP_village init: 10;
+	// 1 experiment
+}

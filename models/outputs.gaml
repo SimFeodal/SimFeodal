@@ -23,6 +23,7 @@ global {
 	
 	action save_outputs_data {
 		string currentPrefix <- prefix_output;
+//		do fake_save(currentPrefix);
 		if (Annee = 820) {do save_parameters(currentPrefix);}
 		do save_global(currentPrefix);
 		do save_seigneurs(currentPrefix);
@@ -32,9 +33,15 @@ global {
 		do save_FP(currentPrefix);
 	}
 	
+//	action fake_save(string sim_name) {
+//		string blob <- "Blob";
+//		write (output_folder_path + sim_name +"_results_global.csv");
+//		save [blob] to: (output_folder_path + sim_name +"_results_global.csv") type: "csv" header: true rewrite: false;
+//	}
+	
 	action save_parameters(string sim_name) {
 		string seuils_distance_max_dem_localSt <-  enquote(seuils_distance_max_dem_local);
-		string myseed <- enquote(seed);
+		string myseed <- string(seed);
 		
 		save [
 				myseed, sim_name, debut_simulation, fin_simulation, duree_step, besoin_protection,
@@ -58,7 +65,7 @@ global {
 				attrac_GC, attrac_PC, attrac_communautes,nombre_FP_village, seuils_distance_max_dem_localSt,
 				taux_augmentation_FP, proba_ponderee_deplacement_lointain, coef_redevances, serfs_mobiles,
 				taille_cote_monde
-			] to: ("../outputs/"+ sim_name +"_parameters.csv") type: "csv" header: true rewrite: false;
+			] to: (output_folder_path + sim_name +"_parameters.csv") type: "csv" header: true rewrite: false;
 	}
 	
 	action save_global(string sim_name) {
@@ -74,7 +81,7 @@ global {
 				distance_eglises, distance_eglises_paroissiales,
 				prop_FP_isoles, charge_fiscale, dist_ppv_agregat,total_duration
 				
-			] to: ("../outputs/"+ sim_name +"_results_global.csv") type: "csv" header: true rewrite: false;
+			] to: (output_folder_path + sim_name +"_results_global.csv") type: "csv" header: true rewrite: false;
 	}
 	
 	action save_seigneurs(string sim_name) {
@@ -94,7 +101,7 @@ global {
 				nbChateauxProprio, nbChateauxGardien,
 				nbFPassujettis, nbVassaux, nbDebiteurs, monAgregat, geom
 				]
-			to:("../outputs/"+ sim_name +"_results_seigneurs.csv") type: "csv" header: true rewrite: false;
+			to: (output_folder_path + sim_name +"_results_seigneurs.csv") type: "csv" header: true rewrite: false;
 		}
 	}
 	
@@ -105,12 +112,12 @@ global {
 			float superficie <- shape.area;
 			string geom <- enquote(shape with_precision 2);
 			int id_agregat <- int(replace(self.name, 'Agregats', ''));
-			int monpole <- (monPole != nil) ? int(replace(monPole.name, 'Poles', '')) : nil;
+			int monpole <- (monPole != nil) ? int(replace(monPole.name, 'Poles', '')) : -1;
 			
 			save [
 				myseed, sim_name, Annee, id_agregat,
 				nbFP, superficie, communaute, monpole, geom
-			] to: ("../outputs/"+ sim_name +"_results_agregats.csv") type: "csv" header: true rewrite: false;
+			] to: (output_folder_path + sim_name +"_results_agregats.csv") type: "csv" header: true rewrite: false;
 		}
 	}
 	
@@ -125,14 +132,14 @@ global {
 			int nbCA <- length(mesAttracteurs of_species Agregats);
 			string geom <- enquote(shape with_precision 2);
 			int id_pole <- int(replace(self.name, 'Poles', ''));
-			int monagregat <- (monAgregat != nil) ? int(replace(monAgregat.name, 'Agregats', '')) : nil;
+			int monagregat <- (monAgregat != nil) ? int(replace(monAgregat.name, 'Agregats', '')) : -1;
 				
 			save [
 				myseed, sim_name, Annee, id_pole,
 				attractivite, nbAttracteurs, monagregat,
 				nbEglises, nbParoisses, nbGC, nbPC, nbCA, geom
 				
-			] to: ("../outputs/"+ sim_name +"_results_poles.csv") type: "csv" header: true rewrite: false;
+			] to: (output_folder_path + sim_name +"_results_poles.csv") type: "csv" header: true rewrite: false;
 		}
 		
 	}
@@ -144,9 +151,9 @@ global {
 			float sRel <- satisfaction_materielle with_precision 2;
 			float sProt <- satisfaction_protection with_precision 2;
 			float Satis <- Satisfaction with_precision 2;
-			string geom <- enquote(location with_precision 2);
+			string geom <- enquote(point(location with_precision 2));
 			int id_fp <- int(replace(self.name, 'Foyers_Paysans', ''));
-			int monagregat <- (monAgregat != nil) ? int(replace(monAgregat.name, 'Agregats', '')) : nil;
+			int monagregat <- (monAgregat != nil) ? int(replace(monAgregat.name, 'Agregats', '')) : -1;
 			
 			save [
 				myseed, sim_name, Annee, id_fp,
@@ -155,7 +162,7 @@ global {
 				Satis, mobile, type_deplacement,
 				deplacement_from, deplacement_to,
 				nb_preleveurs, geom
-			] to: ("../outputs/"+ sim_name +"_results_FP.csv") type: "csv" header: true rewrite: false;
+			] to: (output_folder_path + sim_name +"_results_FP.csv") type: "csv" header: true rewrite: false;
 		}
 
 	}
@@ -167,13 +174,13 @@ global {
 				float SatisfactionParoisse <- Satisfaction_Paroisse with_precision 3;
 				string geom <- enquote(shape with_precision 2);
 				int id_paroisse <- int(replace(self.name, 'Paroisses', ''));
-				int moneglise <- (monEglise != nil) ? int(replace(monEglise.name, 'Agregats', '')) : nil;
+				int moneglise <- (monEglise != nil) ? int(replace(monEglise.name, 'Agregats', '')) : -1;
 
 				save [
 					myseed, sim_name, Annee, id_paroisse,
 					moneglise, mode_promotion, shape.area,
 					nbFideles, SatisfactionParoisse, geom
-				] to: ("../outputs/"+ sim_name +"_results_paroisses.csv") type: "csv" header: true rewrite: false;
+				] to: (output_folder_path + sim_name +"_results_paroisses.csv") type: "csv" header: true rewrite: false;
 			}
 		}
 	
