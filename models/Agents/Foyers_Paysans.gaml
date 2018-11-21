@@ -43,6 +43,7 @@ global
 				set location <- any_location_in(reduced_worldextent);
 			}
 			set mobile <- flip(taux_mobilite);
+			set satisfaction_religieuse <- 1.0 ; // Comme ça, ne concerne que les nouveaux arrivants
 		}
 
 	}
@@ -54,7 +55,7 @@ species Foyers_Paysans schedules: []
 	bool communaute <- false;
 	Agregats monAgregat <- nil;
 	float satisfaction_materielle;
-	float satisfaction_religieuse <- 1.0;
+	float satisfaction_religieuse;
 	float satisfaction_protection;
 	float Satisfaction;
 	bool mobile; // Si true : ce FP peut se déplacer / si false, serf/esclave, pas de déplacement
