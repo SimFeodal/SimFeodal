@@ -133,20 +133,20 @@ species Foyers_Paysans schedules: []
 	{
 		Chateaux plusProcheChateau <- Chateaux with_min_of (self distance_to each);
 		float satisfaction_distance <- nil;
-		float satisfaction_puissance <- nil;
 
 		if (plusProcheChateau = nil)
 		{
-			set satisfaction_distance <- 0.0;
-			set satisfaction_puissance <- 0.0;
+			set satisfaction_distance <- min_S_distance_chateau; // 0.0 (default) or 0.01 (v5.1)
 		} else
 		{
 			int seuil1 <- 1500;
 			int seuil2 <- 5000;
 			float distance_chateau <- plusProcheChateau distance_to self;
-			set satisfaction_distance <- max([0.0, min([1.0, -(distance_chateau / (seuil2 - seuil1)) + (seuil2 / (seuil2 - seuil1))])]); // [0 -> 1]
-			//set satisfaction_puissance <- min([1, plusProcheChateau.proprietaire.puissance_armee / seuil_puissance_armee]);
-			
+			// Longer but more explicit
+			float satisfaction_distance_raw <- (seuil2 - distance_chateau) / (seuil2 - seuil1);
+			float satisfaction_distance_min <- min([1.0, satisfaction_distance_raw]);
+			set satisfaction_distance <- max([min_S_distance_chateau, satisfaction_distance_min]); // min_S_distance_chateau = 0 (default) or 0.01 (v5.1)
+			// satisfaction_distance in [0.0 -> 1.0] (default) or [0.01 -> 1.0] (v5.1)
 		}
 			set satisfaction_protection <- satisfaction_distance ^ (besoin_protection);
 

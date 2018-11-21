@@ -58,6 +58,7 @@ global torus: false{
 	float proba_ponderee_deplacement_lointain <- 0.2;
 	int coef_redevances <- 15;
 	bool serfs_mobiles <- false;
+	float min_S_distance_chateau <- 0.0; // Nouveau paramètre pour le calcul de s_protection
 	
 	 
 	// SEIGNEURS //
