@@ -215,3 +215,47 @@ experiment Exp_5_1_Debug type: batch repeat: 1 keep_seed: false until: (Annee >=
 	parameter "min_S_distance_chateau" var: min_S_distance_chateau init: 0.01; // Nouveau paramètre pour modification du calcul de S_protection, via Sdistance_chateau
 	// 1 experiment
 }
+
+experiment Exp_5_1_Debug_GUI benchmark: true type: gui until: (Annee >= fin_simulation){
+	parameter 'save_outputs' var: save_outputs init: false;
+	parameter 'prefix' var: prefix_output init: "5_1_Debug_GUI";
+	//parameter "benchmark" var: benchmark init: false; // Changement pour connaitre perfs fonctions
+	parameter "experimentType" var: experimentType init: "gui";
+
+	// parameter "serfs_mobiles" var: serfs_mobiles init: true; // Serf_mobiles devient true par défaut
+	// parameter "nombre_fp_villages" var: nombre_FP_village init: 10; // nombre_FP_village devient 10 par défaut
+	parameter "taille_cote_monde" var: taille_cote_monde init: 80; // taille_cote_monde devient 80 par défaut
+	parameter "taux_augmentation_FP" var: taux_augmentation_FP init: 0.0; // Vaut 0 en 5.1 base
+	// parameter "nombre_foyers_paysans" var: nombre_foyers_paysans init: 4000; // Le défaut ne change pas
+	parameter "proba_ponderee_deplacement_lointain" var: proba_ponderee_deplacement_lointain init: 0.2; // Vaut 0.2 par défaut : ne change pas
+	// parameter "seuil_creation_paroisse" var: seuil_creation_paroisse init: 600 ; // Devient 600 par défaut
+	parameter "seuils_distance_max_dem_local" var: seuils_distance_max_dem_local init: [2500, 2500, 2500]; // Devient 2,5km constant par défaut
+	parameter "min_S_distance_chateau" var: min_S_distance_chateau init: 0.01; // Nouveau paramètre pour modification du calcul de S_protection, via Sdistance_chateau
+	
+	output {
+		monitor "Annee" value: Annee;
+		monitor "Nombre de Foyers paysans" value: length(Foyers_Paysans);
+		monitor "Nombre FP dans agregat" value: Foyers_Paysans count (each.monAgregat != nil);
+		monitor "Nombre d'agregats" value: length(Agregats);
+
+		monitor "Nombre FP Comm." value: Foyers_Paysans count (each.communaute);
+		monitor "Nombre Seigneurs" value: length(Seigneurs);
+		monitor "Nombre Grands Seigneurs" value: Seigneurs count (each.type = "Grand Seigneur");
+		monitor "Nombre Chatelains" value: Seigneurs count (each.type = "Chatelain");
+		monitor "Nombre Petits Seigneurs" value: Seigneurs count (each.type = "Petit Seigneur");
+		monitor "Nombre Eglises" value: length(Eglises);
+		monitor "Nombre Eglises Paroissiales" value: Eglises count (each.eglise_paroissiale);
+		monitor "Nombre Chateaux" value: length(Chateaux);
+		monitor "% FP dispersés" value: Foyers_Paysans count (each.monAgregat = nil) / length(Foyers_Paysans) * 100;
+		monitor "Sat moyenne" value: mean(Foyers_Paysans collect each.Satisfaction);
+		
+		display "Carte" type: "opengl" {
+			species Paroisses transparency: 0.9 ;
+			species Zones_Prelevement transparency: 0.9;
+			agents "Eglises Paroissiales" value: Eglises where (each.eglise_paroissiale) aspect: base transparency: 0.5;
+			species Chateaux aspect: base ;
+			species Foyers_Paysans transparency: 0.5;
+			species Agregats transparency: 0.3;
+		}		
+	}
+}
