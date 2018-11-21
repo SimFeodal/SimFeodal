@@ -121,7 +121,12 @@ species Foyers_Paysans schedules: []
 			set seuil2 <- 5000;
 		}
 
-		set satisfaction_religieuse <- max([0.0, min([1.0, -(distance_eglise / (seuil2 - seuil1)) + (seuil2 / (seuil2 - seuil1))])]);
+		//set satisfaction_religieuse <- max([0.0, min([1.0, -(distance_eglise / (seuil2 - seuil1)) + (seuil2 / (seuil2 - seuil1))])]);
+		// Longer but more explicit
+		float satisfaction_religieuse_raw <- (seuil2 - distance_eglise) / (seuil2 - seuil1);
+		float satisfaction_religieuse_min <- min([1.0, satisfaction_religieuse_raw]);
+		set satisfaction_religieuse <- max([0.0, satisfaction_religieuse_raw]);
+		
 	}
 
 	action update_satisfaction_protection
