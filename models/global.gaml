@@ -34,6 +34,7 @@ global torus: false{
 	bool summarised_outputs <- false;
 	string sensibility_parameter <- "";
 	string sensibility_value <- "" ;
+	int taille_cote_monde <- 80 ; // km
 	
 	// AGREGATS //
 	
@@ -54,10 +55,10 @@ global torus: false{
 	float taux_mobilite <- 0.8;
 	int distance_max_dem_local <- 4000;
 	int seuil_puissance_armee <- 400; // P.A. d'un proprio de chateau pour que le FP soit satisfait.
-	list<int> seuils_distance_max_dem_local <- [2500, 4000, 6000];
+	list<int> seuils_distance_max_dem_local <- [2500, 2500, 2500];
 	float proba_ponderee_deplacement_lointain <- 0.2;
 	int coef_redevances <- 15;
-	bool serfs_mobiles <- false;
+	bool serfs_mobiles <- true;
 	float min_S_distance_chateau <- 0.0; // Nouveau paramètre pour le calcul de s_protection
 	
 	 
@@ -113,7 +114,7 @@ global torus: false{
 	int nb_eglises_paroissiales <- 50 ;
 	int nb_max_paroissiens <- 40;
 	int nb_min_paroissiens <- 10;
-	int seuil_creation_paroisse <- 300;
+	int seuil_creation_paroisse <- 600;
 	int nb_paroissiens_mecontents_necessaires <- 20;
 	
 	// POLES //
@@ -131,7 +132,7 @@ global torus: false{
 	/// TEMP ///
 	////////////
 	
-	int taille_cote_monde <- 100 ; // km
+
 	int Annee <- debut_simulation update: Annee + duree_step;
 	geometry world_bounds <- square(taille_cote_monde #km) translated_by {taille_cote_monde #km/2 , taille_cote_monde #km/2 };
 	
