@@ -3,7 +3,8 @@
 #cd /home/robin/gama_1.7git_simfeodal5/headless
 # Server
 cd /home/robin/gama18nightly/headless
-experimentPath="/home/robin/SimFeodal/experiments/expe_5_1_beta.xml"
+#experimentPath="/home/robin/SimFeodal/experiments/expe_5_1_beta.xml"
+experimentPath="/home/robin/SimFeodal/experiments/expe_5_1_VarPop.xml"
 
 outputPath="/home/robin/myOutputs/sim"
 # Cluster got 24 cores

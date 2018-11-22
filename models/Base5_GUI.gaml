@@ -286,3 +286,23 @@ experiment Exp_5_1_tests type: batch repeat: 2 keep_seed: false until: (Annee >=
 	parameter "min_S_distance_chateau" var: min_S_distance_chateau among: [0.0, 0.01, 0.001]; // Nouveau paramètre pour modification du calcul de S_protection, via Sdistance_chateau
 	// 2*2*3= 12 experiments
 }
+
+experiment Exp_5_1_PopInit type: batch repeat: 2 keep_seed: false until: (Annee >= fin_simulation){
+	parameter 'save_outputs' var: save_outputs init: true;
+	parameter 'prefix' var: prefix_output init: "5_1_PopInit";
+	parameter "benchmark" var: benchmark init: false; // Changement pour connaitre perfs fonctions
+	//parameter "taille_cote_monde" var: taille_cote_monde init: 80; // taille_cote_monde devient 80 par défaut
+	//parameter "seuils_distance_max_dem_local" var: seuils_distance_max_dem_local init: [2500, 2500, 2500]; // Devient 2,5km constant par défaut
+	parameter "min_S_distance_chateau" var: min_S_distance_chateau init: 0.01; // Nouveau paramètre pour modification du calcul de S_protection, via Sdistance_chateau
+	parameter "nombre_foyers_paysans" var: nombre_foyers_paysans among: [10000, 15000, 20000, 25000];
+}
+
+experiment Exp_5_1_PopCroissance type: batch repeat: 2 keep_seed: false until: (Annee >= fin_simulation){
+	parameter 'save_outputs' var: save_outputs init: true;
+	parameter 'prefix' var: prefix_output init: "5_1_PopCroissance";
+	parameter "benchmark" var: benchmark init: false; // Changement pour connaitre perfs fonctions
+	//parameter "taille_cote_monde" var: taille_cote_monde init: 80; // taille_cote_monde devient 80 par défaut
+	//parameter "seuils_distance_max_dem_local" var: seuils_distance_max_dem_local init: [2500, 2500, 2500]; // Devient 2,5km constant par défaut
+	parameter "min_S_distance_chateau" var: min_S_distance_chateau init: 0.01; // Nouveau paramètre pour modification du calcul de S_protection, via Sdistance_chateau
+	parameter "taux_augmentation_FP" var: taux_augmentation_FP among: [0.01, 0.03, 0.05, 0.12];
+}

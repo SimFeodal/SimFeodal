@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Experiment_plan>
+<Simulation id="1" sourcePath="../models/Base5_GUI.gaml" finalstep="18" experiment="Exp_5_1_PopInit">
+	<Parameters>
+	</Parameters>
+</Simulation>
+<Simulation id="1" sourcePath="../models/Base5_GUI.gaml" finalstep="18" experiment="Exp_5_1_PopCroissance">
+	<Parameters>
+	</Parameters>
+</Simulation>
+</Experiment_plan>
