@@ -42,7 +42,7 @@ global
 			} else {
 				set location <- any_location_in(reduced_worldextent);
 			}
-			set mobile <- flip(taux_mobilite);
+			set mobile <- flip((1 - proba_FP_dependants));
 			set satisfaction_religieuse <- 1.0 ; // Comme ça, ne concerne que les nouveaux arrivants
 		}
 

@@ -105,15 +105,15 @@ species Seigneurs schedules: [] {
 	
 	action gains_droits_PS {
 		if (flip(proba_creation_ZP_banaux)){				
-			int rayon_ZP <- rayon_min_PS + rnd(rayon_max_PS - rayon_min_PS);
+			int rayon_zone <- rayon_min_PS + rnd(rayon_max_PS - rayon_min_PS);
 			float taux_ZP <- min_fourchette_loyers_PS + rnd(max_fourchette_loyers_PS - min_fourchette_loyers_PS);
-			do creer_zone_prelevement(any_location_in(3000 around self.location inter reduced_worldextent), rayon_ZP, self, "Banaux", taux_ZP);
+			do creer_zone_prelevement(any_location_in(3000 around self.location inter reduced_worldextent), rayon_zone, self, "Banaux", taux_ZP);
 		}
 		
 		if flip(proba_creation_ZP_basseMoyenneJustice){
-			int rayon_ZP <- rayon_min_PS + rnd(rayon_max_PS - rayon_min_PS);
+			int rayon_zone <- rayon_min_PS + rnd(rayon_max_PS - rayon_min_PS);
 			float taux_ZP <- min_fourchette_loyers_PS + rnd(max_fourchette_loyers_PS - min_fourchette_loyers_PS);
-			do creer_zone_prelevement(any_location_in(3000 around self.location inter reduced_worldextent), rayon_ZP, self, "basseMoyenne_Justice", taux_ZP);
+			do creer_zone_prelevement(any_location_in(3000 around self.location inter reduced_worldextent), rayon_zone, self, "basseMoyenne_Justice", taux_ZP);
 		}
 	}
 	
@@ -374,7 +374,7 @@ species Seigneurs schedules: [] {
 	action construction_chateau_GS {
 		
 			int nbChateauxPotentiel <- nb_chateaux_potentiels_GS;
-			proba_creer_chateau_GS <- (1 - exp(-0.00064 * self.puissance) );
+			float proba_creer_chateau_GS <- (1 - exp(-0.00064 * self.puissance) );
 		
 		
 		list<Agregats> agregatsPotentiel <- Agregats where (length(each.mesChateaux) = 0);
@@ -459,7 +459,7 @@ species Seigneurs schedules: [] {
 			// FIXME : Chateaux trop proches sinon
 			if (agregatPotentiel distance_to (Chateaux closest_to agregatPotentiel) >= 3000){
 				create Chateaux number: 1 {
-					proba_creer_chateau_PS <- myself.puissance / 2000;
+					float proba_creer_chateau_PS <- myself.puissance / 2000;
 				
 				if (!flip(proba_creer_chateau_PS)){
 					do die;

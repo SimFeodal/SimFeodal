@@ -52,7 +52,7 @@ global torus: false{
 	int nombre_foyers_paysans <- 4000 ;
 	float taux_renouvellement <- 0.05 ;
 	float taux_augmentation_FP <- 0.0;
-	float taux_mobilite <- 0.8;
+	float proba_FP_dependants <- 0.2;
 	int distance_max_dem_local <- 4000;
 	int seuil_puissance_armee <- 400; // P.A. d'un proprio de chateau pour que le FP soit satisfait.
 	list<int> seuils_distance_max_dem_local <- [2500, 2500, 2500];
@@ -93,10 +93,10 @@ global torus: false{
 	
 	int seuil_attractivite_chateau <- 3000;
 	
-	float proba_creer_chateau_GS <- 0.5;
+	//float proba_creer_chateau_GS <- 0.5; // ce paramètre n'est plus utilisé
 	float proba_chateau_agregat <- 0.5; // FIXME : A appliquer aussi aux PS
 	float proba_don_chateau_GS <- 0.50; //TODO : update doc
-	float proba_creer_chateau_PS <- 1.0;
+	// float proba_creer_chateau_PS <- 1.0; // ce paramètre n'est plus utilisé
 	
 	float proba_gain_droits_hauteJustice_chateau <- 0.1;
 	float proba_gain_droits_banaux_chateau <- 0.1;
@@ -104,8 +104,8 @@ global torus: false{
 	
 	float proba_promotion_groschateau_multipole <- 0.8;
 	float proba_promotion_groschateau_autre <- 0.3;
-	int puissance_necessaire_creation_chateau_GS <- 1000;
-	int puissance_necessaire_creation_chateau_PS <- 0;
+	// int puissance_necessaire_creation_chateau_GS <- 1000; // ce paramètre n'est plus utilisé
+	// int puissance_necessaire_creation_chateau_PS <- 0; // ce paramètre n'est plus utilisé
 
 
 	// EGLISES //

@@ -156,10 +156,10 @@ float t <- machine_time;
 	
 	reflex Constructions_chateaux when: Annee >= apparition_chateaux{
 		float t <- machine_time;
-		ask Seigneurs where (each.type = "Grand Seigneur" and each.puissance > puissance_necessaire_creation_chateau_GS) {
+		ask Seigneurs where (each.type = "Grand Seigneur") {
 			do construction_chateau_GS;
 		}
-		ask Seigneurs where (each.type != "Grand Seigneur" and each.puissance > puissance_necessaire_creation_chateau_PS){
+		ask Seigneurs where (each.type != "Grand Seigneur"){
 			do construction_chateau_PS;
 		}
 			if (benchmark){write 'Constructions_chateaux : ' + string(machine_time - t);}

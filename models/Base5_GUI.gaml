@@ -216,7 +216,7 @@ experiment Exp_5_1_Debug type: batch repeat: 1 keep_seed: false until: (Annee >=
 	// 1 experiment
 }
 
-experiment Exp_5_1_Debug_GUI benchmark: true type: gui until: (Annee >= fin_simulation){
+experiment Exp_5_1_Debug_GUI benchmark: false type: gui until: (Annee >= fin_simulation){
 	parameter 'save_outputs' var: save_outputs init: false;
 	parameter 'prefix' var: prefix_output init: "5_1_Debug_GUI";
 	//parameter "benchmark" var: benchmark init: false; // Changement pour connaitre perfs fonctions

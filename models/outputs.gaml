@@ -48,17 +48,19 @@ global {
 				distance_detection_agregats, nombre_FP_agregat, nombre_agglos_antiques,
 				nombre_villages, puissance_communautes,
 				apparition_communautes, proba_apparition_communaute, nombre_foyers_paysans,
-				taux_renouvellement, taux_mobilite, distance_max_dem_local, seuil_puissance_armee,
+				taux_renouvellement, proba_FP_dependants, distance_max_dem_local, seuil_puissance_armee,
 				nombre_seigneurs_objectif, nombre_grands_seigneurs,
 				nombre_petits_seigneurs, puissance_grand_seigneur1, puissance_grand_seigneur2,
 				proba_collecter_loyer, proba_creation_ZP_banaux, proba_creation_ZP_basseMoyenneJustice,
 				rayon_min_PS, rayon_max_PS, min_fourchette_loyers_PS, max_fourchette_loyers_PS,
 				proba_don_partie_ZP, apparition_chateaux, nb_chateaux_potentiels_GS,
-				seuil_attractivite_chateau, proba_creer_chateau_GS, proba_chateau_agregat,
-				proba_don_chateau_GS, proba_creer_chateau_PS, proba_gain_droits_hauteJustice_chateau,
+				seuil_attractivite_chateau, // proba_creer_chateau_GS, // Ce paramètre n'en est plus un
+				proba_chateau_agregat,
+				proba_don_chateau_GS,  // proba_creer_chateau_PS, // Ce paramètre n'en est plus un
+				proba_gain_droits_hauteJustice_chateau,
 				proba_gain_droits_banaux_chateau, proba_gain_droits_basseMoyenneJustice_chateau,
 				proba_promotion_groschateau_multipole, proba_promotion_groschateau_autre,
-				puissance_necessaire_creation_chateau_GS, puissance_necessaire_creation_chateau_PS,
+				// puissance_necessaire_creation_chateau_GS, puissance_necessaire_creation_chateau_PS, // ces deux paramètres sont maintenant inutiles
 				nombre_eglises, nb_eglises_paroissiales, nb_max_paroissiens,
 				nb_min_paroissiens, seuil_creation_paroisse, nb_paroissiens_mecontents_necessaires,
 				attrac_0_eglises, attrac_1_eglises, attrac_2_eglises, attrac_3_eglises, attrac_4_eglises,
