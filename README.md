@@ -20,7 +20,7 @@ Around 1100 CE, regional settlement patterns are composed of enduring populatio
 
 **The agent-based model SimFeodal simulates the emergence of enduring population clusters located around the castles and the churches in a rural region during the Middle Ages.**  In the course of time, population clusters (hamlets, villages, small towns) become more numerous; many of them grow (i. e. their number of peasant households increases) but some clusters grow more than others.
 
-#### Modelled entities
+### Modelled entities
 
 | Name  | Category | Type  | Activity | Level |
 | ------------- | ------------- | ------------- | ------------- | ------------- |
