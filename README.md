@@ -42,4 +42,4 @@ Around 1100 CE, regional settlement patterns are composed of enduring populatio
 
 ### Relocation process of a peasant household within SimFeodal
 
-![Relocation process of a peasant household](ArtiScalesExampleSimulationResults.png)
+![Relocation process of a peasant household](PH-movingrules.png)
