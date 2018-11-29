@@ -8,7 +8,7 @@ Around 1100 CE, regional settlement patterns are composed of enduring populatio
 
 **Thus regional settlements patterns that were dispersed in 800 CE became much more concentrated and hierarchical in 1100 CE.** This phenomenon occured in all regions in North-Western Europe 800 CE to 1100 CE but the intensity of the concentration and the hierarchisation of the settlement pattern can be notably variable across the regions.
 
-**Several processes jointly explained this major transition.**
+**Several processes jointly explain this major transition.**
 
 * The piecemeal dismantling of the Carolingian Empire and the dissipation of powers induced  struggles among lords and thus a rise in violence, even increased by Viking invasions. The result of this was the creation of castles as well as an increase of the need of protection for peasant households;
 
@@ -19,3 +19,27 @@ Around 1100 CE, regional settlement patterns are composed of enduring populatio
 * The creation of villager communities by peasant households to increase their productivity and counterbalance the power of lords.
 
 **The agent-based model SimFeodal simulates the emergence of enduring population clusters located around the castles and the churches in a rural region during the Middle Ages.**  In the course of time, population clusters (hamlets, villages, small towns) become more numerous; many of them grow (i. e. their number of peasant households increases) but some clusters grow more than others.
+
+#### Modelled entities
+
+| Name  | Category | Type  | Activity | Level |
+| ------------- | ------------- | ------------- | ------------- | ------------- |
+| Peasant household  | Moving locally and at long distances | Socio-spatial | Active | Micro-geographic |
+| Peasant household  |Moving only locally | Socio-spatial | Active | Micro-geographic |
+| Lord  | Liege lord | Social | Active | Micro-geographic |
+| Lord  | Small lord (enfeoffed vassal, knight...) | Socio-spatial | Active | Micro-geographic |
+| Taxing area  | Rents | Spatial | Passive | Micro-geographic |
+| Taxing area  | High justice rights | Spatial | Passive | Micro-geographic |
+| Taxing area  | Medium and low justice rights | Spatial | Passive | Micro-geographic |
+| Taxing area  | Usage rights | Spatial | Passive | Micro-geographic |
+| Attractive point  | Parish churches |  Socio-spatial | Active | Micro-geographic |
+| Attractive point  | Church without parish rights |  Spatial | Passive | Micro-geographic |
+| Attractive point  | Castle |  Spatial | Passive | Micro-geographic |
+| Attractive point  | Villager community |  Spatial | Passive | Micro-geographic |
+| Population cluster  | Village |  Spatial | Passive | Meso-geographic |
+| Population cluster  | Agglomeration (market town, small town) |  Spatial | Passive | Meso-geographic |
+| Attraction centre  |  |  Spatial | Passive | Meso-geographic |
+
+### Relocation process of a peasant household within SimFeodal
+
+![Relocation process of a peasant household](ArtiScalesExampleSimulationResults.png)
