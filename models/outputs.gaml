@@ -44,29 +44,43 @@ global {
 		string myseed <- string(seed);
 		
 		save [
-				myseed, sim_name, debut_simulation, fin_simulation, duree_step, besoin_protection,
-				distance_detection_agregats, nombre_FP_agregat, nombre_agglos_antiques,
-				nombre_villages, puissance_communautes,
-				apparition_communautes, proba_apparition_communaute, nombre_foyers_paysans,
+				myseed, sim_name, debut_simulation, fin_simulation, duree_step,
+				besoin_protection, // XXX : N'est plus un param mais une variable en v6
+				distance_detection_agregats, nombre_FP_agregat,
+				init_nb_fp_agglo, // avant v6 : anciennement nombre_agglos_antiques
+				init_nb_villages, // avant v6 : anciennement nombre_villages
+				puissance_communautes,
+				apparition_communautes, proba_apparition_communaute,
+				init_nb_total_fp, // avant v6 : nombre_foyers_paysans
 				taux_renouvellement, proba_FP_dependants, distance_max_dem_local, seuil_puissance_armee,
-				nombre_seigneurs_objectif, nombre_grands_seigneurs,
-				nombre_petits_seigneurs, puissance_grand_seigneur1, puissance_grand_seigneur2,
+				nombre_seigneurs_objectif, 
+				init_nb_gs, // avant v6 : nombre_grands_seigneurs
+				init_nb_ps, // avant v6 : nombre_petits_seigneurs
+				puissance_grand_seigneur1, puissance_grand_seigneur2,
 				proba_collecter_loyer, proba_creation_ZP_banaux, proba_creation_ZP_basseMoyenneJustice,
 				rayon_min_PS, rayon_max_PS, min_fourchette_loyers_PS, max_fourchette_loyers_PS,
 				proba_don_partie_ZP, apparition_chateaux, nb_chateaux_potentiels_GS,
-				seuil_attractivite_chateau, // proba_creer_chateau_GS, // Ce paramètre n'en est plus un
+				seuil_attractivite_chateau,
+				// proba_creer_chateau_GS, // FIXME : Supprimer ce paramètre des sorties + SimEDB
 				proba_chateau_agregat,
-				proba_don_chateau_GS,  // proba_creer_chateau_PS, // Ce paramètre n'en est plus un
+				proba_don_chateau_GS, 
+				// proba_creer_chateau_PS, // FIXME : Supprimer ce paramètre des sorties + SimEDB
 				proba_gain_droits_hauteJustice_chateau,
 				proba_gain_droits_banaux_chateau, proba_gain_droits_basseMoyenneJustice_chateau,
 				proba_promotion_groschateau_multipole, proba_promotion_groschateau_autre,
-				// puissance_necessaire_creation_chateau_GS, puissance_necessaire_creation_chateau_PS, // ces deux paramètres sont maintenant inutiles
-				nombre_eglises, nb_eglises_paroissiales, nb_max_paroissiens,
+				// puissance_necessaire_creation_chateau_GS, puissance_necessaire_creation_chateau_PS, // FIXME : Supprimer ces 2 paramètres des sorties + SimEDB
+				init_nb_eglises, // avant v6 nombre_eglises
+				init_nb_eglises_paroissiales, // avant v6 : nb_eglises_paroissiales
+				nb_max_paroissiens,
 				nb_min_paroissiens, seuil_creation_paroisse, nb_paroissiens_mecontents_necessaires,
 				attrac_0_eglises, attrac_1_eglises, attrac_2_eglises, attrac_3_eglises, attrac_4_eglises,
-				attrac_GC, attrac_PC, attrac_communautes,nombre_FP_village, seuils_distance_max_dem_localSt,
+				attrac_GC, attrac_PC, attrac_communautes,
+				init_nb_fp_village, // avant v6 : nombre_FP_village
+				seuils_distance_max_dem_localSt,
 				taux_augmentation_FP, proba_ponderee_deplacement_lointain, coef_redevances, serfs_mobiles,
-				taille_cote_monde, min_S_distance_chateau
+				taille_cote_monde, min_S_distance_chateau,
+				init_nb_fp_agglo, // nouveau paramètre en v6 : vallait 30 avant
+				besoin_protection_fp // nouveau paramètre en v6 : vallait [800::0,960::0.2,980::0.4,1000::0.6,1020::0.8,1040::1.0] avant
 			] to: (output_folder_path + sim_name +"_parameters.csv") type: "csv" header: true rewrite: false;
 	}
 	

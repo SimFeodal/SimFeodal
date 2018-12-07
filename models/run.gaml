@@ -36,8 +36,9 @@ global schedules: shuffle(Attracteurs) + shuffle(Poles) + shuffle(Agregats) + sh
 		
 	reflex MaJ_globals {
 		float t <- machine_time;
-		do update_distance_max_dem_local;
-		do update_besoin_protection;
+		do update_variables_temporelles;
+		write string(Annee);
+
 		if (benchmark){write 'MaJ_globals : ' + string(machine_time - t);}
 	}	
 

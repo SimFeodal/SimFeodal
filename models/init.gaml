@@ -21,12 +21,12 @@ global {
 	
 	action generer_foyers_paysans {
 		// Agglos antiques
-		create Foyers_Paysans number: nombre_agglos_antiques {
+		create Foyers_Paysans number: init_nb_agglos {
 			set location <- any_location_in(reduced_worldextent);
 			set mobile <- flip (1 - proba_FP_dependants);
 			
 			list<Foyers_Paysans> pool_FP <- [self]; 
-			create Foyers_Paysans number: (30 - 1) {
+			create Foyers_Paysans number: (init_nb_fp_agglo - 1) {
 				agent myFP <- one_of(pool_FP);
 				set location <- any_location_in(((distance_detection_agregats -  1) around myFP.location) inter reduced_worldextent);
 				set mobile <- flip (1 - proba_FP_dependants);
@@ -34,12 +34,12 @@ global {
 			}
 		}
 		// Villages
-		create Foyers_Paysans number: nombre_villages {
+		create Foyers_Paysans number: init_nb_villages {
 			set location <- any_location_in(reduced_worldextent);
 			set mobile <- flip (1 - proba_FP_dependants);
 			
 			list<Foyers_Paysans> pool_FP <- [self];
-			create Foyers_Paysans number: (nombre_FP_village - 1){
+			create Foyers_Paysans number: (init_nb_fp_village - 1){
 				agent myFP <- one_of(pool_FP);
 				set location <- any_location_in(((distance_detection_agregats -  1) around myFP.location) inter reduced_worldextent);
 				set mobile <- flip (1 - proba_FP_dependants);
@@ -47,7 +47,7 @@ global {
 			}
 		}
 		// FP isolés
-		int nb_FP_isoles <- nombre_foyers_paysans - length(Foyers_Paysans);
+		int nb_FP_isoles <- init_nb_total_fp - length(Foyers_Paysans);
 		create Foyers_Paysans number: nb_FP_isoles {
 			set location <- any_location_in(reduced_worldextent);
 			set mobile <- flip (1 - proba_FP_dependants);
@@ -56,7 +56,7 @@ global {
 	
 	
 	action generer_seigneurs {
-		create Seigneurs number: nombre_grands_seigneurs{
+		create Seigneurs number: init_nb_gs{
 			set type <- "Grand Seigneur";
 			set initial <- true;
 			
@@ -66,7 +66,7 @@ global {
 			set droits_moyenneBasseJustice <- false;
 		}
 		
-		create Seigneurs number: nombre_petits_seigneurs {
+		create Seigneurs number: init_nb_ps {
 			set type <- "Petit Seigneur";
 			set location <- any_location_in(one_of(Agregats collect each.shape) inter reduced_worldextent);
 			set initial <- true;
@@ -99,10 +99,10 @@ global {
 	}
 
 	action generer_eglises {
-		create Eglises number: nombre_eglises {
+		create Eglises number: init_nb_eglises {
 			set location <- any_location_in(reduced_worldextent);
 		}
-		ask (nb_eglises_paroissiales among Eglises) {
+		ask (init_nb_eglises_paroissiales among Eglises) {
 			set eglise_paroissiale <- true;
 			set mode_promotion <- "initialisation";
 		}

@@ -16,102 +16,186 @@ import "Agents/Zones_Prelevement.gaml"
 
 
 global torus: false{
-	////////////
-	// INPUTS //
-	////////////
 	
-	// GLOBAL //
 	
-//	float myseed <- seed;
+	///////////////
+	// TECHNIQUE //
+	///////////////
 	
 	bool benchmark <- false;
 	bool save_outputs <- false;
+	string prefix_output <- "5_1";
+	string output_folder_path <- "/home/robin/SimFeodal/outputs/";
 	int debut_simulation <- 800;
 	int fin_simulation <- 1160;
 	int duree_step <- 20;
-	float besoin_protection <- 0.0;
 	string experimentType <- "batch";
 	bool summarised_outputs <- false;
 	string sensibility_parameter <- "";
 	string sensibility_value <- "" ;
+	
+	////////////
+	// INPUTS //
+	////////////
+	
+	// ESPACE DU MODELE //
 	int taille_cote_monde <- 80 ; // km
-	
+	// FOYERS PAYSANS //
+	int init_nb_total_fp <- 4000 ; // XXX : anciennement : nombre_foyers_paysans : Renommé dans BDD
 	// AGREGATS //
+	int init_nb_agglos <- 4 ; // XXX : anciennement : nombre_agglos_antiques : Renommé dans BDD
+	int init_nb_fp_agglo <- 30; // XXX : anciennement en dur : Ajouté dans BDD
+	int init_nb_villages <- 20 ; // XXX : anciennement : nombre_villages : Renommé dans BDD
+	int init_nb_fp_village <- 10; // XXX : anciennement : nombre_FP_village : Renommé dans BDD
+	// SEIGNEURS //
+	int init_nb_gs <- 2; // XXX : anciennement : nombre_grands_seigneurs : Renommé dans BDD
+	float puissance_grand_seigneur1 <- 0.5; // Anciennement 5 : FIXME : A transformer dans BDD
+	float puissance_grand_seigneur2 <- 0.5; // Anciennement 5 : FIXME : A transformer dans BDD
+	int init_nb_ps <- 18; // XXX : anciennement : nombre_petits_seigneurs : Renommé dans BDD
+	// EGLISES //
+	int init_nb_eglises <- 150 ; // XXX : anciennement : nombre_eglises : Renommé dans BDD
+	int init_nb_eglises_paroissiales <- 50 ; // XXX : anciennement : nb_eglises_paroissiales : Renommé dans BDD
+		
+	//////////////
+	// CONTEXTE //
+	//////////////
 	
-	int distance_detection_agregats <- 100;
-	int nombre_FP_agregat <- 5;
-	int nombre_agglos_antiques <- 4 ;
-	int nombre_villages <- 20 ;
-	int nombre_FP_village <- 10;
+	// FOYERS PAYSANS //
+	float taux_augmentation_FP <- 0.0; // FIXME : renommer en croissance_demo + BDD : avant v6 : taux_augmentation_FP
+	float taux_renouvellement <- 0.05 ; // FIXME : renommer en taux_renouvellement_fp + BDD : avant v6 : taux_renouvellement
+	float proba_FP_dependants <- 0.2; // FIXME : renommer en proba_fp_dependant : avant v6 : proba_FP_dependants
+	map<int,float> besoin_protection_fp <- [800::0,960::0.2,980::0.4,1000::0.6,1020::0.8,1040::1.0]; // FIXME: Ajout d'un paramètre qui modifie la valeur de la variable besoin_protection
+	// FIXME : Ajouter dans BDD : nouveau param en v6
+	// AGREGATS //
 	float puissance_communautes <- 0.25;
-	int apparition_communautes <- 800;
+	int coef_redevances <- 15;
+	// SEIGNEURS //
+	int nombre_seigneurs_objectif <- 200;
+	map<int,float> proba_gs_droits_haute_justice <- [800::0,900::0.1,1000::1.0]; // TODO : Inactif : ajouter dans modèle + Ajouter aux outputs + SimEDB
+	int debut_cession_droits_seigneurs <- 900 ; // TODO: Inactif : intégrer + outputs + SimEDB
+	int debut_garde_chateaux_seigneurs <- 960 ; // TODO : Inactif : intégrer + outputs + SimEDB
+	// CHATEAUX //
+	int apparition_chateaux <- 960;
+	map<int,bool> periode_promotion_chateaux <- [800::false,940::true,1040::true,1060::false]; // // TODO : Inactif : intégrer + outputs + SimEDB
+	
+	///////////////
+	// MECANISME //
+	///////////////
+	
+	// FOYERS PAYSANS //
+	map<int,int> dist_min_eglise <- [800::5000,960::3000,1060::1500]; // TODO : Inactif : intégrer + outputs + SimEDB
+	map<int,int> dist_max_eglise <- [800::25000,960::10000,1060::5000]; // TODO : Inactif : intégrer + outputs + SimEDB
+	int dist_min_chateau <- 1500; // TODO : Inactif : intégrer + outputs + SimEDB
+	int dist_max_chateau <- 5000; // TODO : Inactif : intégrer + outputs + SimEDB
+	map<int,int> seuils_distance_max_dem_local <- [800::2500]; // TODO : Inactif : intégrer + outputs + SimEDB
+	float proba_ponderee_deplacement_lointain <- 0.2; // TODO : Vérifier
+	// AGREGATS //
+	int nombre_FP_agregat <- 5;
 	float proba_apparition_communaute <- 0.2;
+	int distance_detection_agregats <- 100;
+	int distance_fusion_agregat <- 100; // TODO : Inactif : intégrer + outputs + SimEDB
+	int apparition_communautes <- 800; // FIXME : Ne sert plus à rien ?
+	// SEIGNEURS //
+	float proba_collecter_loyer <- 0.1;
+	float proba_creation_ZP_banaux <- 0.05;
+	float proba_creation_ZP_basseMoyenneJustice <- 0.05;
+	int rayon_min_PS <- 1000;
+	int rayon_max_PS <- 5000;
+	float min_fourchette_loyers_PS <- 0.05;
+	float max_fourchette_loyers_PS <- 0.25;
+	float proba_don_partie_ZP <- 0.33;
+	int rayon_cession_droits_ps <- 3000; // TODO : Inactif : intégrer + outputs + SimEDB
+	float proba_don_chateau_GS <- 0.50;
+	float proba_gain_droits_hauteJustice_chateau <- 0.1;
+	
+	
+	int nb_chateaux_potentiels_GS <- 2;
+	int seuil_attractivite_chateau <- 3000;
+	float proba_chateau_agregat <- 0.5; // FIXME : A appliquer aussi aux PS
+	
+	
+	float proba_gain_droits_banaux_chateau <- 0.1;
+	float proba_gain_droits_basseMoyenneJustice_chateau <- 0.1;
+	float proba_promotion_groschateau_multipole <- 0.8;
+	float proba_promotion_groschateau_autre <- 0.3;
+	
+	
+	
+	
+	
+	
+	////////////////////////
+	// VARIABLE GLOBABLES //
+	////////////////////////
+	
+	int Annee <- debut_simulation update: Annee + duree_step;
+	geometry world_bounds <- square(taille_cote_monde #km) translated_by {taille_cote_monde #km/2 , taille_cote_monde #km/2 };
+	
+	geometry shape <- envelope(world_bounds) ;
+	geometry worldextent <- envelope(world_bounds) ;
+	geometry reduced_worldextent <- worldextent - 1 #km; // On retranche 1km de chaque coté du monde
+	
+	int nb_seigneurs_a_creer_total <- nombre_seigneurs_objectif - (init_nb_gs + init_nb_ps);
+	int nb_moyen_petits_seigneurs_par_tour <- round(nb_seigneurs_a_creer_total / ((fin_simulation - debut_simulation) / duree_step));
+	
+	int distance_max_dem_local <- 4000;
+	float besoin_protection <- 0.0; // FIXME : Corriger nom param dans outputs et SimEDB
+
+	/////////////
+	// OUTPUTS //
+	/////////////
+	float distance_eglises_paroissiales <- 0.0;
+	float distance_eglises <- 0.0;
+	float prop_FP_isoles <- 0.0;
+	float ratio_charge_fiscale <- 0.0;
+	float charge_fiscale_debut <- 0.0;
+	float charge_fiscale <- 0.0;
+	float dist_ppv_agregat <- 0.0;
+	list<int> Chateaux_chatelains <- [];
+	list<int> reseaux_chateaux <- [];
+	// FP //
+	int nb_demenagement_local update: 0; // le update remet à 0 au début de chaque nouveau step
+	int nb_demenagement_lointain update: 0;
+	// CHATEAUX //
+	int nb_chateaux ;
+	// OpenMole outputs //
+	int nb_agregats_om <- 0 ;
+	int nb_chateaux_om <- 0 ;
+	int nb_gros_chateaux_om <- 0 ;
+	int nb_seigneurs_om <- 0 ;
+	int nb_eglises_om <- 0 ;
+	int nb_eglises_paroissiales_om <- 0 ;
+	int distance_eglises_paroissiales_om <- 0 ;
+	float proportion_fp_isoles_om <- 0.0 ;
+	float augmentation_charge_fiscale_om <- 0.0 ;
+
+
 	
 	// FOYERS_PAYSANS //
 	
-	int nombre_foyers_paysans <- 4000 ;
-	float taux_renouvellement <- 0.05 ;
-	float taux_augmentation_FP <- 0.0;
-	float proba_FP_dependants <- 0.2;
-	int distance_max_dem_local <- 4000;
+	
+
+
 	int seuil_puissance_armee <- 400; // P.A. d'un proprio de chateau pour que le FP soit satisfait.
-	list<int> seuils_distance_max_dem_local <- [2500, 2500, 2500];
-	float proba_ponderee_deplacement_lointain <- 0.2;
-	int coef_redevances <- 15;
+
+	
+
 	bool serfs_mobiles <- true;
 	float min_S_distance_chateau <- 0.0; // Nouveau paramètre pour le calcul de s_protection
 	
 	 
 	// SEIGNEURS //
 	
-	int nombre_seigneurs_objectif <- 200;
-	int nombre_grands_seigneurs <- 2;
-	int nombre_petits_seigneurs <- 18;
 	
-	int puissance_grand_seigneur1 <- 5;
-	int puissance_grand_seigneur2 <- 5;
-	
-	float proba_collecter_loyer <- 0.1;
-	
-	float proba_creation_ZP_banaux <- 0.05;
-	float proba_creation_ZP_basseMoyenneJustice <- 0.05;
 
-	
+
+
 	// ZONES_PRELEVEMENT //
-	
-	int rayon_min_PS <- 1000;
-	int rayon_max_PS <- 5000;
-	float min_fourchette_loyers_PS <- 0.05;
-	float max_fourchette_loyers_PS <- 0.25;
-	
-	float proba_don_partie_ZP <- 0.33;
-	
-	// CHATEAUX //
-	
-	int apparition_chateaux <- 960;
-	int nb_chateaux_potentiels_GS <- 2;
-	
-	int seuil_attractivite_chateau <- 3000;
-	
-	//float proba_creer_chateau_GS <- 0.5; // ce paramètre n'est plus utilisé
-	float proba_chateau_agregat <- 0.5; // FIXME : A appliquer aussi aux PS
-	float proba_don_chateau_GS <- 0.50; //TODO : update doc
-	// float proba_creer_chateau_PS <- 1.0; // ce paramètre n'est plus utilisé
-	
-	float proba_gain_droits_hauteJustice_chateau <- 0.1;
-	float proba_gain_droits_banaux_chateau <- 0.1;
-	float proba_gain_droits_basseMoyenneJustice_chateau <- 0.1;
-	
-	float proba_promotion_groschateau_multipole <- 0.8;
-	float proba_promotion_groschateau_autre <- 0.3;
-	// int puissance_necessaire_creation_chateau_GS <- 1000; // ce paramètre n'est plus utilisé
-	// int puissance_necessaire_creation_chateau_PS <- 0; // ce paramètre n'est plus utilisé
 
 
 	// EGLISES //
 	
-	int nombre_eglises <- 150 ;
-	int nb_eglises_paroissiales <- 50 ;
+	
 	int nb_max_paroissiens <- 40;
 	int nb_min_paroissiens <- 10;
 	int seuil_creation_paroisse <- 600;
@@ -133,62 +217,13 @@ global torus: false{
 	////////////
 	
 
-	int Annee <- debut_simulation update: Annee + duree_step;
-	geometry world_bounds <- square(taille_cote_monde #km) translated_by {taille_cote_monde #km/2 , taille_cote_monde #km/2 };
 	
-	geometry shape <- envelope(world_bounds) ;
-	geometry worldextent <- envelope(world_bounds) ;
-	geometry reduced_worldextent <- worldextent - 1 #km; // On retranche 1km de chaque coté du monde
 	
-	int nb_seigneurs_a_creer_total <- nombre_seigneurs_objectif - (nombre_grands_seigneurs + nombre_petits_seigneurs);
-	int nb_moyen_petits_seigneurs_par_tour <- round(nb_seigneurs_a_creer_total / ((fin_simulation - debut_simulation) / duree_step));
-	
-	/////////////
-	// OUTPUTS //
-	/////////////
-	float distance_eglises <- 0.0; // Moyenne des distances au plus proche voisin
-	float distance_eglises_paroissiales <- 0.0;
-	float prop_FP_isoles <- 0.0;
-	float ratio_charge_fiscale <- 0.0;
-	float charge_fiscale_debut <- 0.0;
-	float charge_fiscale <- 0.0;
-	float dist_ppv_agregat <- 0.0;
-	list<int> Chateaux_chatelains <- [];
-	list<int> reseaux_chateaux <- [];
-
-	string prefix_output <- "global";
-	string output_folder_path <- "/home/robin/SimFeodal/outputs/";
-	
-	// OpenMole outputs //
-	int nb_agregats_om <- 0 ;
-	int nb_chateaux_om <- 0 ;
-	int nb_gros_chateaux_om <- 0 ;
-	int nb_seigneurs_om <- 0 ;
-	int nb_eglises_om <- 0 ;
-	int nb_eglises_paroissiales_om <- 0 ;
-	int distance_eglises_paroissiales_om <- 0 ;
-	float proportion_fp_isoles_om <- 0.0 ;
-	float augmentation_charge_fiscale_om <- 0.0 ;
-		
-	// FP //
-	int nb_demenagement_local update: 0; // le update remet à 0 au début de chaque nouveau step
-	int nb_demenagement_lointain update: 0;
-	
-	// CHATEAUX //
-	int nb_chateaux ;
-	
-	action update_besoin_protection{
-		switch Annee {
-			match 960 {set besoin_protection <- 0.2;}
-			match 980  {set besoin_protection <- 0.4;}
-			match 1000 {set besoin_protection <- 0.6;}
-			match 1020  {set besoin_protection <- 0.8;}
-			match 1040  {set besoin_protection <- 1.0;}
-			default {}
+	action update_variables_temporelles {
+		if ((besoin_protection_fp at Annee) is float){
+			set besoin_protection <- besoin_protection_fp at Annee;
 		}
-	}
-	
-	action update_distance_max_dem_local {
+		
 		if Annee < 900 {
 			set distance_max_dem_local <- seuils_distance_max_dem_local[0];
 		} else if (Annee >= 900 and Annee < 1000) {
@@ -196,8 +231,17 @@ global torus: false{
 		} else  if (Annee >= 1000) {
 			set distance_max_dem_local <- seuils_distance_max_dem_local[2];
 		}
+		
+		
+		
+//	map<int,float> proba_gs_droits_haute_justice <- [800::0,900::0.1,1000::1.0]; // TODO : Inactif : ajouter dans modèle + Ajouter aux outputs + SimEDB
+//	map<int,bool> periode_promotion_chateaux <- [800::false,940::true,1040::true,1060::false]; // // TODO : Inactif : intégrer + outputs + SimEDB
+//	map<int,int> dist_min_eglise <- [800::5000,960::3000,1060::1500]; // TODO : Inactif : intégrer + outputs + SimEDB
+//	map<int,int> dist_max_eglise <- [800::25000,960::10000,1060::5000]; // TODO : Inactif : intégrer + outputs + SimEDB
+//	map<int,int> seuils_distance_max_dem_local <- [800::2500]; // TODO : Inactif : intégrer + outputs + SimEDB
 	}
 	
+
 	action update_output_indexes {
 		float t <- machine_time;
 		list<float> distances_pp_eglise <- [];
