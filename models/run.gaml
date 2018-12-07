@@ -221,29 +221,29 @@ float t <- machine_time;
 		if (benchmark){write 'save_data : ' + string(machine_time - t);}
 	}
 	
-	reflex summarise_outputs when: summarised_outputs {
-		if (Annee >= fin_simulation){
-			// Sortie en 1160 :
-			set nb_agregats_om <- length(Agregats) ;
-			set nb_chateaux_om <- length(Chateaux);
-			set nb_gros_chateaux_om <- Chateaux count (each.type = "Grand Chateau");
-			set nb_seigneurs_om <- length(Seigneurs) ;
-			set nb_eglises_om <- length(Eglises) ;
-			set nb_eglises_paroissiales_om <- Eglises count (each.eglise_paroissiale) ;
-			set distance_eglises_paroissiales_om <- int(distance_eglises_paroissiales) ;
-			set proportion_fp_isoles_om <- prop_FP_isoles ;
-			set augmentation_charge_fiscale_om <- charge_fiscale / charge_fiscale_debut;
-			string sim_name <- prefix_output ;
-			
-			save [
-				seed, sim_name, sensibility_parameter, sensibility_value,
-				nb_agregats_om, nb_chateaux_om, nb_gros_chateaux_om,
-				nb_seigneurs_om, nb_eglises_om, nb_eglises_paroissiales_om,
-				distance_eglises_paroissiales_om, proportion_fp_isoles_om,
-				augmentation_charge_fiscale_om, total_duration
-			] to: ("../outputs/"+ sim_name +"_results_om.csv") type: "csv" header: true rewrite: false;		
-		}
-	}
+//	reflex summarise_outputs when: summarised_outputs {
+//		if (Annee >= fin_simulation){
+//			// Sortie en 1160 :
+//			set nb_agregats_om <- length(Agregats) ;
+//			set nb_chateaux_om <- length(Chateaux);
+//			set nb_gros_chateaux_om <- Chateaux count (each.type = "Grand Chateau");
+//			set nb_seigneurs_om <- length(Seigneurs) ;
+//			set nb_eglises_om <- length(Eglises) ;
+//			set nb_eglises_paroissiales_om <- Eglises count (each.eglise_paroissiale) ;
+//			set distance_eglises_paroissiales_om <- int(distance_eglises_paroissiales) ;
+//			set proportion_fp_isoles_om <- prop_FP_isoles ;
+//			set augmentation_charge_fiscale_om <- charge_fiscale / charge_fiscale_debut;
+//			string sim_name <- prefix_output ;
+//			
+//			save [
+//				seed, sim_name, sensibility_parameter, sensibility_value,
+//				nb_agregats_om, nb_chateaux_om, nb_gros_chateaux_om,
+//				nb_seigneurs_om, nb_eglises_om, nb_eglises_paroissiales_om,
+//				distance_eglises_paroissiales_om, proportion_fp_isoles_om,
+//				augmentation_charge_fiscale_om, total_duration
+//			] to: ("../outputs/"+ sim_name +"_results_om.csv") type: "csv" header: true rewrite: false;		
+//		}
+//	}
 	
 	reflex fin_simulation {
 		float t <- machine_time;
