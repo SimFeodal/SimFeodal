@@ -89,10 +89,6 @@ species Seigneurs schedules: [] {
 	list<Seigneurs> mesDebiteurs <- [];
 	Agregats monAgregat <- nil;
 	
-	action enquote (unknown text) {
-		return '"' + string(text) + '"';
-	}
-	
 	
 	init {
 		if (type = "Chatelain") {

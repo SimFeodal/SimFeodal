@@ -16,7 +16,7 @@ import "Agents/Zones_Prelevement.gaml"
 
 global {
 	
-	action enquote (unknown text) {
+	string enquote (unknown text) {
 		return '"' + string(text) + '"';
 	}
 	
@@ -40,7 +40,7 @@ global {
 //	}
 	
 	action save_parameters(string sim_name) {
-		string seuils_distance_max_dem_localSt <-  enquote(seuils_distance_max_dem_local);
+		string seuils_distance_max_dem_localSt <-  world.enquote(seuils_distance_max_dem_local);
 		string myseed <- string(seed);
 		
 		save [
@@ -75,7 +75,7 @@ global {
 		int nbGdChateaux <- Chateaux count (each.type = "Grand Chateau");
 		int nbEglises <- length(Eglises);
 		int nbEglisesParoissiales <-  Eglises count (each.eglise_paroissiale);
-		string myseed <- enquote(seed);
+		string myseed <- world.enquote(seed);
 		save [
 				myseed, sim_name, Annee,
 				nbChateaux, nbGdChateaux,
@@ -87,7 +87,7 @@ global {
 	}
 	
 	action save_seigneurs(string sim_name) {
-		string myseed <- enquote(seed);
+		string myseed <- world.enquote(seed);
 		ask Seigneurs {
 			int id_seigneur <- int(replace(self.name, 'Seigneurs', ''));
 			int nbChateauxProprio <- Chateaux count (each.proprietaire = self);
@@ -95,7 +95,7 @@ global {
 			int nbFPassujettis <- length(FP_assujettis);
 			int nbVassaux <- Seigneurs count (each.monSuzerain = self);
 			int nbDebiteurs <- length(mesDebiteurs);
-			string geom <- enquote(location with_precision 2);
+			string geom <- world.enquote(location with_precision 2);
 
 			save [
 				myseed, sim_name,Annee,id_seigneur, 
@@ -112,7 +112,7 @@ global {
 		ask Agregats {
 			int nbFP <- length(fp_agregat);
 			float superficie <- shape.area;
-			string geom <- enquote(shape with_precision 2);
+			string geom <- world.enquote(shape with_precision 2);
 			int id_agregat <- int(replace(self.name, 'Agregats', ''));
 			int monpole <- (monPole != nil) ? int(replace(monPole.name, 'Poles', '')) : -1;
 			
@@ -124,7 +124,7 @@ global {
 	}
 	
 	action save_poles(string sim_name) {
-		string myseed <- enquote(seed);
+		string myseed <- world.enquote(seed);
 		ask Poles {
 			int nbAttracteurs <- length(mesAttracteurs);
 			int nbEglises <- length(mesAttracteurs of_species Eglises);
@@ -132,7 +132,7 @@ global {
 			int nbGC <- (mesAttracteurs of_species Chateaux) count (each.type = "Grand Chateau");
 			int nbPC <- (mesAttracteurs of_species Chateaux) count (each.type = "Petit Chateau");
 			int nbCA <- length(mesAttracteurs of_species Agregats);
-			string geom <- enquote(shape with_precision 2);
+			string geom <- world.enquote(shape with_precision 2);
 			int id_pole <- int(replace(self.name, 'Poles', ''));
 			int monagregat <- (monAgregat != nil) ? int(replace(monAgregat.name, 'Agregats', '')) : -1;
 				
@@ -153,7 +153,7 @@ global {
 			float sRel <- satisfaction_materielle with_precision 2;
 			float sProt <- satisfaction_protection with_precision 2;
 			float Satis <- Satisfaction with_precision 2;
-			string geom <- enquote(point(location with_precision 2));
+			string geom <- world.enquote(point(location with_precision 2));
 			int id_fp <- int(replace(self.name, 'Foyers_Paysans', ''));
 			int monagregat <- (monAgregat != nil) ? int(replace(monAgregat.name, 'Agregats', '')) : -1;
 			
@@ -170,11 +170,11 @@ global {
 	}
 	
 		action save_paroisses(string sim_name) {
-			string myseed <- enquote(seed);
+			string myseed <- world.enquote(seed);
 			ask  Paroisses {
 				int nbFideles <- length(mesFideles);
 				float SatisfactionParoisse <- Satisfaction_Paroisse with_precision 3;
-				string geom <- enquote(shape with_precision 2);
+				string geom <- world.enquote(shape with_precision 2);
 				int id_paroisse <- int(replace(self.name, 'Paroisses', ''));
 				int moneglise <- (monEglise != nil) ? int(replace(monEglise.name, 'Agregats', '')) : -1;
 
