@@ -221,14 +221,8 @@ global torus: false{
 			set proba_gain_haute_justice_chateau_gs_actuel <- proba_gain_haute_justice_chateau_gs at Annee;
 		}
 		
-		
-		
-		if Annee < 900 {
-			set distance_max_dem_local <- seuils_distance_max_dem_local[0];
-		} else if (Annee >= 900 and Annee < 1000) {
-			 set distance_max_dem_local <- seuils_distance_max_dem_local[1];
-		} else  if (Annee >= 1000) {
-			set distance_max_dem_local <- seuils_distance_max_dem_local[2];
+		if ((seuils_distance_max_dem_local at Annee) is float){
+			set distance_max_dem_local <- seuils_distance_max_dem_local at Annee;
 		}
 		
 		
@@ -237,7 +231,6 @@ global torus: false{
 //	map<int,bool> periode_promotion_chateaux <- [800::false,940::true,1040::true,1060::false]; // // TODO : Inactif : intégrer + outputs + SimEDB
 //	map<int,int> dist_min_eglise <- [800::5000,960::3000,1060::1500]; // TODO : Inactif : intégrer + outputs + SimEDB
 //	map<int,int> dist_max_eglise <- [800::25000,960::10000,1060::5000]; // TODO : Inactif : intégrer + outputs + SimEDB
-//	map<int,int> seuils_distance_max_dem_local <- [800::2500]; // TODO : Inactif : intégrer + outputs + SimEDB
 	}
 	
 
