@@ -10,16 +10,16 @@
 model t8
 
 // L'ordre compte...
-import "../run.gaml"	
+import "run.gaml"	
 	
-experiment Exp_5_full_gui type: gui until: (Annee >= fin_simulation){
+experiment Exp_6_base_FullGUI type: gui benchmark: false until: (Annee >= fin_simulation){
+	parameter 'experimentType' var: experimentType init: "gui";
+	parameter 'prefix' var: prefix_output init: "6_0";
+	
 	parameter 'save_outputs' var: save_outputs init: false;
-	parameter 'prefix' var: prefix_output init: "5_0_gui";
 	parameter "benchmark" var: benchmark init: false; // Changement pour connaitre perfs fonctions
-	parameter "experimentType" var: experimentType init: "gui";
-	parameter "serfs_mobiles" var: serfs_mobiles init: true;
-	
-	output {
+
+output {
 		monitor "Annee" value: Annee;
 		monitor "Nombre de Foyers paysans" value: length(Foyers_Paysans);
 		monitor "Nombre FP dans agregat" value: Foyers_Paysans count (each.monAgregat != nil);
@@ -34,6 +34,7 @@ experiment Exp_5_full_gui type: gui until: (Annee >= fin_simulation){
 		monitor "Nombre Eglises Paroissiales" value: Eglises count (each.eglise_paroissiale);
 		monitor "Nombre Chateaux" value: length(Chateaux);
 		monitor "% FP dispersés" value: Foyers_Paysans count (each.monAgregat = nil) / length(Foyers_Paysans) * 100;
+		monitor "Sat moyenne" value: mean(Foyers_Paysans collect each.Satisfaction);
 		
 		display "Carte" type: "opengl" {
 			species Paroisses transparency: 0.9 ;
@@ -44,16 +45,14 @@ experiment Exp_5_full_gui type: gui until: (Annee >= fin_simulation){
 			species Agregats transparency: 0.3;
 	//		text string(Annee) size: 10000 position: {0, 1} color: rgb("black");
 		}		
-		
 	    display "Foyers Paysans" {
 	        chart "Déménagements" type: series position: {0,0} size: {0.5,0.5}{
 	            data "Local" value: nb_demenagement_local color: #blue; 
 	            data "Lointain" value: nb_demenagement_lointain color: #red;
 	            data "Non" value: length(Foyers_Paysans) - (nb_demenagement_local + nb_demenagement_lointain) color: #black;
 	        }
-			chart "FP" type: series position: {0.0,0.5} size: {0.5,0.5}{
-	            data "Hors CA" value: length(Foyers_Paysans where !each.communaute) color: #blue; 
-	            data "Dans CA" value: length(Foyers_Paysans where each.communaute)  color: #red;
+			chart "Concentration" type: series position: {0.0,0.5} size: {0.5,0.5}{
+	            data "% FP dans agrégat" value: Foyers_Paysans count (each.monAgregat = nil) / length(Foyers_Paysans) * 100 color: #blue; 
 	        }
     		chart "Satisfaction_FP" type:series position: {0.5,0} size: {0.5,1}{
     			data "Satisfaction Materielle" value: mean(Foyers_Paysans collect each.satisfaction_materielle) color: #blue;
@@ -62,25 +61,14 @@ experiment Exp_5_full_gui type: gui until: (Annee >= fin_simulation){
     			data "Satisfaction" value: mean(Foyers_Paysans collect each.Satisfaction) color: #black;
     		}
     	}
-    	
-    	
-    	display "Seigneurs" {
-    		chart "Puissance des seigneurs" type:series position: {0,0} size: {0.33,1}{
-    			data "Min" value: min(Seigneurs collect each.puissance) color: #green;
-    			data "Mean" value: mean(Seigneurs collect each.puissance) color: #blue;
-    			data "Max" value: max(Seigneurs collect each.puissance) color: #red;
-    		}
-    		
-    		chart "Puissance armée des seigneurs" type:series position: {0.33,0} size: {0.33,1}{
-    			data "Min" value: min(Seigneurs collect each.puissance_armee) color: #green;
-    			data "Mean" value: mean(Seigneurs collect each.puissance_armee) color: #blue;
-    			data "Max" value: max(Seigneurs collect each.puissance_armee) color: #red;
-    		}
-    		chart "Dépendance (loyer) des FP" type:series position: {0.66,0} size: {0.33,1}{
-    			data "FP payant un loyer à un GS" value: length(Foyers_Paysans where (each.seigneur_loyer != nil and each.seigneur_loyer.type = "Grand Seigneur")) color: #green;
-    			data "FP payant un loyer à un PS initial" value: length(Foyers_Paysans where (each.seigneur_loyer != nil and each.seigneur_loyer.type = "Petit Seigneur" and each.seigneur_loyer.initial)) color: #blue;
-    			data "FP payant un loyer à un PS nouveau" value: length(Foyers_Paysans where (each.seigneur_loyer != nil and each.seigneur_loyer.type = "Petit Seigneur" and !each.seigneur_loyer.initial)) color: #red;
-    		}
-    	}	
-}	
 	}
+}
+
+experiment Exp_6_0_Debug type: batch repeat: 1 keep_seed: false until: (Annee >= fin_simulation){
+	parameter 'save_outputs' var: save_outputs init: true;
+	parameter 'prefix' var: prefix_output init: "5_0_Debug";
+	parameter "benchmark" var: benchmark init: false; // Changement pour connaitre perfs fonctions
+	parameter "serfs_mobiles" var: serfs_mobiles init: true;
+	parameter "nombre_fp_villages" var: init_nb_fp_village init: 10;
+	// 1 experiment
+}

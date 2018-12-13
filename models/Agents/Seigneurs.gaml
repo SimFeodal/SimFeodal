@@ -27,11 +27,6 @@ global {
 			
 			if (length(Agregats) > 0){
 				Agregats cetAgregat <- one_of(Agregats);
-				geometry thisShape <- cetAgregat.shape inter reduced_worldextent;
-				if (thisShape = nil){
-					write "shape : " + cetAgregat.shape;
-					write "reduced shape : " + thisShape;
-				}
 				point thisLocation <- any_location_in(cetAgregat.shape inter reduced_worldextent);
 				location <- thisLocation;
 			} else {
@@ -89,14 +84,14 @@ species Seigneurs schedules: [] {
 	list<Seigneurs> mesDebiteurs <- [];
 	Agregats monAgregat <- nil;
 	
-	
-	init {
-		if (type = "Chatelain") {
-			int rayon_zone <- 20000;
-			float txPrelev <- 1.0;
-			do creer_zone_prelevement(self.location, rayon_zone, self, "Loyer", txPrelev);
-		}
-	}
+// Ne sert à rien : les PS deviennent chatelain quand ils créent un chateau ou qu'un GS leur en donne un en gardiennage
+//	init {
+//		if (type = "Chatelain") {
+//			int rayon_zone <- 20000;
+//			float txPrelev <- 1.0;
+//			do creer_zone_prelevement(self.location, rayon_zone, self, "Loyer", txPrelev);
+//		}
+//	}
 	
 	
 	action gains_droits_PS {
@@ -152,45 +147,37 @@ species Seigneurs schedules: [] {
 	}
 	
 	action MaJ_droits_Grands_Seigneurs {
-		if (Annee < 1000 and Annee >= 900){
+		
+		// MaJ Haute Justice
+		if (proba_gain_haute_justice_chateau_gs_actuel > 0.0){
 			if (!droits_hauteJustice) {
-				set droits_hauteJustice <- flip(0.1);
-				if (droits_hauteJustice){
-					do MaJ_ZP_chateaux(self, "Haute_Justice");
-					if (!droits_banaux) {
-						set droits_banaux <- true;
-						do MaJ_ZP_chateaux(self, "Banaux");
-						
-					}
-					if (!droits_moyenneBasseJustice) {
-						set droits_moyenneBasseJustice <- true;
-						do MaJ_ZP_chateaux(self, "basseMoyenne_Justice");
-					}
-				}
+				set droits_hauteJustice <- flip(proba_gain_haute_justice_chateau_gs_actuel);
 			}
-				
+			if (droits_hauteJustice){
+				do MaJ_ZP_chateaux(self, "Haute_Justice");
+				set droits_banaux <- true;
+				do MaJ_ZP_chateaux(self, "Banaux");
+				set droits_moyenneBasseJustice <- true;
+				do MaJ_ZP_chateaux(self, "basseMoyenne_Justice");
+			}
+		}
+		// MaJ droits banaux
+		if (proba_gain_haute_justice_chateau_gs_actuel > 0.0){
 			if (!droits_banaux) {
 				set droits_banaux <- flip(proba_gain_droits_banaux_chateau);
-				if (droits_banaux) {
-					set droits_banaux <- true;
-					do MaJ_ZP_chateaux(self, "Banaux");	
-				}
 			}
-			
+			if (droits_banaux) {
+				do MaJ_ZP_chateaux(self, "Banaux");	
+			}
+		}
+		// MaJ droits basse et moyenne Justice
+		if (proba_gain_haute_justice_chateau_gs_actuel > 0.0){
 			if (!droits_moyenneBasseJustice) {
 				set droits_moyenneBasseJustice <- flip(proba_gain_droits_basseMoyenneJustice_chateau);
-				if (droits_moyenneBasseJustice) {
-					set droits_moyenneBasseJustice <- true;
-					do MaJ_ZP_chateaux(self, "basseMoyenne_Justice");
-				}
 			}
-		} else if (Annee = 1000) {
-			set droits_hauteJustice <-true;
-			do MaJ_ZP_chateaux(self, "Haute_Justice");
-			set droits_banaux <- true;
-			do MaJ_ZP_chateaux(self, "Banaux");
-			set droits_moyenneBasseJustice <- true;
-			do MaJ_ZP_chateaux(self, "basseMoyenne_Justice");
+			if (droits_moyenneBasseJustice) {
+				do MaJ_ZP_chateaux(self, "basseMoyenne_Justice");
+			}
 		}
 	}
 	
@@ -300,7 +287,7 @@ species Seigneurs schedules: [] {
 		loop chateau over: Chateaux where (each.proprietaire = self and each.gardien = self){
 			if (flip(proba_don_chateau_GS)){
 				//Seigneurs choixSeigneur <- shuffle(Seigneurs) first_with (each.type != 'Grand Seigneur' and each.initialement_present and ((each.monSuzerain = self or each.monSuzerain = nil) or (each.monSuzerain.type != "Grand Seigneur")));
-				Seigneurs choixSeigneur <- shuffle(Seigneurs) first_with (each.type != 'Grand Seigneur'  and ((each.monSuzerain = self or each.monSuzerain = nil) or (each.monSuzerain.type != "Grand Seigneur")));
+				Seigneurs choixSeigneur <- shuffle(Seigneurs) first_with (each.type != 'Grand Seigneur'  and((each.monSuzerain = self or each.monSuzerain = nil) or (each.monSuzerain.type != "Grand Seigneur")));
 				set chateau.gardien <- choixSeigneur;
 				set choixSeigneur.type <- "Chatelain";
 				set choixSeigneur.monSuzerain <- self;
@@ -369,8 +356,8 @@ species Seigneurs schedules: [] {
 	// FIXME : moche et sans doute faux
 	action construction_chateau_GS {
 		
-			int nbChateauxPotentiel <- nb_chateaux_potentiels_GS;
-			float proba_creer_chateau_GS <- (1 - exp(-0.00064 * self.puissance) );
+		int nbChateauxPotentiel <- nb_chateaux_potentiels_GS;
+		float proba_creer_chateau_GS <- (1 - exp(-0.00064 * self.puissance) );
 		
 		
 		list<Agregats> agregatsPotentiel <- Agregats where (length(each.mesChateaux) = 0);
@@ -386,37 +373,23 @@ species Seigneurs schedules: [] {
 			set proprietaire <- myself;
 			set gardien <- myself;
 			
-			// FIXME : Hideux
-			if (flip(proba_chateau_agregat)){
-				Agregats choixAgregat <- nil;
-				
-				list<Agregats> agregatsPossibles <- nil;
-				// on crée le chateau dans un agrégat si possible
-				if (length(Chateaux) > 0 and agregatsPotentiel != nil){
-					set agregatsPossibles <-agregatsPotentiel where (each distance_to (Chateaux closest_to self) < 5000);
-				}
-				
+			// Réorganisation (et simplification) du code
+			if (flip(proba_chateau_agregat)){				
+				// On découpe l'espace du monde pour les localisations possibles
+				geometry espacePossible <- reduced_worldextent - (5000 around Chateaux);
+				// S'il y a des agrégats dispos, on va dans l'un d'eux au hasard
+				list<Agregats> agregatsPossibles <- Agregats inside espacePossible;
 				if (!empty(agregatsPossibles)){
-					set choixAgregat <- one_of(agregatsPossibles);
-				} else {
-					set location <- any_location_in(reduced_worldextent - (5000 around Chateaux));
-				}
-				
-				if (choixAgregat = nil){
-					set location <- any_location_in(reduced_worldextent - (5000 around Chateaux));
-				} else {
+					Agregats choixAgregat <- one_of(agregatsPossibles);
 					ask choixAgregat {
 						mesChateaux <+ myself;
 					}
 					set location <- any_location_in(choixAgregat.shape);
-				}
-			} else {
-				// sinon, au hasard
-				set location <- any_location_in(reduced_worldextent - (5000 around Chateaux));	
+				} else { // Sinon, on place le château n'importe où à > 5 km d'un château existant
+					set location <- any_location_in(espacePossible);
+				}	
 			}
 			
-
-//				
 			int minRayon <- 2000 ;
 			int maxRayon <- 10000 ;
 			float maxPuissance <- max(Seigneurs collect each.puissance) ;
@@ -426,8 +399,6 @@ species Seigneurs schedules: [] {
 					( maxPuissance / (maxPuissance - minPuissance) - ( myself.puissance / (maxPuissance - minPuissance)))
 				])
 			]));
-			set monRayon <- rayon_chateau;
-			//set location <- any_location_in(choixAgregat.shape + 500);
 			
 			// FIXME : Très laid, à vérifier
 
@@ -479,7 +450,6 @@ species Seigneurs schedules: [] {
 						( maxPuissance / (maxPuissance - minPuissance) )- ( myself.puissance / (maxPuissance - minPuissance))
 					])
 				]));
-				set monRayon <- rayon_chateau;
 				
 				do creation_ZP_loyer(location, rayon_chateau, myself, 1.0);
 				
@@ -508,12 +478,12 @@ species Seigneurs schedules: [] {
 	}
 	
 
-
-	action MaJ_type {
-		if (self.type = "Petit Seigneur") {
-			set type <- (!empty(Chateaux where ( (each.proprietaire = self) or (each.gardien = self) ))) ? "Chatelain" : "Petit Seigneur";
-		}			
-	}
+// Ne sert à rien : les PS deviennent chatelain quand ils créent un chateau ou qu'un GS leur en donne un en gardiennage
+//	action MaJ_type {
+//		if (self.type = "Petit Seigneur") {
+//			set type <- (!empty(Chateaux where ( (each.proprietaire = self) or (each.gardien = self) ))) ? "Chatelain" : "Petit Seigneur";
+//		}			
+//	}
 	
 	action MaJ_puissance_armee {
 		// C'est le nombre (unique) de FP qui versent des droits à ce seigneur.

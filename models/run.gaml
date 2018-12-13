@@ -27,6 +27,14 @@ global schedules: shuffle(Attracteurs) + shuffle(Poles) + shuffle(Agregats) + sh
 		do generer_monde;
 		if (benchmark){write 'init : ' + string(machine_time - t);}
 	}
+	
+	reflex MaJ_globals {
+		float t <- machine_time;
+		do update_variables_temporelles;
+		write string(Annee);
+
+		if (benchmark){write 'MaJ_globals : ' + string(machine_time - t);}
+	}
 		
 	reflex renouvellement_monde when: (time > 0){
 		float t <- machine_time;
@@ -34,13 +42,6 @@ global schedules: shuffle(Attracteurs) + shuffle(Poles) + shuffle(Agregats) + sh
 		if (benchmark){write 'renouvellement_monde : ' + string(machine_time - t);}
 	}
 		
-	reflex MaJ_globals {
-		float t <- machine_time;
-		do update_variables_temporelles;
-		write string(Annee);
-
-		if (benchmark){write 'MaJ_globals : ' + string(machine_time - t);}
-	}	
 
 	reflex MaJ_paroisses {
 		float t <- machine_time;
@@ -197,22 +198,8 @@ float t <- machine_time;
 	
 	reflex update_outputs when: (Annee > debut_simulation){
 		float t <- machine_time;
-		if (Annee = (debut_simulation + duree_step)){
-			ask Foyers_Paysans {
-				int loyer <- (self.seigneur_loyer != nil) ? 1 : 0;
-				int hauteJustice <- (self.seigneur_hauteJustice != nil) ? 1 : 0;
-				int banaux <- length(self.seigneurs_banaux);
-				int basseMoyenneJustice <- length(self.seigneurs_basseMoyenneJustice);
-				int nb_seigneurs <- loyer + hauteJustice + banaux + basseMoyenneJustice;
-				set nb_preleveurs <- nb_seigneurs;
-			}
-			set charge_fiscale_debut <- mean(Foyers_Paysans collect float(each.nb_preleveurs));
-		}
-		if (benchmark){write 'update_outputs 1: ' + string(machine_time - t);}
-		set t <- machine_time;
-		//do update_agregats_fp ;
-		do update_output_indexes;
-		if (benchmark){write 'update_outputs 2: ' + string(machine_time - t);}
+		do update_summarised_outputs;
+		if (benchmark){write 'update_outputs: ' + string(machine_time - t);}
 		write "Seed : " + seed + " / Annee : " + Annee + " / Nb Agregats : " + length(Agregats) + " / TxIsoles : " + prop_FP_isoles;
 	}
 	
@@ -222,29 +209,6 @@ float t <- machine_time;
 		if (benchmark){write 'save_data : ' + string(machine_time - t);}
 	}
 	
-//	reflex summarise_outputs when: summarised_outputs {
-//		if (Annee >= fin_simulation){
-//			// Sortie en 1160 :
-//			set nb_agregats_om <- length(Agregats) ;
-//			set nb_chateaux_om <- length(Chateaux);
-//			set nb_gros_chateaux_om <- Chateaux count (each.type = "Grand Chateau");
-//			set nb_seigneurs_om <- length(Seigneurs) ;
-//			set nb_eglises_om <- length(Eglises) ;
-//			set nb_eglises_paroissiales_om <- Eglises count (each.eglise_paroissiale) ;
-//			set distance_eglises_paroissiales_om <- int(distance_eglises_paroissiales) ;
-//			set proportion_fp_isoles_om <- prop_FP_isoles ;
-//			set augmentation_charge_fiscale_om <- charge_fiscale / charge_fiscale_debut;
-//			string sim_name <- prefix_output ;
-//			
-//			save [
-//				seed, sim_name, sensibility_parameter, sensibility_value,
-//				nb_agregats_om, nb_chateaux_om, nb_gros_chateaux_om,
-//				nb_seigneurs_om, nb_eglises_om, nb_eglises_paroissiales_om,
-//				distance_eglises_paroissiales_om, proportion_fp_isoles_om,
-//				augmentation_charge_fiscale_om, total_duration
-//			] to: ("../outputs/"+ sim_name +"_results_om.csv") type: "csv" header: true rewrite: false;		
-//		}
-//	}
 	
 	reflex fin_simulation {
 		float t <- machine_time;

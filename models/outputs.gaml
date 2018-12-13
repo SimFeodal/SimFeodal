@@ -40,11 +40,13 @@ global {
 //	}
 	
 	action save_parameters(string sim_name) {
-		string seuils_distance_max_dem_localSt <-  world.enquote(seuils_distance_max_dem_local);
-		string myseed <- string(seed);
+		string seuils_distance_max_dem_local <-  world.enquote(seuils_distance_max_dem_local);
+		string seed <- string(seed);
+		string besoin_protection_fp <- world.enquote(besoin_protection_fp);
+		
 		
 		save [
-				myseed, sim_name, debut_simulation, fin_simulation, duree_step,
+				seed, sim_name, debut_simulation, fin_simulation, duree_step,
 				besoin_protection, // XXX : N'est plus un param mais une variable en v6
 				distance_detection_agregats, nombre_FP_agregat,
 				init_nb_fp_agglo, // avant v6 : anciennement nombre_agglos_antiques
@@ -52,8 +54,10 @@ global {
 				puissance_communautes,
 				apparition_communautes, proba_apparition_communaute,
 				init_nb_total_fp, // avant v6 : nombre_foyers_paysans
-				taux_renouvellement, proba_FP_dependants, distance_max_dem_local, seuil_puissance_armee,
-				nombre_seigneurs_objectif, 
+				taux_renouvellement_fp, // avant v6 : taux_renouvellement
+				proba_fp_dependant, // avant v6 : proba_FP_dependants
+				distance_max_dem_local, seuil_puissance_armee,
+				objectif_nombre_seigneurs, // avant v6 :  nombre_seigneurs_objectif
 				init_nb_gs, // avant v6 : nombre_grands_seigneurs
 				init_nb_ps, // avant v6 : nombre_petits_seigneurs
 				puissance_grand_seigneur1, puissance_grand_seigneur2,
@@ -76,8 +80,9 @@ global {
 				attrac_0_eglises, attrac_1_eglises, attrac_2_eglises, attrac_3_eglises, attrac_4_eglises,
 				attrac_GC, attrac_PC, attrac_communautes,
 				init_nb_fp_village, // avant v6 : nombre_FP_village
-				seuils_distance_max_dem_localSt,
-				taux_augmentation_FP, proba_ponderee_deplacement_lointain, coef_redevances, serfs_mobiles,
+				seuils_distance_max_dem_local,
+				croissance_demo, // avant v6 : taux_augmentation_FP
+				proba_ponderee_deplacement_lointain, coef_redevances, serfs_mobiles,
 				taille_cote_monde, min_S_distance_chateau,
 				init_nb_fp_agglo, // nouveau paramètre en v6 : vallait 30 avant
 				besoin_protection_fp // nouveau paramètre en v6 : vallait [800::0,960::0.2,980::0.4,1000::0.6,1020::0.8,1040::1.0] avant
@@ -85,13 +90,15 @@ global {
 	}
 	
 	action save_global(string sim_name) {
+		int annee <- Annee;
 		int nbChateaux <- length(Chateaux);
 		int nbGdChateaux <- Chateaux count (each.type = "Grand Chateau");
 		int nbEglises <- length(Eglises);
 		int nbEglisesParoissiales <-  Eglises count (each.eglise_paroissiale);
-		string myseed <- world.enquote(seed);
+		string seed <- world.enquote(seed);
+		
 		save [
-				myseed, sim_name, Annee,
+				seed, sim_name, annee,
 				nbChateaux, nbGdChateaux,
 				nbEglises, nbEglisesParoissiales,
 				distance_eglises, distance_eglises_paroissiales,
@@ -101,7 +108,9 @@ global {
 	}
 	
 	action save_seigneurs(string sim_name) {
-		string myseed <- world.enquote(seed);
+		string seed <- world.enquote(seed);
+		int annee <- Annee;
+		
 		ask Seigneurs {
 			int id_seigneur <- int(replace(self.name, 'Seigneurs', ''));
 			int nbChateauxProprio <- Chateaux count (each.proprietaire = self);
@@ -112,7 +121,7 @@ global {
 			string geom <- world.enquote(location with_precision 2);
 
 			save [
-				myseed, sim_name,Annee,id_seigneur, 
+				seed, sim_name,annee,id_seigneur, 
 				type, initial, puissance,
 				nbChateauxProprio, nbChateauxGardien,
 				nbFPassujettis, nbVassaux, nbDebiteurs, monAgregat, geom
@@ -122,7 +131,9 @@ global {
 	}
 	
 	action save_agregats(string sim_name) {
-		string myseed <- enquote(seed);
+		string seed <- enquote(seed);
+		int annee <- Annee;
+		
 		ask Agregats {
 			int nbFP <- length(fp_agregat);
 			float superficie <- shape.area;
@@ -131,14 +142,16 @@ global {
 			int monpole <- (monPole != nil) ? int(replace(monPole.name, 'Poles', '')) : -1;
 			
 			save [
-				myseed, sim_name, Annee, id_agregat,
+				seed, sim_name, annee, id_agregat,
 				nbFP, superficie, communaute, monpole, geom
 			] to: (output_folder_path + sim_name +"_results_agregats.csv") type: "csv" header: true rewrite: false;
 		}
 	}
 	
 	action save_poles(string sim_name) {
-		string myseed <- world.enquote(seed);
+		string seed <- world.enquote(seed);
+		int annee <- Annee;
+		
 		ask Poles {
 			int nbAttracteurs <- length(mesAttracteurs);
 			int nbEglises <- length(mesAttracteurs of_species Eglises);
@@ -151,7 +164,7 @@ global {
 			int monagregat <- (monAgregat != nil) ? int(replace(monAgregat.name, 'Agregats', '')) : -1;
 				
 			save [
-				myseed, sim_name, Annee, id_pole,
+				seed, sim_name, annee, id_pole,
 				attractivite, nbAttracteurs, monagregat,
 				nbEglises, nbParoisses, nbGC, nbPC, nbCA, geom
 				
@@ -161,7 +174,9 @@ global {
 	}
 	
 	action save_FP(string sim_name) {
-		string myseed <- enquote(seed);
+		string seed <- enquote(seed);
+		int annee <- Annee;
+		
 		ask Foyers_Paysans {
 			float sMat <- satisfaction_materielle with_precision 2;
 			float sRel <- satisfaction_materielle with_precision 2;
@@ -172,7 +187,7 @@ global {
 			int monagregat <- (monAgregat != nil) ? int(replace(monAgregat.name, 'Agregats', '')) : -1;
 			
 			save [
-				myseed, sim_name, Annee, id_fp,
+				seed, sim_name, annee, id_fp,
 				communaute, monagregat,
 				sMat, sRel, sProt,
 				Satis, mobile, type_deplacement,
@@ -184,7 +199,9 @@ global {
 	}
 	
 		action save_paroisses(string sim_name) {
-			string myseed <- world.enquote(seed);
+			string seed <- world.enquote(seed);
+			int annee <- Annee;
+			
 			ask  Paroisses {
 				int nbFideles <- length(mesFideles);
 				float SatisfactionParoisse <- Satisfaction_Paroisse with_precision 3;
@@ -193,7 +210,7 @@ global {
 				int moneglise <- (monEglise != nil) ? int(replace(monEglise.name, 'Agregats', '')) : -1;
 
 				save [
-					myseed, sim_name, Annee, id_paroisse,
+					seed, sim_name, annee, id_paroisse,
 					moneglise, mode_promotion, shape.area,
 					nbFideles, SatisfactionParoisse, geom
 				] to: (output_folder_path + sim_name +"_results_paroisses.csv") type: "csv" header: true rewrite: false;

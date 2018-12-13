@@ -23,26 +23,26 @@ global {
 		// Agglos antiques
 		create Foyers_Paysans number: init_nb_agglos {
 			set location <- any_location_in(reduced_worldextent);
-			set mobile <- flip (1 - proba_FP_dependants);
+			set mobile <- flip (1 - proba_fp_dependant);
 			
 			list<Foyers_Paysans> pool_FP <- [self]; 
 			create Foyers_Paysans number: (init_nb_fp_agglo - 1) {
 				agent myFP <- one_of(pool_FP);
 				set location <- any_location_in(((distance_detection_agregats -  1) around myFP.location) inter reduced_worldextent);
-				set mobile <- flip (1 - proba_FP_dependants);
+				set mobile <- flip (1 - proba_fp_dependant);
 				pool_FP <+ self ;
 			}
 		}
 		// Villages
 		create Foyers_Paysans number: init_nb_villages {
 			set location <- any_location_in(reduced_worldextent);
-			set mobile <- flip (1 - proba_FP_dependants);
+			set mobile <- flip (1 - proba_fp_dependant);
 			
 			list<Foyers_Paysans> pool_FP <- [self];
 			create Foyers_Paysans number: (init_nb_fp_village - 1){
 				agent myFP <- one_of(pool_FP);
 				set location <- any_location_in(((distance_detection_agregats -  1) around myFP.location) inter reduced_worldextent);
-				set mobile <- flip (1 - proba_FP_dependants);
+				set mobile <- flip (1 - proba_fp_dependant);
 				pool_FP <+ self ;
 			}
 		}
@@ -50,7 +50,7 @@ global {
 		int nb_FP_isoles <- init_nb_total_fp - length(Foyers_Paysans);
 		create Foyers_Paysans number: nb_FP_isoles {
 			set location <- any_location_in(reduced_worldextent);
-			set mobile <- flip (1 - proba_FP_dependants);
+			set mobile <- flip (1 - proba_fp_dependant);
 		}
 	}
 	

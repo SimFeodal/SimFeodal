@@ -28,7 +28,6 @@ import "Zones_Prelevement.gaml"
 		Zones_Prelevement ZP_hauteJustice;
 		Zones_Prelevement ZP_banaux;
 		Zones_Prelevement ZP_basseMoyenneJustice;
-		int monRayon;
 		
 		
 		action creation_ZP_loyer (point centre, int rayon, Seigneurs proprio, float taux_taxation){
