@@ -187,14 +187,6 @@ float t <- machine_time;
 		do update_poles;
 		if (benchmark){write 'MaJ_poles_bis : ' + string(machine_time - t);}
 	}
-	 
-	reflex update_plot {
-						float t <- machine_time;
-		ask Seigneurs {
-			set monNbZP <- Zones_Prelevement count ((each.preleveurs.keys contains self) or (each.proprietaire = self));
-		}
-							if (benchmark){write 'update_plot : ' + string(machine_time - t);}
-	}
 	
 	reflex update_outputs when: (Annee > debut_simulation){
 		float t <- machine_time;

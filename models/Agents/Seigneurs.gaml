@@ -79,8 +79,6 @@ species Seigneurs schedules: [] {
 	list<Foyers_Paysans> FP_basseMoyenneJustice <- [];
 	list<Foyers_Paysans> FP_basseMoyenneJustice_garde <- [];
 	
-	int monNbZP <- 0;
-	
 	list<Seigneurs> mesDebiteurs <- [];
 	Agregats monAgregat <- nil;
 	
