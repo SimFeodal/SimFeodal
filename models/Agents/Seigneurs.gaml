@@ -108,7 +108,8 @@ species Seigneurs schedules: [] {
 	
 	action don_droits_GS {
 		Seigneurs choixSeigneur <- shuffle(Seigneurs) first_with (each.type != "Grand Seigneur" and ((each.monSuzerain = self or each.monSuzerain = nil))) ;
-		string monType_droit <- flip(0.33) ? "Haute_Justice" : (flip(0.5) ? "Banaux" : "basseMoyenne_Justice");
+		string monType_droit <- one_of(["Haute_Justice", "Banaux", "basseMoyenne_Justice"]); // ~ équivalent à ancienne formulation
+		// string monType_droit <- flip(0.33) ? "Haute_Justice" : (flip(0.5) ? "Banaux" : "basseMoyenne_Justice");
 		Agregats choixAgregat <- one_of(Agregats);
 		if (choixAgregat != nil){
 		int rayon_taxe <- rayon_min_PS + rnd(rayon_max_PS - rayon_min_PS);
@@ -429,6 +430,7 @@ species Seigneurs schedules: [] {
 				if (!flip(proba_creer_chateau_PS)){
 					do die;
 				}
+				// Tout ce qui suit n'est pas executé si le château est mort dans l'expression précédente.
 				set proprietaire <- myself;
 				set gardien <- myself;
 				do die;
@@ -490,8 +492,9 @@ species Seigneurs schedules: [] {
 	
 	action update_agregats_seigneurs {
 		set monAgregat <- nil;
-		if ((Agregats closest_to self) distance_to self < 200){
-			set monAgregat <- Agregats closest_to self;
+		Agregats plusProcheAgregat <- Agregats closest_to self;
+		if ((plusProcheAgregat distance_to self) < 200){
+			set monAgregat <- plusProcheAgregat;
 		}
 	}
 	

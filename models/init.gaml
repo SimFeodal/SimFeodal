@@ -56,7 +56,7 @@ global {
 	
 	
 	action generer_seigneurs {
-		create Seigneurs number: init_nb_gs{
+		create Seigneurs number: init_nb_gs {
 			set type <- "Grand Seigneur";
 			set initial <- true;
 			

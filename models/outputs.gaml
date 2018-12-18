@@ -23,7 +23,6 @@ global {
 	
 	action save_outputs_data {
 		string currentPrefix <- prefix_output;
-//		do fake_save(currentPrefix);
 		if (Annee = 820) {do save_parameters(currentPrefix);}
 		do save_global(currentPrefix);
 		do save_seigneurs(currentPrefix);
@@ -32,12 +31,6 @@ global {
 		do save_paroisses(currentPrefix);
 		do save_FP(currentPrefix);
 	}
-	
-//	action fake_save(string sim_name) {
-//		string blob <- "Blob";
-//		write (output_folder_path + sim_name +"_results_global.csv");
-//		save [blob] to: (output_folder_path + sim_name +"_results_global.csv") type: "csv" header: true rewrite: false;
-//	}
 	
 	action save_parameters(string sim_name) {
 		string seuils_distance_max_dem_local <-  world.enquote(seuils_distance_max_dem_local);

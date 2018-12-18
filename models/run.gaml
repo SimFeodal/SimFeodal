@@ -32,7 +32,6 @@ global schedules: shuffle(Attracteurs) + shuffle(Poles) + shuffle(Agregats) + sh
 		float t <- machine_time;
 		do update_variables_temporelles;
 		write string(Annee);
-
 		if (benchmark){write 'MaJ_globals : ' + string(machine_time - t);}
 	}
 		
@@ -106,7 +105,9 @@ global schedules: shuffle(Attracteurs) + shuffle(Poles) + shuffle(Agregats) + sh
 	
 	reflex MaJ_Droits_Seigneurs {
 		float t <- machine_time;
-		ask Seigneurs where (each.type="Grand Seigneur"){do MaJ_droits_Grands_Seigneurs;}
+		ask Seigneurs where (each.type="Grand Seigneur"){
+			do MaJ_droits_Grands_Seigneurs;
+		}
 		ask Seigneurs where (each.type != "Grand Seigneur") {
 			do MaJ_droits_Petits_Seigneurs;
 			do gains_droits_PS;
