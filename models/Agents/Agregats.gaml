@@ -21,15 +21,15 @@ global {
      	
      	// On crée un graphe de distance sur FP + Chateaux + eglises paroissiales
     	list<Eglises> eglises_paroissiales <- Eglises where (each.eglise_paroissiale);
-    	list<container<agent>> agregats_detectes <- simple_clustering_by_distance((Foyers_Paysans + Chateaux + eglises_paroissiales), distance_detection_agregats);
+    	list<container<agent>> agregats_detectes <- simple_clustering_by_distance((Foyers_Paysans + Chateaux + eglises_paroissiales), distance_detection_agregat);
     	// On ne conserve que les composantes constituées de > 5 (parametre) FP
-    	list<container<agent>> agregats_corrects <- agregats_detectes where (length(each of_species Foyers_Paysans) >= nombre_FP_agregat);
+    	list<container<agent>> agregats_corrects <- agregats_detectes where (length(each of_species Foyers_Paysans) >= nb_min_fp_agregat);
 
  	   	loop nouveauxAgregats over: agregats_corrects {
 			create tmpAgregats number: 1 {
 				list<point> mesPoints <- nouveauxAgregats collect each.location;			
 				geometry monPoly <- convex_hull(polygon(mesPoints));
-	    		set shape <- monPoly + 100;
+	    		set shape <- monPoly + distance_fusion_agregat;
 	    		set mesAgents <- agents overlapping self;
 	    		set mesFP <- mesAgents of_species Foyers_Paysans;
 	    		set mesEglisesParoissiales <- mesAgents of_species Eglises;
@@ -120,7 +120,7 @@ global {
 				}
 				set monAgregat <- thisAg;
 			}
-			if (Annee >= apparition_communautes){do update_communaute;}
+			if (annee >= apparition_communautes){do update_communaute;}
 		}
  	}
     

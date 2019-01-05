@@ -40,8 +40,8 @@ global {
 			set droits_moyenneBasseJustice <- false;
 			
 			if (droits_loyer){
-				int rayon_zone <- rayon_min_PS + rnd(rayon_max_PS - rayon_min_PS);
-				float txPrelev <- min_fourchette_loyers_PS + rnd(max_fourchette_loyers_PS - min_fourchette_loyers_PS);
+				int rayon_zone <- rayon_min_zp_ps + rnd(rayon_max_zp_ps - rayon_min_zp_ps);
+				float txPrelev <- min_taux_prelevement_zp_ps + rnd(max_taux_prelevement_zp_ps - min_taux_prelevement_zp_ps);
 				do creer_zone_prelevement(self.location, rayon_zone, self, "Loyer", txPrelev);
 			}			
 		}
@@ -93,15 +93,15 @@ species Seigneurs schedules: [] {
 	
 	
 	action gains_droits_PS {
-		if (flip(proba_creation_ZP_banaux)){				
-			int rayon_zone <- rayon_min_PS + rnd(rayon_max_PS - rayon_min_PS);
-			float taux_ZP <- min_fourchette_loyers_PS + rnd(max_fourchette_loyers_PS - min_fourchette_loyers_PS);
+		if (flip(proba_creation_zp_banaux)){				
+			int rayon_zone <- rayon_min_zp_ps + rnd(rayon_max_zp_ps - rayon_min_zp_ps);
+			float taux_ZP <- min_taux_prelevement_zp_ps + rnd(max_taux_prelevement_zp_ps - min_taux_prelevement_zp_ps);
 			do creer_zone_prelevement(any_location_in(3000 around self.location inter reduced_worldextent), rayon_zone, self, "Banaux", taux_ZP);
 		}
 		
-		if flip(proba_creation_ZP_basseMoyenneJustice){
-			int rayon_zone <- rayon_min_PS + rnd(rayon_max_PS - rayon_min_PS);
-			float taux_ZP <- min_fourchette_loyers_PS + rnd(max_fourchette_loyers_PS - min_fourchette_loyers_PS);
+		if flip(proba_creation_zp_basse_justice){
+			int rayon_zone <- rayon_min_zp_ps + rnd(rayon_max_zp_ps - rayon_min_zp_ps);
+			float taux_ZP <- min_taux_prelevement_zp_ps + rnd(max_taux_prelevement_zp_ps - min_taux_prelevement_zp_ps);
 			do creer_zone_prelevement(any_location_in(3000 around self.location inter reduced_worldextent), rayon_zone, self, "basseMoyenne_Justice", taux_ZP);
 		}
 	}
@@ -112,7 +112,7 @@ species Seigneurs schedules: [] {
 		// string monType_droit <- flip(0.33) ? "Haute_Justice" : (flip(0.5) ? "Banaux" : "basseMoyenne_Justice");
 		Agregats choixAgregat <- one_of(Agregats);
 		if (choixAgregat != nil){
-		int rayon_taxe <- rayon_min_PS + rnd(rayon_max_PS - rayon_min_PS);
+		int rayon_taxe <- rayon_min_zp_ps + rnd(rayon_max_zp_ps - rayon_min_zp_ps);
 		create Zones_Prelevement number: 1 {
 			set location <- any_location_in(choixAgregat.shape inter reduced_worldextent);
 			set ZP_chateau <- false;
@@ -129,13 +129,13 @@ species Seigneurs schedules: [] {
 	}
 	
 	action don_droits_PS {
-		loop currentZP over: (Zones_Prelevement where (!each.ZP_chateau and each.proprietaire = self)){
+		loop currentZP over: (Zones_Prelevement where (!each.ZP_chateau and each.proprietaire = self and each.type_droit != "Loyer")){
 			list<Seigneurs> preleveurs_potentiels <- [];
 			float pourcentage_donne <- (rnd(20) * 10) / 200; // par pas de 5%
 			ask currentZP {
-				set preleveurs_potentiels <- Seigneurs where (each.type != "Grand Seigneur" and each != currentZP.proprietaire) at_distance 3000;
+				set preleveurs_potentiels <- Seigneurs where (each.type != "Grand Seigneur" and each != currentZP.proprietaire) at_distance rayon_cession_droits_ps;
 			}
-			if (flip(proba_don_partie_ZP) and (sum(currentZP.preleveurs.values) < (1.0 - pourcentage_donne) ) and !empty(preleveurs_potentiels)) {
+			if (flip(proba_cession_droits_zp) and (sum(currentZP.preleveurs.values) < (1.0 - pourcentage_donne) ) and !empty(preleveurs_potentiels)) {
 				Seigneurs monPreleveur <- one_of(preleveurs_potentiels);
 				mesDebiteurs <+ monPreleveur;
 				ask currentZP {
@@ -148,9 +148,9 @@ species Seigneurs schedules: [] {
 	action MaJ_droits_Grands_Seigneurs {
 		
 		// MaJ Haute Justice
-		if (proba_gain_haute_justice_chateau_gs_actuel > 0.0){
+		if (proba_gain_haute_justice_gs_actuel > 0.0){
 			if (!droits_hauteJustice) {
-				set droits_hauteJustice <- flip(proba_gain_haute_justice_chateau_gs_actuel);
+				set droits_hauteJustice <- flip(proba_gain_haute_justice_gs_actuel);
 			}
 			if (droits_hauteJustice){
 				do MaJ_ZP_chateaux(self, "Haute_Justice");
@@ -161,7 +161,7 @@ species Seigneurs schedules: [] {
 			}
 		}
 		// MaJ droits banaux
-		if (proba_gain_haute_justice_chateau_gs_actuel > 0.0){
+		if (proba_gain_haute_justice_gs_actuel > 0.0){
 			if (!droits_banaux) {
 				set droits_banaux <- flip(proba_gain_droits_banaux_chateau);
 			}
@@ -170,9 +170,9 @@ species Seigneurs schedules: [] {
 			}
 		}
 		// MaJ droits basse et moyenne Justice
-		if (proba_gain_haute_justice_chateau_gs_actuel > 0.0){
+		if (proba_gain_haute_justice_gs_actuel > 0.0){
 			if (!droits_moyenneBasseJustice) {
-				set droits_moyenneBasseJustice <- flip(proba_gain_droits_basseMoyenneJustice_chateau);
+				set droits_moyenneBasseJustice <- flip(proba_gain_droits_basse_justice_chateau);
 			}
 			if (droits_moyenneBasseJustice) {
 				do MaJ_ZP_chateaux(self, "basseMoyenne_Justice");
@@ -191,7 +191,7 @@ species Seigneurs schedules: [] {
 		}
 		
 		if (!droits_moyenneBasseJustice) {
-			set droits_moyenneBasseJustice <- flip(proba_gain_droits_basseMoyenneJustice_chateau);
+			set droits_moyenneBasseJustice <- flip(proba_gain_droits_basse_justice_chateau);
 			if (droits_moyenneBasseJustice) {
 				set droits_moyenneBasseJustice <- true;
 				do MaJ_ZP_chateaux(self, "basseMoyenne_Justice");
@@ -251,28 +251,28 @@ species Seigneurs schedules: [] {
 	}
 	
 	float MaJ_loyers {
-		float Loyers <- length(FP_loyer) * 1.0;
+		float Loyers <- length(FP_loyer) * droits_fonciers_zp;
 		set FP_assujettis <- remove_duplicates(FP_assujettis + FP_loyer);
 		return(Loyers);
 	}
 	
 	float MaJ_hauteJustice {
-		float HteJustice <- length(FP_hauteJustice) * 1.0;
-		float HteJustice_garde <- length(FP_hauteJustice_garde) * 1.25;
+		float HteJustice <- length(FP_hauteJustice) * droits_haute_justice_zp;
+		float HteJustice_garde <- length(FP_hauteJustice_garde) * droits_haute_justice_zp_suzerain;
 		set FP_assujettis <- remove_duplicates(FP_assujettis + FP_hauteJustice + FP_hauteJustice_garde);
 		return(HteJustice + HteJustice_garde);
 	}
 	
 	float MaJ_banaux {
-		float Banaux <- length(FP_banaux) * 0.25;
-		float Banaux_garde <- length(FP_banaux_garde) * 0.35;
+		float Banaux <- length(FP_banaux) * droits_banaux_zp;
+		float Banaux_garde <- length(FP_banaux_garde) * droits_banaux_zp_suzerain;
 		set FP_assujettis <- remove_duplicates(FP_assujettis + FP_banaux + FP_banaux_garde);
 		return(Banaux + Banaux_garde);
 	}
 	
 	float MaJ_moyenneBasseJustice {
-		float moyenneBasseJustice <- length(FP_basseMoyenneJustice) * 0.25;
-		float moyenneBasseJustice_garde <- length(FP_basseMoyenneJustice_garde) * 0.35;
+		float moyenneBasseJustice <- length(FP_basseMoyenneJustice) * droits_basse_justice_zp;
+		float moyenneBasseJustice_garde <- length(FP_basseMoyenneJustice_garde) * droits_basse_justice_zp_suzerain;
 		set FP_assujettis <- remove_duplicates(FP_assujettis + FP_basseMoyenneJustice + FP_basseMoyenneJustice_garde);
 		return(moyenneBasseJustice + moyenneBasseJustice_garde);
 	}
@@ -284,7 +284,7 @@ species Seigneurs schedules: [] {
 	
 	action don_chateaux_GS {
 		loop chateau over: Chateaux where (each.proprietaire = self and each.gardien = self){
-			if (flip(proba_don_chateau_GS)){
+			if (flip(proba_don_chateau_gs)){
 				//Seigneurs choixSeigneur <- shuffle(Seigneurs) first_with (each.type != 'Grand Seigneur' and each.initialement_present and ((each.monSuzerain = self or each.monSuzerain = nil) or (each.monSuzerain.type != "Grand Seigneur")));
 				Seigneurs choixSeigneur <- shuffle(Seigneurs) first_with (each.type != 'Grand Seigneur'  and((each.monSuzerain = self or each.monSuzerain = nil) or (each.monSuzerain.type != "Grand Seigneur")));
 				set chateau.gardien <- choixSeigneur;
@@ -453,7 +453,7 @@ species Seigneurs schedules: [] {
 				
 				do creation_ZP_loyer(location, rayon_chateau, myself, 1.0);
 				
-				if (Annee > 1000 and flip(proba_gain_droits_hauteJustice_chateau)){
+				if (annee > 1000 and flip(proba_gain_haute_justice_chateau_ps)){
 					ask myself {
 						set droits_hauteJustice <- true;
 						set droits_banaux <- true;
@@ -468,7 +468,7 @@ species Seigneurs schedules: [] {
 					ask myself {set droits_banaux <- true;}
 					do creation_ZP_banaux(location, rayon_chateau, myself, 1.0);
 				}
-				if (flip(proba_gain_droits_basseMoyenneJustice_chateau)){
+				if (flip(proba_gain_droits_basse_justice_chateau)){
 					ask myself {set droits_moyenneBasseJustice <- true;}
 					do creation_ZP_basseMoyenne_Justice(location, rayon_chateau, myself, 1.0);
 				}

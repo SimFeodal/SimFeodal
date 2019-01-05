@@ -12,7 +12,7 @@ model t8
 // L'ordre compte...
 import "run.gaml"	
 	
-experiment Exp_6_base_FullGUI type: gui benchmark: false until: (Annee >= fin_simulation){
+experiment Exp_6_base_FullGUI type: gui benchmark: false until: (annee >= fin_simulation){
 	parameter 'experimentType' var: experimentType init: "gui";
 	parameter 'prefix' var: prefix_output init: "6_0";
 	
@@ -20,7 +20,7 @@ experiment Exp_6_base_FullGUI type: gui benchmark: false until: (Annee >= fin_si
 	parameter "benchmark" var: benchmark init: false; // Changement pour connaitre perfs fonctions
 
 output {
-		monitor "Annee" value: Annee;
+		monitor "Annee" value: annee;
 		monitor "Nombre de Foyers paysans" value: length(Foyers_Paysans);
 		monitor "Nombre FP dans agregat" value: Foyers_Paysans count (each.monAgregat != nil);
 		monitor "Nombre d'agregats" value: length(Agregats);
@@ -64,11 +64,9 @@ output {
 	}
 }
 
-experiment Exp_6_0_Debug type: batch repeat: 1 keep_seed: false until: (Annee >= fin_simulation){
+experiment Exp_6_0_Debug type: gui repeat: 1 keep_seed: false until: (annee >= fin_simulation){
 	parameter 'save_outputs' var: save_outputs init: true;
-	parameter 'prefix' var: prefix_output init: "5_0_Debug";
+	parameter 'prefix' var: prefix_output init: "6_0_Debug";
 	parameter "benchmark" var: benchmark init: false; // Changement pour connaitre perfs fonctions
-	parameter "serfs_mobiles" var: serfs_mobiles init: true;
-	parameter "nombre_fp_villages" var: init_nb_fp_village init: 10;
 	// 1 experiment
 }

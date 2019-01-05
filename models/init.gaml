@@ -28,7 +28,7 @@ global {
 			list<Foyers_Paysans> pool_FP <- [self]; 
 			create Foyers_Paysans number: (init_nb_fp_agglo - 1) {
 				agent myFP <- one_of(pool_FP);
-				set location <- any_location_in(((distance_detection_agregats -  1) around myFP.location) inter reduced_worldextent);
+				set location <- any_location_in(((distance_detection_agregat -  1) around myFP.location) inter reduced_worldextent);
 				set mobile <- flip (1 - proba_fp_dependant);
 				pool_FP <+ self ;
 			}
@@ -41,7 +41,7 @@ global {
 			list<Foyers_Paysans> pool_FP <- [self];
 			create Foyers_Paysans number: (init_nb_fp_village - 1){
 				agent myFP <- one_of(pool_FP);
-				set location <- any_location_in(((distance_detection_agregats -  1) around myFP.location) inter reduced_worldextent);
+				set location <- any_location_in(((distance_detection_agregat -  1) around myFP.location) inter reduced_worldextent);
 				set mobile <- flip (1 - proba_fp_dependant);
 				pool_FP <+ self ;
 			}
@@ -76,8 +76,8 @@ global {
 			set droits_banaux <- false;
 			set droits_moyenneBasseJustice <- false;
 			
-			int rayon_zone <- rayon_min_PS + rnd(rayon_max_PS - rayon_min_PS);
-			float txPrelev <- min_fourchette_loyers_PS + rnd(max_fourchette_loyers_PS - min_fourchette_loyers_PS);
+			int rayon_zone <- rayon_min_zp_ps + rnd(rayon_max_zp_ps - rayon_min_zp_ps);
+			float txPrelev <- min_taux_prelevement_zp_ps + rnd(max_taux_prelevement_zp_ps - min_taux_prelevement_zp_ps);
 			do creer_zone_prelevement(self.location, rayon_zone, self, "Loyer", txPrelev);
 		}
 	}

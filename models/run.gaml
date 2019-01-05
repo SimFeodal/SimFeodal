@@ -22,7 +22,8 @@ global schedules: shuffle(Attracteurs) + shuffle(Poles) + shuffle(Agregats) + sh
 {
     
 	init {
-		gama.pref_errors_warnings_errors <- false; // Les warnings ne doivent pas stopper le modèle
+		 gama.pref_errors_warnings_errors <- false; // Les warnings ne doivent pas stopper le modèle
+		//gama.pref_errors_warnings_errors <- true; // Pour debug
 		float t <- machine_time;
 		do generer_monde;
 		if (benchmark){write 'init : ' + string(machine_time - t);}
@@ -31,7 +32,7 @@ global schedules: shuffle(Attracteurs) + shuffle(Poles) + shuffle(Agregats) + sh
 	reflex MaJ_globals {
 		float t <- machine_time;
 		do update_variables_temporelles;
-		write string(Annee);
+		write string(annee);
 		if (benchmark){write 'MaJ_globals : ' + string(machine_time - t);}
 	}
 		
@@ -131,12 +132,12 @@ global schedules: shuffle(Attracteurs) + shuffle(Poles) + shuffle(Agregats) + sh
 	reflex Dons_des_Seigneurs {
 float t <- machine_time;
 		// Don droits
-		if (Annee >= 900) {
+		if (annee >= debut_cession_droits_seigneurs) {
 			ask Seigneurs where (each.type = "Grand Seigneur"){ do don_droits_GS; }
 			ask Seigneurs where (each.type != "Grand Seigneur"){ do don_droits_PS; }
 		}
 		// Don châteaux
-		if (Annee >= 950) {
+		if (annee >= debut_garde_chateaux_seigneurs) {
 			ask Seigneurs where (each.type = "Grand Seigneur"){
 				do update_droits_chateaux_GS;
 				do don_chateaux_GS;
@@ -149,7 +150,7 @@ float t <- machine_time;
 	if (benchmark){write 'Dons_des_Seigneurs : ' + string(machine_time - t);}
 	}
 	
-	reflex Promotion_Chateaux when: (Annee >= 940 and Annee <= 1040){
+	reflex Promotion_Chateaux when: chateaux_promouvables{
 		float t <- machine_time;
 			ask Chateaux where (each.type = "Petit Chateau"){
 				do promotion_chateau;
@@ -157,7 +158,7 @@ float t <- machine_time;
 			if (benchmark){write 'Promotion_Chateaux : ' + string(machine_time - t);}
 	}
 	
-	reflex Constructions_chateaux when: Annee >= apparition_chateaux{
+	reflex Constructions_chateaux when: annee >= debut_construction_chateaux{
 		float t <- machine_time;
 		ask Seigneurs where (each.type = "Grand Seigneur") {
 			do construction_chateau_GS;
@@ -189,11 +190,11 @@ float t <- machine_time;
 		if (benchmark){write 'MaJ_poles_bis : ' + string(machine_time - t);}
 	}
 	
-	reflex update_outputs when: (Annee > debut_simulation){
+	reflex update_outputs when: (annee > debut_simulation){
 		float t <- machine_time;
 		do update_summarised_outputs;
 		if (benchmark){write 'update_outputs: ' + string(machine_time - t);}
-		write "Seed : " + seed + " / Annee : " + Annee + " / Nb Agregats : " + length(Agregats) + " / TxIsoles : " + prop_FP_isoles;
+		write "Seed : " + seed + " / Annee : " + annee + " / Nb Agregats : " + length(Agregats) + " / TxIsoles : " + prop_FP_isoles;
 	}
 	
 	reflex save_data when: save_outputs {
@@ -206,7 +207,7 @@ float t <- machine_time;
 	reflex fin_simulation {
 		float t <- machine_time;
 		set nb_chateaux <- length(Chateaux);
-		if (Annee >= fin_simulation) {
+		if (annee >= fin_simulation) {
 			write 'Durée simulation : ' + total_duration;
 			if (experimentType = "batch"){
 				do halt;

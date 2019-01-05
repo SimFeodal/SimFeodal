@@ -102,25 +102,8 @@ species Foyers_Paysans schedules: []
 	//float distance_eglise <- self distance_to eglise_paroissiale_proche;
 		list<Eglises> eglises_paroissiales <- (Eglises where (each.eglise_paroissiale));
 		float distance_eglise <- min(eglises_paroissiales collect (each distance_to self)); // self distance_to eglise_paroissiale_proche;
-		int seuil1 <- 0;
-		int seuil2 <- 0;
-		if (Annee < 950)
-		{
-			set seuil1 <- 5000;
-			set seuil2 <- 25000;
-		} else if (Annee < 1050)
-		{
-			set seuil1 <- 3000;
-			set seuil2 <- 10000;
-		} else
-		{
-			set seuil1 <- 1500;
-			set seuil2 <- 5000;
-		}
-
-		//set satisfaction_religieuse <- max([0.0, min([1.0, -(distance_eglise / (seuil2 - seuil1)) + (seuil2 / (seuil2 - seuil1))])]);
 		// Longer but more explicit
-		float satisfaction_religieuse_raw <- (seuil2 - distance_eglise) / (seuil2 - seuil1);
+		float satisfaction_religieuse_raw <- (dist_max_eglise_actuel - distance_eglise) / (dist_max_eglise_actuel - dist_min_eglise_actuel);
 		float satisfaction_religieuse_min <- min([1.0, satisfaction_religieuse_raw]);
 		set satisfaction_religieuse <- max([0.0, satisfaction_religieuse_raw]);
 		
@@ -133,19 +116,17 @@ species Foyers_Paysans schedules: []
 
 		if (plusProcheChateau = nil)
 		{
-			set satisfaction_distance <- min_S_distance_chateau; // 0.0 (default) or 0.01 (v5.1)
+			set satisfaction_distance <- min_s_distance_chateau; // 0.0 (default) or 0.01 (v5.1)
 		} else
 		{
-			int seuil1 <- 1500;
-			int seuil2 <- 5000;
 			float distance_chateau <- plusProcheChateau distance_to self;
 			// Longer but more explicit
-			float satisfaction_distance_raw <- (seuil2 - distance_chateau) / (seuil2 - seuil1);
+			float satisfaction_distance_raw <- (dist_max_chateau - distance_chateau) / (dist_max_chateau - dist_min_chateau);
 			float satisfaction_distance_min <- min([1.0, satisfaction_distance_raw]);
-			set satisfaction_distance <- max([min_S_distance_chateau, satisfaction_distance_min]); // min_S_distance_chateau = 0 (default) or 0.01 (v5.1)
+			set satisfaction_distance <- max([min_s_distance_chateau, satisfaction_distance_min]); // min_S_distance_chateau = 0 (default) or 0.01 (v5.1)
 			// satisfaction_distance in [0.0 -> 1.0] (default) or [0.01 -> 1.0] (v5.1)
 		}
-			set satisfaction_protection <- satisfaction_distance ^ (besoin_protection);
+			set satisfaction_protection <- satisfaction_distance ^ (besoin_protection_fp_actuel);
 
 	}
 
@@ -161,10 +142,10 @@ species Foyers_Paysans schedules: []
 	}
 	
 	action deplacement_avec_pole_agregat(point oldLoc) {
-		Poles meilleurPole <- (Poles at_distance distance_max_dem_local) with_max_of (each.attractivite);
+		Poles meilleurPole <- (Poles at_distance rayon_migration_locale_fp_actuel) with_max_of (each.attractivite);
 		if (monAgregat.monPole.attractivite >= meilleurPole.attractivite) { //  Si le pole de mon agrégat a une attractivié > attrac des  poles du voisinage
 		// Alors la proba de deplacement local vaut 0 et donc je m'en remet au depl. lointain sous condition etc;
-			set location <- flip(proba_ponderee_deplacement_lointain * (1 - Satisfaction)) ? deplacement_lointain() : location;
+			set location <- flip(freq_migration_lointaine * (1 - Satisfaction)) ? deplacement_lointain() : location;
 			if (oldLoc = location){
 				set type_deplacement <- "fixe";
 			} else {
@@ -180,7 +161,7 @@ species Foyers_Paysans schedules: []
 					set type_deplacement <- "local";
 				}
 			} else {
-				set location <- flip(proba_ponderee_deplacement_lointain * (1 - Satisfaction)) ? deplacement_lointain() : location;
+				set location <- flip(freq_migration_lointaine * (1 - Satisfaction)) ? deplacement_lointain() : location;
 				if (oldLoc = location){
 					set type_deplacement <- "fixe";
 				} else {
@@ -210,7 +191,7 @@ species Foyers_Paysans schedules: []
 				set type_deplacement <- "local";
 			}
 		} else {
-			set location <- flip(proba_ponderee_deplacement_lointain * (1 - Satisfaction)) ? deplacement_lointain() : location;
+			set location <- flip(freq_migration_lointaine * (1 - Satisfaction)) ? deplacement_lointain() : location;
 			if (oldLoc = location){
 				set type_deplacement <- "fixe";
 			} else {
@@ -220,7 +201,7 @@ species Foyers_Paysans schedules: []
 	}
 	
 	action deplacement_avec_pole_agregat_serfs(point oldLoc) {
-		Poles meilleurPole <- (Poles at_distance distance_max_dem_local) with_max_of (each.attractivite);
+		Poles meilleurPole <- (Poles at_distance rayon_migration_locale_fp_actuel) with_max_of (each.attractivite);
 		if (monAgregat.monPole.attractivite >= meilleurPole.attractivite) {
 				set type_deplacement <- "fixe";
 		} else {
@@ -253,7 +234,7 @@ species Foyers_Paysans schedules: []
 	point deplacement_local
 	{
 		point point_local <- nil;
-		list<Poles> polesLocaux <- Poles at_distance distance_max_dem_local;
+		list<Poles> polesLocaux <- Poles at_distance rayon_migration_locale_fp_actuel;
 		if (empty(polesLocaux))
 		{ // Si pas de pole, on reste sur place
 			set point_local <- location;
@@ -276,7 +257,7 @@ species Foyers_Paysans schedules: []
 		point point_lointain <- nil;
 		list<Poles> agregatsPolarisants <- Poles where (each.monAgregat != nil);
 		// Uniquement les poles qui ne sont pas dans le rayon local
-		list<Poles> agregatsPolarisantsLointains <- agregatsPolarisants - (agregatsPolarisants at_distance distance_max_dem_local);
+		list<Poles> agregatsPolarisantsLointains <- agregatsPolarisants - (agregatsPolarisants at_distance rayon_migration_locale_fp_actuel);
 		if (empty(agregatsPolarisantsLointains))
 		{ // Si pas de pole, on reste sur place
 			set point_lointain <- location;

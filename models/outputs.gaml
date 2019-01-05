@@ -23,7 +23,7 @@ global {
 	
 	action save_outputs_data {
 		string currentPrefix <- prefix_output;
-		if (Annee = 820) {do save_parameters(currentPrefix);}
+		if (annee = 820) {do save_parameters(currentPrefix);}
 		do save_global(currentPrefix);
 		do save_seigneurs(currentPrefix);
 		do save_agregats(currentPrefix);
@@ -33,57 +33,126 @@ global {
 	}
 	
 	action save_parameters(string sim_name) {
-		string seuils_distance_max_dem_local <-  world.enquote(seuils_distance_max_dem_local);
+		string rayon_migration_locale_fp <-  world.enquote(rayon_migration_locale_fp);
 		string seed <- string(seed);
 		string besoin_protection_fp <- world.enquote(besoin_protection_fp);
-		
+		string proba_gain_haute_justice_gs <- world.enquote(proba_gain_haute_justice_gs);
+		string periode_promotion_chateaux <- world.enquote(periode_promotion_chateaux);
+		string dist_min_eglise <- world.enquote(dist_min_eglise);
+		string dist_max_eglise <- world.enquote(dist_max_eglise);
+		string rayon_migration_locale_fp <- world.enquote(rayon_migration_locale_fp);
 		
 		save [
-				seed, sim_name, debut_simulation, fin_simulation, duree_step,
-				besoin_protection, // XXX : N'est plus un param mais une variable en v6
-				distance_detection_agregats, nombre_FP_agregat,
-				init_nb_fp_agglo, // avant v6 : anciennement nombre_agglos_antiques
+				seed, sim_name,
+				////////////
+				// Inputs //
+				////////////
+				// Espace du modèle
+				taille_cote_monde,
+				// FP
+				init_nb_total_fp, //avant v6 : nombre_foyers_paysans
+				// Agrégats
+				init_nb_agglos, // avant v6 : anciennement nombre_agglos_antiques
+				init_nb_fp_agglo, // avant v6 : nouveau paramètre en v6 : vallait 30
 				init_nb_villages, // avant v6 : anciennement nombre_villages
-				puissance_communautes,
-				apparition_communautes, proba_apparition_communaute,
-				init_nb_total_fp, // avant v6 : nombre_foyers_paysans
-				taux_renouvellement_fp, // avant v6 : taux_renouvellement
-				proba_fp_dependant, // avant v6 : proba_FP_dependants
-				distance_max_dem_local, seuil_puissance_armee,
-				objectif_nombre_seigneurs, // avant v6 :  nombre_seigneurs_objectif
+				init_nb_fp_village, // avant v6 : nombre_FP_village
+				// Seigneurs
 				init_nb_gs, // avant v6 : nombre_grands_seigneurs
-				init_nb_ps, // avant v6 : nombre_petits_seigneurs
 				puissance_grand_seigneur1, puissance_grand_seigneur2,
-				proba_collecter_loyer, proba_creation_ZP_banaux, proba_creation_ZP_basseMoyenneJustice,
-				rayon_min_PS, rayon_max_PS, min_fourchette_loyers_PS, max_fourchette_loyers_PS,
-				proba_don_partie_ZP, apparition_chateaux, nb_chateaux_potentiels_GS,
-				seuil_attractivite_chateau,
-				// proba_creer_chateau_GS, // FIXME : Supprimer ce paramètre des sorties + SimEDB
-				proba_chateau_agregat,
-				proba_don_chateau_GS, 
-				// proba_creer_chateau_PS, // FIXME : Supprimer ce paramètre des sorties + SimEDB
-				proba_gain_droits_hauteJustice_chateau,
-				proba_gain_droits_banaux_chateau, proba_gain_droits_basseMoyenneJustice_chateau,
-				proba_promotion_groschateau_multipole, proba_promotion_groschateau_autre,
-				// puissance_necessaire_creation_chateau_GS, puissance_necessaire_creation_chateau_PS, // FIXME : Supprimer ces 2 paramètres des sorties + SimEDB
+				init_nb_ps, // avant v6 : nombre_petits_seigneurs
+				// Eglises
 				init_nb_eglises, // avant v6 nombre_eglises
 				init_nb_eglises_paroissiales, // avant v6 : nb_eglises_paroissiales
+				////////////////////////////
+				// Paramètres de contexte //
+				////////////////////////////
+				// FP
+				croissance_demo, // avant v6 : taux_augmentation_FP
+				taux_renouvellement_fp, // avant v6 : taux_renouvellement
+				proba_fp_dependant, // avant v6 : proba_FP_dependants
+				besoin_protection_fp, // nouveau paramètre en v6 : vallait [800::0,960::0.2,980::0.4,1000::0.6,1020::0.8,1040::1.0] avant		
+				// Agrégats
+				puissance_communautes,
+				coef_redevances,
+				// Seigneurs
+				objectif_nombre_seigneurs, // avant v6 :  nombre_seigneurs_objectif
+				proba_gain_haute_justice_gs, // nouveau paramètre en v6 : vallait [800::0,900::0.1,1000::1.0] avant
+				debut_cession_droits_seigneurs, // TODO: nouveau paramètre en v6 : vallait 900 avant
+				debut_garde_chateaux_seigneurs, // TODO: nouveau paramètre en v6 : vallait 950 avant
+				// Chateaux
+				debut_construction_chateaux, // avant v6 : apparition_chateaux
+				periode_promotion_chateaux, // nouveau paramètre en v6 : vallait [800::false,960::true,1060::false] avant
+				/////////////////////////////
+				// Paramètres de mécanisme //
+				/////////////////////////////
+				// FP
+				dist_min_eglise, // TODO : nouveau paramètre en v6 : vallait [800::5000,960::3000,1060::1500] avant
+				dist_max_eglise, // TODO : nouveau paramètre en v6 : vallait [800::25000,960::10000,1060::5000] avant
+				dist_min_chateau, // TODO : nouveau paramètre en v6 : vallait 1500 avant
+				dist_max_chateau, // TODO : nouveau paramètre en v6 : vallait 5000 avant
+				min_s_distance_chateau, // TODO : nouveau paramètre en v6 : vallait 0.0 avant
+				rayon_migration_locale_fp, // TODO : avant v6 : seuils_max_dem_local_st
+				freq_migration_lointaine, // TODO : avant v6 : proba_ponderee_deplacement_lointain
+				// Agregats
+				nb_min_fp_agregat, // TODO : avant v6 : nombre_FP_agregat
+				proba_apparition_communaute,
+				apparition_communautes,
+				distance_detection_agregat, // TODO : avant v6 : distance_detection_agregats
+				distance_fusion_agregat, // TODO : nouveau paramètre en v6 : vallait 100 avant
+				// Seigneurs
+				proba_collecter_loyer,
+				proba_creation_zp_banaux, // TODO : avant v6 : proba_creation_ZP_banaux
+				proba_creation_zp_basse_justice, // TODO : avant v6 : proba_creation_ZP_basseMoyenneJustice
+				rayon_min_zp_ps, // TODO : avant v6 : rayon_min_PS
+				rayon_max_zp_ps, // TODO : avant v6 : rayon_max_PS
+				min_taux_prelevement_zp_ps, // TODO : avant v6 : min_fourchette_loyers_PS
+				max_taux_prelevement_zp_ps, // TODO : avant v6 : max_fourchette_loyers_PS
+				proba_cession_droits_zp, // TODO : avant v6 : proba_don_partie_ZP
+				rayon_cession_droits_ps, // TODO : nouveau paramètre en v6 : vallait 3000 avant
+				proba_don_chateau_gs, // TODO : avant v6 : proba_don_chateau_GS
+				proba_gain_haute_justice_chateau_ps, // TODO : avant v6 : proba_gain_droits_hauteJustice_chateau
+				proba_gain_droits_banaux_chateau,
+				proba_gain_droits_basse_justice_chateau, // TODO : avant v6 : proba_gain_droits_basseMoyenneJustice_chateau
+				droits_haute_justice_zp, // TODO : nouveau paramètre en v6 : vallait 1 avant
+				droits_haute_justice_zp_suzerain, // TODO : nouveau paramètre en v6 : vallait 1.25 avant
+				droits_basse_justice_zp, // TODO : nouveau paramètre en v6 : vallait 0.25 avant
+				droits_basse_justice_zp_suzerain, // TODO : nouveau paramètre en v6 : vallait 0.35 avant
+				droits_banaux_zp, // TODO : nouveau paramètre en v6 : vallait 0.25 avant
+				droits_banaux_zp_suzerain, // TODO : nouveau paramètre en v6 : vallait 0.35 avant
+				droits_fonciers_zp, // TODO : nouveau paramètre en v6 : vallait 1 avant
+				// Chateaux
+				
+				// Eglises paroissiales
+				
+				// Poles d'attraction
+				
+				
+				
+				
+
+				
+				apparition_communautes,
+				init_nb_total_fp, // 
+				
+				 seuil_puissance_armee,
+				
+
+				
+				
+				nb_chateaux_potentiels_GS,
+				seuil_attractivite_chateau,
+				proba_chateau_agregat,
+				
+				proba_promotion_groschateau_multipole, proba_promotion_groschateau_autre,
 				nb_max_paroissiens,
 				nb_min_paroissiens, seuil_creation_paroisse, nb_paroissiens_mecontents_necessaires,
 				attrac_0_eglises, attrac_1_eglises, attrac_2_eglises, attrac_3_eglises, attrac_4_eglises,
-				attrac_GC, attrac_PC, attrac_communautes,
-				init_nb_fp_village, // avant v6 : nombre_FP_village
-				seuils_distance_max_dem_local,
-				croissance_demo, // avant v6 : taux_augmentation_FP
-				proba_ponderee_deplacement_lointain, coef_redevances, serfs_mobiles,
-				taille_cote_monde, min_S_distance_chateau,
-				init_nb_fp_agglo, // nouveau paramètre en v6 : vallait 30 avant
-				besoin_protection_fp // nouveau paramètre en v6 : vallait [800::0,960::0.2,980::0.4,1000::0.6,1020::0.8,1040::1.0] avant
+				attrac_GC, attrac_PC, attrac_communautes,serfs_mobiles
+				
 			] to: (output_folder_path + sim_name +"_parameters.csv") type: "csv" header: true rewrite: false;
 	}
 	
 	action save_global(string sim_name) {
-		int annee <- Annee;
 		int nbChateaux <- length(Chateaux);
 		int nbGdChateaux <- Chateaux count (each.type = "Grand Chateau");
 		int nbEglises <- length(Eglises);
@@ -102,7 +171,6 @@ global {
 	
 	action save_seigneurs(string sim_name) {
 		string seed <- world.enquote(seed);
-		int annee <- Annee;
 		
 		ask Seigneurs {
 			int id_seigneur <- int(replace(self.name, 'Seigneurs', ''));
@@ -125,7 +193,6 @@ global {
 	
 	action save_agregats(string sim_name) {
 		string seed <- enquote(seed);
-		int annee <- Annee;
 		
 		ask Agregats {
 			int nbFP <- length(fp_agregat);
@@ -143,7 +210,6 @@ global {
 	
 	action save_poles(string sim_name) {
 		string seed <- world.enquote(seed);
-		int annee <- Annee;
 		
 		ask Poles {
 			int nbAttracteurs <- length(mesAttracteurs);
@@ -168,14 +234,13 @@ global {
 	
 	action save_FP(string sim_name) {
 		string seed <- enquote(seed);
-		int annee <- Annee;
 		
 		ask Foyers_Paysans {
 			float sMat <- satisfaction_materielle with_precision 2;
 			float sRel <- satisfaction_materielle with_precision 2;
 			float sProt <- satisfaction_protection with_precision 2;
 			float Satis <- Satisfaction with_precision 2;
-			string geom <- world.enquote(point(location with_precision 2));
+			string geom <- world.enquote(shape with_precision 2);
 			int id_fp <- int(replace(self.name, 'Foyers_Paysans', ''));
 			int monagregat <- (monAgregat != nil) ? int(replace(monAgregat.name, 'Agregats', '')) : -1;
 			
@@ -193,7 +258,6 @@ global {
 	
 		action save_paroisses(string sim_name) {
 			string seed <- world.enquote(seed);
-			int annee <- Annee;
 			
 			ask  Paroisses {
 				int nbFideles <- length(mesFideles);

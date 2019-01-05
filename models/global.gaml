@@ -70,46 +70,53 @@ global torus: false{
 	int coef_redevances <- 15;
 	// SEIGNEURS //
 	int objectif_nombre_seigneurs <- 200; // FIXME : avant v6 : nombre_seigneurs_objectif / A renommer dans BDD
-	map<int,float> proba_gain_haute_justice_chateau_gs <- [800::0,900::0.1,1000::1.0]; // TODO : Inactif : ajouter dans modèle + Ajouter aux outputs + SimEDB / J'en suis encore là !
-	int debut_cession_droits_seigneurs <- 900 ; // TODO: Inactif : intégrer + outputs + SimEDB
-	int debut_garde_chateaux_seigneurs <- 960 ; // TODO : Inactif : intégrer + outputs + SimEDB
+	map<int,float> proba_gain_haute_justice_gs <- [800::0,900::0.1,1000::1.0]; // TODO : Inactif : ajouter dans modèle + Ajouter aux outputs + SimEDB + RENOMMER POUR COLLER ? / J'en suis encore là !
+	int debut_cession_droits_seigneurs <- 900 ; // FIXME : Nouveau paramètre, A ajouter dans BDD
+	int debut_garde_chateaux_seigneurs <- 960 ; // FIXME : Nouveau paramètre, A ajouter dans BDD
 	// CHATEAUX //
-	int apparition_chateaux <- 940; // XXX : avant v6 : 960 : update doc
-	map<int,bool> periode_promotion_chateaux <- [800::false,940::true,1040::true,1060::false]; // // TODO : Inactif : intégrer + outputs + SimEDB
+	int debut_construction_chateaux <- 940; // FIXME : avant v6 : apparition_chateaux / A renommer dans BDD
+	map<int,bool> periode_promotion_chateaux <- [800::false,940::true,1060::false]; // FIXME : Nouveau paramètre, A ajouter dans BDD
 	
 	///////////////
 	// MECANISME //
 	///////////////
 	
 	// FOYERS PAYSANS //
-	map<int,int> dist_min_eglise <- [800::5000,960::3000,1060::1500]; // TODO : Inactif : intégrer + outputs + SimEDB
-	map<int,int> dist_max_eglise <- [800::25000,960::10000,1060::5000]; // TODO : Inactif : intégrer + outputs + SimEDB
-	int dist_min_chateau <- 1500; // TODO : Inactif : intégrer + outputs + SimEDB
-	int dist_max_chateau <- 5000; // TODO : Inactif : intégrer + outputs + SimEDB
-	map<int,int> seuils_distance_max_dem_local <- [800::2500]; // TODO : Inactif : intégrer + outputs + SimEDB
-	float proba_ponderee_deplacement_lointain <- 0.2; // TODO : Vérifier
+	map<int,int> dist_min_eglise <- [800::5000,960::3000,1060::1500]; // FIXME : Nouveau paramètre en v6 : vallait [800::5000,960::3000,1060::1500] avant
+	map<int,int> dist_max_eglise <- [800::25000,960::10000,1060::5000]; // FIXME : Nouveau paramètre en v6 : vallait [800::25000,960::10000,1060::5000] avant
+	int dist_min_chateau <- 1500; // FIXME : Nouveau paramètre en v6 : vallait 1500 avant
+	int dist_max_chateau <- 5000; // FIXME : Nouveau paramètre en v6 : vallait 5000 avant
+	float min_s_distance_chateau <- 0.01; // FIXME : Nouveau paramètre en v6 : vallait 0.0 avant
+	map<int,int> rayon_migration_locale_fp <- [800::2500]; // TODO : avant v6 : seuils_max_dem_local
+	float freq_migration_lointaine <- 0.2; // // TODO : avant v6 : proba_ponderee_deplacement_lointain
 	// AGREGATS //
-	int nombre_FP_agregat <- 5;
+	int nb_min_fp_agregat <- 5; // TODO : avant v6 : nombre_FP_agregat
 	float proba_apparition_communaute <- 0.2;
-	int distance_detection_agregats <- 100;
-	int distance_fusion_agregat <- 100; // TODO : Inactif : intégrer + outputs + SimEDB
-	int apparition_communautes <- 800; // FIXME : Ne sert plus à rien ?
-	// SEIGNEURS //
+	int apparition_communautes <- 800;
+	int distance_detection_agregat <- 100; // avant v6 : distance_detection_agregats
+	int distance_fusion_agregat <- 100; // FIXME : Nouveau paramètre en v6 : vallait 100 avant
+	// SEIGNEURS 
 	float proba_collecter_loyer <- 0.1;
-	float proba_creation_ZP_banaux <- 0.05;
-	float proba_creation_ZP_basseMoyenneJustice <- 0.05;
-	int rayon_min_PS <- 1000;
-	int rayon_max_PS <- 5000;
-	float min_fourchette_loyers_PS <- 0.05;
-	float max_fourchette_loyers_PS <- 0.25;
-	float proba_don_partie_ZP <- 0.33;
-	int rayon_cession_droits_ps <- 3000; // TODO : Inactif : intégrer + outputs + SimEDB
-	float proba_don_chateau_GS <- 0.50;
-	
-	
-	float proba_gain_droits_hauteJustice_chateau <- 0.1;
+	float proba_creation_zp_banaux <- 0.05; // TODO : avant v6 : proba_creation_ZP_banaux
+	float proba_creation_zp_basse_justice <- 0.05; // TODO : avant v6 : proba_creation_ZP_basseMoyenneJustice
+	int rayon_min_zp_ps <- 1000; // TODO : avant v6 : rayon_min_PS
+	int rayon_max_zp_ps <- 5000; // TODO : avant v6 : rayon_max_PS
+	float min_taux_prelevement_zp_ps <- 0.05; // TODO : avant v6 : min_fourchette_loyers_PS
+	float max_taux_prelevement_zp_ps <- 0.25; // TODO : avant v6 : max_fourchette_loyers_PS
+	float proba_cession_droits_zp <- 0.33; // TODO : avant v6 : proba_don_partie_ZP
+	int rayon_cession_droits_ps <- 3000; // TODO : nouveau paramètre en v6 : vallait 3000 avant
+	float proba_don_chateau_gs <- 0.50; // TODO : avant v6 : proba_don_chateau_GS
+	float proba_gain_haute_justice_chateau_ps <- 0.1; // TODO : avant v6 : proba_gain_droits_hauteJustice_chateau
 	float proba_gain_droits_banaux_chateau <- 0.1;
-	float proba_gain_droits_basseMoyenneJustice_chateau <- 0.1;
+	float proba_gain_droits_basse_justice_chateau <- 0.1; // TODO : avant v6 : proba_gain_droits_basseMoyenneJustice_chateau
+	float droits_haute_justice_zp <- 1.0; // TODO : nouveau paramètre en v6 : vallait 1 avant
+	float droits_haute_justice_zp_suzerain <- 1.25; // TODO : nouveau paramètre en v6 : vallait 1.25 avant
+	float droits_basse_justice_zp <- 0.25; // TODO : nouveau paramètre en v6 : vallait 0.25 avant
+	float droits_basse_justice_zp_suzerain <- 0.35; // TODO : nouveau paramètre en v6 : vallait 0.35 avant
+	float droits_banaux_zp <- 0.25; // TODO : nouveau paramètre en v6 : vallait 0.25 avant
+	float droits_banaux_zp_suzerain <- 0.35; // TODO : nouveau paramètre en v6 : vallait 0.35 avant
+	float droits_fonciers_zp <- 1.0; // TODO : nouveau paramètre en v6 : vallait 1 avant
+	// ARRET LÀ //
 	
 	int nb_chateaux_potentiels_GS <- 2;
 	int seuil_attractivite_chateau <- 3000;
@@ -124,14 +131,14 @@ global torus: false{
 	
 	
 	
-	
+	// VARIABLES DE  MECANISME //
 	
 	
 	////////////////////////
 	// VARIABLE GLOBABLES //
 	////////////////////////
 	
-	int Annee <- debut_simulation; 
+	int annee <- debut_simulation; 
 	geometry world_bounds <- square(taille_cote_monde #km) translated_by {taille_cote_monde #km/2 , taille_cote_monde #km/2 };
 	
 	geometry shape <- envelope(world_bounds) ;
@@ -141,9 +148,13 @@ global torus: false{
 	int nb_seigneurs_a_creer_total <- objectif_nombre_seigneurs - (init_nb_gs + init_nb_ps);
 	int nb_moyen_petits_seigneurs_par_tour <- round(nb_seigneurs_a_creer_total / ((fin_simulation - debut_simulation) / duree_step));
 	
-	int distance_max_dem_local <- 4000;
-	float besoin_protection <- 0.0;
-	float proba_gain_haute_justice_chateau_gs_actuel <- 0.0;
+	// Variables evoluant dans le temps
+	float besoin_protection_fp_actuel <- 0.0;
+	float proba_gain_haute_justice_gs_actuel <- 0.0;
+	bool chateaux_promouvables <- false;
+	int dist_min_eglise_actuel <- 0;
+	int dist_max_eglise_actuel <- 0;
+	int rayon_migration_locale_fp_actuel <- 0;
 
 	/////////////
 	// OUTPUTS //
@@ -171,8 +182,6 @@ global torus: false{
 	
 
 	bool serfs_mobiles <- true;
-	float min_S_distance_chateau <- 0.0; // Nouveau paramètre pour le calcul de s_protection
-	
 	 
 	// SEIGNEURS //
 	
@@ -211,18 +220,30 @@ global torus: false{
 	
 	action update_variables_temporelles {
 		
-		set Annee <- Annee + duree_step;
+		set annee <- annee + duree_step;
 		
-		if ((besoin_protection_fp at Annee) is float){
-			set besoin_protection <- besoin_protection_fp at Annee;
+		if ((besoin_protection_fp at annee) is float){
+			set besoin_protection_fp_actuel <- besoin_protection_fp at annee;
 		}
 		
-		if ((proba_gain_haute_justice_chateau_gs at Annee) is float) {
-			set proba_gain_haute_justice_chateau_gs_actuel <- proba_gain_haute_justice_chateau_gs at Annee;
+		if ((proba_gain_haute_justice_gs at annee) is float) {
+			set proba_gain_haute_justice_gs_actuel <- proba_gain_haute_justice_gs at annee;
 		}
 		
-		if ((seuils_distance_max_dem_local at Annee) is float){
-			set distance_max_dem_local <- seuils_distance_max_dem_local at Annee;
+		if ((rayon_migration_locale_fp at annee) is float){
+			set rayon_migration_locale_fp_actuel <- rayon_migration_locale_fp at annee;
+		}
+		
+		if ((periode_promotion_chateaux at annee) is bool) {
+			set chateaux_promouvables <- periode_promotion_chateaux at annee;
+		}
+		
+		if ((dist_min_eglise at annee) is int){
+			set dist_min_eglise_actuel <- dist_min_eglise at annee;
+		}
+		
+		if ((dist_max_eglise at annee) is int){
+			set dist_max_eglise_actuel <- dist_max_eglise at annee;
 		}
 		
 		
