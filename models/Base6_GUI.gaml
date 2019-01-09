@@ -70,3 +70,10 @@ experiment Exp_6_0_Debug type: gui repeat: 1 keep_seed: false until: (annee >= f
 	parameter "benchmark" var: benchmark init: false; // Changement pour connaitre perfs fonctions
 	// 1 experiment
 }
+
+experiment Exp_6_0_Base type: gui repeat: 2 keep_seed: false until: (annee >= fin_simulation){
+	parameter 'save_outputs' var: save_outputs init: true;
+	parameter 'prefix' var: prefix_output init: "6_0";
+	parameter "benchmark" var: benchmark init: false; // Changement pour connaitre perfs fonctions
+	// 1 experiment
+}
