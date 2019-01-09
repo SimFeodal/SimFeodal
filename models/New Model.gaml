@@ -11,14 +11,31 @@ global {
 	int test <- 1;
 	
 	action writetest {
-		string test <- "A";
-		//write test;
+		write test;
 	}
 	
 	reflex testtest {
+		create testAgent number: 3 {
+			do die;
+			do writeit;
+			set test <- test + 1;
+		}
 		do writetest;
-		set test <- 2;
-		write(rnd(10));
+	}
+	
+	reflex save_agents {
+		create testAgent number: 5;
+		save testAgent to: "testAgent.csv" type: "csv" header: true rewrite: true with: [test3::"foof", foo::"TEST"];
+	}
+	
+}
+
+species testAgent {
+	
+	bool test3 <- true;
+	int foo <- 3;
+	action writeit {
+		write 'HELP !';
 	}
 }
 

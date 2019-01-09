@@ -80,22 +80,22 @@ global {
 
 
 			switch length(mesEglises) {
-				match 0 {set attractivite <- attrac_0_eglises;}
-				match 1 {set attractivite <- attrac_1_eglises;}
-				match 2 {set attractivite <- attrac_2_eglises;}
-				match 3 {set attractivite <- attrac_3_eglises;}
-				default {set attractivite <- attrac_4_eglises;} // 4 et +
+				match 0 {set attractivite <- 0.0;}
+				match 1 {set attractivite <- attractivite_1_eglise;}
+				match 2 {set attractivite <- attractivite_2_eglise;}
+				match 3 {set attractivite <- attractivite_3_eglise;}
+				default {set attractivite <- attractivite_4_eglise;} // 4 et +
 			}
 			
 			if (length(mesChateaux) > 0){
 				if ( (mesChateaux count (each.type = "Grand Chateau")) > 0){
-					set attractivite <- attractivite + attrac_GC;
+					set attractivite <- attractivite + attractivite_gros_chateau;
 				} else {
-					set attractivite <- attractivite + attrac_PC;
+					set attractivite <- attractivite + attractivite_petit_chateau;
 				}
 			}
 			if (length(mesCommunautes) > 0){
-				set attractivite <- attractivite + attrac_communautes;
+				set attractivite <- attractivite + attractivite_communaute;
 			}
 		}
 	}

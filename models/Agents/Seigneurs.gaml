@@ -82,15 +82,6 @@ species Seigneurs schedules: [] {
 	list<Seigneurs> mesDebiteurs <- [];
 	Agregats monAgregat <- nil;
 	
-// Ne sert à rien : les PS deviennent chatelain quand ils créent un chateau ou qu'un GS leur en donne un en gardiennage
-//	init {
-//		if (type = "Chatelain") {
-//			int rayon_zone <- 20000;
-//			float txPrelev <- 1.0;
-//			do creer_zone_prelevement(self.location, rayon_zone, self, "Loyer", txPrelev);
-//		}
-//	}
-	
 	
 	action gains_droits_PS {
 		if (flip(proba_creation_zp_banaux)){				
@@ -204,22 +195,22 @@ species Seigneurs schedules: [] {
 		switch type_droit {
 			match "Loyer" {
 				ask Chateaux where (each.proprietaire = self and each.ZP_loyer = nil){
-					do creation_ZP_loyer(self.location, 10000, seigneur, 1.0);
+					do creation_ZP_loyer(self.location, max_rayon_zp_chateau, seigneur, 1.0);
 				}
 			}
 			match "Haute_Justice" {
 				ask Chateaux where (each.proprietaire = self and each.ZP_hauteJustice = nil){
-					do creation_ZP_hauteJustice(self.location, 10000, seigneur, 1.0);
+					do creation_ZP_hauteJustice(self.location, max_rayon_zp_chateau, seigneur, 1.0);
 				}
 			}
 			match "Banaux" {
 				ask Chateaux where (each.proprietaire = self and each.ZP_banaux = nil){
-					do creation_ZP_banaux(self.location, 10000, seigneur, 1.0);
+					do creation_ZP_banaux(self.location, max_rayon_zp_chateau, seigneur, 1.0);
 				}
 			}
 			match "basseMoyenne_Justice" {
 				ask Chateaux where (each.proprietaire = self and each.ZP_basseMoyenneJustice = nil){
-					do creation_ZP_basseMoyenne_Justice(self.location, 10000, seigneur, 1.0);
+					do creation_ZP_basseMoyenne_Justice(self.location, max_rayon_zp_chateau, seigneur, 1.0);
 				}
 			}
 		}
@@ -355,7 +346,7 @@ species Seigneurs schedules: [] {
 	// FIXME : moche et sans doute faux
 	action construction_chateau_GS {
 		
-		int nbChateauxPotentiel <- nb_chateaux_potentiels_GS;
+		int nbChateauxPotentiel <- nb_chateaux_potentiels_gs;
 		float proba_creer_chateau_GS <- (1 - exp(-0.00064 * self.puissance) );
 		
 		
@@ -373,9 +364,9 @@ species Seigneurs schedules: [] {
 			set gardien <- myself;
 			
 			// Réorganisation (et simplification) du code
-			if (flip(proba_chateau_agregat)){				
+			if (flip(proba_chateau_gs_agregat)){				
 				// On découpe l'espace du monde pour les localisations possibles
-				geometry espacePossible <- reduced_worldextent - (5000 around Chateaux);
+				geometry espacePossible <- reduced_worldextent - (dist_min_entre_chateaux_gs around Chateaux);
 				// S'il y a des agrégats dispos, on va dans l'un d'eux au hasard
 				list<Agregats> agregatsPossibles <- Agregats inside espacePossible;
 				if (!empty(agregatsPossibles)){
@@ -388,13 +379,10 @@ species Seigneurs schedules: [] {
 					set location <- any_location_in(espacePossible);
 				}	
 			}
-			
-			int minRayon <- 2000 ;
-			int maxRayon <- 10000 ;
 			float maxPuissance <- max(Seigneurs collect each.puissance) ;
 			float minPuissance <- min(Seigneurs collect each.puissance) ;
-			int rayon_chateau <- int(max([minRayon,
-				min([ maxRayon,
+			int rayon_chateau <- int(max([min_rayon_zp_chateau,
+				min([ max_rayon_zp_chateau,
 					( maxPuissance / (maxPuissance - minPuissance) - ( myself.puissance / (maxPuissance - minPuissance)))
 				])
 			]));
@@ -423,7 +411,7 @@ species Seigneurs schedules: [] {
 		set agregatPotentiel <- (length(agregatPotentiel.mesChateaux) = 0) ? agregatPotentiel : nil ;
 		if (agregatPotentiel != nil) {
 			// FIXME : Chateaux trop proches sinon
-			if (agregatPotentiel distance_to (Chateaux closest_to agregatPotentiel) >= 3000){
+			if (agregatPotentiel distance_to (Chateaux closest_to agregatPotentiel) >= dist_min_entre_chateaux_ps){
 				create Chateaux number: 1 {
 					float proba_creer_chateau_PS <- myself.puissance / 2000;
 				
@@ -439,14 +427,12 @@ species Seigneurs schedules: [] {
 					mesChateaux <+ myself;
 				}
 				set location <- any_location_in((agregatPotentiel.shape + 500) inter reduced_worldextent);
-				int minRayon <- 2000 ;
-				int maxRayon <- 10000 ;
 				float maxPuissance <- max(Seigneurs collect each.puissance) ;
 				float minPuissance <- min(Seigneurs collect each.puissance) ;
 				int rayon_chateau <- int(max([
-					minRayon,
+					min_rayon_zp_chateau,
 					min([
-						maxRayon,
+						max_rayon_zp_chateau,
 						( maxPuissance / (maxPuissance - minPuissance) )- ( myself.puissance / (maxPuissance - minPuissance))
 					])
 				]));

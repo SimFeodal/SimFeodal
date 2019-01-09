@@ -91,7 +91,7 @@ global schedules: shuffle(Attracteurs) + shuffle(Poles) + shuffle(Agregats) + sh
 		ask Foyers_Paysans where (each.mobile) {
 			do deplacement;
 		}
-		if (serfs_mobiles){
+		if (serfs_mobiles){ // Vaut toujours true maintenant (depuis la v5)
 			ask Foyers_Paysans where (!each.mobile){
 				do deplacement_serfs;
 			}

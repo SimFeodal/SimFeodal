@@ -74,7 +74,8 @@ global torus: false{
 	int debut_cession_droits_seigneurs <- 900 ; // FIXME : Nouveau paramètre, A ajouter dans BDD
 	int debut_garde_chateaux_seigneurs <- 960 ; // FIXME : Nouveau paramètre, A ajouter dans BDD
 	// CHATEAUX //
-	int debut_construction_chateaux <- 940; // FIXME : avant v6 : apparition_chateaux / A renommer dans BDD
+	int debut_construction_chateaux <- 940; // FIXME : avant v6 : apparition_chateaux / A renommer dans BDD	
+	int nb_chateaux_potentiels_gs <- 2; // FIXME : avant v6 : nb_chateaux_potentiels_GS
 	map<int,bool> periode_promotion_chateaux <- [800::false,940::true,1060::false]; // FIXME : Nouveau paramètre, A ajouter dans BDD
 	
 	///////////////
@@ -116,18 +117,27 @@ global torus: false{
 	float droits_banaux_zp <- 0.25; // TODO : nouveau paramètre en v6 : vallait 0.25 avant
 	float droits_banaux_zp_suzerain <- 0.35; // TODO : nouveau paramètre en v6 : vallait 0.35 avant
 	float droits_fonciers_zp <- 1.0; // TODO : nouveau paramètre en v6 : vallait 1 avant
+	// CHATEAUX
+	int min_rayon_zp_chateau <- 2000; // TODO : nouveau paramètre en v6, vallait 2000 avant
+	int max_rayon_zp_chateau <- 10000; // TODO : nouveau paramètre en v6, vallait 10000 avant
+	int dist_min_entre_chateaux_ps <- 3000; // TODO : nouveau paramètre en v6, vallait 3000 avant
+	int dist_min_entre_chateaux_gs <- 5000;  // TODO : nouveau paramètre en v6, vallait 5000 avant
+	float proba_chateau_gs_agregat <- 0.5 ; // TODO : avant v6 : proba_chateau_agregat
+	float proba_promotion_chateau_pole <- 0.8; // TODO : avant v6 : proba_promotion_groschateau_multipole
+	float proba_promotion_chateau_isole <- 0.3; // TODO : avant v6 : proba_promotion_groschateau_autre
+	// EGLISES PAROISSIALES
+	int nb_min_paroissiens <- 10; // FIXME : param peu utile : préfiltrage des agrégats pour lesquels ont étudie la création d'une paroisse
+	int seuil_creation_paroisse <- 600;
+	int nb_paroissiens_mecontents_necessaires <- 20;
+	// POLES
+	float attractivite_petit_chateau <- 0.15; // TODO : avant v6 : attrac_PC
+	float attractivite_gros_chateau <- 0.25; // TODO : avant v6 : attrac_GC
+	float attractivite_1_eglise <- 0.15; // TODO : avant v6 : attrac_1_eglises
+	float attractivite_2_eglise <- 0.25; // TODO : avant v6 : attrac_2_eglises
+	float attractivite_3_eglise <- 0.50; // TODO : avant v6 : attrac_3_eglises
+	float attractivite_4_eglise <- 0.60; // TODO : avant v6 : attrac_4_eglises
+	float attractivite_communaute <- 0.15; // TODO : avant v6 : attrac_communautes
 	// ARRET LÀ //
-	
-	int nb_chateaux_potentiels_GS <- 2;
-	int seuil_attractivite_chateau <- 3000;
-	float proba_chateau_agregat <- 0.5; // FIXME : A appliquer aussi aux PS
-	
-	
-
-	
-	
-	float proba_promotion_groschateau_multipole <- 0.8;
-	float proba_promotion_groschateau_autre <- 0.3;
 	
 	
 	
@@ -173,50 +183,10 @@ global torus: false{
 	// CHATEAUX //
 	int nb_chateaux ;	
 	// FOYERS_PAYSANS //
-	
+
+	bool serfs_mobiles <- true; // FIXME : Toujours true depuis la v5
 	
 
-
-	int seuil_puissance_armee <- 400; // P.A. d'un proprio de chateau pour que le FP soit satisfait.
-
-	
-
-	bool serfs_mobiles <- true;
-	 
-	// SEIGNEURS //
-	
-	
-
-
-
-	// ZONES_PRELEVEMENT //
-
-
-	// EGLISES //
-	
-	
-	int nb_max_paroissiens <- 40;
-	int nb_min_paroissiens <- 10;
-	int seuil_creation_paroisse <- 600;
-	int nb_paroissiens_mecontents_necessaires <- 20;
-	
-	// POLES //
-	float attrac_0_eglises <- 0.0;
-	float attrac_1_eglises <- 0.15;
-	float attrac_2_eglises <- 0.25;
-	float attrac_3_eglises <- 0.5;
-	float attrac_4_eglises <- 0.6;
-	float attrac_GC <- 0.25;
-	float attrac_PC <- 0.15;
-	float attrac_communautes <- 0.15;
-	
-	
-	////////////
-	/// TEMP ///
-	////////////
-	
-
-	
 	
 	action update_variables_temporelles {
 		
@@ -245,13 +215,6 @@ global torus: false{
 		if ((dist_max_eglise at annee) is int){
 			set dist_max_eglise_actuel <- dist_max_eglise at annee;
 		}
-		
-		
-		
-//	map<int,float> proba_gs_droits_haute_justice <- [800::0,900::0.1,1000::1.0]; // TODO : Inactif : ajouter dans modèle + Ajouter aux outputs + SimEDB
-//	map<int,bool> periode_promotion_chateaux <- [800::false,940::true,1040::true,1060::false]; // // TODO : Inactif : intégrer + outputs + SimEDB
-//	map<int,int> dist_min_eglise <- [800::5000,960::3000,1060::1500]; // TODO : Inactif : intégrer + outputs + SimEDB
-//	map<int,int> dist_max_eglise <- [800::25000,960::10000,1060::5000]; // TODO : Inactif : intégrer + outputs + SimEDB
 	}
 	
 

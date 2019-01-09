@@ -81,6 +81,7 @@ global {
 				debut_garde_chateaux_seigneurs, // TODO: nouveau paramètre en v6 : vallait 950 avant
 				// Chateaux
 				debut_construction_chateaux, // avant v6 : apparition_chateaux
+				nb_chateaux_potentiels_gs, // avant v6 : nb_chateaux_potentiels_GS
 				periode_promotion_chateaux, // nouveau paramètre en v6 : vallait [800::false,960::true,1060::false] avant
 				/////////////////////////////
 				// Paramètres de mécanisme //
@@ -121,33 +122,25 @@ global {
 				droits_banaux_zp_suzerain, // TODO : nouveau paramètre en v6 : vallait 0.35 avant
 				droits_fonciers_zp, // TODO : nouveau paramètre en v6 : vallait 1 avant
 				// Chateaux
-				
+				min_rayon_zp_chateau, // TODO : nouveau paramètre en v6, vallait 2000 avant
+				max_rayon_zp_chateau, // TODO : nouveau paramètre en v6, vallait 10000 avant
+				dist_min_entre_chateaux_ps, // TODO : nouveau paramètre en v6, vallait 3000 avant
+				dist_min_entre_chateaux_gs,  // TODO : nouveau paramètre en v6, vallait 5000 avant
+				proba_chateau_gs_agregat, // TODO : avant v6 : proba_chateau_agregat
+				proba_promotion_chateau_pole, // TODO : avant v6 : proba_promotion_groschateau_multipole
+				proba_promotion_chateau_isole, // TODO : avant v6 : proba_promotion_groschateau_autre
 				// Eglises paroissiales
-				
+				nb_min_paroissiens, // FIXME : param peu utile, cf. déclaration dans global
+				seuil_creation_paroisse,
+				nb_paroissiens_mecontents_necessaires,
 				// Poles d'attraction
-				
-				
-				
-				
-
-				
-				apparition_communautes,
-				init_nb_total_fp, // 
-				
-				 seuil_puissance_armee,
-				
-
-				
-				
-				nb_chateaux_potentiels_GS,
-				seuil_attractivite_chateau,
-				proba_chateau_agregat,
-				
-				proba_promotion_groschateau_multipole, proba_promotion_groschateau_autre,
-				nb_max_paroissiens,
-				nb_min_paroissiens, seuil_creation_paroisse, nb_paroissiens_mecontents_necessaires,
-				attrac_0_eglises, attrac_1_eglises, attrac_2_eglises, attrac_3_eglises, attrac_4_eglises,
-				attrac_GC, attrac_PC, attrac_communautes,serfs_mobiles
+				attractivite_petit_chateau, // TODO : avant v6 : attrac_PC
+				attractivite_gros_chateau, // TODO : avant v6 : attrac_GC
+				attractivite_1_eglise, // TODO : avant v6 : attrac_1_eglises
+				attractivite_2_eglise, // TODO : avant v6 : attrac_2_eglises
+				attractivite_3_eglise, // TODO : avant v6 : attrac_3_eglises
+				attractivite_4_eglise, // TODO : avant v6 : attrac_4_eglises
+				attractivite_communaute // TODO : avant v6 : attrac_communautes
 				
 			] to: (output_folder_path + sim_name +"_parameters.csv") type: "csv" header: true rewrite: false;
 	}
