@@ -56,6 +56,7 @@ global {
 			write string(self )+ "  : " + string(Satisfaction_Paroisse);
 		} */
 		ask Paroisses {
+			// FIXME : Refromuler sachant que Satisfaction_Paroisse vaut 0 ou 1 : un if serait plus adapté
 			if flip(1 - Satisfaction_Paroisse){
 				bool eglise_batie <- false ;
 				

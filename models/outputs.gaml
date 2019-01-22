@@ -102,30 +102,30 @@ global {
 				distance_fusion_agregat, // TODO : nouveau paramètre en v6 : vallait 100 avant
 				// Seigneurs
 				proba_collecter_loyer,
-				proba_creation_zp_banaux, // TODO : avant v6 : proba_creation_ZP_banaux
-				proba_creation_zp_basse_justice, // TODO : avant v6 : proba_creation_ZP_basseMoyenneJustice
+				proba_creation_zp_autres_droits_ps, // avant v6 : calcul différent, vallait ~ 5% + 5%
 				rayon_min_zp_ps, // TODO : avant v6 : rayon_min_PS
 				rayon_max_zp_ps, // TODO : avant v6 : rayon_max_PS
 				min_taux_prelevement_zp_ps, // TODO : avant v6 : min_fourchette_loyers_PS
 				max_taux_prelevement_zp_ps, // TODO : avant v6 : max_fourchette_loyers_PS
 				proba_cession_droits_zp, // TODO : avant v6 : proba_don_partie_ZP
-				rayon_cession_droits_ps, // TODO : nouveau paramètre en v6 : vallait 3000 avant
-				proba_don_chateau_gs, // TODO : avant v6 : proba_don_chateau_GS
+				rayon_cession_locale_droits_ps, // TODO : nouveau paramètre en v6 : vallait 3000 avant
+				proba_don_chateau, // TODO : avant v6 : proba_don_chateau_GS
 				proba_gain_haute_justice_chateau_ps, // TODO : avant v6 : proba_gain_droits_hauteJustice_chateau
 				proba_gain_droits_banaux_chateau,
 				proba_gain_droits_basse_justice_chateau, // TODO : avant v6 : proba_gain_droits_basseMoyenneJustice_chateau
+
+				// FIXME : A reprendre
 				droits_haute_justice_zp, // TODO : nouveau paramètre en v6 : vallait 1 avant
-				droits_haute_justice_zp_suzerain, // TODO : nouveau paramètre en v6 : vallait 1.25 avant
-				droits_basse_justice_zp, // TODO : nouveau paramètre en v6 : vallait 0.25 avant
-				droits_basse_justice_zp_suzerain, // TODO : nouveau paramètre en v6 : vallait 0.35 avant
-				droits_banaux_zp, // TODO : nouveau paramètre en v6 : vallait 0.25 avant
-				droits_banaux_zp_suzerain, // TODO : nouveau paramètre en v6 : vallait 0.35 avant
+				droits_haute_justice_zp_cession, // TODO : nouveau paramètre en v6 : vallait 1.25 avant
 				droits_fonciers_zp, // TODO : nouveau paramètre en v6 : vallait 1 avant
+				droits_fonciers_zp_cession, // Nouveau paramètre en v6.1 : vallait 0 avant
+				autres_droits_zp, // TODO : nouveau paramètre en v6 : vallait 0.25 avant
+				autres_droits_zp_cession, // TODO : nouveau paramètre en v6 : vallait 0.35 avant
+				
 				// Chateaux
 				min_rayon_zp_chateau, // TODO : nouveau paramètre en v6, vallait 2000 avant
 				max_rayon_zp_chateau, // TODO : nouveau paramètre en v6, vallait 10000 avant
-				dist_min_entre_chateaux_ps, // TODO : nouveau paramètre en v6, vallait 3000 avant
-				dist_min_entre_chateaux_gs,  // TODO : nouveau paramètre en v6, vallait 5000 avant
+				dist_min_entre_chateaux,  // TODO : nouveau paramètre en v6, vallait 3000 ou 5000 avant (PS ou GS)
 				proba_chateau_gs_agregat, // TODO : avant v6 : proba_chateau_agregat
 				proba_promotion_chateau_pole, // TODO : avant v6 : proba_promotion_groschateau_multipole
 				proba_promotion_chateau_isole, // TODO : avant v6 : proba_promotion_groschateau_autre

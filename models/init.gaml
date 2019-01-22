@@ -59,11 +59,6 @@ global {
 		create Seigneurs number: init_nb_gs {
 			set type <- "Grand Seigneur";
 			set initial <- true;
-			
-			set droits_loyer <-true;
-			set droits_hauteJustice <- false;
-			set droits_banaux <- false;
-			set droits_moyenneBasseJustice <- false;
 		}
 		
 		create Seigneurs number: init_nb_ps {
@@ -71,14 +66,12 @@ global {
 			set location <- any_location_in(one_of(Agregats collect each.shape) inter reduced_worldextent);
 			set initial <- true;
 			
-			set droits_loyer <- true;
-			set droits_hauteJustice <- false;
-			set droits_banaux <- false;
-			set droits_moyenneBasseJustice <- false;
-			
 			int rayon_zone <- rayon_min_zp_ps + rnd(rayon_max_zp_ps - rayon_min_zp_ps);
 			float txPrelev <- min_taux_prelevement_zp_ps + rnd(max_taux_prelevement_zp_ps - min_taux_prelevement_zp_ps);
-			do creer_zone_prelevement(self.location, rayon_zone, self, "Loyer", txPrelev);
+			Seigneurs ceSeigneur <- self;
+			ask world {
+				do creer_zone_prelevement (centre_zone: ceSeigneur.location, rayon: rayon_zone, proprio: ceSeigneur, typeDroit: "foncier", txPrelev: txPrelev, chateau_zp: nil);
+			}
 		}
 	}
 	

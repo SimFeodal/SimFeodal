@@ -17,151 +17,103 @@ import "Seigneurs.gaml"
 import "Attracteurs.gaml"
 
 global {
-	action attribution_loyers_FP {
-		list<Foyers_Paysans> FP_dispos <- Foyers_Paysans where (each.seigneur_loyer = nil);
-		
-		ask Zones_Prelevement where (each.type_droit = "Loyer") {
-			list<Foyers_Paysans> FP_zone <- FP_dispos inside self.shape;
-			int nbFP_concernes <- round(self.taux_captation * length(FP_zone));
-			ask nbFP_concernes among FP_zone {
-				set seigneur_loyer <- myself.proprietaire;
-				set myself.proprietaire.FP_loyer <- remove_duplicates(myself.proprietaire.FP_loyer + self);
-				FP_dispos >- self;
-			}
-		}
-		
+	
+	action prelevements_fonciers_gs {
+		list<Foyers_Paysans> FP_dispos <- Foyers_Paysans where (each.seigneur_foncier = nil);
 		ask Seigneurs where (each.type = "Grand Seigneur") {
 			set nbFP_concernes <- round(self.puissance_init * length(FP_dispos));
 		}
-			
+		
 		ask Seigneurs where (each.type = "Grand Seigneur") {
-			ask nbFP_concernes among FP_dispos {
-				set seigneur_loyer <- myself;
-				set myself.FP_loyer <- remove_duplicates(myself.FP_loyer + self);
+			list<Foyers_Paysans> FP_concernes <- nbFP_concernes among FP_dispos;
+			Seigneurs ceSeigneur <- self;
+			ask FP_concernes {
+				set seigneur_foncier <- ceSeigneur;
 			}
-			set FP_dispos <- Foyers_Paysans where (each.seigneur_loyer = nil);
+			FP_foncier <<+ FP_concernes;
+			FP_dispos >>- FP_concernes;
+		}
+	}
+	
+	action prelevements_haute_justice_gs {
+		ask (Seigneurs where (each.type = "Grand Seigneur" and each.droits_haute_justice)){
+			Seigneurs ceSeigneur <- self;
+			list<Foyers_Paysans> nouveaux_FP_foncier <- remove_duplicates(FP_foncier) where (each.seigneur_haute_justice = nil);
+			ask nouveaux_FP_foncier {
+				set seigneur_haute_justice <- ceSeigneur;
+			}
+			FP_foncier <<+ nouveaux_FP_foncier;
+		}
+	}
+	
+	action creer_zone_prelevement (point centre_zone, int rayon, Seigneurs proprio, string typeDroit, float txPrelev, Chateaux chateau_zp) {
+		create Zones_Prelevement number: 1 {
+			set location <- centre_zone;
+			set proprietaire <- proprio;
+			set type_droit <- typeDroit ;
+			set rayon_captation <- rayon;
+			set taux_captation <- txPrelev;
+			set monChateau <- monChateau;
+			set shape <- circle(rayon_captation);
+			switch type_droit { // ["foncier", "haute_justice", "autres_droits"]
+				match "foncier" {color <- #blue;}
+				match "haute_justice" {color <- #red;}
+				match "autres_droits" {color <- #yellow;}
+			}
 		}
 	}
 	
 }
 
 species Zones_Prelevement schedules: shuffle(Zones_Prelevement) {
-	bool ZP_chateau;
+	Chateaux monChateau <- nil;
 	Seigneurs proprietaire <- nil;
-	string type_droit <- nil ;
+	Seigneurs gardien <- nil;
+	string type_droit <- nil ; // ["foncier", "haute_justice", "autres_droits"]
 	int rayon_captation;
 	float taux_captation;
-	map<Seigneurs,float> preleveurs; // map<Seigneur, taux_prelev>
-	// Avec map.keys = Seigneurs et map.values = taux_prelev
-	// Avec sum(map.values = taux_captation)
 	rgb color; 
 	
-	action update_taxes_FP_HteJustice {
-		list<Foyers_Paysans> FP_proche <- Foyers_Paysans at_distance rayon_captation;
-		int nb_FP <- length(FP_proche);
-		list<Foyers_Paysans> FP_impactes <- int(floor(nb_FP * taux_captation)) among (FP_proche);
-		float mon_taux_FP <- max([0.0 ,(!empty(preleveurs)) ? (1.0 - sum(preleveurs.values)): 1.0]);
-		if (mon_taux_FP = 1.0){
+	action update_prelevements {
+		Zones_Prelevement cetteZP <- self;
+		list<Foyers_Paysans> FP_proches <- Foyers_Paysans at_distance rayon_captation;
+		list<Foyers_Paysans> FP_impactes <- int(floor(length(FP_proches) * taux_captation)) among (FP_proches);
+		if (cetteZP.type_droit = "foncier"){
 			ask FP_impactes {
-				set seigneur_hauteJustice <- myself.proprietaire;
+				set seigneur_foncier <- cetteZP.proprietaire;
 			}
-			ask self.proprietaire {
-				set FP_hauteJustice <- union(FP_hauteJustice,FP_impactes);
+			ask cetteZP.proprietaire {
+				FP_foncier <<+ FP_impactes;
 			}
-		} else {
-			list<Foyers_Paysans> FP_a_taxer <- FP_impactes;
-			ask (int(mon_taux_FP * length(FP_impactes)) among FP_impactes) {
-				set seigneur_hauteJustice <- myself.proprietaire;
-				set myself.proprietaire.FP_hauteJustice <- union(myself.proprietaire.FP_hauteJustice, FP_impactes);
-				FP_a_taxer >- self;
-			}
-			loop currentPreleveur over: (preleveurs.keys){
-				ask (int(preleveurs[currentPreleveur] * length(FP_impactes)) among FP_a_taxer) {
-					set seigneur_hauteJustice <- currentPreleveur;
-					FP_a_taxer >- self;
-					if not (self in currentPreleveur.FP_hauteJustice) {
-						set currentPreleveur.FP_hauteJustice <- currentPreleveur.FP_hauteJustice + self;
-					}
-					
-					if not (self in myself.proprietaire.FP_hauteJustice_garde) {
-						set myself.proprietaire.FP_hauteJustice_garde <- myself.proprietaire.FP_hauteJustice_garde + self;
-					}
+			if (cetteZP.gardien != nil){
+				ask cetteZP.gardien {
+					FP_foncier_garde <<+ FP_impactes;
 				}
 			}
-		}
-	}
-	
-	action update_taxes_FP_Banaux {
-		list<Foyers_Paysans> FP_proche <- Foyers_Paysans at_distance rayon_captation;
-		int nb_FP <- length(FP_proche);
-		list<Foyers_Paysans> FP_impactes <- int(floor(nb_FP * taux_captation)) among (FP_proche);
-		float mon_taux_FP <- max([0.0 ,(!empty(preleveurs)) ? (1.0 - sum(preleveurs.values)): 1.0]);
-		if (mon_taux_FP = 1.0){
+		} else if (cetteZP.type_droit = "haute_justice"){
 			ask FP_impactes {
-				seigneurs_banaux <+ myself.proprietaire;
+				set seigneur_haute_justice <- cetteZP.proprietaire;
 			}
-			ask self.proprietaire {
-				FP_banaux <<+ FP_impactes;
+			ask cetteZP.proprietaire {
+				FP_haute_justice <<+ FP_impactes;
 			}
-		} else {
-			list<Foyers_Paysans> FP_a_taxer <- FP_impactes;
-			ask (int(mon_taux_FP * length(FP_impactes)) among FP_impactes) {
-				seigneurs_banaux <+ myself.proprietaire;
-				myself.proprietaire.FP_banaux <<+ FP_impactes;
-				FP_a_taxer >- self;
-			}
-			loop currentPreleveur over: (preleveurs.keys){
-				ask (int(preleveurs[currentPreleveur] * length(FP_impactes)) among FP_a_taxer) {
-					seigneurs_banaux <+ currentPreleveur;
-					currentPreleveur.FP_banaux <+ self;
-					myself.proprietaire.FP_banaux_garde <+ self;
-					FP_a_taxer >- self;
+			if (cetteZP.gardien != nil){
+				ask cetteZP.gardien {
+					FP_haute_justice_garde <<+ FP_impactes;
 				}
 			}
-		}
-	}
-	
-	
-	
-	action update_taxes_FP_BM_Justice {
-		list<Foyers_Paysans> FP_proche <- Foyers_Paysans at_distance rayon_captation;
-		int nb_FP <- length(FP_proche);
-		list<Foyers_Paysans> FP_impactes <- int(floor(nb_FP * taux_captation)) among (FP_proche);
-		float mon_taux_FP <- max([0.0 ,(!empty(preleveurs)) ? (1.0 - sum(preleveurs.values)): 1.0]);
-		if (mon_taux_FP = 1.0){
+		} else { // Forcément "autres_droits"
 			ask FP_impactes {
-				seigneurs_basseMoyenneJustice <+ myself.proprietaire;
+				seigneurs_autres_droits <+ cetteZP.proprietaire;
 			}
-			ask self.proprietaire {
-			FP_basseMoyenneJustice <<+ FP_impactes;
+			ask cetteZP.proprietaire {
+				FP_autres_droits <<+ FP_impactes;
 			}
-		} else {
-			list<Foyers_Paysans> FP_a_taxer <- FP_impactes;
-			ask ( int(mon_taux_FP * length(FP_impactes)) among FP_impactes) {
-				seigneurs_basseMoyenneJustice <+ myself.proprietaire;
-				myself.proprietaire.FP_basseMoyenneJustice <<+ FP_impactes;
-				FP_a_taxer >- self;
-			}
-			
-			loop currentPreleveur over: (preleveurs.keys){
-				ask ( int((preleveurs[currentPreleveur]) * length(FP_impactes)) among FP_a_taxer) {
-					seigneurs_basseMoyenneJustice <+ currentPreleveur;
-					currentPreleveur.FP_basseMoyenneJustice <+ self;
-					myself.proprietaire.FP_basseMoyenneJustice_garde <+ self;
-					FP_a_taxer >- self;
+			if (cetteZP.gardien != nil){
+				ask cetteZP.gardien {
+					FP_autres_droits_garde <<+ FP_impactes;
 				}
 			}
-		}
-	}
-	
-	
-	action update_shape {
-		set shape <- circle(rayon_captation);
-		switch type_droit {
-			match "Loyer" {color <- #blue;}
-			match "Haute_Justice" {color <- #red;}
-			match "Banaux" {color <- #green;}
-			match "basseMoyenne_Justice" {color <- #yellow;}
 		}
 	}
 }

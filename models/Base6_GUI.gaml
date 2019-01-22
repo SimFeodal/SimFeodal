@@ -1,15 +1,14 @@
 /**
- *  T8
+ *  SimFeodal
  *  Author: Robin
- *  Description: Modelisation de la transition 800-1100, première version
- * Version 5.0 (ex 4.5)
- * Run with : gama 1.7 git : commit : 9484b484f0e07981670fcab6122209292c0c3f5a
- * (Gama 1.7 git 2017-07-12 14h35h09 +0700)
+ *  Description: Modelisation de la transition 800-1100
+ * Version 6.0 (ex 5.1 après renommage)
+ * Run with : gama 1.8 git : commit : a6aa46d9c
+ * (Gama 1.8 git 2018-12-18)
  */
 
 model t8
 
-// L'ordre compte...
 import "run.gaml"	
 	
 experiment Exp_6_base_FullGUI type: gui benchmark: false until: (annee >= fin_simulation){
@@ -17,7 +16,6 @@ experiment Exp_6_base_FullGUI type: gui benchmark: false until: (annee >= fin_si
 	parameter 'prefix' var: prefix_output init: "6_0";
 	
 	parameter 'save_outputs' var: save_outputs init: false;
-	parameter "benchmark" var: benchmark init: false; // Changement pour connaitre perfs fonctions
 
 output {
 		monitor "Annee" value: annee;
@@ -28,7 +26,7 @@ output {
 		monitor "Nombre FP Comm." value: Foyers_Paysans count (each.communaute);
 		monitor "Nombre Seigneurs" value: length(Seigneurs);
 		monitor "Nombre Grands Seigneurs" value: Seigneurs count (each.type = "Grand Seigneur");
-		monitor "Nombre Chatelains" value: Seigneurs count (each.type = "Chatelain");
+		monitor "Nombre Chatelains" value: Seigneurs count (each.chatelain);
 		monitor "Nombre Petits Seigneurs" value: Seigneurs count (each.type = "Petit Seigneur");
 		monitor "Nombre Eglises" value: length(Eglises);
 		monitor "Nombre Eglises Paroissiales" value: Eglises count (each.eglise_paroissiale);
@@ -67,13 +65,17 @@ output {
 experiment Exp_6_0_Debug type: gui repeat: 1 keep_seed: false until: (annee >= fin_simulation){
 	parameter 'save_outputs' var: save_outputs init: true;
 	parameter 'prefix' var: prefix_output init: "6_0_Debug";
-	parameter "benchmark" var: benchmark init: false; // Changement pour connaitre perfs fonctions
 	// 1 experiment
 }
 
-experiment Exp_6_0_Base type: gui repeat: 2 keep_seed: false until: (annee >= fin_simulation){
+experiment Exp_6_0_Base type: batch repeat: 2 keep_seed: false until: (annee >= fin_simulation){
 	parameter 'save_outputs' var: save_outputs init: true;
 	parameter 'prefix' var: prefix_output init: "6_0";
-	parameter "benchmark" var: benchmark init: false; // Changement pour connaitre perfs fonctions
+	// 1 experiment
+}
+
+experiment Exp_6_1_Debug type: gui repeat: 1 keep_seed: false until: (annee >= fin_simulation){
+	parameter 'save_outputs' var: save_outputs init: true;
+	parameter 'prefix' var: prefix_output init: "6_1_Debug";
 	// 1 experiment
 }

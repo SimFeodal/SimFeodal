@@ -78,8 +78,8 @@ global schedules: shuffle(Attracteurs) + shuffle(Poles) + shuffle(Agregats) + sh
 		set t <- machine_time;
 		ask Foyers_Paysans {
 			set Satisfaction <- 0.75 * min([satisfaction_religieuse, satisfaction_protection,  satisfaction_materielle]);
-			if (self.monAgregat != nil) {
-				if (self.monAgregat.communaute) {set Satisfaction <- Satisfaction + 0.25;}
+			if (self.monAgregat != nil){
+				set Satisfaction <- (self.monAgregat.communaute) ? Satisfaction + 0.25 : Satisfaction;
 			}
 		}
 	if (benchmark){write 'Maj_Satis_globale : ' + string(machine_time - t);}		
@@ -106,46 +106,49 @@ global schedules: shuffle(Attracteurs) + shuffle(Poles) + shuffle(Agregats) + sh
 	
 	reflex MaJ_Droits_Seigneurs {
 		float t <- machine_time;
-		ask Seigneurs where (each.type="Grand Seigneur"){
-			do MaJ_droits_Grands_Seigneurs;
-		}
 		ask Seigneurs where (each.type != "Grand Seigneur") {
-			do MaJ_droits_Petits_Seigneurs;
-			do gains_droits_PS;
+			do gains_droits_ps;
 		}
 		if (benchmark){write 'MaJ_Droits_Seigneurs : ' + string(machine_time - t);}
 	}
 	
+	reflex MaJ_Droits_Haute_Justice_GS when: (proba_gain_haute_justice_gs_actuel > 0.0){
+		ask Seigneurs where (each.type = 'Grand Seigneur' and !each.droits_haute_justice){
+			do maj_droits_haute_justice_gs;
+		}
+	}
+	
 	reflex MaJ_ZP_et_preleveurs {
 				float t <- machine_time;
-		ask Zones_Prelevement {do update_shape;}
 		ask Foyers_Paysans {do reset_preleveurs;}
 		ask Seigneurs {do reset_variables;}
-		do attribution_loyers_FP;
+		ask Zones_Prelevement {
+			do update_prelevements;
+		}
+		do prelevements_fonciers_gs;
+		do prelevements_haute_justice_gs;
+	}
 
-		ask Zones_Prelevement where (each.type_droit = "Haute_Justice"){do update_taxes_FP_HteJustice;}
-		ask Zones_Prelevement where (each.type_droit = "Banaux"){do update_taxes_FP_Banaux;}
-		ask Zones_Prelevement where (each.type_droit = "basseMoyenne_Justice"){do update_taxes_FP_BM_Justice;}
+	reflex Dons_PS when: (annee >= debut_cession_droits_seigneurs) {
+		ask Seigneurs where (each.type != "Grand Seigneur"){
+			do don_droits_ps;
 				if (benchmark){write 'MaJ_ZP_et_preleveurs : ' + string(machine_time - t);}
 	}
 	
-	reflex Dons_des_Seigneurs {
-float t <- machine_time;
-		// Don droits
-		if (annee >= debut_cession_droits_seigneurs) {
-			ask Seigneurs where (each.type = "Grand Seigneur"){ do don_droits_GS; }
-			ask Seigneurs where (each.type != "Grand Seigneur"){ do don_droits_PS; }
-		}
-		// Don châteaux
-		if (annee >= debut_garde_chateaux_seigneurs) {
-			ask Seigneurs where (each.type = "Grand Seigneur"){
-				do update_droits_chateaux_GS;
-				do don_chateaux_GS;
+	reflex Dons_Chateaux when: (annee >= debut_garde_chateaux_seigneurs){
+		list<Chateaux> chateaux_sans_gardiens <- Chateaux where (each.gardien = nil);
+		loop ceChateau over: chateaux_sans_gardiens {
+			if (flip(proba_don_chateau)) { // On donne
+				ask ceChateau.proprietaire {
+					do don_chateau(chateau_donne: ceChateau);
+				}
+			} // On ne donne pas
 			}
 		}
+	
+	reflex MaJ_Puissance_Seigneurs {
 		ask Seigneurs {
-			do MaJ_puissance; 
-			do MaJ_puissance_armee;
+			do MaJ_puissance;
 		}
 	if (benchmark){write 'Dons_des_Seigneurs : ' + string(machine_time - t);}
 	}
@@ -160,11 +163,8 @@ float t <- machine_time;
 	
 	reflex Constructions_chateaux when: annee >= debut_construction_chateaux{
 		float t <- machine_time;
-		ask Seigneurs where (each.type = "Grand Seigneur") {
-			do construction_chateau_GS;
+			do construction_chateaux;
 		}
-		ask Seigneurs where (each.type != "Grand Seigneur"){
-			do construction_chateau_PS;
 		}
 			if (benchmark){write 'Constructions_chateaux : ' + string(machine_time - t);}
 	}

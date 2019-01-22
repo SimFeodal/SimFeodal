@@ -33,16 +33,16 @@ global {
 				location <- any_location_in(reduced_worldextent);
 			}
 			
+			set droits_haute_justice <- false;
 			
-			set droits_loyer <- flip(proba_collecter_loyer);
-			set droits_hauteJustice <- false;
-			set droits_banaux <- false;
-			set droits_moyenneBasseJustice <- false;
-			
-			if (droits_loyer){
+			if (flip(proba_collecter_loyer)){
 				int rayon_zone <- rayon_min_zp_ps + rnd(rayon_max_zp_ps - rayon_min_zp_ps);
 				float txPrelev <- min_taux_prelevement_zp_ps + rnd(max_taux_prelevement_zp_ps - min_taux_prelevement_zp_ps);
-				do creer_zone_prelevement(self.location, rayon_zone, self, "Loyer", txPrelev);
+				Seigneurs ceSeigneur <- self;
+				ask world {
+					do creer_zone_prelevement (centre_zone: ceSeigneur.location, rayon: rayon_zone, proprio: ceSeigneur, typeDroit: "foncier", txPrelev: txPrelev, chateau_zp: nil);
+				}
+				
 			}			
 		}
 	}
@@ -55,12 +55,9 @@ species Seigneurs schedules: [] {
 	
 	float puissance_init;
 	float puissance <- 0.0;
-	int puissance_armee <- 0;
-	
-	bool droits_loyer <- false;
-	bool droits_hauteJustice <- false ;
-	bool droits_banaux <- false;
-	bool droits_moyenneBasseJustice <- false;
+
+	bool droits_haute_justice <- false ;
+	bool chatelain <- false;
 	
 	Seigneurs monSuzerain <- nil;
 	
@@ -68,412 +65,178 @@ species Seigneurs schedules: [] {
 	
 	list<Foyers_Paysans> FP_assujettis <- [];
 	
-	list<Foyers_Paysans> FP_loyer <- [];
+	list<Foyers_Paysans> FP_foncier <- [];
+	list<Foyers_Paysans> FP_foncier_garde <- [];
 	
-	list<Foyers_Paysans> FP_hauteJustice <- [];
-	list<Foyers_Paysans> FP_hauteJustice_garde <- [];
+	list<Foyers_Paysans> FP_haute_justice <- [];
+	list<Foyers_Paysans> FP_haute_justice_garde <- [];
 	
-	list<Foyers_Paysans> FP_banaux <- [];
-	list<Foyers_Paysans> FP_banaux_garde <- [];
-	
-	list<Foyers_Paysans> FP_basseMoyenneJustice <- [];
-	list<Foyers_Paysans> FP_basseMoyenneJustice_garde <- [];
+	list<Foyers_Paysans> FP_autres_droits <- [];
+	list<Foyers_Paysans> FP_autres_droits_garde <- [];
 	
 	list<Seigneurs> mesDebiteurs <- [];
 	Agregats monAgregat <- nil;
 	
 	
-	action gains_droits_PS {
-		if (flip(proba_creation_zp_banaux)){				
+	action gains_droits_ps {		
+		if flip(proba_creation_zp_autres_droits_ps){
 			int rayon_zone <- rayon_min_zp_ps + rnd(rayon_max_zp_ps - rayon_min_zp_ps);
 			float taux_ZP <- min_taux_prelevement_zp_ps + rnd(max_taux_prelevement_zp_ps - min_taux_prelevement_zp_ps);
-			do creer_zone_prelevement(any_location_in(3000 around self.location inter reduced_worldextent), rayon_zone, self, "Banaux", taux_ZP);
+			point location_zp <- any_location_in(3000 around self.location inter reduced_worldextent);
+			Seigneurs ceSeigneur <- self;
+			ask world {
+				do creer_zone_prelevement (centre_zone: location_zp, rayon: rayon_zone, proprio: ceSeigneur, typeDroit: "autres_droits", txPrelev: taux_ZP, chateau_zp: nil);
+			}
 		}
+	}
+	
+	action don_chateau (Chateaux chateau_donne) {
+		Seigneurs seigneur_donateur <- self;
+		Seigneurs seigneur_beneficiaire <- one_of(Seigneurs where (!each.chatelain and each.type != "Grand Seigneur"));
 		
-		if flip(proba_creation_zp_basse_justice){
-			int rayon_zone <- rayon_min_zp_ps + rnd(rayon_max_zp_ps - rayon_min_zp_ps);
-			float taux_ZP <- min_taux_prelevement_zp_ps + rnd(max_taux_prelevement_zp_ps - min_taux_prelevement_zp_ps);
-			do creer_zone_prelevement(any_location_in(3000 around self.location inter reduced_worldextent), rayon_zone, self, "basseMoyenne_Justice", taux_ZP);
-		}
+		set chateau_donne.gardien <- seigneur_beneficiaire;
+		set seigneur_beneficiaire.chatelain <- true;
+		ask Zones_Prelevement where (each.monChateau = chateau_donne){
+			set gardien <- seigneur_beneficiaire;
+		}		
 	}
 	
-	action don_droits_GS {
-		Seigneurs choixSeigneur <- shuffle(Seigneurs) first_with (each.type != "Grand Seigneur" and ((each.monSuzerain = self or each.monSuzerain = nil))) ;
-		string monType_droit <- one_of(["Haute_Justice", "Banaux", "basseMoyenne_Justice"]); // ~ équivalent à ancienne formulation
-		// string monType_droit <- flip(0.33) ? "Haute_Justice" : (flip(0.5) ? "Banaux" : "basseMoyenne_Justice");
-		Agregats choixAgregat <- one_of(Agregats);
-		if (choixAgregat != nil){
-		int rayon_taxe <- rayon_min_zp_ps + rnd(rayon_max_zp_ps - rayon_min_zp_ps);
-		create Zones_Prelevement number: 1 {
-			set location <- any_location_in(choixAgregat.shape inter reduced_worldextent);
-			set ZP_chateau <- false;
-			set proprietaire <- myself;
-			set type_droit <- monType_droit ;
-			set rayon_captation <- rayon_taxe;
-			set taux_captation <- 1.0;
-			set preleveurs <- map([choixSeigneur::1.0]);
-		}
-		ask choixSeigneur { set monSuzerain <- myself;}
-		mesDebiteurs <+ choixSeigneur;
-		}
-
-	}
-	
-	action don_droits_PS {
-		loop currentZP over: (Zones_Prelevement where (!each.ZP_chateau and each.proprietaire = self and each.type_droit != "Loyer")){
-			list<Seigneurs> preleveurs_potentiels <- [];
-			float pourcentage_donne <- (rnd(20) * 10) / 200; // par pas de 5%
-			ask currentZP {
-				set preleveurs_potentiels <- Seigneurs where (each.type != "Grand Seigneur" and each != currentZP.proprietaire) at_distance rayon_cession_droits_ps;
-			}
-			if (flip(proba_cession_droits_zp) and (sum(currentZP.preleveurs.values) < (1.0 - pourcentage_donne) ) and !empty(preleveurs_potentiels)) {
-				Seigneurs monPreleveur <- one_of(preleveurs_potentiels);
-				mesDebiteurs <+ monPreleveur;
-				ask currentZP {
-					set preleveurs[monPreleveur] <- (preleveurs.keys contains monPreleveur) ? preleveurs[monPreleveur] + pourcentage_donne : pourcentage_donne;
+	action maj_droits_haute_justice_gs {
+		if flip(proba_gain_haute_justice_gs_actuel){
+			set droits_haute_justice <- true;
+			Seigneurs ceSeigneur <- self;
+			ask Chateaux where (each.proprietaire = ceSeigneur) {
+				Chateaux ceChateau <- self;
+				ask world {
+					do creer_zone_prelevement (centre_zone: ceChateau.location, rayon: ceChateau.rayon_zps, proprio: ceSeigneur, typeDroit: "haute_justice", txPrelev: 1.0, chateau_zp: ceChateau);
 				}
+				ask Zones_Prelevement where (each.monChateau = ceChateau){
+					set gardien <- ceChateau.gardien;
+				}	
 			}
 		}
 	}
 	
-	action MaJ_droits_Grands_Seigneurs {
-		
-		// MaJ Haute Justice
-		if (proba_gain_haute_justice_gs_actuel > 0.0){
-			if (!droits_hauteJustice) {
-				set droits_hauteJustice <- flip(proba_gain_haute_justice_gs_actuel);
-			}
-			if (droits_hauteJustice){
-				do MaJ_ZP_chateaux(self, "Haute_Justice");
-				set droits_banaux <- true;
-				do MaJ_ZP_chateaux(self, "Banaux");
-				set droits_moyenneBasseJustice <- true;
-				do MaJ_ZP_chateaux(self, "basseMoyenne_Justice");
-			}
-		}
-		// MaJ droits banaux
-		if (proba_gain_haute_justice_gs_actuel > 0.0){
-			if (!droits_banaux) {
-				set droits_banaux <- flip(proba_gain_droits_banaux_chateau);
-			}
-			if (droits_banaux) {
-				do MaJ_ZP_chateaux(self, "Banaux");	
-			}
-		}
-		// MaJ droits basse et moyenne Justice
-		if (proba_gain_haute_justice_gs_actuel > 0.0){
-			if (!droits_moyenneBasseJustice) {
-				set droits_moyenneBasseJustice <- flip(proba_gain_droits_basse_justice_chateau);
-			}
-			if (droits_moyenneBasseJustice) {
-				do MaJ_ZP_chateaux(self, "basseMoyenne_Justice");
-			}
-		}
-	}
-	
-	// FIXME : A revoir, pas très logique
-	action MaJ_droits_Petits_Seigneurs {
-		if (!droits_banaux) {
-			set droits_banaux <- flip(proba_gain_droits_banaux_chateau);
-			if (droits_banaux) {
-				set droits_banaux <- true;
-				do MaJ_ZP_chateaux(self, "Banaux");	
-			}
-		}
-		
-		if (!droits_moyenneBasseJustice) {
-			set droits_moyenneBasseJustice <- flip(proba_gain_droits_basse_justice_chateau);
-			if (droits_moyenneBasseJustice) {
-				set droits_moyenneBasseJustice <- true;
-				do MaJ_ZP_chateaux(self, "basseMoyenne_Justice");
-			}
-		}
-	}
-	
-	
-	action MaJ_ZP_chateaux(Seigneurs seigneur, string type_droit){
-		switch type_droit {
-			match "Loyer" {
-				ask Chateaux where (each.proprietaire = self and each.ZP_loyer = nil){
-					do creation_ZP_loyer(self.location, max_rayon_zp_chateau, seigneur, 1.0);
+	action don_droits_ps {
+		Seigneurs seigneur_donateur <- self;
+		ask Zones_Prelevement where (each.proprietaire = seigneur_donateur and each.gardien = nil){
+			if (flip(proba_cession_droits_zp)) { // On donne
+				Seigneurs seigneur_beneficiaire <- nil;
+				if (flip(proba_cession_locale)){ // Cession à un PS local
+					set seigneur_beneficiaire <- one_of(Seigneurs where (each.type = "Petit Seigneur"and (each distance_to self < rayon_cession_locale_droits_ps) and each != self));
 				}
-			}
-			match "Haute_Justice" {
-				ask Chateaux where (each.proprietaire = self and each.ZP_hauteJustice = nil){
-					do creation_ZP_hauteJustice(self.location, max_rayon_zp_chateau, seigneur, 1.0);
+				if (seigneur_beneficiaire = nil){ // Comme ça, on capte aussi les cas où il n'y a pas de PS à proximité
+					set seigneur_beneficiaire <- one_of(Seigneurs where (each.type = "Petit Seigneur" and (each distance_to self > rayon_cession_locale_droits_ps) and each != self));
 				}
-			}
-			match "Banaux" {
-				ask Chateaux where (each.proprietaire = self and each.ZP_banaux = nil){
-					do creation_ZP_banaux(self.location, max_rayon_zp_chateau, seigneur, 1.0);
-				}
-			}
-			match "basseMoyenne_Justice" {
-				ask Chateaux where (each.proprietaire = self and each.ZP_basseMoyenneJustice = nil){
-					do creation_ZP_basseMoyenne_Justice(self.location, max_rayon_zp_chateau, seigneur, 1.0);
-				}
-			}
-		}
-	}
-	
-	action creer_zone_prelevement (point centre_zone, int rayon, Seigneurs proprio, string typeDroit, float txPrelev) {
-		create Zones_Prelevement number: 1 {
-			set proprietaire <- proprio;
-			set type_droit <- typeDroit ;
-			set rayon_captation <- rayon;
-			set taux_captation <- txPrelev;
-			set preleveurs <- map([proprio::txPrelev]);
-		}
+				set gardien <- seigneur_beneficiaire;	
+			} // On ne donne pas
+		} 
 	}
 	
 	action reset_variables {
 		set FP_assujettis <- [];
 		
-		set FP_loyer <- [];
+		set FP_foncier <- [];
+		set FP_foncier_garde <- [];
 	
-		set FP_hauteJustice <- [];
-		set FP_hauteJustice_garde <- [];
+		set FP_haute_justice <- [];
+		set FP_haute_justice_garde <- [];
 		
-		set FP_banaux <- [];
-		set FP_banaux_garde <- [];
+		set FP_autres_droits <- [];
+		set FP_autres_droits_garde <- [];
 		
-		set FP_basseMoyenneJustice <- [];
-		set FP_basseMoyenneJustice_garde <- [];
-	}
-	
-	float MaJ_loyers {
-		float Loyers <- length(FP_loyer) * droits_fonciers_zp;
-		set FP_assujettis <- remove_duplicates(FP_assujettis + FP_loyer);
-		return(Loyers);
-	}
-	
-	float MaJ_hauteJustice {
-		float HteJustice <- length(FP_hauteJustice) * droits_haute_justice_zp;
-		float HteJustice_garde <- length(FP_hauteJustice_garde) * droits_haute_justice_zp_suzerain;
-		set FP_assujettis <- remove_duplicates(FP_assujettis + FP_hauteJustice + FP_hauteJustice_garde);
-		return(HteJustice + HteJustice_garde);
-	}
-	
-	float MaJ_banaux {
-		float Banaux <- length(FP_banaux) * droits_banaux_zp;
-		float Banaux_garde <- length(FP_banaux_garde) * droits_banaux_zp_suzerain;
-		set FP_assujettis <- remove_duplicates(FP_assujettis + FP_banaux + FP_banaux_garde);
-		return(Banaux + Banaux_garde);
-	}
-	
-	float MaJ_moyenneBasseJustice {
-		float moyenneBasseJustice <- length(FP_basseMoyenneJustice) * droits_basse_justice_zp;
-		float moyenneBasseJustice_garde <- length(FP_basseMoyenneJustice_garde) * droits_basse_justice_zp_suzerain;
-		set FP_assujettis <- remove_duplicates(FP_assujettis + FP_basseMoyenneJustice + FP_basseMoyenneJustice_garde);
-		return(moyenneBasseJustice + moyenneBasseJustice_garde);
 	}
 	
 	action MaJ_puissance {
-		set puissance <- puissance + MaJ_loyers() + MaJ_hauteJustice() + MaJ_banaux() + MaJ_moyenneBasseJustice();
+		set FP_foncier <- remove_duplicates(FP_foncier);
+		set FP_foncier_garde <- remove_duplicates(FP_foncier_garde);
+		set FP_haute_justice <- remove_duplicates(FP_haute_justice);
+		set FP_haute_justice_garde <- remove_duplicates(FP_haute_justice_garde);
+		
+		float total_foncier <- (length(FP_foncier) * droits_fonciers_zp) + (length(FP_foncier_garde) * droits_fonciers_zp_cession);
+		float total_haute_justice <- (length(FP_haute_justice) * droits_haute_justice_zp) + (length(FP_haute_justice_garde) * droits_haute_justice_zp_cession);
+		float total_autres_droits <- (length(FP_autres_droits) * autres_droits_zp) + (length(FP_autres_droits_garde) * autres_droits_zp_cession);
+		
+		set FP_assujettis <- remove_duplicates(FP_foncier + FP_foncier_garde + FP_haute_justice + FP_haute_justice_garde + FP_autres_droits + FP_autres_droits_garde);
+		
+		set puissance <- puissance + total_foncier + total_haute_justice + total_autres_droits;
 	}
 	
 	
-	action don_chateaux_GS {
-		loop chateau over: Chateaux where (each.proprietaire = self and each.gardien = self){
-			if (flip(proba_don_chateau_gs)){
-				//Seigneurs choixSeigneur <- shuffle(Seigneurs) first_with (each.type != 'Grand Seigneur' and each.initialement_present and ((each.monSuzerain = self or each.monSuzerain = nil) or (each.monSuzerain.type != "Grand Seigneur")));
-				Seigneurs choixSeigneur <- shuffle(Seigneurs) first_with (each.type != 'Grand Seigneur'  and((each.monSuzerain = self or each.monSuzerain = nil) or (each.monSuzerain.type != "Grand Seigneur")));
-				set chateau.gardien <- choixSeigneur;
-				set choixSeigneur.type <- "Chatelain";
-				set choixSeigneur.monSuzerain <- self;
-				mesDebiteurs <+ choixSeigneur;
-				
-				if (chateau.ZP_loyer != nil) {
-					ask chateau.ZP_loyer {
-						set preleveurs <- map(choixSeigneur::1.0);
-					}
-				}
-				
-				if (chateau.ZP_hauteJustice != nil) {
-					ask chateau.ZP_hauteJustice {
-						set preleveurs[choixSeigneur] <- 0.33;
-					}
-				}
-				
-				if (chateau.ZP_banaux != nil){
-					ask chateau.ZP_banaux {
-						set preleveurs[choixSeigneur] <- 0.33;
-					}
-				}
-
-				if (chateau.ZP_basseMoyenneJustice != nil) {
-					ask chateau.ZP_basseMoyenneJustice {
-						set preleveurs[choixSeigneur] <- 0.33;
-					}
-				}
-			}
-		}
-	}
-	
-	action update_droits_chateaux_GS {
-		loop chateau over: Chateaux where (each.proprietaire = self and each.gardien != self){
+	action construction_chateaux {	
+		
+		float proba_creation <- self.type =  "Grand Seigneur" ? (1 - exp(-0.00064 * self.puissance) ) : self.puissance / 2000;
+		int  nb_chateaux_potentiels <- self.type =  "Grand Seigneur" ? nb_max_chateaux_par_tour_gs : nb_max_chateaux_par_tour_ps;
+		bool is_gs <-  self.type =  "Grand Seigneur" ? true : false;
 			
-			if (chateau.ZP_banaux != nil){
-				ask chateau.ZP_banaux {
-					if (sum(preleveurs.values) < 1){
-						set preleveurs[preleveurs.keys[0]] <- (preleveurs[preleveurs.keys[0]] = 0.66) ? 1.0 : preleveurs[preleveurs.keys[0]] + 0.33;
+		float maxPuissance <- max(Seigneurs collect each.puissance) ;
+		float minPuissance <- min(Seigneurs collect each.puissance) ;
+		int rayon_chateau <- int(max([
+			min_rayon_zp_chateau, min([
+				max_rayon_zp_chateau,
+				( maxPuissance / (maxPuissance - minPuissance) )- (self.puissance / (maxPuissance - minPuissance))
+				])])
+		);
+		
+		loop times: nb_chateaux_potentiels {
+			if flip(proba_creation){
+				// Si création tirée
+				geometry espace_disponible <- reduced_worldextent - (dist_min_entre_chateaux around Chateaux);
+				point location_chateau <- nil;
+				Agregats choix_agregat <- nil;
+				if (is_gs){ // Chateau de GS
+					if (flip(proba_chateau_gs_agregat)){
+						set choix_agregat <- one_of(Agregats inside espace_disponible);
+					}
+					if (choix_agregat != nil){
+						set location_chateau <- any_location_in(choix_agregat.shape);
+					} else {
+						set location_chateau <- any_location_in(espace_disponible);
+					}
+				} else { // chateau de PS
+					list<Agregats> agregats_possibles <- (Agregats where (length(each.mesChateaux) = 0)) inside espace_disponible;
+					set choix_agregat <- !empty(agregats_possibles) ? agregats_possibles closest_to self : nil;
+					set location_chateau <- (choix_agregat != nil) ? any_location_in(choix_agregat.shape + 500) : any_location_in(espace_disponible);
+					// On met à jour les droits de haute justice pour les PS au passage
+					if (proba_gain_haute_justice_chateau_ps_actuel > 0.0 and !droits_haute_justice){
+						set droits_haute_justice <- flip(proba_gain_haute_justice_chateau_ps_actuel);
+						if (droits_haute_justice){
+							Seigneurs ceSeigneur <- self;
+							ask Chateaux where (each.proprietaire = ceSeigneur) {
+								Chateaux ceChateau <- self;
+								ask world {
+									do creer_zone_prelevement (centre_zone: ceChateau.location, rayon: ceChateau.rayon_zps, proprio: ceSeigneur, typeDroit: "haute_justice", txPrelev: 1.0, chateau_zp: ceChateau);
+								}
+							}
+						}
 					}
 				}
-			}
-			
-			if (chateau.ZP_hauteJustice != nil){
-				ask chateau.ZP_hauteJustice {
-					if (sum(preleveurs.values) < 1){
-						set preleveurs[preleveurs.keys[0]] <- (preleveurs[preleveurs.keys[0]] = 0.66) ? 1.0 : preleveurs[preleveurs.keys[0]] + 0.33;
-					}
-				}
-			}
-			
-			if (chateau.ZP_basseMoyenneJustice != nil){
-				ask chateau.ZP_basseMoyenneJustice {
-					if (sum(preleveurs.values) < 1){
-						set preleveurs[preleveurs.keys[0]] <- (preleveurs[preleveurs.keys[0]] = 0.66) ? 1.0 : preleveurs[preleveurs.keys[0]] + 0.33;
-					}
-				}
-			}
-		}
-	}
-	
-	//action don_chateaux_PS {
-	//	
-	//}
-	
-	// FIXME : moche et sans doute faux
-	action construction_chateau_GS {
-		
-		int nbChateauxPotentiel <- nb_chateaux_potentiels_gs;
-		float proba_creer_chateau_GS <- (1 - exp(-0.00064 * self.puissance) );
-		
-		
-		list<Agregats> agregatsPotentiel <- Agregats where (length(each.mesChateaux) = 0);
-		
-		
-		
-		//int nbChateaux <- min([rnd(nbChateauxPotentiel), length(agregatsPotentiel)]);
-		create Chateaux number: nbChateauxPotentiel {
-		//create Chateaux number: nbChateaux {
-			if (!flip(proba_creer_chateau_GS)){
-				do die;
-			}
-			set proprietaire <- myself;
-			set gardien <- myself;
-			
-			// Réorganisation (et simplification) du code
-			if (flip(proba_chateau_gs_agregat)){				
-				// On découpe l'espace du monde pour les localisations possibles
-				geometry espacePossible <- reduced_worldextent - (dist_min_entre_chateaux_gs around Chateaux);
-				// S'il y a des agrégats dispos, on va dans l'un d'eux au hasard
-				list<Agregats> agregatsPossibles <- Agregats inside espacePossible;
-				if (!empty(agregatsPossibles)){
-					Agregats choixAgregat <- one_of(agregatsPossibles);
-					ask choixAgregat {
-						mesChateaux <+ myself;
-					}
-					set location <- any_location_in(choixAgregat.shape);
-				} else { // Sinon, on place le château n'importe où à > 5 km d'un château existant
-					set location <- any_location_in(espacePossible);
-				}	
-			}
-			float maxPuissance <- max(Seigneurs collect each.puissance) ;
-			float minPuissance <- min(Seigneurs collect each.puissance) ;
-			int rayon_chateau <- int(max([min_rayon_zp_chateau,
-				min([ max_rayon_zp_chateau,
-					( maxPuissance / (maxPuissance - minPuissance) - ( myself.puissance / (maxPuissance - minPuissance)))
-				])
-			]));
-			
-			// FIXME : Très laid, à vérifier
-
-			do creation_ZP_loyer(location, rayon_chateau, myself, 1.0);
-			if (myself.droits_hauteJustice){
-				do creation_ZP_hauteJustice(location, rayon_chateau, myself, 1.0);
-				do creation_ZP_banaux(location, rayon_chateau, myself, 1.0);
-				do creation_ZP_basseMoyenne_Justice(location, rayon_chateau, myself, 1.0);
-			} else {
-				if (myself.droits_banaux) {
-					do creation_ZP_banaux(location, rayon_chateau, myself, 1.0);
-				}
-				if (myself.droits_moyenneBasseJustice){
-					do creation_ZP_basseMoyenne_Justice(location, rayon_chateau, myself, 1.0);
-				}
-			}
-		}
-	}
-	
-	action construction_chateau_PS {
-		
-		Agregats agregatPotentiel <- Agregats closest_to self;
-		set agregatPotentiel <- (length(agregatPotentiel.mesChateaux) = 0) ? agregatPotentiel : nil ;
-		if (agregatPotentiel != nil) {
-			// FIXME : Chateaux trop proches sinon
-			if (agregatPotentiel distance_to (Chateaux closest_to agregatPotentiel) >= dist_min_entre_chateaux_ps){
+				// Construction Chateau
+				Chateaux ceChateau <- nil;
 				create Chateaux number: 1 {
-					float proba_creer_chateau_PS <- myself.puissance / 2000;
-				
-				if (!flip(proba_creer_chateau_PS)){
-					do die;
-				}
-				// Tout ce qui suit n'est pas executé si le château est mort dans l'expression précédente.
-				set proprietaire <- myself;
-				set gardien <- myself;
-				do die;
-				set myself.type <- "Chatelain";
-				ask agregatPotentiel {
-					mesChateaux <+ myself;
-				}
-				set location <- any_location_in((agregatPotentiel.shape + 500) inter reduced_worldextent);
-				float maxPuissance <- max(Seigneurs collect each.puissance) ;
-				float minPuissance <- min(Seigneurs collect each.puissance) ;
-				int rayon_chateau <- int(max([
-					min_rayon_zp_chateau,
-					min([
-						max_rayon_zp_chateau,
-						( maxPuissance / (maxPuissance - minPuissance) )- ( myself.puissance / (maxPuissance - minPuissance))
-					])
-				]));
-				
-				do creation_ZP_loyer(location, rayon_chateau, myself, 1.0);
-				
-				if (annee > 1000 and flip(proba_gain_haute_justice_chateau_ps)){
-					ask myself {
-						set droits_hauteJustice <- true;
-						set droits_banaux <- true;
-						set droits_moyenneBasseJustice <- true;
+					set location <- location_chateau;
+					if (choix_agregat != nil){
+						set monAgregat <- choix_agregat;
+						ask monAgregat {mesChateaux <+ myself;}
 					}
-					do creation_ZP_hauteJustice(location, rayon_chateau, myself, 1.0);
-					do creation_ZP_banaux(location, rayon_chateau, myself, 1.0);
-					do creation_ZP_basseMoyenne_Justice(location, rayon_chateau, myself, 1.0);
-					
+					set proprietaire <- myself;
+					set rayon_zps <- rayon_chateau;
+					set ceChateau <- self;
 				}
-				if (flip(proba_gain_droits_banaux_chateau)){
-					ask myself {set droits_banaux <- true;}
-					do creation_ZP_banaux(location, rayon_chateau, myself, 1.0);
+				set chatelain <- true;
+				// Construction ZPs
+				Seigneurs ceSeigneur <- self;
+				ask world {
+					do creer_zone_prelevement (centre_zone: location_chateau, rayon: rayon_chateau, proprio: ceSeigneur, typeDroit: "foncier", txPrelev: 1.0, chateau_zp: ceChateau);
+					do creer_zone_prelevement (centre_zone: location_chateau, rayon: rayon_chateau, proprio: ceSeigneur, typeDroit: "autres_droits", txPrelev: 1.0, chateau_zp: ceChateau);
 				}
-				if (flip(proba_gain_droits_basse_justice_chateau)){
-					ask myself {set droits_moyenneBasseJustice <- true;}
-					do creation_ZP_basseMoyenne_Justice(location, rayon_chateau, myself, 1.0);
+				if (droits_haute_justice){
+					ask world {
+						do creer_zone_prelevement (centre_zone: location_chateau, rayon: rayon_chateau, proprio: ceSeigneur, typeDroit: "haute_justice", txPrelev: 1.0, chateau_zp: ceChateau);
+					}
 				}
 			}
-			}	
-		}
-	}
-	
-
-// Ne sert à rien : les PS deviennent chatelain quand ils créent un chateau ou qu'un GS leur en donne un en gardiennage
-//	action MaJ_type {
-//		if (self.type = "Petit Seigneur") {
-//			set type <- (!empty(Chateaux where ( (each.proprietaire = self) or (each.gardien = self) ))) ? "Chatelain" : "Petit Seigneur";
-//		}			
-//	}
-	
-	action MaJ_puissance_armee {
-		// C'est le nombre (unique) de FP qui versent des droits à ce seigneur.
-		set puissance_armee <- length(FP_assujettis);
+		} // Sinon, on ne fait rien
 	}
 	
 	action update_agregats_seigneurs {

@@ -70,12 +70,15 @@ global torus: false{
 	int coef_redevances <- 15;
 	// SEIGNEURS //
 	int objectif_nombre_seigneurs <- 200; // FIXME : avant v6 : nombre_seigneurs_objectif / A renommer dans BDD
-	map<int,float> proba_gain_haute_justice_gs <- [800::0,900::0.1,1000::1.0]; // TODO : Inactif : ajouter dans modèle + Ajouter aux outputs + SimEDB + RENOMMER POUR COLLER ? / J'en suis encore là !
+	map<int,float> proba_gain_haute_justice_gs <- [800::0,900::0.2,1000::1.0]; // TODO : Inactif : ajouter dans modèle + Ajouter aux outputs + SimEDB + RENOMMER POUR COLLER ? / J'en suis encore là !
+	map<int,float> proba_gain_haute_justice_chateau_ps <- [800::0, 1000::0.2]; // TODO : avant v6 : proba_gain_droits_hauteJustice_chateau, vallait 0.1
 	int debut_cession_droits_seigneurs <- 900 ; // FIXME : Nouveau paramètre, A ajouter dans BDD
 	int debut_garde_chateaux_seigneurs <- 960 ; // FIXME : Nouveau paramètre, A ajouter dans BDD
 	// CHATEAUX //
 	int debut_construction_chateaux <- 940; // FIXME : avant v6 : apparition_chateaux / A renommer dans BDD	
 	int nb_chateaux_potentiels_gs <- 2; // FIXME : avant v6 : nb_chateaux_potentiels_GS
+	int nb_max_chateaux_par_tour_gs <- 10; // FIXME : avant v6 : nb_chateaux_potentiels_GS, puis nb_chateaux_potentiels_gs, vallait 2
+	int nb_max_chateaux_par_tour_ps <- 2; // FIXME : Nouveau paramètre en v6, vallait 1 avant, à ajouter dans BDD
 	map<int,bool> periode_promotion_chateaux <- [800::false,940::true,1060::false]; // FIXME : Nouveau paramètre, A ajouter dans BDD
 	
 	///////////////
@@ -98,30 +101,32 @@ global torus: false{
 	int distance_fusion_agregat <- 100; // FIXME : Nouveau paramètre en v6 : vallait 100 avant
 	// SEIGNEURS 
 	float proba_collecter_loyer <- 0.1;
-	float proba_creation_zp_banaux <- 0.05; // TODO : avant v6 : proba_creation_ZP_banaux
-	float proba_creation_zp_basse_justice <- 0.05; // TODO : avant v6 : proba_creation_ZP_basseMoyenneJustice
+	float proba_creation_zp_autres_droits_ps <- 0.15; // TODO : avant v6 : proba_creation_ZP_banaux : vallait 5% (mais + basse et moyenne justice qui vallait aussi 5%)
 	int rayon_min_zp_ps <- 1000; // TODO : avant v6 : rayon_min_PS
 	int rayon_max_zp_ps <- 5000; // TODO : avant v6 : rayon_max_PS
 	float min_taux_prelevement_zp_ps <- 0.05; // TODO : avant v6 : min_fourchette_loyers_PS
 	float max_taux_prelevement_zp_ps <- 0.25; // TODO : avant v6 : max_fourchette_loyers_PS
 	float proba_cession_droits_zp <- 0.33; // TODO : avant v6 : proba_don_partie_ZP
-	int rayon_cession_droits_ps <- 3000; // TODO : nouveau paramètre en v6 : vallait 3000 avant
-	float proba_don_chateau_gs <- 0.50; // TODO : avant v6 : proba_don_chateau_GS
-	float proba_gain_haute_justice_chateau_ps <- 0.1; // TODO : avant v6 : proba_gain_droits_hauteJustice_chateau
+	float proba_cession_locale <- 0.8; // FIXME : nouveau paramètre en v6.1, correspondant à un nouveau mécanisme
+	int rayon_cession_locale_droits_ps <- 5000; // TODO : nouveau paramètre en v6 : vallait 3000 avant // Changement de nom en 6.1 : rayon_cession_droits_ps vallait 3000
+	float proba_don_chateau <- 0.50; // TODO : avant v6 : proba_don_chateau_GS, puis proba_don_chateau_gs
 	float proba_gain_droits_banaux_chateau <- 0.1;
 	float proba_gain_droits_basse_justice_chateau <- 0.1; // TODO : avant v6 : proba_gain_droits_basseMoyenneJustice_chateau
-	float droits_haute_justice_zp <- 1.0; // TODO : nouveau paramètre en v6 : vallait 1 avant
-	float droits_haute_justice_zp_suzerain <- 1.25; // TODO : nouveau paramètre en v6 : vallait 1.25 avant
-	float droits_basse_justice_zp <- 0.25; // TODO : nouveau paramètre en v6 : vallait 0.25 avant
-	float droits_basse_justice_zp_suzerain <- 0.35; // TODO : nouveau paramètre en v6 : vallait 0.35 avant
-	float droits_banaux_zp <- 0.25; // TODO : nouveau paramètre en v6 : vallait 0.25 avant
-	float droits_banaux_zp_suzerain <- 0.35; // TODO : nouveau paramètre en v6 : vallait 0.35 avant
+	
+	// FIXME : A reprendre ici
+	float droits_haute_justice_zp <- 2.0; // TODO : nouveau paramètre en v6 : vallait 1 avant
+	float droits_haute_justice_zp_cession <- 2.5; // TODO : nouveau paramètre en v6 : vallait 1.25 avant
 	float droits_fonciers_zp <- 1.0; // TODO : nouveau paramètre en v6 : vallait 1 avant
+	float droits_fonciers_zp_cession <- 1.25; // Nouveau paramètre en v6.1 : vallait 0 avant
+	float autres_droits_zp <- 0.25; // TODO : nouveau paramètre en v6 : vallait 0.25 avant
+	float autres_droits_zp_cession <- 0.35; // TODO : nouveau paramètre en v6 : vallait 0.35 avant
+
+	
+	
 	// CHATEAUX
 	int min_rayon_zp_chateau <- 2000; // TODO : nouveau paramètre en v6, vallait 2000 avant
-	int max_rayon_zp_chateau <- 10000; // TODO : nouveau paramètre en v6, vallait 10000 avant
-	int dist_min_entre_chateaux_ps <- 3000; // TODO : nouveau paramètre en v6, vallait 3000 avant
-	int dist_min_entre_chateaux_gs <- 5000;  // TODO : nouveau paramètre en v6, vallait 5000 avant
+	int max_rayon_zp_chateau <- 15000; // TODO : nouveau paramètre en v6, vallait 10000 avant // FIXME; changé en v6.1 : vallait 10000 avant
+	int dist_min_entre_chateaux <- 3000; // TODO : nouveau paramètre en v6, vallait 3000 avant // FIXME : Nouveau paramètre en v6.1 : confondu entre gs et ps
 	float proba_chateau_gs_agregat <- 0.5 ; // TODO : avant v6 : proba_chateau_agregat
 	float proba_promotion_chateau_pole <- 0.8; // TODO : avant v6 : proba_promotion_groschateau_multipole
 	float proba_promotion_chateau_isole <- 0.3; // TODO : avant v6 : proba_promotion_groschateau_autre
@@ -161,9 +166,10 @@ global torus: false{
 	// Variables evoluant dans le temps
 	float besoin_protection_fp_actuel <- 0.0;
 	float proba_gain_haute_justice_gs_actuel <- 0.0;
+	float proba_gain_haute_justice_chateau_ps_actuel <- 0.0;
 	bool chateaux_promouvables <- false;
-	int dist_min_eglise_actuel <- 0;
-	int dist_max_eglise_actuel <- 0;
+	int dist_min_eglise_actuel <- 5000;
+	int dist_max_eglise_actuel <- 25000;
 	int rayon_migration_locale_fp_actuel <- 0;
 
 	/////////////
@@ -199,6 +205,11 @@ global torus: false{
 		if ((proba_gain_haute_justice_gs at annee) is float) {
 			set proba_gain_haute_justice_gs_actuel <- proba_gain_haute_justice_gs at annee;
 		}
+		
+		if ((proba_gain_haute_justice_chateau_ps at annee) is float) {
+			set proba_gain_haute_justice_chateau_ps_actuel <- proba_gain_haute_justice_chateau_ps at annee;
+		}
+		
 		
 		if ((rayon_migration_locale_fp at annee) is float){
 			set rayon_migration_locale_fp_actuel <- rayon_migration_locale_fp at annee;

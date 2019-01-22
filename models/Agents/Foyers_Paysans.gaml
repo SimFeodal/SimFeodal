@@ -59,10 +59,10 @@ species Foyers_Paysans schedules: []
 	float satisfaction_protection;
 	float Satisfaction;
 	bool mobile; // Si true : ce FP peut se déplacer / si false, serf/esclave, pas de déplacement
-	Seigneurs seigneur_loyer <- nil;
-	Seigneurs seigneur_hauteJustice <- nil;
-	list<Seigneurs> seigneurs_banaux <- [];
-	list<Seigneurs> seigneurs_basseMoyenneJustice <- [];
+
+	Seigneurs seigneur_foncier <- nil;
+	Seigneurs seigneur_haute_justice <- nil;
+	list<Seigneurs> seigneurs_autres_droits <- [];
 	int nb_preleveurs <- 0;
 	string type_deplacement <- nil update: nil; //	"fixe", lointain, local
 	string deplacement_from <- nil update: nil; //	"isole", "agregat"
@@ -70,19 +70,17 @@ species Foyers_Paysans schedules: []
 	//"pole local avec agregat plus attractif",   "pole local sans agregat plus attractif", "agregat lointain unique", "agregat lointain attractif"
 	action reset_preleveurs
 	{
-		set seigneur_loyer <- nil;
-		set seigneur_hauteJustice <- nil;
-		set seigneurs_banaux <- [];
-		set seigneurs_basseMoyenneJustice <- [];
+		set seigneur_foncier <- nil;
+		set seigneur_haute_justice <- nil;
+		set seigneurs_autres_droits <- [];
 	}
 
 	action update_satisfaction_materielle
 	{
-		int loyer <- (self.seigneur_loyer != nil) ? 1 : 0;
-		int hauteJustice <- (self.seigneur_hauteJustice != nil) ? 1 : 0;
-		int banaux <- length(self.seigneurs_banaux);
-		int basseMoyenneJustice <- length(self.seigneurs_basseMoyenneJustice);
-		int nb_seigneurs <- loyer + hauteJustice + banaux + basseMoyenneJustice;
+		int foncier <- (self.seigneur_foncier != nil) ? 1 : 0;
+		int haute_justice <- (self.seigneur_haute_justice != nil) ? 1 : 0;
+		int autres_droits <- length(self.seigneurs_autres_droits);
+		int nb_seigneurs <- foncier + haute_justice + autres_droits;
 		set nb_preleveurs <- nb_seigneurs;
 		float S_redevances <- max([1 - (nb_seigneurs * (1 / coef_redevances)), 0.0]);
 		float S_contributions <- 0.0;
