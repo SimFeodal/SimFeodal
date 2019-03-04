@@ -76,7 +76,11 @@ species Zones_Prelevement schedules: shuffle(Zones_Prelevement) {
 	
 	action update_prelevements {
 		Zones_Prelevement cetteZP <- self;
-		list<Foyers_Paysans> FP_proches <- Foyers_Paysans at_distance rayon_captation;
+		//list<Foyers_Paysans> FP_proches <- Foyers_Paysans at_distance rayon_captation;
+		// remplacement des at_distance lent et buggé
+		list<Foyers_Paysans> FP_proches <- Foyers_Paysans inside (rayon_captation around cetteZP.location);
+		
+		
 		list<Foyers_Paysans> FP_impactes <- int(floor(length(FP_proches) * taux_captation)) among (FP_proches);
 		if (cetteZP.type_droit = "foncier"){
 			ask FP_impactes {

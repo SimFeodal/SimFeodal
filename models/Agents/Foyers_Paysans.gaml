@@ -128,8 +128,7 @@ species Foyers_Paysans schedules: []
 
 	}
 
-	action deplacement
-	{
+	action deplacement {
 		point oldLoc <- location;
 		set deplacement_from <- monAgregat != nil ? "agregat" : "isole";
 			if (monAgregat != nil and monAgregat.monPole != nil){ // Si dans un agrégat doté de pôle
@@ -140,8 +139,14 @@ species Foyers_Paysans schedules: []
 	}
 	
 	action deplacement_avec_pole_agregat(point oldLoc) {
-		Poles meilleurPole <- (Poles at_distance rayon_migration_locale_fp_actuel) with_max_of (each.attractivite);
-		if (monAgregat.monPole.attractivite >= meilleurPole.attractivite) { //  Si le pole de mon agrégat a une attractivié > attrac des  poles du voisinage
+		// Poles meilleurPole <- (Poles at_distance rayon_migration_locale_fp_actuel) with_max_of (each.attractivite);
+		// remplacement du at_distance buggé et lent
+		Foyers_Paysans moi <- self;
+		list<Poles> poles_locaux <- Poles overlapping (rayon_migration_locale_fp_actuel around moi.location);
+		
+//		write "deplacement_avec_pole_agregat : " + string(length(poles_locaux));
+		Poles meilleurPole <- poles_locaux with_max_of (each.attractivite);
+		if (meilleurPole != nil and monAgregat.monPole.attractivite >= meilleurPole.attractivite) { //  Si le pole de mon agrégat a une attractivié > attrac des  poles du voisinage
 		// Alors la proba de deplacement local vaut 0 et donc je m'en remet au depl. lointain sous condition etc;
 			set location <- flip(freq_migration_lointaine * (1 - Satisfaction)) ? deplacement_lointain() : location;
 			if (oldLoc = location){
@@ -169,17 +174,6 @@ species Foyers_Paysans schedules: []
 		}
 	}
 	
-	action deplacement_serfs
-	{
-		point oldLoc <- location;
-		set deplacement_from <- monAgregat != nil ? "agregat" : "isole";
-			if (monAgregat != nil and monAgregat.monPole != nil){ // Si dans un agrégat doté de pôle
-				do deplacement_avec_pole_agregat_serfs(oldLoc);
-			} else { // Si pas dans un agrégat doté de pôle
-				do deplacement_sans_pole_agregat_serfs(oldLoc);
-			}		
-	}
-	
 	action deplacement_sans_pole_agregat(point oldLoc) {
 		if (flip(1 - Satisfaction)) {
 			set location <- deplacement_local();
@@ -198,9 +192,26 @@ species Foyers_Paysans schedules: []
 		}	
 	}
 	
+	action deplacement_serfs
+	{
+		point oldLoc <- location;
+		set deplacement_from <- monAgregat != nil ? "agregat" : "isole";
+			if (monAgregat != nil and monAgregat.monPole != nil){ // Si dans un agrégat doté de pôle
+				do deplacement_avec_pole_agregat_serfs(oldLoc);
+			} else { // Si pas dans un agrégat doté de pôle
+				do deplacement_sans_pole_agregat_serfs(oldLoc);
+			}		
+	}
+	
+
+	
 	action deplacement_avec_pole_agregat_serfs(point oldLoc) {
-		Poles meilleurPole <- (Poles at_distance rayon_migration_locale_fp_actuel) with_max_of (each.attractivite);
-		if (monAgregat.monPole.attractivite >= meilleurPole.attractivite) {
+		
+		//Poles meilleurPole <- (Poles at_distance rayon_migration_locale_fp_actuel) with_max_of (each.attractivite);
+		// remplacement du at_distance buggé et lent
+		Foyers_Paysans moi <- self;
+		Poles meilleurPole <- (Poles overlapping (rayon_migration_locale_fp_actuel around moi.location)) with_max_of (each.attractivite);
+		if (meilleurPole != nil and monAgregat.monPole.attractivite >= meilleurPole.attractivite) {
 				set type_deplacement <- "fixe";
 		} else {
 			if (flip(1 - Satisfaction)) {
@@ -232,7 +243,11 @@ species Foyers_Paysans schedules: []
 	point deplacement_local
 	{
 		point point_local <- nil;
-		list<Poles> polesLocaux <- Poles at_distance rayon_migration_locale_fp_actuel;
+		//list<Poles> polesLocaux <- Poles at_distance rayon_migration_locale_fp_actuel;
+		// remplacement du at_distance buggé et lent
+		Foyers_Paysans moi <- self;
+		list<Poles> polesLocaux <- Poles inside (rayon_migration_locale_fp_actuel around moi.location);
+//		write "deplacement local : " + string(length(polesLocaux));
 		if (empty(polesLocaux))
 		{ // Si pas de pole, on reste sur place
 			set point_local <- location;
@@ -255,7 +270,10 @@ species Foyers_Paysans schedules: []
 		point point_lointain <- nil;
 		list<Poles> agregatsPolarisants <- Poles where (each.monAgregat != nil);
 		// Uniquement les poles qui ne sont pas dans le rayon local
-		list<Poles> agregatsPolarisantsLointains <- agregatsPolarisants - (agregatsPolarisants at_distance rayon_migration_locale_fp_actuel);
+		//list<Poles> agregatsPolarisantsLointains <- agregatsPolarisants - (agregatsPolarisants at_distance rayon_migration_locale_fp_actuel);
+		// remplacement du at_distance lent et buggé
+		Foyers_Paysans moi <- self;
+		list<Poles> agregatsPolarisantsLointains <- agregatsPolarisants - (agregatsPolarisants overlapping (rayon_migration_locale_fp_actuel around moi.location));
 		if (empty(agregatsPolarisantsLointains))
 		{ // Si pas de pole, on reste sur place
 			set point_lointain <- location;

@@ -96,7 +96,10 @@ global {
 				set shape <- myShape;
 				set mesParoisses <- cesParoisses;
 				set monPole <- cePole ;
-				list<Chateaux> chateaux_proches <- Chateaux at_distance 2000;
+				
+				//list<Chateaux> chateaux_proches <- Chateaux at_distance 2000;
+				// at_distance est extrêmement lent et renvoie des résultats étranges
+				list<Chateaux> chateaux_proches <- Chateaux inside (self.shape + 2000);
 				geometry maGeom <- shape + 200;
 				
 				loop ceChateau over: chateaux_proches {
@@ -167,7 +170,11 @@ global {
 			// FIXME : Chateaux trop proches sinon
 			
 			if (length(mesChateaux) = 0 or (self distance_to one_of(mesChateaux) > 1000)) {
-				list<Chateaux> Chateaux_proches <- Chateaux at_distance 1000;
+				
+				//list<Chateaux> Chateaux_proches <- Chateaux at_distance 1000;
+				// Remplacement du at_distance, lent et buggé
+				list<Chateaux> Chateaux_proches <- Chateaux inside (self.shape + 1000);
+				
 				if (empty(Chateaux_proches)) {
 					mesChateaux <- [];
 				} else {
