@@ -207,4 +207,34 @@ global {
 				}
 			}
 		}	
+		
+		
+		action update_satisfaction_religieuse_fp {
+			list<Eglises> eglises_paroissiales <- (Eglises where (each.eglise_paroissiale));
+			float distance_eglise <- min(eglises_paroissiales collect (each distance_to self)); // self distance_to eglise_paroissiale_proche;
+			// Longer but more explicit
+			float satisfaction_religieuse_raw <- (dist_max_eglise_actuel - distance_eglise) / (dist_max_eglise_actuel - dist_min_eglise_actuel);
+			float satisfaction_religieuse_min <- min([1.0, satisfaction_religieuse_raw]);
+			float satisfaction_religieuse_agregat <- max([0.0, satisfaction_religieuse_raw]);
+			ask fp_agregat { set satisfaction_religieuse <- satisfaction_religieuse_agregat; }
+		}
+	
+		
+		action update_satisfaction_protection_fp {
+			Chateaux plusProcheChateau <- Chateaux with_min_of (self distance_to each);
+			float satisfaction_distance <- nil;
+	
+			if (plusProcheChateau = nil) {
+				set satisfaction_distance <- min_s_distance_chateau; // 0.0 (default) or 0.01 (v5.1)
+			} else {
+				float distance_chateau <- plusProcheChateau distance_to self;
+				// Longer but more explicit
+				float satisfaction_distance_raw <- (dist_max_chateau - distance_chateau) / (dist_max_chateau - dist_min_chateau);
+				float satisfaction_distance_min <- min([1.0, satisfaction_distance_raw]);
+				set satisfaction_distance <- max([min_s_distance_chateau, satisfaction_distance_min]); // min_S_distance_chateau = 0 (default) or 0.01 (v5.1)
+				// satisfaction_distance in [0.0 -> 1.0] (default) or [0.01 -> 1.0] (v5.1)
+			}
+			float agregat_satisfaction_protection <- satisfaction_distance ^ (besoin_protection_fp_actuel);
+			ask fp_agregat { set satisfaction_protection <- agregat_satisfaction_protection; }
+		}
 	}

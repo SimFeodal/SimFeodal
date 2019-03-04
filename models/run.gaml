@@ -50,6 +50,26 @@ global schedules: shuffle(Attracteurs) + shuffle(Poles) + shuffle(Agregats) + sh
 		do update_poles;
 	}
 	
+//	reflex MaJ_satisfaction_FP_bis {		
+//		// Tous les FP d'un agrégat auront les mêmes satis religieuses et protection
+//		ask Agregats {
+//			do update_satisfaction_religieuse_fp;
+//			do update_satisfaction_protection_fp;
+//		}
+//		
+//		ask Foyers_Paysans {
+//			do update_satisfaction_materielle;
+//			if (self.monAgregat = nil){
+//				do update_satisfaction_religieuse;
+//				do update_satisfaction_protection;
+//				set Satisfaction <- 0.75 * min([satisfaction_religieuse, satisfaction_protection,  satisfaction_materielle]);
+//			} else {
+//				set Satisfaction <- 0.75 * min([satisfaction_religieuse, satisfaction_protection,  satisfaction_materielle]);
+//				set Satisfaction <- (self.monAgregat.communaute) ? Satisfaction + 0.25 : Satisfaction;
+//			}
+//		}
+//	}
+	
 	reflex MaJ_satisfaction_FP {
 		ask  Foyers_Paysans {
 			do update_satisfaction_materielle;
