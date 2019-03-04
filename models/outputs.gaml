@@ -33,6 +33,12 @@ global {
 		do save_FP(currentPrefix);
 	}
 	
+	action save_summarised_data {
+		string currentPrefix <- prefix_output;
+		if (annee = 820) {do save_parameters(currentPrefix);}
+		do save_global(currentPrefix);
+	}
+	
 	action save_parameters(string sim_name) {
 		string seed <- string(seed);
 		string besoin_protection_fp <- world.enquote(besoin_protection_fp);

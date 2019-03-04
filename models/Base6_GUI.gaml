@@ -74,8 +74,47 @@ experiment Exp_6_0_Base type: batch repeat: 2 keep_seed: false until: (annee >= 
 	// 1 experiment
 }
 
-experiment Exp_6_1_Debug type: gui repeat: 1 keep_seed: false until: (annee >= fin_simulation){
-	parameter 'save_outputs' var: save_outputs init: true;
-	parameter 'prefix' var: prefix_output init: "6_1_Debug";
+experiment Exp_6_1_Debug type: gui repeat: 1 keep_seed: false benchmark: true until: (annee >= fin_simulation){
+	parameter 'save_outputs' var: save_outputs init: false;
+	parameter "summarised_outputs" var: summarised_outputs init: true;
+	parameter 'prefix' var: prefix_output init: "6_Debug_TestGrowth";
+	parameter 'experimentType' var: experimentType init: "gui";
+	parameter 'init_nb_total_fp' var: init_nb_total_fp init: 4000;
+	parameter 'croissance_demo' var: croissance_demo init: 0.0;
 	// 1 experiment
+
+	output {
+		monitor "Nombre Chateaux" value: length(Chateaux);
+		display "Carte" type: "opengl" {
+		species Paroisses transparency: 0.9 ;
+	//	species Zones_Prelevement transparency: 0.9;
+	//	agents "Eglises Paroissiales" value: Eglises where (each.eglise_paroissiale) aspect: base transparency: 0.5;
+		species Chateaux aspect: base ;
+	//			species Foyers_Paysans transparency: 0.5;
+		species Agregats transparency: 0.7;
+	//		text string(Annee) size: 10000 position: {0, 1} color: rgb("black");
+			}
+		}	
 }
+
+experiment Exp_6_1_testGrowth type: batch repeat: 4 keep_seed: false benchmark: false until: (annee >= fin_simulation){
+	parameter 'save_outputs' var: save_outputs init: false;
+	parameter "summarised_outputs" var: summarised_outputs init: true;
+	parameter 'prefix' var: prefix_output init: "6_1_testGrowth";
+	parameter 'experimentType' var: experimentType init: "batch";
+	parameter 'init_nb_total_fp' var: init_nb_total_fp init: 4000;
+	// - croissance population : 1%, 3%, 5%, 12%
+	parameter 'croissance_demo' var: croissance_demo among: [0.0, 0.01, 0.03, 0.05, 0.12];
+	// 5 experiments * 4 replications
+}
+
+experiment Exp_6_1_testPopInit type: batch repeat: 4 keep_seed: false benchmark: false until: (annee >= fin_simulation){
+	parameter 'save_outputs' var: save_outputs init: false;
+	parameter "summarised_outputs" var: summarised_outputs init: true;
+	parameter 'prefix' var: prefix_output init: "6_1_testPopInit";
+	parameter 'experimentType' var: experimentType init: "batch";
+	// - sans croissance : 10E3, 15E3, 20E3, 25E3
+	parameter 'init_nb_total_fp' var: init_nb_total_fp among: [4000, 10000, 15000, 20000, 25000];
+	// 5 experiments * 4 replications
+}
+

@@ -22,8 +22,8 @@ global schedules: shuffle(Attracteurs) + shuffle(Poles) + shuffle(Agregats) + sh
 {
     
 	init {
-		 gama.pref_errors_warnings_errors <- false; // Les warnings ne doivent pas stopper le modèle
-		//gama.pref_errors_warnings_errors <- true; // Pour debug
+		gama.pref_errors_warnings_errors <- false; // Les warnings ne doivent pas stopper le modèle
+		// gama.pref_errors_warnings_errors <- true; // Pour debug
 		do generer_monde;
 		set espace_dispo_chateaux <- worldextent - 3 #km;
 	}
@@ -97,7 +97,7 @@ global schedules: shuffle(Attracteurs) + shuffle(Poles) + shuffle(Agregats) + sh
 			}
 		}
 	}
-
+	
 	
 	reflex MaJ_Droits_Seigneurs {
 		ask Seigneurs where (each.type != "Grand Seigneur") {
@@ -120,7 +120,7 @@ global schedules: shuffle(Attracteurs) + shuffle(Poles) + shuffle(Agregats) + sh
 		do prelevements_fonciers_gs;
 		do prelevements_haute_justice_gs;
 	}
-
+	
 	reflex Dons_PS when: (annee >= debut_cession_droits_seigneurs) {
 		ask Seigneurs where (each.type != "Grand Seigneur"){
 			do don_droits_ps;
@@ -135,8 +135,8 @@ global schedules: shuffle(Attracteurs) + shuffle(Poles) + shuffle(Agregats) + sh
 					do don_chateau(chateau_donne: ceChateau);
 				}
 			} // On ne donne pas
-			}
 		}
+	}
 	
 	reflex MaJ_Puissance_Seigneurs {
 		ask Seigneurs {
@@ -145,9 +145,9 @@ global schedules: shuffle(Attracteurs) + shuffle(Poles) + shuffle(Agregats) + sh
 	}
 	
 	reflex Promotion_Chateaux when: chateaux_promouvables{
-			ask Chateaux where (each.type = "Petit Chateau"){
-				do promotion_chateau;
-			}	
+		ask Chateaux where (each.type = "Petit Chateau"){
+			do promotion_chateau;
+		}	
 	}
 	
 	reflex Constructions_chateaux when: annee >= debut_construction_chateaux{
@@ -157,7 +157,7 @@ global schedules: shuffle(Attracteurs) + shuffle(Poles) + shuffle(Agregats) + sh
 		if (espace_dispo_chateaux != nil){
 			ask Seigneurs{
 				if (espace_dispo_chateaux != nil){do construction_chateaux;}
-		}
+			}
 		}
 
 	}
@@ -187,6 +187,9 @@ global schedules: shuffle(Attracteurs) + shuffle(Poles) + shuffle(Agregats) + sh
 	reflex save_data when: save_outputs {
 		do save_outputs_data;
 	}
+	
+	reflex save_summarised_outputs when: summarised_outputs{
+		do save_summarised_data;
 	}
 	
 	
