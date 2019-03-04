@@ -179,14 +179,16 @@ species Seigneurs schedules: [] {
 		);
 		
 		loop times: nb_chateaux_potentiels {
+			if (espace_dispo_chateaux != nil) {
 			if flip(proba_creation){
 				// Si création tirée
-				geometry espace_disponible <- reduced_worldextent - (dist_min_entre_chateaux around Chateaux);
+				geometry espace_disponible <- espace_dispo_chateaux;
+				
 				point location_chateau <- nil;
 				Agregats choix_agregat <- nil;
 				if (is_gs){ // Chateau de GS
 					if (flip(proba_chateau_gs_agregat)){
-						set choix_agregat <- one_of(Agregats inside espace_disponible);
+						set choix_agregat <- one_of(agregats_loins_chateaux);
 					}
 					if (choix_agregat != nil){
 						set location_chateau <- any_location_in(choix_agregat.shape);
@@ -194,7 +196,7 @@ species Seigneurs schedules: [] {
 						set location_chateau <- any_location_in(espace_disponible);
 					}
 				} else { // chateau de PS
-					list<Agregats> agregats_possibles <- (Agregats where (length(each.mesChateaux) = 0)) inside espace_disponible;
+					list<Agregats> agregats_possibles <- agregats_loins_chateaux where (length(each.mesChateaux) = 0);
 					set choix_agregat <- !empty(agregats_possibles) ? agregats_possibles closest_to self : nil;
 					set location_chateau <- (choix_agregat != nil) ? any_location_in(choix_agregat.shape + 500) : any_location_in(espace_disponible);
 					// On met à jour les droits de haute justice pour les PS au passage
@@ -223,6 +225,10 @@ species Seigneurs schedules: [] {
 					set rayon_zps <- rayon_chateau;
 					set ceChateau <- self;
 				}
+				geometry espace_affecte <- dist_min_entre_chateaux around ceChateau.location;
+				set espace_dispo_chateaux <- espace_dispo_chateaux - espace_affecte;
+				list<Agregats> agregats_dans_espace_affecte <- distinct(Agregats inside espace_affecte);
+				set agregats_loins_chateaux <- distinct(agregats_loins_chateaux - agregats_dans_espace_affecte);
 				set chatelain <- true;
 				// Construction ZPs
 				Seigneurs ceSeigneur <- self;
@@ -237,6 +243,7 @@ species Seigneurs schedules: [] {
 				}
 			}
 		} // Sinon, on ne fait rien
+	}
 	}
 	
 	action update_agregats_seigneurs {

@@ -192,8 +192,10 @@ global torus: false{
 
 	bool serfs_mobiles <- true; // FIXME : Toujours true depuis la v5
 	
-
+	geometry espace_dispo_chateaux <- nil;
+	list<Agregats> agregats_loins_chateaux <- nil;
 	
+
 	action update_variables_temporelles {
 		
 		set annee <- annee + duree_step;

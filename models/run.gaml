@@ -26,7 +26,7 @@ global schedules: shuffle(Attracteurs) + shuffle(Poles) + shuffle(Agregats) + sh
 		//gama.pref_errors_warnings_errors <- true; // Pour debug
 		float t <- machine_time;
 		do generer_monde;
-		if (benchmark){write 'init : ' + string(machine_time - t);}
+		set espace_dispo_chateaux <- worldextent - 3 #km;
 	}
 	
 	reflex MaJ_globals {
@@ -162,11 +162,15 @@ global schedules: shuffle(Attracteurs) + shuffle(Poles) + shuffle(Agregats) + sh
 	}
 	
 	reflex Constructions_chateaux when: annee >= debut_construction_chateaux{
-		float t <- machine_time;
-			do construction_chateaux;
+		//set espace_dispo_chateaux <- reduced_worldextent - (dist_min_entre_chateaux around Chateaux);
+		
+		set agregats_loins_chateaux <- Agregats inside espace_dispo_chateaux;
+		if (espace_dispo_chateaux != nil){
+			ask Seigneurs{
+				if (espace_dispo_chateaux != nil){do construction_chateaux;}
 		}
 		}
-			if (benchmark){write 'Constructions_chateaux : ' + string(machine_time - t);}
+
 	}
 	
 	
@@ -193,7 +197,7 @@ global schedules: shuffle(Attracteurs) + shuffle(Poles) + shuffle(Agregats) + sh
 	reflex update_outputs when: (annee > debut_simulation){
 		float t <- machine_time;
 		do update_summarised_outputs;
-		if (benchmark){write 'update_outputs: ' + string(machine_time - t);}
+		//write "espace_dispo_chateaux : " + string(espace_dispo_chateaux.area / 1E6) + "km²";
 		write "Seed : " + seed + " / Annee : " + annee + " / Nb Agregats : " + length(Agregats) + " / TxIsoles : " + prop_FP_isoles;
 	}
 	
