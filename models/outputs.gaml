@@ -34,10 +34,10 @@ global {
 	}
 	
 	action save_parameters(string sim_name) {
-		string rayon_migration_locale_fp <-  world.enquote(rayon_migration_locale_fp);
 		string seed <- string(seed);
 		string besoin_protection_fp <- world.enquote(besoin_protection_fp);
 		string proba_gain_haute_justice_gs <- world.enquote(proba_gain_haute_justice_gs);
+		string proba_gain_haute_justice_chateau_ps <- world.enquote(proba_gain_haute_justice_chateau_ps);
 		string periode_promotion_chateaux <- world.enquote(periode_promotion_chateaux);
 		string dist_min_eglise <- world.enquote(dist_min_eglise);
 		string dist_max_eglise <- world.enquote(dist_max_eglise);
@@ -151,11 +151,13 @@ global {
 		int nbGdChateaux <- Chateaux count (each.type = "Grand Chateau");
 		int nbEglises <- length(Eglises);
 		int nbEglisesParoissiales <-  Eglises count (each.eglise_paroissiale);
+		int nbAgregats <- length(Agregats);
+		
 		string seed <- world.enquote(seed);
 		
 		save [
 				seed, sim_name, annee,
-				nbChateaux, nbGdChateaux,
+				nbChateaux, nbGdChateaux, nbAgregats,
 				nbEglises, nbEglisesParoissiales,
 				distance_eglises, distance_eglises_paroissiales,
 				prop_FP_isoles, charge_fiscale, dist_ppv_agregat,total_duration
@@ -258,7 +260,7 @@ global {
 				float SatisfactionParoisse <- Satisfaction_Paroisse with_precision 3;
 				string geom <- world.enquote(shape with_precision 2);
 				int id_paroisse <- int(replace(self.name, 'Paroisses', ''));
-				int moneglise <- (monEglise != nil) ? int(replace(monEglise.name, 'Agregats', '')) : -1;
+				int moneglise <- (monEglise != nil) ? int(replace(monEglise.name, 'Eglises', '')) : -1;
 
 				save [
 					seed, sim_name, annee, id_paroisse,
