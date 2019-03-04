@@ -123,7 +123,7 @@ global {
 				}
 				set monAgregat <- thisAg;
 			}
-			if (annee >= apparition_communautes){do update_communaute;}
+			if (proba_institution_communaute > 0.0){do update_communaute;}
 		}
  	}
     
@@ -191,19 +191,19 @@ global {
 		
 		action update_communaute {
 			if (!self.communaute) {
-				if (flip(proba_apparition_communaute)) {
+				if (flip(proba_institution_communaute)) {
 					set communaute <- true;
 					ask self.fp_agregat {
-						set communaute <- true;
+						set appartenance_communaute <- true;
 					}
 				} else {
 					ask self.fp_agregat {
-						set communaute <- false;
+						set appartenance_communaute <- false;
 					}
 				}
 			} else {
 				ask self.fp_agregat {
-					set communaute <- true;
+					set appartenance_communaute <- true;
 				}
 			}
 		}	
@@ -216,7 +216,7 @@ global {
 			float satisfaction_religieuse_raw <- (dist_max_eglise_actuel - distance_eglise) / (dist_max_eglise_actuel - dist_min_eglise_actuel);
 			float satisfaction_religieuse_min <- min([1.0, satisfaction_religieuse_raw]);
 			float satisfaction_religieuse_agregat <- max([0.0, satisfaction_religieuse_raw]);
-			ask fp_agregat { set satisfaction_religieuse <- satisfaction_religieuse_agregat; }
+			ask fp_agregat { set s_religieuse <- satisfaction_religieuse_agregat with_precision 2; }
 		}
 	
 		
@@ -235,6 +235,6 @@ global {
 				// satisfaction_distance in [0.0 -> 1.0] (default) or [0.01 -> 1.0] (v5.1)
 			}
 			float agregat_satisfaction_protection <- satisfaction_distance ^ (besoin_protection_fp_actuel);
-			ask fp_agregat { set satisfaction_protection <- agregat_satisfaction_protection; }
+			ask fp_agregat { set s_protection <- agregat_satisfaction_protection with_precision 2; }
 		}
 	}

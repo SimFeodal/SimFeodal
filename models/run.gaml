@@ -29,8 +29,8 @@ global schedules: shuffle(Attracteurs) + shuffle(Poles) + shuffle(Agregats) + sh
 	}
 	
 	reflex MaJ_globals {
-		do update_variables_temporelles;
 		set annee <- annee + duree_step;
+		do update_variables_temporelles;
 		write string(annee);
 	}
 		
@@ -75,29 +75,21 @@ global schedules: shuffle(Attracteurs) + shuffle(Poles) + shuffle(Agregats) + sh
 			do update_satisfaction_materielle;
 			do update_satisfaction_religieuse;
 			do update_satisfaction_protection;
-			set Satisfaction <- 0.75 * min([satisfaction_religieuse, satisfaction_protection,  satisfaction_materielle]);
+			set satisfaction <- 0.75 * min([s_religieuse, s_protection,  s_materielle]);
 			if (self.monAgregat != nil){
-				set Satisfaction <- (self.monAgregat.communaute) ? Satisfaction + 0.25 : Satisfaction;
+				set satisfaction <- (self.monAgregat.communaute) ? satisfaction + 0.25 : satisfaction;
 			}
 		}
 	}
 	
-
 	reflex Deplacement_FP {
 		ask Foyers_Paysans where (each.mobile) {
 			do deplacement;
 		}
-		if (serfs_mobiles){ // Vaut toujours true maintenant (depuis la v5)
-			ask Foyers_Paysans where (!each.mobile){
+		ask Foyers_Paysans where (!each.mobile){
 				do deplacement_serfs;
 			}
-		} else {
-			ask Foyers_Paysans where (!each.mobile){
-				set type_deplacement <- "Non mobile";
-			}
-		}
 	}
-	
 	
 	reflex MaJ_Droits_Seigneurs {
 		ask Seigneurs where (each.type != "Grand Seigneur") {
@@ -151,18 +143,13 @@ global schedules: shuffle(Attracteurs) + shuffle(Poles) + shuffle(Agregats) + sh
 	}
 	
 	reflex Constructions_chateaux when: annee >= debut_construction_chateaux{
-		//set espace_dispo_chateaux <- reduced_worldextent - (dist_min_entre_chateaux around Chateaux);
-		
 		set agregats_loins_chateaux <- Agregats inside espace_dispo_chateaux;
 		if (espace_dispo_chateaux != nil){
 			ask Seigneurs{
 				if (espace_dispo_chateaux != nil){do construction_chateaux;}
 			}
 		}
-
 	}
-	
-	
 	
 	reflex MaJ_Agregats{
 		do update_agregats;
@@ -180,7 +167,6 @@ global schedules: shuffle(Attracteurs) + shuffle(Poles) + shuffle(Agregats) + sh
 	
 	reflex update_outputs when: (annee > debut_simulation){
 		do update_summarised_outputs;
-		//write "espace_dispo_chateaux : " + string(espace_dispo_chateaux.area / 1E6) + "km²";
 		write "Seed : " + seed + " / Annee : " + annee + " / Nb Agregats : " + length(Agregats) + " / TxIsoles : " + prop_FP_isoles;
 	}
 	
@@ -191,7 +177,6 @@ global schedules: shuffle(Attracteurs) + shuffle(Poles) + shuffle(Agregats) + sh
 	reflex save_summarised_outputs when: summarised_outputs{
 		do save_summarised_data;
 	}
-	
 	
 	reflex fin_simulation {
 		set nb_chateaux <- length(Chateaux);

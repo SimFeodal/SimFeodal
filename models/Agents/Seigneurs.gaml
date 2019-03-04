@@ -35,12 +35,12 @@ global {
 			
 			set droits_haute_justice <- false;
 			
-			if (flip(proba_collecter_loyer)){
-				int rayon_zone <- rayon_min_zp_ps + rnd(rayon_max_zp_ps - rayon_min_zp_ps);
-				float txPrelev <- min_taux_prelevement_zp_ps + rnd(max_taux_prelevement_zp_ps - min_taux_prelevement_zp_ps);
+			if (flip(proba_collecter_loyer_ps)){
+				int rayon_zp_ps <- rayon_min_zp_ps + rnd(rayon_max_zp_ps - rayon_min_zp_ps);
+				float taux_prelevement_zp <- min_taux_prelevement_zp_ps + rnd(max_taux_prelevement_zp_ps - min_taux_prelevement_zp_ps);
 				Seigneurs ceSeigneur <- self;
 				ask world {
-					do creer_zone_prelevement (centre_zone: ceSeigneur.location, rayon: rayon_zone, proprio: ceSeigneur, typeDroit: "foncier", txPrelev: txPrelev, chateau_zp: nil);
+					do creer_zone_prelevement (centre_zone: ceSeigneur.location, rayon: rayon_zp_ps, proprio: ceSeigneur, typeDroit: "foncier", txPrelev: taux_prelevement_zp, chateau_zp: nil);
 				}
 				
 			}			
@@ -80,12 +80,12 @@ species Seigneurs schedules: [] {
 	
 	action gains_droits_ps {		
 		if flip(proba_creation_zp_autres_droits_ps){
-			int rayon_zone <- rayon_min_zp_ps + rnd(rayon_max_zp_ps - rayon_min_zp_ps);
-			float taux_ZP <- min_taux_prelevement_zp_ps + rnd(max_taux_prelevement_zp_ps - min_taux_prelevement_zp_ps);
+			int rayon_zp_ps <- rayon_min_zp_ps + rnd(rayon_max_zp_ps - rayon_min_zp_ps);
+			float taux_prelevement_zp <- min_taux_prelevement_zp_ps + rnd(max_taux_prelevement_zp_ps - min_taux_prelevement_zp_ps);
 			point location_zp <- any_location_in(3000 around self.location inter reduced_worldextent);
 			Seigneurs ceSeigneur <- self;
 			ask world {
-				do creer_zone_prelevement (centre_zone: location_zp, rayon: rayon_zone, proprio: ceSeigneur, typeDroit: "autres_droits", txPrelev: taux_ZP, chateau_zp: nil);
+				do creer_zone_prelevement (centre_zone: location_zp, rayon: rayon_zp_ps, proprio: ceSeigneur, typeDroit: "autres_droits", txPrelev: taux_prelevement_zp, chateau_zp: nil);
 			}
 		}
 	}
@@ -108,7 +108,7 @@ species Seigneurs schedules: [] {
 			ask Chateaux where (each.proprietaire = ceSeigneur) {
 				Chateaux ceChateau <- self;
 				ask world {
-					do creer_zone_prelevement (centre_zone: ceChateau.location, rayon: ceChateau.rayon_zps, proprio: ceSeigneur, typeDroit: "haute_justice", txPrelev: 1.0, chateau_zp: ceChateau);
+					do creer_zone_prelevement (centre_zone: ceChateau.location, rayon: ceChateau.rayon_zp_chateau, proprio: ceSeigneur, typeDroit: "haute_justice", txPrelev: taux_prelevement_zp_chateau, chateau_zp: ceChateau);
 				}
 				ask Zones_Prelevement where (each.monChateau = ceChateau){
 					set gardien <- ceChateau.gardien;
@@ -119,14 +119,14 @@ species Seigneurs schedules: [] {
 	
 	action don_droits_ps {
 		Seigneurs seigneur_donateur <- self;
-		ask Zones_Prelevement where (each.proprietaire = seigneur_donateur and each.gardien = nil){
+		ask Zones_Prelevement where (each.monChateau = nil and each.proprietaire = seigneur_donateur and each.gardien = nil){
 			if (flip(proba_cession_droits_zp)) { // On donne
 				Seigneurs seigneur_beneficiaire <- nil;
 				if (flip(proba_cession_locale)){ // Cession à un PS local
-					set seigneur_beneficiaire <- one_of(Seigneurs where (each.type = "Petit Seigneur"and (each distance_to self < rayon_cession_locale_droits_ps) and each != self));
+					set seigneur_beneficiaire <- one_of((Seigneurs - self) where (each.type = "Petit Seigneur"and (each distance_to self < rayon_cession_locale_droits_ps)));
 				}
 				if (seigneur_beneficiaire = nil){ // Comme ça, on capte aussi les cas où il n'y a pas de PS à proximité
-					set seigneur_beneficiaire <- one_of(Seigneurs where (each.type = "Petit Seigneur" and (each distance_to self > rayon_cession_locale_droits_ps) and each != self));
+					set seigneur_beneficiaire <- one_of((Seigneurs - self) where (each.type = "Petit Seigneur" and (each distance_to self > rayon_cession_locale_droits_ps)));
 				}
 				set gardien <- seigneur_beneficiaire;	
 			} // On ne donne pas
@@ -165,22 +165,22 @@ species Seigneurs schedules: [] {
 	
 	action construction_chateaux {	
 		
-		float proba_creation <- self.type =  "Grand Seigneur" ? (1 - exp(-0.00064 * self.puissance) ) : self.puissance / 2000;
+		float proba_creer_chateau <- self.type =  "Grand Seigneur" ? (1 - exp(-0.00064 * self.puissance) ) : self.puissance / 2000;
 		int  nb_chateaux_potentiels <- self.type =  "Grand Seigneur" ? nb_max_chateaux_par_tour_gs : nb_max_chateaux_par_tour_ps;
 		bool is_gs <-  self.type =  "Grand Seigneur" ? true : false;
 			
 		float maxPuissance <- max(Seigneurs collect each.puissance) ;
 		float minPuissance <- min(Seigneurs collect each.puissance) ;
-		int rayon_chateau <- int(max([
-			min_rayon_zp_chateau, min([
-				max_rayon_zp_chateau,
+		int rayon_zp <- int(max([
+			rayon_min_zp_chateau, min([
+				rayon_max_zp_chateau,
 				( maxPuissance / (maxPuissance - minPuissance) )- (self.puissance / (maxPuissance - minPuissance))
 				])])
 		);
 		
 		loop times: nb_chateaux_potentiels {
 			if (espace_dispo_chateaux != nil) {
-			if flip(proba_creation){
+			if flip(proba_creer_chateau){
 				// Si création tirée
 				geometry espace_disponible <- espace_dispo_chateaux;
 				
@@ -207,7 +207,7 @@ species Seigneurs schedules: [] {
 							ask Chateaux where (each.proprietaire = ceSeigneur) {
 								Chateaux ceChateau <- self;
 								ask world {
-									do creer_zone_prelevement (centre_zone: ceChateau.location, rayon: ceChateau.rayon_zps, proprio: ceSeigneur, typeDroit: "haute_justice", txPrelev: 1.0, chateau_zp: ceChateau);
+									do creer_zone_prelevement (centre_zone: ceChateau.location, rayon: ceChateau.rayon_zp_chateau, proprio: ceSeigneur, typeDroit: "haute_justice", txPrelev: taux_prelevement_zp_chateau, chateau_zp: ceChateau);
 								}
 							}
 						}
@@ -222,7 +222,7 @@ species Seigneurs schedules: [] {
 						ask monAgregat {mesChateaux <+ myself;}
 					}
 					set proprietaire <- myself;
-					set rayon_zps <- rayon_chateau;
+					set rayon_zp_chateau <- rayon_zp;
 					set ceChateau <- self;
 				}
 				geometry espace_affecte <- dist_min_entre_chateaux around ceChateau.location;
@@ -233,12 +233,12 @@ species Seigneurs schedules: [] {
 				// Construction ZPs
 				Seigneurs ceSeigneur <- self;
 				ask world {
-					do creer_zone_prelevement (centre_zone: location_chateau, rayon: rayon_chateau, proprio: ceSeigneur, typeDroit: "foncier", txPrelev: 1.0, chateau_zp: ceChateau);
-					do creer_zone_prelevement (centre_zone: location_chateau, rayon: rayon_chateau, proprio: ceSeigneur, typeDroit: "autres_droits", txPrelev: 1.0, chateau_zp: ceChateau);
+					do creer_zone_prelevement (centre_zone: location_chateau, rayon: rayon_zp, proprio: ceSeigneur, typeDroit: "foncier", txPrelev: taux_prelevement_zp_chateau, chateau_zp: ceChateau);
+					do creer_zone_prelevement (centre_zone: location_chateau, rayon: rayon_zp, proprio: ceSeigneur, typeDroit: "autres_droits", txPrelev: taux_prelevement_zp_chateau, chateau_zp: ceChateau);
 				}
 				if (droits_haute_justice){
 					ask world {
-						do creer_zone_prelevement (centre_zone: location_chateau, rayon: rayon_chateau, proprio: ceSeigneur, typeDroit: "haute_justice", txPrelev: 1.0, chateau_zp: ceChateau);
+						do creer_zone_prelevement (centre_zone: location_chateau, rayon: rayon_zp, proprio: ceSeigneur, typeDroit: "haute_justice", txPrelev: taux_prelevement_zp_chateau, chateau_zp: ceChateau);
 					}
 				}
 			}

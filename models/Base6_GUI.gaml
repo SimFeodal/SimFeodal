@@ -23,7 +23,7 @@ output {
 		monitor "Nombre FP dans agregat" value: Foyers_Paysans count (each.monAgregat != nil);
 		monitor "Nombre d'agregats" value: length(Agregats);
 
-		monitor "Nombre FP Comm." value: Foyers_Paysans count (each.communaute);
+		monitor "Nombre FP Comm." value: Foyers_Paysans count (each.appartenance_communaute);
 		monitor "Nombre Seigneurs" value: length(Seigneurs);
 		monitor "Nombre Grands Seigneurs" value: Seigneurs count (each.type = "Grand Seigneur");
 		monitor "Nombre Chatelains" value: Seigneurs count (each.chatelain);
@@ -32,7 +32,7 @@ output {
 		monitor "Nombre Eglises Paroissiales" value: Eglises count (each.eglise_paroissiale);
 		monitor "Nombre Chateaux" value: length(Chateaux);
 		monitor "% FP dispersés" value: Foyers_Paysans count (each.monAgregat = nil) / length(Foyers_Paysans) * 100;
-		monitor "Sat moyenne" value: mean(Foyers_Paysans collect each.Satisfaction);
+		monitor "Sat moyenne" value: mean(Foyers_Paysans collect each.satisfaction);
 		
 		display "Carte" type: "opengl" {
 			species Paroisses transparency: 0.9 ;
@@ -53,10 +53,10 @@ output {
 	            data "% FP dans agrégat" value: Foyers_Paysans count (each.monAgregat = nil) / length(Foyers_Paysans) * 100 color: #blue; 
 	        }
     		chart "Satisfaction_FP" type:series position: {0.5,0} size: {0.5,1}{
-    			data "Satisfaction Materielle" value: mean(Foyers_Paysans collect each.satisfaction_materielle) color: #blue;
-    			data "Satisfaction Spirituelle" value: mean(Foyers_Paysans collect each.satisfaction_religieuse) color: #green;
-    			data "Satisfaction Protection" value: mean(Foyers_Paysans collect each.satisfaction_protection) color: #red;
-    			data "Satisfaction" value: mean(Foyers_Paysans collect each.Satisfaction) color: #black;
+    			data "Satisfaction Materielle" value: mean(Foyers_Paysans collect each.s_materielle) color: #blue;
+    			data "Satisfaction Spirituelle" value: mean(Foyers_Paysans collect each.s_religieuse) color: #green;
+    			data "Satisfaction Protection" value: mean(Foyers_Paysans collect each.s_protection) color: #red;
+    			data "Satisfaction" value: mean(Foyers_Paysans collect each.satisfaction) color: #black;
     		}
     	}
 	}

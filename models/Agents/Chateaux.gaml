@@ -23,7 +23,7 @@ import "Zones_Prelevement.gaml"
 		Agregats monAgregat <- nil;
 		Seigneurs proprietaire <- nil;
 		Seigneurs gardien <- nil;
-		int rayon_zps;
+		int rayon_zp_chateau;
 		bool droits_haute_justice <- false;
 		
 		

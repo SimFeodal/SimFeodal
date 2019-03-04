@@ -66,11 +66,11 @@ global {
 			set location <- any_location_in(one_of(Agregats collect each.shape) inter reduced_worldextent);
 			set initial <- true;
 			
-			int rayon_zone <- rayon_min_zp_ps + rnd(rayon_max_zp_ps - rayon_min_zp_ps);
+			int rayon_zp_ps <- rayon_min_zp_ps + rnd(rayon_max_zp_ps - rayon_min_zp_ps);
 			float txPrelev <- min_taux_prelevement_zp_ps + rnd(max_taux_prelevement_zp_ps - min_taux_prelevement_zp_ps);
 			Seigneurs ceSeigneur <- self;
 			ask world {
-				do creer_zone_prelevement (centre_zone: ceSeigneur.location, rayon: rayon_zone, proprio: ceSeigneur, typeDroit: "foncier", txPrelev: txPrelev, chateau_zp: nil);
+				do creer_zone_prelevement (centre_zone: ceSeigneur.location, rayon: rayon_zp_ps, proprio: ceSeigneur, typeDroit: "foncier", txPrelev: txPrelev, chateau_zp: nil);
 			}
 		}
 	}

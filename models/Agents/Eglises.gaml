@@ -34,7 +34,7 @@ global {
 	}
 	
 	action create_paroisses {
-		loop agregat over: shuffle(Agregats where (length(each.fp_agregat) > nb_min_paroissiens)) {
+		loop agregat over: shuffle(Agregats) {
 			int nb_FP_agregat <- length(agregat.fp_agregat) ;
 			int nb_paroisses_agregat <- Paroisses count (each intersects agregat) ;
 			
@@ -116,6 +116,7 @@ species Paroisses {
 	rgb color <- #white ;
 	float Satisfaction_Paroisse <- 1.0 ;
 	string mode_promotion <- "nil" update: "nil";
+	int nb_paroissiens_insatisfaits;
 	
 	action update_fideles {
 		set mesFideles <- Foyers_Paysans inside self.shape ;
@@ -124,9 +125,9 @@ species Paroisses {
 
 	action update_satisfaction {
 		if length(mesFideles) > 0 {
-			int nb_paroissiens_mecontents <- mesFideles count (each.satisfaction_religieuse = 0.0);
+			set nb_paroissiens_insatisfaits <- mesFideles count (each.s_religieuse = 0.0);
 			// write string(self) + " : Nb Paroissiens : " + string(length(mesFideles)) + " / Mecontents : "+ string(nb_paroissiens_mecontents);
-			if nb_paroissiens_mecontents > nb_paroissiens_mecontents_necessaires {
+			if nb_paroissiens_insatisfaits > nb_requis_paroissiens_insatisfaits {
 				set Satisfaction_Paroisse <- 0.0;
 			} else {
 				set Satisfaction_Paroisse <- 1.0 ;

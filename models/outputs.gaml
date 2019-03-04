@@ -48,6 +48,7 @@ global {
 		string dist_min_eglise <- world.enquote(dist_min_eglise);
 		string dist_max_eglise <- world.enquote(dist_max_eglise);
 		string rayon_migration_locale_fp <- world.enquote(rayon_migration_locale_fp);
+		string puissance_communautes <- world.enquote(puissance_communautes);
 		
 		save [
 				seed, sim_name,
@@ -79,7 +80,8 @@ global {
 				proba_fp_dependant, // avant v6 : proba_FP_dependants
 				besoin_protection_fp, // nouveau paramètre en v6 : vallait [800::0,960::0.2,980::0.4,1000::0.6,1020::0.8,1040::1.0] avant		
 				// Agrégats
-				puissance_communautes,
+				puissance_communautes, // Changement de type: de float (0.25) à time-dependant : [800::0.2,1060::0.3,1100::0.4,1160::0.5]
+				proba_institution_communaute,
 				coef_redevances,
 				// Seigneurs
 				objectif_nombre_seigneurs, // avant v6 :  nombre_seigneurs_objectif
@@ -88,7 +90,6 @@ global {
 				debut_garde_chateaux_seigneurs, // TODO: nouveau paramètre en v6 : vallait 950 avant
 				// Chateaux
 				debut_construction_chateaux, // avant v6 : apparition_chateaux
-				nb_chateaux_potentiels_gs, // avant v6 : nb_chateaux_potentiels_GS
 				periode_promotion_chateaux, // nouveau paramètre en v6 : vallait [800::false,960::true,1060::false] avant
 				/////////////////////////////
 				// Paramètres de mécanisme //
@@ -100,15 +101,13 @@ global {
 				dist_max_chateau, // TODO : nouveau paramètre en v6 : vallait 5000 avant
 				min_s_distance_chateau, // TODO : nouveau paramètre en v6 : vallait 0.0 avant
 				rayon_migration_locale_fp, // TODO : avant v6 : seuils_max_dem_local_st
-				freq_migration_lointaine, // TODO : avant v6 : proba_ponderee_deplacement_lointain
+				prop_migration_lointaine_fp, // TODO : avant v6 : proba_ponderee_deplacement_lointain
 				// Agregats
 				nb_min_fp_agregat, // TODO : avant v6 : nombre_FP_agregat
-				proba_apparition_communaute,
-				apparition_communautes,
 				distance_detection_agregat, // TODO : avant v6 : distance_detection_agregats
 				distance_fusion_agregat, // TODO : nouveau paramètre en v6 : vallait 100 avant
 				// Seigneurs
-				proba_collecter_loyer,
+				proba_collecter_loyer_ps,
 				proba_creation_zp_autres_droits_ps, // avant v6 : calcul différent, vallait ~ 5% + 5%
 				rayon_min_zp_ps, // TODO : avant v6 : rayon_min_PS
 				rayon_max_zp_ps, // TODO : avant v6 : rayon_max_PS
@@ -118,8 +117,6 @@ global {
 				rayon_cession_locale_droits_ps, // TODO : nouveau paramètre en v6 : vallait 3000 avant
 				proba_don_chateau, // TODO : avant v6 : proba_don_chateau_GS
 				proba_gain_haute_justice_chateau_ps, // TODO : avant v6 : proba_gain_droits_hauteJustice_chateau
-				proba_gain_droits_banaux_chateau,
-				proba_gain_droits_basse_justice_chateau, // TODO : avant v6 : proba_gain_droits_basseMoyenneJustice_chateau
 
 				// FIXME : A reprendre
 				droits_haute_justice_zp, // TODO : nouveau paramètre en v6 : vallait 1 avant
@@ -130,16 +127,15 @@ global {
 				autres_droits_zp_cession, // TODO : nouveau paramètre en v6 : vallait 0.35 avant
 				
 				// Chateaux
-				min_rayon_zp_chateau, // TODO : nouveau paramètre en v6, vallait 2000 avant
-				max_rayon_zp_chateau, // TODO : nouveau paramètre en v6, vallait 10000 avant
+				rayon_min_zp_chateau, // TODO : nouveau paramètre en v6, vallait 2000 avant
+				rayon_max_zp_chateau, // TODO : nouveau paramètre en v6, vallait 10000 avant
 				dist_min_entre_chateaux,  // TODO : nouveau paramètre en v6, vallait 3000 ou 5000 avant (PS ou GS)
 				proba_chateau_gs_agregat, // TODO : avant v6 : proba_chateau_agregat
 				proba_promotion_chateau_pole, // TODO : avant v6 : proba_promotion_groschateau_multipole
 				proba_promotion_chateau_isole, // TODO : avant v6 : proba_promotion_groschateau_autre
 				// Eglises paroissiales
-				nb_min_paroissiens, // FIXME : param peu utile, cf. déclaration dans global
 				seuil_creation_paroisse,
-				nb_paroissiens_mecontents_necessaires,
+				nb_requis_paroissiens_insatisfaits,
 				// Poles d'attraction
 				attractivite_petit_chateau, // TODO : avant v6 : attrac_PC
 				attractivite_gros_chateau, // TODO : avant v6 : attrac_GC
@@ -197,7 +193,7 @@ global {
 		string seed <- enquote(seed);
 		
 		ask Agregats {
-			int nbFP <- length(fp_agregat);
+			int nombre_fp_agregat <- length(fp_agregat);
 			float superficie <- shape.area;
 			string geom <- world.enquote(shape with_precision 2);
 			int id_agregat <- int(replace(self.name, 'Agregats', ''));
@@ -205,7 +201,7 @@ global {
 			
 			save [
 				seed, sim_name, annee, id_agregat,
-				nbFP, superficie, communaute, monpole, geom
+				nombre_fp_agregat, superficie, communaute, monpole, geom
 			] to: (output_folder_path + sim_name +"_results_agregats.csv") type: "csv" header: true rewrite: false;
 		}
 	}
@@ -238,21 +234,18 @@ global {
 		string seed <- enquote(seed);
 		
 		ask Foyers_Paysans {
-			float sMat <- satisfaction_materielle with_precision 2;
-			float sRel <- satisfaction_materielle with_precision 2;
-			float sProt <- satisfaction_protection with_precision 2;
-			float Satis <- Satisfaction with_precision 2;
+			float satisfaction <- satisfaction with_precision 2;
 			string geom <- world.enquote(shape with_precision 2);
 			int id_fp <- int(replace(self.name, 'Foyers_Paysans', ''));
 			int monagregat <- (monAgregat != nil) ? int(replace(monAgregat.name, 'Agregats', '')) : -1;
 			
 			save [
 				seed, sim_name, annee, id_fp,
-				communaute, monagregat,
-				sMat, sRel, sProt,
-				Satis, mobile, type_deplacement,
+				appartenance_communaute, monagregat,
+				s_materielle, s_religieuse, s_protection,
+				satisfaction, mobile, type_deplacement,
 				deplacement_from, deplacement_to,
-				nb_preleveurs, geom
+				redevances_acquittees, geom
 			] to: (output_folder_path + sim_name +"_results_FP.csv") type: "csv" header: true rewrite: false;
 		}
 
@@ -271,7 +264,7 @@ global {
 				save [
 					seed, sim_name, annee, id_paroisse,
 					moneglise, mode_promotion, shape.area,
-					nbFideles, SatisfactionParoisse, geom
+					nbFideles, nb_paroissiens_insatisfaits, SatisfactionParoisse, geom
 				] to: (output_folder_path + sim_name +"_results_paroisses.csv") type: "csv" header: true rewrite: false;
 			}
 		}
@@ -288,14 +281,10 @@ global {
 
 				save [
 					seed, sim_name, annee, id_chateau,
-					type, rayon_zps, attractivite, droits_haute_justice,
+					type, rayon_zp_chateau, attractivite, droits_haute_justice,
 					monagregat, monproprietaire, mongardien,
 					geom
 				] to: (output_folder_path + sim_name +"_results_chateaux.csv") type: "csv" header: true rewrite: false;
 				}
-			}
-			
-			action save_summarised_outputs(string sim_name){
-				
 			}
 }	
