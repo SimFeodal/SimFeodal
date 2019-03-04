@@ -29,6 +29,7 @@ global {
 		do save_agregats(currentPrefix);
 		do save_poles(currentPrefix);
 		do save_paroisses(currentPrefix);
+		do save_chateaux(currentPrefix);
 		do save_FP(currentPrefix);
 	}
 	
@@ -266,5 +267,27 @@ global {
 				] to: (output_folder_path + sim_name +"_results_paroisses.csv") type: "csv" header: true rewrite: false;
 			}
 		}
-	
+		
+			action save_chateaux(string sim_name) {
+			string seed <- world.enquote(seed);
+			
+			ask  Chateaux {
+				string geom <- world.enquote(shape with_precision 2);
+				int id_chateau <- int(replace(self.name, 'Chateaux', ''));
+				int monagregat <- (monAgregat != nil) ? int(replace(monAgregat.name, 'Agregats', '')) : -1;
+				int monproprietaire <- (proprietaire != nil) ? int(replace(proprietaire.name, 'Seigneurs', '')) : -1;
+				int mongardien <- (gardien != nil) ? int(replace(gardien.name, 'Seigneurs', '')) : -1;
+
+				save [
+					seed, sim_name, annee, id_chateau,
+					type, rayon_zps, attractivite, droits_haute_justice,
+					monagregat, monproprietaire, mongardien,
+					geom
+				] to: (output_folder_path + sim_name +"_results_chateaux.csv") type: "csv" header: true rewrite: false;
+				}
+			}
+			
+			action save_summarised_outputs(string sim_name){
+				
+			}
 }	
