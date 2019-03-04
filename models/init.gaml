@@ -102,6 +102,7 @@ global {
 	}
 	
 	action generer_monde {
+		do update_variables_temporelles;
 		do generer_foyers_paysans;
 		do generer_eglises;
 		do update_agregats;

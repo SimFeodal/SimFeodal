@@ -63,14 +63,14 @@ global torus: false{
 	float croissance_demo <- 0.0; // FIXME : avant v6 : taux_augmentation_FP / A renommer dans BDD
 	float taux_renouvellement_fp <- 0.05 ; // FIXME : avant v6 : taux_renouvellement / A renommer dans BDD
 	float proba_fp_dependant <- 0.2; // FIXME : avant v6 : proba_FP_dependants / A renommer dans BDD
-	map<int,float> besoin_protection_fp <- [800::0,960::0.2,980::0.4,1000::0.6,1020::0.8,1040::1.0]; // FIXME: avant v6 : besoin_protection / A renommer + retyper dans BDD
+	map<int,float> besoin_protection_fp <- [800::0.0,960::0.2,980::0.4,1000::0.6,1020::0.8,1040::1.0]; // FIXME: avant v6 : besoin_protection / A renommer + retyper dans BDD
 	// AGREGATS //
 	float puissance_communautes <- 0.25;
 	int coef_redevances <- 15;
 	// SEIGNEURS //
 	int objectif_nombre_seigneurs <- 200; // FIXME : avant v6 : nombre_seigneurs_objectif / A renommer dans BDD
-	map<int,float> proba_gain_haute_justice_gs <- [800::0,900::0.2,1000::1.0]; // TODO : Inactif : ajouter dans modèle + Ajouter aux outputs + SimEDB + RENOMMER POUR COLLER ? / J'en suis encore là !
-	map<int,float> proba_gain_haute_justice_chateau_ps <- [800::0, 1000::0.2]; // TODO : avant v6 : proba_gain_droits_hauteJustice_chateau, vallait 0.1
+	map<int,float> proba_gain_haute_justice_gs <- [800::0.0,900::0.2,1000::1.0]; // TODO : Inactif : ajouter dans modèle + Ajouter aux outputs + SimEDB + RENOMMER POUR COLLER ? / J'en suis encore là !
+	map<int,float> proba_gain_haute_justice_chateau_ps <- [800::0.0, 1000::0.2]; // TODO : avant v6 : proba_gain_droits_hauteJustice_chateau, vallait 0.1
 	int debut_cession_droits_seigneurs <- 900 ; // FIXME : Nouveau paramètre, A ajouter dans BDD
 	int debut_garde_chateaux_seigneurs <- 960 ; // FIXME : Nouveau paramètre, A ajouter dans BDD
 	// CHATEAUX //
@@ -195,38 +195,15 @@ global torus: false{
 	list<Agregats> agregats_loins_chateaux <- nil;
 	
 
+	
 	action update_variables_temporelles {
-		
-		set annee <- annee + duree_step;
-		
-		if ((besoin_protection_fp at annee) is float){
-			set besoin_protection_fp_actuel <- besoin_protection_fp at annee;
-		}
-		
-		if ((proba_gain_haute_justice_gs at annee) is float) {
-			set proba_gain_haute_justice_gs_actuel <- proba_gain_haute_justice_gs at annee;
-		}
-		
-		if ((proba_gain_haute_justice_chateau_ps at annee) is float) {
-			set proba_gain_haute_justice_chateau_ps_actuel <- proba_gain_haute_justice_chateau_ps at annee;
-		}
-		
-		
-		if ((rayon_migration_locale_fp at annee) is float){
-			set rayon_migration_locale_fp_actuel <- rayon_migration_locale_fp at annee;
-		}
-		
-		if ((periode_promotion_chateaux at annee) is bool) {
-			set chateaux_promouvables <- periode_promotion_chateaux at annee;
-		}
-		
-		if ((dist_min_eglise at annee) is int){
-			set dist_min_eglise_actuel <- dist_min_eglise at annee;
-		}
-		
-		if ((dist_max_eglise at annee) is int){
-			set dist_max_eglise_actuel <- dist_max_eglise at annee;
-		}
+		set besoin_protection_fp_actuel <- (besoin_protection_fp.keys contains annee) ? besoin_protection_fp at annee : besoin_protection_fp_actuel;
+		set proba_gain_haute_justice_gs_actuel <- (proba_gain_haute_justice_gs.keys contains annee) ? proba_gain_haute_justice_gs at annee : proba_gain_haute_justice_gs_actuel;
+		set proba_gain_haute_justice_chateau_ps_actuel <- (proba_gain_haute_justice_chateau_ps.keys contains annee) ? proba_gain_haute_justice_chateau_ps at annee : proba_gain_haute_justice_chateau_ps_actuel;
+		set rayon_migration_locale_fp_actuel <- (rayon_migration_locale_fp.keys contains annee) ? rayon_migration_locale_fp at annee : rayon_migration_locale_fp_actuel;
+		set chateaux_promouvables <- (periode_promotion_chateaux.keys contains annee) ? periode_promotion_chateaux at annee : chateaux_promouvables;
+		set dist_min_eglise_actuel <- (dist_min_eglise.keys contains annee) ? dist_min_eglise at annee : dist_min_eglise_actuel;
+		set dist_max_eglise_actuel <- (dist_max_eglise.keys contains annee) ? dist_max_eglise at annee : dist_max_eglise_actuel;
 	}
 	
 

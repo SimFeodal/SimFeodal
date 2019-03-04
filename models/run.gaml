@@ -30,6 +30,7 @@ global schedules: shuffle(Attracteurs) + shuffle(Poles) + shuffle(Agregats) + sh
 	
 	reflex MaJ_globals {
 		do update_variables_temporelles;
+		set annee <- annee + duree_step;
 		write string(annee);
 	}
 		
