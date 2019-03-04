@@ -22,7 +22,6 @@ global torus: false{
 	// TECHNIQUE //
 	///////////////
 	
-	bool benchmark <- false;
 	bool save_outputs <- false;
 	string prefix_output <- "6";
 	string output_folder_path <- "/home/robin/SimFeodal/outputs/";
@@ -232,7 +231,6 @@ global torus: false{
 	
 
 	action update_summarised_outputs {
-		float t <- machine_time;
 		list<float> distances_pp_eglise <- [];
 		ask Eglises {
 			Eglises pp_eglise <- Eglises closest_to self;
@@ -242,9 +240,7 @@ global torus: false{
 			}
 		}
 		set distance_eglises <- mean(distances_pp_eglise);
-		if (benchmark){write 'update_output_indexes_1 : ' + string(machine_time - t);}
 		
-		set t <- machine_time;
 		list<float> distances_pp_paroisses <- [];
 		list<Eglises> eglises_paroissiales <- Eglises where (each.eglise_paroissiale);
 		ask eglises_paroissiales{
@@ -255,7 +251,6 @@ global torus: false{
 			}
 		}
 		set distance_eglises_paroissiales <- mean(distances_pp_paroisses);
-		if (benchmark){write 'update_output_indexes_2 : ' + string(machine_time - t);}
 		
 		set prop_FP_isoles <- Foyers_Paysans count (each.monAgregat = nil) / length(Foyers_Paysans);
 		set charge_fiscale <- mean(Foyers_Paysans collect float(each.nb_preleveurs));
