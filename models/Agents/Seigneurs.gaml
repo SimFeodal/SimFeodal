@@ -246,6 +246,90 @@ species Seigneurs schedules: [] {
 	}
 	}
 	
+	action construction_chateaux_2 {	
+		
+		//float proba_creer_chateau <- self.type =  "Grand Seigneur" ? (1 - exp(-0.00064 * self.puissance) ) : self.puissance / 2000;
+		float proba_creer_chateau <- self.type =  "Grand Seigneur" ? (self.puissance / somme_puissance) : (self.puissance / somme_puissance) * 7;
+		int  nb_chateaux_potentiels <- self.type =  "Grand Seigneur" ? 2 : 1;
+		bool is_gs <-  self.type =  "Grand Seigneur" ? true : false;
+			
+		float maxPuissance <- max(Seigneurs collect each.puissance) ;
+		float minPuissance <- min(Seigneurs collect each.puissance) ;
+		int rayon_zp <- int(max([
+			rayon_min_zp_chateau, min([
+				rayon_max_zp_chateau,
+				( maxPuissance / (maxPuissance - minPuissance) )- (self.puissance / (maxPuissance - minPuissance))
+				])])
+		);
+		
+		loop times: nb_chateaux_potentiels {
+			if (espace_dispo_chateaux != nil) {
+			if flip(proba_creer_chateau){
+				// Si création tirée
+				geometry espace_disponible <- espace_dispo_chateaux;
+				
+				point location_chateau <- nil;
+				Agregats choix_agregat <- nil;
+				if (is_gs){ // Chateau de GS
+					if (flip(proba_chateau_gs_agregat)){
+						set choix_agregat <- one_of(agregats_loins_chateaux);
+					}
+					if (choix_agregat != nil){
+						set location_chateau <- any_location_in(choix_agregat.shape);
+					} else {
+						set location_chateau <- any_location_in(espace_disponible);
+					}
+				} else { // chateau de PS
+					list<Agregats> agregats_possibles <- agregats_loins_chateaux where (length(each.mesChateaux) = 0);
+					set choix_agregat <- !empty(agregats_possibles) ? agregats_possibles closest_to self : nil;
+					set location_chateau <- (choix_agregat != nil) ? any_location_in(choix_agregat.shape + 500) : any_location_in(espace_disponible);
+					// On met à jour les droits de haute justice pour les PS au passage
+					if (proba_gain_haute_justice_chateau_ps_actuel > 0.0 and !droits_haute_justice){
+						set droits_haute_justice <- flip(proba_gain_haute_justice_chateau_ps_actuel);
+						if (droits_haute_justice){
+							Seigneurs ceSeigneur <- self;
+							ask Chateaux where (each.proprietaire = ceSeigneur) {
+								Chateaux ceChateau <- self;
+								ask world {
+									do creer_zone_prelevement (centre_zone: ceChateau.location, rayon: ceChateau.rayon_zp_chateau, proprio: ceSeigneur, typeDroit: "haute_justice", txPrelev: taux_prelevement_zp_chateau, chateau_zp: ceChateau);
+								}
+							}
+						}
+					}
+				}
+				// Construction Chateau
+				Chateaux ceChateau <- nil;
+				create Chateaux number: 1 {
+					set location <- location_chateau;
+					if (choix_agregat != nil){
+						set monAgregat <- choix_agregat;
+						ask monAgregat {mesChateaux <+ myself;}
+					}
+					set proprietaire <- myself;
+					set rayon_zp_chateau <- rayon_zp;
+					set ceChateau <- self;
+				}
+				geometry espace_affecte <- dist_min_entre_chateaux around ceChateau.location;
+				set espace_dispo_chateaux <- espace_dispo_chateaux - espace_affecte;
+				list<Agregats> agregats_dans_espace_affecte <- distinct(Agregats inside espace_affecte);
+				set agregats_loins_chateaux <- distinct(agregats_loins_chateaux - agregats_dans_espace_affecte);
+				set chatelain <- true;
+				// Construction ZPs
+				Seigneurs ceSeigneur <- self;
+				ask world {
+					do creer_zone_prelevement (centre_zone: location_chateau, rayon: rayon_zp, proprio: ceSeigneur, typeDroit: "foncier", txPrelev: taux_prelevement_zp_chateau, chateau_zp: ceChateau);
+					do creer_zone_prelevement (centre_zone: location_chateau, rayon: rayon_zp, proprio: ceSeigneur, typeDroit: "autres_droits", txPrelev: taux_prelevement_zp_chateau, chateau_zp: ceChateau);
+				}
+				if (droits_haute_justice){
+					ask world {
+						do creer_zone_prelevement (centre_zone: location_chateau, rayon: rayon_zp, proprio: ceSeigneur, typeDroit: "haute_justice", txPrelev: taux_prelevement_zp_chateau, chateau_zp: ceChateau);
+					}
+				}
+			}
+		} // Sinon, on ne fait rien
+	}
+	}
+	
 	action update_agregats_seigneurs {
 		set monAgregat <- nil;
 		Agregats plusProcheAgregat <- Agregats closest_to self;

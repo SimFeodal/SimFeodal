@@ -145,9 +145,16 @@ global schedules: shuffle(Attracteurs) + shuffle(Poles) + shuffle(Agregats) + sh
 	reflex Constructions_chateaux when: annee >= debut_construction_chateaux{
 		set agregats_loins_chateaux <- Agregats inside espace_dispo_chateaux;
 		if (espace_dispo_chateaux != nil){
+			
+//			ask Seigneurs{
+//				if (espace_dispo_chateaux != nil){do construction_chateaux;}
+//			}
+			
+			set somme_puissance <- sum(Seigneurs collect each.puissance);
 			ask Seigneurs{
-				if (espace_dispo_chateaux != nil){do construction_chateaux;}
+				if (espace_dispo_chateaux != nil){do construction_chateaux_2;}
 			}
+			
 		}
 	}
 	
