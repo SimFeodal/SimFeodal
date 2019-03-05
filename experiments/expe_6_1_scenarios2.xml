@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Experiment_plan>
+<Simulation id="1" sourcePath="../models/Base6_GUI.gaml" finalstep="20" experiment="Exp_6_1_Scenario_TEST">
+	<Parameters>
+	</Parameters>
+</Simulation>
+</Experiment_plan>

@@ -125,3 +125,58 @@ experiment Exp_6_1_testPopInit type: batch repeat: 4 keep_seed: false benchmark:
 	// 5 experiments * 4 replications
 }
 
+
+experiment Exp_6_1_Scenario_Base type: batch repeat: 2 keep_seed: false benchmark: false until: (annee >= fin_simulation){
+	parameter 'save_outputs' var: save_outputs init: true;
+	parameter 'prefix' var: prefix_output init: "Exp_6_1_Scenario_Base";
+	parameter 'experimentType' var: experimentType init: "batch";
+	// 1 experiments * 20 replications
+}
+
+experiment Exp_6_1_Scenario_TailleVillage type: batch repeat: 2 keep_seed: false benchmark: false until: (annee >= fin_simulation){
+	parameter 'save_outputs' var: save_outputs init: true;
+	parameter 'prefix' var: prefix_output init: "Exp_6_1_Scenario_TailleVillage";
+	parameter 'experimentType' var: experimentType init: "batch";
+	// 5, 6, 7, 8 and 9
+	parameter 'init_nb_fp_village' var: init_nb_fp_village among: [5, 6, 7, 8, 9];
+	// 5 experiments * 20 replications
+}
+
+experiment Exp_6_1_Scenario_CroissanceDemo type: batch repeat: 2 keep_seed: false benchmark: false until: (annee >= fin_simulation){
+	parameter 'save_outputs' var: save_outputs init: true;
+	parameter 'prefix' var: prefix_output init: "Exp_6_1_Scenario_CroissanceDemo";
+	parameter 'experimentType' var: experimentType init: "batch";
+	//10E3 => 5% ;  20E3 => 9% ; 30E3 => 11.2% ; 40E3 => 12.9%
+	parameter 'croissance_demo' var: croissance_demo among: [0.05, 0.09, 0.112, 0.129];
+	// 4 experiments * 20 replications
+}
+
+experiment Exp_6_1_Scenario_PopInitiale type: batch repeat: 2 keep_seed: false benchmark: false until: (annee >= fin_simulation){
+	parameter 'save_outputs' var: save_outputs init: true;
+	parameter 'prefix' var: prefix_output init: "Exp_6_1_Scenario_PopInitiale";
+	parameter 'experimentType' var: experimentType init: "batch";
+	// 10E3, 20E3, 30E3, 40E3
+	parameter 'init_nb_total_fp' var: init_nb_total_fp among: [10000, 20000, 30000, 40000];
+	// 4 experiments * 20 replications
+}
+
+experiment Exp_6_1_Scenario_ProportionDependants type: batch repeat: 2 keep_seed: false benchmark: false until: (annee >= fin_simulation){
+	parameter 'save_outputs' var: save_outputs init: true;
+	parameter 'prefix' var: prefix_output init: "Exp_6_1_Scenario_ProportionDependants";
+	parameter 'experimentType' var: experimentType init: "batch";
+	// 0%, 40%, 60%
+	parameter 'proba_fp_dependant' var: proba_fp_dependant among: [0.0, 0.4, 0.6];
+	// 3 experiments * 20 replications
+}
+
+global {
+int nb_replications <- 2;
+}
+experiment Exp_6_1_Scenario_TEST type: batch repeat: nb_replications keep_seed: false benchmark: false until: (annee >= fin_simulation){
+	parameter 'save_outputs' var: save_outputs init: true;
+	parameter 'prefix' var: prefix_output init: "Exp_6_1_Scenario_ProportionDependants";
+	parameter 'experimentType' var: experimentType init: "batch";
+	// 0%, 40%, 60%
+	parameter 'proba_fp_dependant' var: proba_fp_dependant among: [0.0, 0.4, 0.6];
+	// 3 experiments * 20 replications
+}
