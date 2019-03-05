@@ -76,7 +76,7 @@ experiment Exp_6_0_Base type: batch repeat: 2 keep_seed: false until: (annee >= 
 
 experiment Exp_6_1_Debug type: gui repeat: 1 keep_seed: false benchmark: true until: (annee >= fin_simulation){
 	parameter 'save_outputs' var: save_outputs init: false;
-	parameter "summarised_outputs" var: summarised_outputs init: true;
+	parameter "summarised_outputs" var: summarised_outputs init: false;
 	parameter 'prefix' var: prefix_output init: "6_Debug_TestGrowth";
 	parameter 'experimentType' var: experimentType init: "gui";
 	parameter 'init_nb_total_fp' var: init_nb_total_fp init: 4000;
@@ -100,18 +100,25 @@ experiment Exp_6_1_Debug type: gui repeat: 1 keep_seed: false benchmark: true un
 experiment Exp_6_1_testGrowth type: batch repeat: 4 keep_seed: false benchmark: false until: (annee >= fin_simulation){
 	parameter 'save_outputs' var: save_outputs init: false;
 	parameter "summarised_outputs" var: summarised_outputs init: true;
-	parameter 'prefix' var: prefix_output init: "6_1_testGrowth_chateaux";
+	parameter 'prefix' var: prefix_output init: "6_1_testGrowth3_chateaux";
 	parameter 'experimentType' var: experimentType init: "batch";
 	parameter 'init_nb_total_fp' var: init_nb_total_fp init: 4000;
 	// - croissance population : 1%, 3%, 5%, 12%
-	parameter 'croissance_demo' var: croissance_demo among: [0.00, 0.01, 0.03, 0.05, 0.12];
+	parameter 'croissance_demo' var: croissance_demo among: [0.00, 0.05, 0.09, 0.112, 0.129];
+	
+	// Nouvelles valeurs : 
+	//10E3 => 5%
+	//20E3 => 9%
+	//30E3 => 11.2%
+	//40E3 => 12.9%
+	
 	// 5 experiments * 4 replications
 }
 
 experiment Exp_6_1_testPopInit type: batch repeat: 4 keep_seed: false benchmark: false until: (annee >= fin_simulation){
 	parameter 'save_outputs' var: save_outputs init: false;
 	parameter "summarised_outputs" var: summarised_outputs init: true;
-	parameter 'prefix' var: prefix_output init: "6_1_testPopInit_chateaux";
+	parameter 'prefix' var: prefix_output init: "6_1_testPopInit2_chateaux";
 	parameter 'experimentType' var: experimentType init: "batch";
 	// - sans croissance : 10E3, 15E3, 20E3, 25E3
 	parameter 'init_nb_total_fp' var: init_nb_total_fp among: [4000, 10000, 15000, 20000, 25000];

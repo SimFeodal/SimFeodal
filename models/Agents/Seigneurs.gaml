@@ -249,7 +249,7 @@ species Seigneurs schedules: [] {
 	action construction_chateaux_2 {	
 		
 		//float proba_creer_chateau <- self.type =  "Grand Seigneur" ? (1 - exp(-0.00064 * self.puissance) ) : self.puissance / 2000;
-		float proba_creer_chateau <- self.type =  "Grand Seigneur" ? (self.puissance / somme_puissance) : (self.puissance / somme_puissance) * 7;
+		float proba_creer_chateau <- self.type =  "Grand Seigneur" ? (self.puissance / somme_puissance) * 1.25 : (self.puissance / somme_puissance) * 7;
 		int  nb_chateaux_potentiels <- self.type =  "Grand Seigneur" ? 2 : 1;
 		bool is_gs <-  self.type =  "Grand Seigneur" ? true : false;
 			
