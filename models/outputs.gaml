@@ -38,114 +38,132 @@ global {
 		if (annee = 820) {do save_parameters(currentPrefix);}
 		do save_global(currentPrefix);
 		do save_seigneurs(currentPrefix);
+		do save_chateaux(currentPrefix);
 	}
 	
 	action save_parameters(string sim_name) {
 		string seed <- string(seed);
 		string besoin_protection_fp <- world.enquote(besoin_protection_fp);
+		string puissance_communautes <- world.enquote(puissance_communautes);
 		string proba_gain_haute_justice_gs <- world.enquote(proba_gain_haute_justice_gs);
 		string proba_gain_haute_justice_chateau_ps <- world.enquote(proba_gain_haute_justice_chateau_ps);
 		string periode_promotion_chateaux <- world.enquote(periode_promotion_chateaux);
 		string dist_min_eglise <- world.enquote(dist_min_eglise);
 		string dist_max_eglise <- world.enquote(dist_max_eglise);
 		string rayon_migration_locale_fp <- world.enquote(rayon_migration_locale_fp);
-		string puissance_communautes <- world.enquote(puissance_communautes);
-		
-		save [
-				seed, sim_name,
-				////////////
-				// Inputs //
-				////////////
-				// Espace du modèle
-				taille_cote_monde,
-				// FP
-				init_nb_total_fp, //avant v6 : nombre_foyers_paysans
-				// Agrégats
-				init_nb_agglos, // avant v6 : anciennement nombre_agglos_antiques
-				init_nb_fp_agglo, // avant v6 : nouveau paramètre en v6 : vallait 30
-				init_nb_villages, // avant v6 : anciennement nombre_villages
-				init_nb_fp_village, // avant v6 : nombre_FP_village
-				// Seigneurs
-				init_nb_gs, // avant v6 : nombre_grands_seigneurs
-				puissance_grand_seigneur1, puissance_grand_seigneur2,
-				init_nb_ps, // avant v6 : nombre_petits_seigneurs
-				// Eglises
-				init_nb_eglises, // avant v6 nombre_eglises
-				init_nb_eglises_paroissiales, // avant v6 : nb_eglises_paroissiales
-				////////////////////////////
-				// Paramètres de contexte //
-				////////////////////////////
-				// FP
-				croissance_demo, // avant v6 : taux_augmentation_FP
-				taux_renouvellement_fp, // avant v6 : taux_renouvellement
-				proba_fp_dependant, // avant v6 : proba_FP_dependants
-				besoin_protection_fp, // nouveau paramètre en v6 : vallait [800::0,960::0.2,980::0.4,1000::0.6,1020::0.8,1040::1.0] avant		
-				// Agrégats
-				puissance_communautes, // Changement de type: de float (0.25) à time-dependant : [800::0.2,1060::0.3,1100::0.4,1160::0.5]
-				proba_institution_communaute,
-				coef_redevances,
-				// Seigneurs
-				objectif_nombre_seigneurs, // avant v6 :  nombre_seigneurs_objectif
-				proba_gain_haute_justice_gs, // nouveau paramètre en v6 : vallait [800::0,900::0.1,1000::1.0] avant
-				debut_cession_droits_seigneurs, // TODO: nouveau paramètre en v6 : vallait 900 avant
-				debut_garde_chateaux_seigneurs, // TODO: nouveau paramètre en v6 : vallait 950 avant
-				// Chateaux
-				debut_construction_chateaux, // avant v6 : apparition_chateaux
-				periode_promotion_chateaux, // nouveau paramètre en v6 : vallait [800::false,960::true,1060::false] avant
-				/////////////////////////////
-				// Paramètres de mécanisme //
-				/////////////////////////////
-				// FP
-				dist_min_eglise, // TODO : nouveau paramètre en v6 : vallait [800::5000,960::3000,1060::1500] avant
-				dist_max_eglise, // TODO : nouveau paramètre en v6 : vallait [800::25000,960::10000,1060::5000] avant
-				dist_min_chateau, // TODO : nouveau paramètre en v6 : vallait 1500 avant
-				dist_max_chateau, // TODO : nouveau paramètre en v6 : vallait 5000 avant
-				min_s_distance_chateau, // TODO : nouveau paramètre en v6 : vallait 0.0 avant
-				rayon_migration_locale_fp, // TODO : avant v6 : seuils_max_dem_local_st
-				prop_migration_lointaine_fp, // TODO : avant v6 : proba_ponderee_deplacement_lointain
-				// Agregats
-				nb_min_fp_agregat, // TODO : avant v6 : nombre_FP_agregat
-				distance_detection_agregat, // TODO : avant v6 : distance_detection_agregats
-				distance_fusion_agregat, // TODO : nouveau paramètre en v6 : vallait 100 avant
-				// Seigneurs
-				proba_collecter_loyer_ps,
-				proba_creation_zp_autres_droits_ps, // avant v6 : calcul différent, vallait ~ 5% + 5%
-				rayon_min_zp_ps, // TODO : avant v6 : rayon_min_PS
-				rayon_max_zp_ps, // TODO : avant v6 : rayon_max_PS
-				min_taux_prelevement_zp_ps, // TODO : avant v6 : min_fourchette_loyers_PS
-				max_taux_prelevement_zp_ps, // TODO : avant v6 : max_fourchette_loyers_PS
-				proba_cession_droits_zp, // TODO : avant v6 : proba_don_partie_ZP
-				rayon_cession_locale_droits_ps, // TODO : nouveau paramètre en v6 : vallait 3000 avant
-				proba_don_chateau, // TODO : avant v6 : proba_don_chateau_GS
-				proba_gain_haute_justice_chateau_ps, // TODO : avant v6 : proba_gain_droits_hauteJustice_chateau
 
-				// FIXME : A reprendre
-				droits_haute_justice_zp, // TODO : nouveau paramètre en v6 : vallait 1 avant
-				droits_haute_justice_zp_cession, // TODO : nouveau paramètre en v6 : vallait 1.25 avant
-				droits_fonciers_zp, // TODO : nouveau paramètre en v6 : vallait 1 avant
-				droits_fonciers_zp_cession, // Nouveau paramètre en v6.1 : vallait 0 avant
-				autres_droits_zp, // TODO : nouveau paramètre en v6 : vallait 0.25 avant
-				autres_droits_zp_cession, // TODO : nouveau paramètre en v6 : vallait 0.35 avant
-				
-				// Chateaux
-				rayon_min_zp_chateau, // TODO : nouveau paramètre en v6, vallait 2000 avant
-				rayon_max_zp_chateau, // TODO : nouveau paramètre en v6, vallait 10000 avant
-				dist_min_entre_chateaux,  // TODO : nouveau paramètre en v6, vallait 3000 ou 5000 avant (PS ou GS)
-				proba_chateau_gs_agregat, // TODO : avant v6 : proba_chateau_agregat
-				proba_promotion_chateau_pole, // TODO : avant v6 : proba_promotion_groschateau_multipole
-				proba_promotion_chateau_isole, // TODO : avant v6 : proba_promotion_groschateau_autre
-				// Eglises paroissiales
-				seuil_creation_paroisse,
-				nb_requis_paroissiens_insatisfaits,
-				// Poles d'attraction
-				attractivite_petit_chateau, // TODO : avant v6 : attrac_PC
-				attractivite_gros_chateau, // TODO : avant v6 : attrac_GC
-				attractivite_1_eglise, // TODO : avant v6 : attrac_1_eglises
-				attractivite_2_eglise, // TODO : avant v6 : attrac_2_eglises
-				attractivite_3_eglise, // TODO : avant v6 : attrac_3_eglises
-				attractivite_4_eglise, // TODO : avant v6 : attrac_4_eglises
-				attractivite_communaute // TODO : avant v6 : attrac_communautes
-				
+		save [			
+///////////////
+// TECHNIQUE //
+///////////////
+prefix_output,
+debut_simulation,
+fin_simulation,
+duree_step,
+
+////////////
+// INPUTS //
+////////////
+// ESPACE DU MODELE //
+taille_cote_monde,
+// FOYERS PAYSANS //
+init_nb_total_fp,
+// AGREGATS //
+init_nb_agglos,
+init_nb_fp_agglo,
+init_nb_villages,
+init_nb_fp_village,
+// SEIGNEURS //
+init_nb_gs,
+puissance_grand_seigneur1,
+puissance_grand_seigneur2,
+init_nb_ps,
+// EGLISES //
+init_nb_eglises,
+init_nb_eglises_paroissiales,
+
+//////////////
+// CONTEXTE //
+//////////////
+// FOYERS PAYSANS //
+croissance_demo, 
+taux_renouvellement_fp, 
+proba_fp_dependant, 
+besoin_protection_fp,
+// AGREGATS //
+puissance_communautes,
+proba_institution_communaute,
+// SEIGNEURS //
+objectif_nombre_seigneurs,
+proba_gain_haute_justice_gs,
+proba_gain_haute_justice_chateau_ps,
+debut_cession_droits_seigneurs,
+debut_garde_chateaux_seigneurs,
+// CHATEAUX //
+debut_construction_chateaux,
+periode_promotion_chateaux,
+
+///////////////
+// MECANISME //
+///////////////
+// FOYERS PAYSANS //
+dist_min_eglise,
+dist_max_eglise,
+dist_min_chateau,
+dist_max_chateau,
+rayon_migration_locale_fp,
+prop_migration_lointaine_fp,
+// AGREGATS //
+nb_min_fp_agregat,
+distance_detection_agregat,
+// SEIGNEURS //
+nb_max_chateaux_par_tour_gs,
+nb_max_chateaux_par_tour_ps,
+proba_collecter_loyer_ps,
+proba_creation_zp_autres_droits_ps,
+rayon_min_zp_ps,
+rayon_max_zp_ps,
+min_taux_prelevement_zp_ps,
+max_taux_prelevement_zp_ps,
+taux_prelevement_zp_chateau,
+proba_cession_droits_zp,
+rayon_cession_locale_droits_ps,
+proba_cession_locale,
+proba_don_chateau,
+// CHATEAUX
+rayon_min_zp_chateau,
+rayon_max_zp_chateau,
+dist_min_entre_chateaux,
+proba_chateau_gs_agregat,
+proba_promotion_chateau_pole,
+proba_promotion_chateau_isole,
+// EGLISES PAROISSIALES
+seuil_creation_paroisse,
+nb_requis_paroissiens_insatisfaits,
+// POLES
+attractivite_petit_chateau,
+attractivite_gros_chateau,
+attractivite_1_eglise,
+attractivite_2_eglise,
+attractivite_3_eglise,
+attractivite_4_eglise,
+attractivite_communaute,
+
+//////////////////////////
+// PARAMETRES TECHNIQUE //
+//////////////////////////
+// Foyers Paysans //
+coef_redevances,
+min_s_distance_chateau,
+// Agrégats //
+distance_fusion_agregat,
+// Seigneurs //
+droits_haute_justice_zp,
+droits_haute_justice_zp_cession,
+droits_fonciers_zp,
+droits_fonciers_zp_cession,
+autres_droits_zp,
+autres_droits_zp_cession			
 			] to: (output_folder_path + sim_name +"_parameters.csv") type: "csv" header: true rewrite: false;
 	}
 	

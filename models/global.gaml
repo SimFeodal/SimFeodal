@@ -1,7 +1,7 @@
 /**
  *  T8
  *  Author: Robin
- *  Description: Modélisation de la transition 800-1100, première version
+ *  Description: SimFeodal, v6.1 (avec mécanisme châteaux v3)
  */
 model t8
 
