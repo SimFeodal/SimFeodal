@@ -37,6 +37,7 @@ global {
 		string currentPrefix <- prefix_output;
 		if (annee = 820) {do save_parameters(currentPrefix);}
 		do save_global(currentPrefix);
+		do save_seigneurs(currentPrefix);
 	}
 	
 	action save_parameters(string sim_name) {
@@ -149,20 +150,23 @@ global {
 	}
 	
 	action save_global(string sim_name) {
-		int nbChateaux <- length(Chateaux);
-		int nbGdChateaux <- Chateaux count (each.type = "Grand Chateau");
-		int nbEglises <- length(Eglises);
-		int nbEglisesParoissiales <-  Eglises count (each.eglise_paroissiale);
-		int nbAgregats <- length(Agregats);
+		int nb_chateaux <- length(Chateaux);
+		int nb_grands_chateaux <- Chateaux count (each.type = "Grand Chateau");
+		int nb_eglises <- length(Eglises);
+		int nb_eglises_paroissiales <-  Eglises count (each.eglise_paroissiale);
+		int nb_agregats <- length(Agregats);
+		int nb_fp <- length(Foyers_Paysans);
 		
 		string seed <- world.enquote(seed);
 		
 		save [
 				seed, sim_name, annee,
-				nbChateaux, nbGdChateaux, nbAgregats,
-				nbEglises, nbEglisesParoissiales,
+				nb_fp, nb_agregats,
+				nb_chateaux, nb_grands_chateaux,
+				nb_eglises, nb_eglises_paroissiales,
 				distance_eglises, distance_eglises_paroissiales,
-				prop_FP_isoles, charge_fiscale, dist_ppv_agregat,total_duration
+				prop_fp_isoles, charge_fiscale, dist_ppv_agregat,
+				total_duration
 				
 			] to: (output_folder_path + sim_name +"_results_global.csv") type: "csv" header: true rewrite: false;
 	}
@@ -277,12 +281,13 @@ global {
 				int id_chateau <- int(replace(self.name, 'Chateaux', ''));
 				int monagregat <- (monAgregat != nil) ? int(replace(monAgregat.name, 'Agregats', '')) : -1;
 				int monproprietaire <- (proprietaire != nil) ? int(replace(proprietaire.name, 'Seigneurs', '')) : -1;
+				string monproprietaire_type <- proprietaire.type;
 				int mongardien <- (gardien != nil) ? int(replace(gardien.name, 'Seigneurs', '')) : -1;
 
 				save [
 					seed, sim_name, annee, id_chateau,
 					type, rayon_zp_chateau, attractivite, droits_haute_justice,
-					monagregat, monproprietaire, mongardien,
+					monagregat, monproprietaire, monproprietaire_type, mongardien,
 					geom
 				] to: (output_folder_path + sim_name +"_results_chateaux.csv") type: "csv" header: true rewrite: false;
 				}

@@ -21,7 +21,6 @@ global torus: false{
 	///////////////
 	// TECHNIQUE //
 	///////////////
-	
 	bool save_outputs <- false;
 	string prefix_output <- "6";
 	string output_folder_path <- "/home/robin/SimFeodal/outputs/";
@@ -36,10 +35,9 @@ global torus: false{
 	////////////
 	// INPUTS //
 	////////////
-	
-	// ESPACE DU MODELE //
+		// ESPACE DU MODELE //
 	int taille_cote_monde <- 80 ; // km
-	// FOYERS PAYSANS //
+		// FOYERS PAYSANS //
 	int init_nb_total_fp <- 4000; // XXX : anciennement : nombre_foyers_paysans : Renommé dans BDD
 	// AGREGATS //
 	int init_nb_agglos <- 4; // XXX : anciennement : nombre_agglos_antiques : Renommé dans BDD
@@ -58,8 +56,7 @@ global torus: false{
 	//////////////
 	// CONTEXTE //
 	//////////////
-	
-	// FOYERS PAYSANS //
+		// FOYERS PAYSANS //
 	float croissance_demo <- 0.0; // FIXME : avant v6 : taux_augmentation_FP / A renommer dans BDD
 	float taux_renouvellement_fp <- 0.05 ; // FIXME : avant v6 : taux_renouvellement / A renommer dans BDD
 	float proba_fp_dependant <- 0.2; // FIXME : avant v6 : proba_FP_dependants / A renommer dans BDD
@@ -80,8 +77,7 @@ global torus: false{
 	///////////////
 	// MECANISME //
 	///////////////
-
-	// FOYERS PAYSANS //
+		// FOYERS PAYSANS //
 	map<int,int> dist_min_eglise <- [800::5000,960::3000,1060::1500]; // FIXME : Nouveau paramètre en v6 : vallait [800::5000,960::3000,1060::1500] avant
 	map<int,int> dist_max_eglise <- [800::25000,960::10000,1060::5000]; // FIXME : Nouveau paramètre en v6 : vallait [800::25000,960::10000,1060::5000] avant
 	int dist_min_chateau <- 1500; // FIXME : Nouveau paramètre en v6 : vallait 1500 avant
@@ -171,7 +167,7 @@ global torus: false{
 	/////////////
 	float distance_eglises_paroissiales <- 0.0;
 	float distance_eglises <- 0.0;
-	float prop_FP_isoles <- 0.0;
+	float prop_fp_isoles <- 0.0;
 	float ratio_charge_fiscale <- 0.0;
 	float charge_fiscale <- 0.0;
 	float dist_ppv_agregat <- 0.0;
@@ -223,7 +219,7 @@ global torus: false{
 		}
 		set distance_eglises_paroissiales <- mean(distances_pp_paroisses);
 		
-		set prop_FP_isoles <- Foyers_Paysans count (each.monAgregat = nil) / length(Foyers_Paysans);
+		set prop_fp_isoles <- Foyers_Paysans count (each.monAgregat = nil) / length(Foyers_Paysans);
 		set charge_fiscale <- mean(Foyers_Paysans collect float(each.redevances_acquittees));
 	}
 }

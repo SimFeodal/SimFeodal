@@ -19,8 +19,9 @@ global
 {
 	action renouvellement_FP
 	{
-		int attractivite_totale <- length(Foyers_Paysans);
-		int nb_FP_impactes <- int(taux_renouvellement_fp * length(Foyers_Paysans));
+		int nb_fp_total <- length(Foyers_Paysans);
+		int attractivite_totale <- nb_fp_total;
+		int nb_FP_impactes <- round(taux_renouvellement_fp * length(Foyers_Paysans));
 		int attractivite_agregats <- sum(Agregats collect each.attractivite);
 		float proba_apparition_agregat <- attractivite_agregats / attractivite_totale;
 		
@@ -32,7 +33,7 @@ global
 		
 		list<Agregats> tousAgregats <- Agregats sort_by (each.attractivite);
 		list<int> attrac_agregats <- tousAgregats collect each.attractivite;
-		create Foyers_Paysans number: ((length(Foyers_Paysans) * croissance_demo) + nb_FP_impactes)
+		create Foyers_Paysans number: round((nb_fp_total * croissance_demo) + nb_FP_impactes)
 		{
 			if (flip(proba_apparition_agregat)){
 				Agregats meilleurAgregat <- tousAgregats at rnd_choice(attrac_agregats);

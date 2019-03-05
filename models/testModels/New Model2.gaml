@@ -23,10 +23,19 @@ global {
 		do writetest;
 	}
 	
-	reflex save_agents {
-		create testAgent number: 5;
-		save testAgent to: "testAgent.csv" type: "csv" header: true rewrite: true with: [test3::"foof", foo::"TEST"];
+	reflex blob {
+		create testAgent number: 2 {
+			
+		}
+		ask testAgent {
+			write string(test3);
+		}
 	}
+	
+//	reflex save_agents {
+//		create testAgent number: 5;
+//		save testAgent to: "testAgent.csv" type: "csv" header: true rewrite: true with: [test3::"foof", foo::"TEST"];
+//	}
 	
 }
 

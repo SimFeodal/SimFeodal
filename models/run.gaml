@@ -167,7 +167,7 @@ global schedules: shuffle(Attracteurs) + shuffle(Poles) + shuffle(Agregats) + sh
 	
 	reflex update_outputs when: (annee > debut_simulation){
 		do update_summarised_outputs;
-		write "Seed : " + seed + " / Annee : " + annee + " / Nb Agregats : " + length(Agregats) + " / TxIsoles : " + prop_FP_isoles;
+		write "Seed : " + seed + " / Annee : " + annee + " / Nb Agregats : " + length(Agregats) + " / TxIsoles : " + prop_fp_isoles;
 	}
 	
 	reflex save_data when: save_outputs {
