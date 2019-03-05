@@ -169,12 +169,9 @@ experiment Exp_6_1_Scenario_ProportionDependants type: batch repeat: 2 keep_seed
 	// 3 experiments * 20 replications
 }
 
-global {
-int nb_replications <- 2;
-}
-experiment Exp_6_1_Scenario_TEST type: batch repeat: nb_replications keep_seed: false benchmark: false until: (annee >= fin_simulation){
+experiment Exp_6_1_Scenario_TEST type: batch repeat: 2 keep_seed: false benchmark: false until: (annee >= fin_simulation){
 	parameter 'save_outputs' var: save_outputs init: true;
-	parameter 'prefix' var: prefix_output init: "Exp_6_1_Scenario_ProportionDependants";
+	parameter 'prefix' var: prefix_output init: "Exp_6_1_Scenario_TEST";
 	parameter 'experimentType' var: experimentType init: "batch";
 	// 0%, 40%, 60%
 	parameter 'proba_fp_dependant' var: proba_fp_dependant among: [0.0, 0.4, 0.6];
