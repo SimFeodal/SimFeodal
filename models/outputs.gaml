@@ -56,8 +56,7 @@ global {
 ///////////////
 // TECHNIQUE //
 ///////////////
-seed,
-prefix_output,
+seed, sim_name,
 debut_simulation,
 fin_simulation,
 duree_step,
