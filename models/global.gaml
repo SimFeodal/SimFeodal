@@ -21,6 +21,7 @@ global torus: false{
 	///////////////
 	// TECHNIQUE //
 	///////////////
+	float seed <- seed;
 	bool save_outputs <- false;
 	string prefix_output <- "6";
 	string output_folder_path <- "/home/robin/SimFeodal/outputs/";
