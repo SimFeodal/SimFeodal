@@ -194,18 +194,19 @@ autres_droits_zp_cession
 		
 		ask Seigneurs {
 			int id_seigneur <- int(replace(self.name, 'Seigneurs', ''));
-			int nbChateauxProprio <- Chateaux count (each.proprietaire = self);
-			int nbChateauxGardien <- Chateaux count (each.gardien = self);
-			int nbFPassujettis <- length(FP_assujettis);
-			int nbVassaux <- Seigneurs count (each.monSuzerain = self);
-			int nbDebiteurs <- length(mesDebiteurs);
+			int nb_chateaux_proprio <- Chateaux count (each.proprietaire = self);
+			int nb_chateaux_gardien <- Chateaux count (each.gardien = self);
+			int nb_fp_assujettis <- length(FP_assujettis);
+			int nb_vassaux <- Seigneurs count (each.monSuzerain = self);
+			int nb_debiteurs <- length(mesDebiteurs);
+			int monagregat <- (monAgregat != nil) ? int(replace(monAgregat.name, 'Agregats', '')) : -1;
 			string geom <- world.enquote(location with_precision 2);
 
 			save [
 				seed, sim_name,annee,id_seigneur, 
 				type, initial, puissance,
-				nbChateauxProprio, nbChateauxGardien,
-				nbFPassujettis, nbVassaux, nbDebiteurs, monAgregat, geom
+				nb_chateaux_proprio, nb_chateaux_gardien,
+				nb_fp_assujettis, nb_vassaux, nb_debiteurs, monagregat, geom
 				]
 			to: (output_folder_path + sim_name +"_results_seigneurs.csv") type: "csv" header: true rewrite: false;
 		}
@@ -232,20 +233,20 @@ autres_droits_zp_cession
 		string seed <- world.enquote(seed);
 		
 		ask Poles {
-			int nbAttracteurs <- length(mesAttracteurs);
-			int nbEglises <- length(mesAttracteurs of_species Eglises);
-			int nbParoisses <- (mesAttracteurs of_species Eglises) count (each.eglise_paroissiale);
-			int nbGC <- (mesAttracteurs of_species Chateaux) count (each.type = "Grand Chateau");
-			int nbPC <- (mesAttracteurs of_species Chateaux) count (each.type = "Petit Chateau");
-			int nbCA <- length(mesAttracteurs of_species Agregats);
+			int nb_attracteurs <- length(mesAttracteurs);
+			int nb_eglises <- length(mesAttracteurs of_species Eglises);
+			int nb_paroisses <- (mesAttracteurs of_species Eglises) count (each.eglise_paroissiale);
+			int nb_gc <- (mesAttracteurs of_species Chateaux) count (each.type = "Grand Chateau");
+			int nb_pc <- (mesAttracteurs of_species Chateaux) count (each.type = "Petit Chateau");
+			int nb_ca <- length(mesAttracteurs of_species Agregats);
 			string geom <- world.enquote(shape with_precision 2);
 			int id_pole <- int(replace(self.name, 'Poles', ''));
 			int monagregat <- (monAgregat != nil) ? int(replace(monAgregat.name, 'Agregats', '')) : -1;
 				
 			save [
 				seed, sim_name, annee, id_pole,
-				attractivite, nbAttracteurs, monagregat,
-				nbEglises, nbParoisses, nbGC, nbPC, nbCA, geom
+				attractivite, nb_attracteurs, monagregat,
+				nb_eglises, nb_paroisses, nb_gc, nb_pc, nb_ca, geom
 				
 			] to: (output_folder_path + sim_name +"_results_poles.csv") type: "csv" header: true rewrite: false;
 		}
@@ -277,16 +278,16 @@ autres_droits_zp_cession
 			string seed <- world.enquote(seed);
 			
 			ask  Paroisses {
-				int nbFideles <- length(mesFideles);
-				float SatisfactionParoisse <- Satisfaction_Paroisse with_precision 3;
+				int nb_fideles <- length(mesFideles);
+				float satisfaction_paroisse <- Satisfaction_Paroisse with_precision 3;
 				string geom <- world.enquote(shape with_precision 2);
 				int id_paroisse <- int(replace(self.name, 'Paroisses', ''));
 				int moneglise <- (monEglise != nil) ? int(replace(monEglise.name, 'Eglises', '')) : -1;
-
+				float superficie <- shape.area with_precision 2;
 				save [
 					seed, sim_name, annee, id_paroisse,
-					moneglise, mode_promotion, shape.area,
-					nbFideles, nb_paroissiens_insatisfaits, SatisfactionParoisse, geom
+					moneglise, mode_promotion, superficie,
+					nb_fideles, nb_paroissiens_insatisfaits, satisfaction_paroisse, geom
 				] to: (output_folder_path + sim_name +"_results_paroisses.csv") type: "csv" header: true rewrite: false;
 			}
 		}
