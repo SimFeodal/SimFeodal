@@ -89,8 +89,8 @@ global torus: false{
 	int nb_min_fp_agregat <- 5; // TODO : avant v6 : nombre_FP_agregat
 	int distance_detection_agregat <- 100; // avant v6 : distance_detection_agregats
 		// SEIGNEURS //
-	int nb_max_chateaux_par_tour_gs <- 10; // FIXME : avant v6 : nb_chateaux_potentiels_GS, puis nb_chateaux_potentiels_gs, vallait 2
-	int nb_max_chateaux_par_tour_ps <- 2; // FIXME : Nouveau paramètre en v6, vallait 1 avant, à ajouter dans BDD
+	int nb_max_chateaux_par_tour_gs <- 2; // FIXME : avant v6 : nb_chateaux_potentiels_GS, puis nb_chateaux_potentiels_gs, vallait 2
+	int nb_max_chateaux_par_tour_ps <- 1; // FIXME : Nouveau paramètre en v6, vallait 1 avant, à ajouter dans BDD
 	float proba_collecter_loyer_ps <- 0.1; // TODO : Peut-être à renommer
 	float proba_creation_zp_autres_droits_ps <- 0.15; // TODO : avant v6 : proba_creation_ZP_banaux : vallait 5% (mais + basse et moyenne justice qui vallait aussi 5%)
 	int rayon_min_zp_ps <- 1000; // TODO : avant v6 : rayon_min_PS
