@@ -177,3 +177,14 @@ experiment Exp_6_1_Scenario_TEST type: batch repeat: 2 keep_seed: false benchmar
 	parameter 'proba_fp_dependant' var: proba_fp_dependant among: [0.0, 0.4, 0.6];
 	// 3 experiments * 20 replications
 }
+
+experiment Exp_6_2_Scenario_NbParoissiens type: batch repeat: 2 keep_seed: false benchmark: false until: (annee >= fin_simulation){
+	parameter 'save_outputs' var: save_outputs init: true;
+	parameter 'prefix' var: prefix_output init: "Exp_6_2_Scenario_NbParoissiens";
+	parameter 'experimentType' var: experimentType init: "batch";
+	// 0%, 40%, 60%
+	parameter "init_nb_agglos" var: init_nb_agglos init: 8; // Nouvelle base
+	parameter "nb_requis_paroissiens_insatisfaits" var: nb_requis_paroissiens_insatisfaits among: [50, 100, 200];
+	parameter 'croissance_demo' var: croissance_demo init: 0.142;
+	// 3 experiments * 20 replications
+}
