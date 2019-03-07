@@ -188,3 +188,13 @@ experiment Exp_6_2_Scenario_NbParoissiens type: batch repeat: 2 keep_seed: false
 	parameter 'croissance_demo' var: croissance_demo init: 0.142;
 	// 3 experiments * 20 replications
 }
+
+experiment Exp_6_2_Scenario_SeuilParoisseAgregat type: batch repeat: 2 keep_seed: false benchmark: false until: (annee >= fin_simulation){
+	parameter 'save_outputs' var: save_outputs init: true;
+	parameter 'prefix' var: prefix_output init: "Exp_6_2_Scenario_SeuilParoisseAgregat";
+	parameter 'experimentType' var: experimentType init: "batch";
+	parameter "init_nb_agglos" var: init_nb_agglos init: 8; // Nouvelle base
+	parameter "seuil_creation_paroisse" var: seuil_creation_paroisse among: [600, 1000, 1500, 2000];
+	parameter 'croissance_demo' var: croissance_demo init: 0.142;
+	// 4 experiments * 20 replications
+}
