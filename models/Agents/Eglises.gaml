@@ -55,12 +55,8 @@ global {
 	
 	action promouvoir_paroisses {
 		string typePromo <- "nil";
-	/* ask Paroisses {
-			write string(self )+ "  : " + string(Satisfaction_Paroisse);
-		} */
 		ask Paroisses {
-			// FIXME : Refromuler sachant que Satisfaction_Paroisse vaut 0 ou 1 : un if serait plus adapté
-			if flip(1 - Satisfaction_Paroisse){
+			if (Satisfaction_Paroisse = 1.0){
 				bool eglise_batie <- false ;
 				
 				Eglises paroisse_a_creer <- nil ;

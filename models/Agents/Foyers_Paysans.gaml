@@ -86,7 +86,7 @@ species Foyers_Paysans schedules: []
 		int autres_droits <- length(self.seigneurs_autres_droits);
 		int nb_seigneurs <- foncier + haute_justice + autres_droits;
 		set redevances_acquittees <- nb_seigneurs;
-		float S_redevances <- max([1 - (nb_seigneurs * (1 / coef_redevances)), 0.0]);
+		float S_redevances <- max([1 - (redevances_acquittees * (1 / coef_redevances)), 0.0]);
 		float S_contributions <- 0.0;
 		if (self.monAgregat = nil)
 		{
@@ -107,7 +107,7 @@ species Foyers_Paysans schedules: []
 		// Longer but more explicit
 		float satisfaction_religieuse_raw <- (dist_max_eglise_actuel - distance_eglise) / (dist_max_eglise_actuel - dist_min_eglise_actuel);
 		float satisfaction_religieuse_min <- min([1.0, satisfaction_religieuse_raw]);
-		set s_religieuse <- max([0.0, satisfaction_religieuse_raw]) with_precision 2;
+		set s_religieuse <- max([0.0, satisfaction_religieuse_min]) with_precision 2;
 		
 	}
 
