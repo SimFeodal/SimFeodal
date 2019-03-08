@@ -202,8 +202,6 @@ ponderation_proba_chateau_ps // TODO : A ajouter dans SimEDB
 			int nb_chateaux_proprio <- Chateaux count (each.proprietaire = self);
 			int nb_chateaux_gardien <- Chateaux count (each.gardien = self);
 			int nb_fp_assujettis <- length(FP_assujettis);
-			int nb_vassaux <- Seigneurs count (each.monSuzerain = self);
-			int nb_debiteurs <- length(mesDebiteurs);
 			int monagregat <- (monAgregat != nil) ? int(replace(monAgregat.name, 'Agregats', '')) : -1;
 			string geom <- world.enquote(location with_precision 2);
 
@@ -211,7 +209,7 @@ ponderation_proba_chateau_ps // TODO : A ajouter dans SimEDB
 				seed, sim_name,annee,id_seigneur, 
 				type, date_apparition, puissance,
 				nb_chateaux_proprio, nb_chateaux_gardien,
-				nb_fp_assujettis, nb_vassaux, nb_debiteurs, monagregat, geom
+				nb_fp_assujettis, monagregat, geom
 				]
 			to: (output_folder_path + sim_name +"_results_seigneurs.csv") type: "csv" header: true rewrite: false;
 		}

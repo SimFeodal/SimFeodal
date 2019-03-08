@@ -62,8 +62,6 @@ species Seigneurs schedules: [] {
 	bool droits_haute_justice <- false ;
 	bool chatelain <- false;
 	
-	Seigneurs monSuzerain <- nil;
-	
 	int nbFP_concernes <- 0 ;
 	
 	list<Foyers_Paysans> FP_assujettis <- [];
@@ -77,7 +75,6 @@ species Seigneurs schedules: [] {
 	list<Foyers_Paysans> FP_autres_droits <- [];
 	list<Foyers_Paysans> FP_autres_droits_garde <- [];
 	
-	list<Seigneurs> mesDebiteurs <- [];
 	Agregats monAgregat <- nil;
 	
 	
@@ -229,11 +226,11 @@ species Seigneurs schedules: [] {
 					set droits_haute_justice <- flip(proba_gain_haute_justice_chateau_ps_actuel);
 					if (droits_haute_justice){
 						Seigneurs ceSeigneur <- self;
-							ask Chateaux where (each.proprietaire = ceSeigneur) {
-								Chateaux ceChateau <- self;
-								ask world {
-									do creer_zone_prelevement (centre_zone: ceChateau.location, rayon: ceChateau.rayon_zp_chateau, proprio: ceSeigneur, typeDroit: "haute_justice", txPrelev: taux_prelevement_zp_chateau, chateau_zp: ceChateau);
-								}
+						ask Chateaux where (each.proprietaire = ceSeigneur) {
+							Chateaux ceChateau <- self;
+							ask world {
+								do creer_zone_prelevement (centre_zone: ceChateau.location, rayon: ceChateau.rayon_zp_chateau, proprio: ceSeigneur, typeDroit: "haute_justice", txPrelev: taux_prelevement_zp_chateau, chateau_zp: ceChateau);
+							}
 						}
 					}
 				}
