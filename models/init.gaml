@@ -61,13 +61,13 @@ global {
 	action generer_seigneurs {
 		create Seigneurs number: init_nb_gs {
 			set type <- "Grand Seigneur";
-			set initial <- true;
+			set date_apparition <- annee;
 		}
 		
 		create Seigneurs number: init_nb_ps {
 			set type <- "Petit Seigneur";
 			set location <- any_location_in(one_of(Agregats collect each.shape) inter reduced_worldextent);
-			set initial <- true;
+			set date_apparition <- annee;
 			
 			int rayon_zp_ps <- rayon_min_zp_ps + rnd(rayon_max_zp_ps - rayon_min_zp_ps);
 			float txPrelev <- min_taux_prelevement_zp_ps + rnd(max_taux_prelevement_zp_ps - min_taux_prelevement_zp_ps);

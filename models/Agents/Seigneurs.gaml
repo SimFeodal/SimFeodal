@@ -26,6 +26,7 @@ global {
 		// Varie entre -1/3 et +1/3 autour de la moyenne
 		create Seigneurs number: nb_seigneurs_a_creer {
 			set type <- "Petit Seigneur";
+			set date_apparition <- annee;
 			
 			if (length(Agregats) > 0){
 				Agregats cetAgregat <- one_of(Agregats);
@@ -37,7 +38,7 @@ global {
 			
 			set droits_haute_justice <- false;
 			
-			if (flip(proba_collecter_loyer_ps)){
+			if (flip(proba_collecter_foncier_ps)){
 				int rayon_zp_ps <- rayon_min_zp_ps + rnd(rayon_max_zp_ps - rayon_min_zp_ps);
 				float taux_prelevement_zp <- min_taux_prelevement_zp_ps + rnd(max_taux_prelevement_zp_ps - min_taux_prelevement_zp_ps);
 				Seigneurs ceSeigneur <- self;
@@ -53,7 +54,7 @@ global {
 species Seigneurs schedules: [] {
 	
 	string type <- "Petit Seigneur";
-	bool initial <- false;
+	int date_apparition;
 	
 	float puissance_init;
 	float puissance <- 0.0;
@@ -125,10 +126,10 @@ species Seigneurs schedules: [] {
 			if (flip(proba_cession_droits_zp)) { // On donne
 				Seigneurs seigneur_beneficiaire <- nil;
 				if (flip(proba_cession_locale)){ // Cession à un PS local
-					set seigneur_beneficiaire <- one_of((Seigneurs - self) where (each.type = "Petit Seigneur"and (each distance_to self < rayon_cession_locale_droits_ps)));
+					set seigneur_beneficiaire <- one_of((Seigneurs - self) where (each.type = "Petit Seigneur"and (each distance_to self < rayon_voisinage_ps)));
 				}
 				if (seigneur_beneficiaire = nil){ // Comme ça, on capte aussi les cas où il n'y a pas de PS à proximité
-					set seigneur_beneficiaire <- one_of((Seigneurs - self) where (each.type = "Petit Seigneur" and (each distance_to self > rayon_cession_locale_droits_ps)));
+					set seigneur_beneficiaire <- one_of((Seigneurs - self) where (each.type = "Petit Seigneur" and (each distance_to self > rayon_voisinage_ps)));
 				}
 				set gardien <- seigneur_beneficiaire;	
 			} // On ne donne pas

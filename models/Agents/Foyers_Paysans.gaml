@@ -62,7 +62,7 @@ species Foyers_Paysans schedules: []
 	float s_religieuse;
 	float s_protection;
 	float satisfaction;
-	bool mobile; // Si true : ce FP peut se déplacer / si false, serf/esclave, pas de déplacement
+	bool mobile;
 
 	Seigneurs seigneur_foncier <- nil;
 	Seigneurs seigneur_haute_justice <- nil;
@@ -70,8 +70,8 @@ species Foyers_Paysans schedules: []
 	int redevances_acquittees <- 0;
 	string type_deplacement <- nil update: nil; //	"fixe", lointain, local
 	string deplacement_from <- nil update: nil; //	"isole", "agregat"
-	string deplacement_to <- nil update: nil; // 		"pole local avec agregat", "pole local sans agregat", 
-	//"pole local avec agregat plus attractif",   "pole local sans agregat plus attractif", "agregat lointain unique", "agregat lointain attractif"
+	string deplacement_to <- nil update: nil; // "pole local avec agregat", "pole local sans agregat", "pole local avec agregat plus attractif", "pole local sans agregat plus attractif", "agregat lointain unique", "agregat lointain attractif"
+	
 	action reset_preleveurs
 	{
 		set seigneur_foncier <- nil;
@@ -146,7 +146,7 @@ species Foyers_Paysans schedules: []
 		// Poles meilleurPole <- (Poles at_distance rayon_migration_locale_fp_actuel) with_max_of (each.attractivite);
 		// remplacement du at_distance buggé et lent
 		Foyers_Paysans moi <- self;
-		list<Poles> poles_locaux <- Poles overlapping (rayon_migration_locale_fp_actuel around moi.location);
+		list<Poles> poles_locaux <- Poles overlapping (rayon_migration_locale_fp around moi.location);
 		
 //		write "deplacement_avec_pole_agregat : " + string(length(poles_locaux));
 		Poles meilleurPole <- poles_locaux with_max_of (each.attractivite);
@@ -207,14 +207,12 @@ species Foyers_Paysans schedules: []
 			}		
 	}
 	
-
-	
 	action deplacement_avec_pole_agregat_serfs(point oldLoc) {
 		
 		//Poles meilleurPole <- (Poles at_distance rayon_migration_locale_fp_actuel) with_max_of (each.attractivite);
 		// remplacement du at_distance buggé et lent
 		Foyers_Paysans moi <- self;
-		Poles meilleurPole <- (Poles overlapping (rayon_migration_locale_fp_actuel around moi.location)) with_max_of (each.attractivite);
+		Poles meilleurPole <- (Poles overlapping (rayon_migration_locale_fp around moi.location)) with_max_of (each.attractivite);
 		if (meilleurPole != nil and monAgregat.monPole.attractivite >= meilleurPole.attractivite) {
 				set type_deplacement <- "fixe";
 		} else {
@@ -250,7 +248,7 @@ species Foyers_Paysans schedules: []
 		//list<Poles> polesLocaux <- Poles at_distance rayon_migration_locale_fp_actuel;
 		// remplacement du at_distance buggé et lent
 		Foyers_Paysans moi <- self;
-		list<Poles> polesLocaux <- Poles inside (rayon_migration_locale_fp_actuel around moi.location);
+		list<Poles> polesLocaux <- Poles inside (rayon_migration_locale_fp around moi.location);
 //		write "deplacement local : " + string(length(polesLocaux));
 		if (empty(polesLocaux))
 		{ // Si pas de pole, on reste sur place
@@ -277,7 +275,7 @@ species Foyers_Paysans schedules: []
 		//list<Poles> agregatsPolarisantsLointains <- agregatsPolarisants - (agregatsPolarisants at_distance rayon_migration_locale_fp_actuel);
 		// remplacement du at_distance lent et buggé
 		Foyers_Paysans moi <- self;
-		list<Poles> agregatsPolarisantsLointains <- agregatsPolarisants - (agregatsPolarisants overlapping (rayon_migration_locale_fp_actuel around moi.location));
+		list<Poles> agregatsPolarisantsLointains <- agregatsPolarisants - (agregatsPolarisants overlapping (rayon_migration_locale_fp around moi.location));
 		if (empty(agregatsPolarisantsLointains))
 		{ // Si pas de pole, on reste sur place
 			set point_lointain <- location;
@@ -287,7 +285,6 @@ species Foyers_Paysans schedules: []
 			set monAgregat <- choixPole.monAgregat;
 			set point_lointain <- any_location_in(monAgregat.shape inter reduced_worldextent);
 			set deplacement_to <- "agregat lointain unique";
-			// TODO : Changer nom variable
 		} else
 		{ // Si plus de 1 pole, lotterie ponderée
 			Poles poleVainqueur <- (agregatsPolarisantsLointains sort_by (each)) at rnd_choice((agregatsPolarisantsLointains sort_by (each)) collect (each.attractivite));
@@ -300,7 +297,6 @@ species Foyers_Paysans schedules: []
 		return (point_lointain);
 	}
 
-	rgb color <- # gray;
 	aspect base
 	{
 		draw geometry:circle(10) color:#black;

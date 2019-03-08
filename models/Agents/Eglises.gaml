@@ -41,7 +41,7 @@ global {
 			int nb_FP_agregat <- length(agregat.fp_agregat) ;
 			int nb_paroisses_agregat <- Paroisses count (each intersects agregat) ;
 			
-			float proba_creation_paroisse <- min([1.0, (1/seuil_creation_paroisse) * (nb_FP_agregat / nb_paroisses_agregat)]);
+			float proba_creation_paroisse <- min([1.0, (1/ponderation_creation_paroisse_agregat) * (nb_FP_agregat / nb_paroisses_agregat)]);
 
 			if flip(proba_creation_paroisse) {
 				create Eglises number: 1 {
@@ -130,7 +130,7 @@ species Paroisses {
 		if length(mesFideles) > 0 {
 			set nb_paroissiens_insatisfaits <- mesFideles count (each.s_religieuse = 0.0);
 			// write string(self) + " : Nb Paroissiens : " + string(length(mesFideles)) + " / Mecontents : "+ string(nb_paroissiens_mecontents);
-			if nb_paroissiens_insatisfaits > nb_requis_paroissiens_insatisfaits {
+			if nb_paroissiens_insatisfaits > seuil_nb_paroissiens_insatisfaits {
 				set Satisfaction_Paroisse <- 0.0;
 			} else {
 				set Satisfaction_Paroisse <- 1.0 ;

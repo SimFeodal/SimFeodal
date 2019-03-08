@@ -184,7 +184,7 @@ experiment Exp_6_2_Scenario_NbParoissiens type: batch repeat: 2 keep_seed: false
 	parameter 'experimentType' var: experimentType init: "batch";
 	// 0%, 40%, 60%
 	parameter "init_nb_agglos" var: init_nb_agglos init: 8; // Nouvelle base
-	parameter "nb_requis_paroissiens_insatisfaits" var: nb_requis_paroissiens_insatisfaits among: [50, 100, 200];
+	parameter "nb_requis_paroissiens_insatisfaits" var: seuil_nb_paroissiens_insatisfaits among: [50, 100, 200];
 	parameter 'croissance_demo' var: croissance_demo init: 0.142;
 	// 3 experiments * 20 replications
 }
@@ -194,7 +194,7 @@ experiment Exp_6_2_Scenario_SeuilParoisseAgregat type: batch repeat: 2 keep_seed
 	parameter 'prefix' var: prefix_output init: "Exp_6_2_Scenario_SeuilParoisseAgregat";
 	parameter 'experimentType' var: experimentType init: "batch";
 	parameter "init_nb_agglos" var: init_nb_agglos init: 8; // Nouvelle base
-	parameter "seuil_creation_paroisse" var: seuil_creation_paroisse among: [600, 1000, 1500, 2000];
+	parameter "seuil_creation_paroisse" var: ponderation_creation_paroisse_agregat among: [600, 1000, 1500, 2000];
 	parameter 'croissance_demo' var: croissance_demo init: 0.142;
 	// 4 experiments * 20 replications
 }

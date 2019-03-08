@@ -123,7 +123,7 @@ distance_detection_agregat,
 // SEIGNEURS //
 nb_max_chateaux_par_tour_gs,
 nb_max_chateaux_par_tour_ps,
-proba_collecter_loyer_ps,
+proba_collecter_foncier_ps,
 proba_creation_zp_autres_droits_ps,
 rayon_min_zp_ps,
 rayon_max_zp_ps,
@@ -131,19 +131,19 @@ min_taux_prelevement_zp_ps,
 max_taux_prelevement_zp_ps,
 taux_prelevement_zp_chateau,
 proba_cession_droits_zp,
-rayon_cession_locale_droits_ps,
+rayon_voisinage_ps,
 proba_cession_locale,
 proba_don_chateau,
 // CHATEAUX
 rayon_min_zp_chateau,
 rayon_max_zp_chateau,
 dist_min_entre_chateaux,
-proba_chateau_gs_agregat,
+proba_chateau_agregat, // TODO : A renommer dans SimEDB (proba_chateau_gs_agregat)
 proba_promotion_chateau_pole,
 proba_promotion_chateau_isole,
 // EGLISES PAROISSIALES
-seuil_creation_paroisse,
-nb_requis_paroissiens_insatisfaits,
+ponderation_creation_paroisse_agregat,
+seuil_nb_paroissiens_insatisfaits,
 // POLES
 attractivite_petit_chateau,
 attractivite_gros_chateau,
@@ -167,7 +167,7 @@ droits_haute_justice_zp_cession,
 droits_fonciers_zp,
 droits_fonciers_zp_cession,
 autres_droits_zp,
-autres_droits_zp_cession			
+autres_droits_zp_cession,
 			] to: (output_folder_path + sim_name +"_parameters.csv") type: "csv" header: true rewrite: false;
 	}
 	
@@ -208,7 +208,7 @@ autres_droits_zp_cession
 
 			save [
 				seed, sim_name,annee,id_seigneur, 
-				type, initial, puissance,
+				type, date_apparition, puissance,
 				nb_chateaux_proprio, nb_chateaux_gardien,
 				nb_fp_assujettis, nb_vassaux, nb_debiteurs, monagregat, geom
 				]
