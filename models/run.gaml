@@ -155,7 +155,7 @@ global schedules: shuffle(Attracteurs) + shuffle(Poles) + shuffle(Agregats) + sh
 			
 			set somme_puissance <- sum(Seigneurs collect each.puissance);
 			ask Seigneurs{
-				if (espace_dispo_chateaux != nil){do construction_chateaux_2;}
+				if (espace_dispo_chateaux != nil){do construction_chateaux;}
 			}
 			
 		}

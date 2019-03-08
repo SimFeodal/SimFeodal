@@ -111,8 +111,7 @@ global torus: false{
 	int rayon_max_zp_chateau <- 15000;
 	int dist_min_entre_chateaux <- 3000;
 	float proba_chateau_agregat <- 0.5 ;
-	float proba_promotion_chateau_pole <- 0.8; // TODO : avant v6 : proba_promotion_groschateau_multipole
-	float proba_promotion_chateau_isole <- 0.3; // TODO : avant v6 : proba_promotion_groschateau_autre
+	float proba_promotion_chateau_pole <- 0.8;
 		// EGLISES PAROISSIALES
 	int ponderation_creation_paroisse_agregat <- 2000;
 	int seuil_nb_paroissiens_insatisfaits <- 20;
@@ -141,6 +140,8 @@ global torus: false{
 	float droits_fonciers_zp_cession <- 1.25;
 	float autres_droits_zp <- 0.25;
 	float autres_droits_zp_cession <- 0.35;
+	float ponderation_proba_chateau_gs <- 1.25;
+	float ponderation_proba_chateau_ps <- 7.0;
 	
 	
 	////////////////////////

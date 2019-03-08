@@ -140,7 +140,6 @@ rayon_max_zp_chateau,
 dist_min_entre_chateaux,
 proba_chateau_agregat, // TODO : A renommer dans SimEDB (proba_chateau_gs_agregat)
 proba_promotion_chateau_pole,
-proba_promotion_chateau_isole,
 // EGLISES PAROISSIALES
 ponderation_creation_paroisse_agregat,
 seuil_nb_paroissiens_insatisfaits,
@@ -168,6 +167,8 @@ droits_fonciers_zp,
 droits_fonciers_zp_cession,
 autres_droits_zp,
 autres_droits_zp_cession,
+ponderation_proba_chateau_gs, // TODO : A ajouter dans SimEDB
+ponderation_proba_chateau_ps // TODO : A ajouter dans SimEDB		
 			] to: (output_folder_path + sim_name +"_parameters.csv") type: "csv" header: true rewrite: false;
 	}
 	

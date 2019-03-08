@@ -167,25 +167,14 @@ global {
 		bool communaute <- false;
 		list<Chateaux> mesChateaux <- [];
 		list<Eglises> mesParoisses;
-		Poles monPole <- nil; // FIXME : jusqu'ici, toujours nil
+		Poles monPole <- nil;
 		
 		action update_chateau {
-			// FIXME : Chateaux trop proches sinon
-			
 			if (length(mesChateaux) = 0 or (self distance_to one_of(mesChateaux) > 1000)) {
-				
-				//list<Chateaux> Chateaux_proches <- Chateaux at_distance 1000;
-				// Remplacement du at_distance, lent et buggé
 				list<Chateaux> Chateaux_proches <- Chateaux inside (self.shape + 1000);
-				
-				if (empty(Chateaux_proches)) {
-					mesChateaux <- [];
-				} else {
-					mesChateaux <- Chateaux_proches;
-				}
+				set mesChateaux <- (empty(Chateaux_proches)) ? [] : Chateaux_proches;
 			}
 		}
-		
 		
 		action update_attractivite {
 			set attractivite <- length(fp_agregat);

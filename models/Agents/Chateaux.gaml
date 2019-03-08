@@ -32,14 +32,8 @@ import "Zones_Prelevement.gaml"
 		
 		action promotion_chateau {
 			Poles monPole <- shuffle(Poles) first_with (each.mesAttracteurs contains self);
-			if (!empty(list(monPole))){
-				if (length(monPole.mesAttracteurs) > 1){
+			if (!empty(list(monPole)) and length(monPole.mesAttracteurs) > 1){
 					set type <- flip(proba_promotion_chateau_pole) ? "Grand Chateau" : "Petit Chateau";
-				} else {
-					set type <- flip(proba_promotion_chateau_isole) ? "Grand Chateau" : "Petit Chateau";
-				}
-			} else {
-				set type <- flip(proba_promotion_chateau_isole) ? "Grand Chateau" : "Petit Chateau";
 			}
 		}
 		
