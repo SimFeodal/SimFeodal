@@ -1,9 +1,13 @@
 /**
- *  T8
- *  Author: Robin
- *  Description: SimFeodal, v6.1 (avec mécanisme châteaux v3)
+ *  SimFeodal
+ *  Author: R. Cura, C. Tannier, S. Leturcq, E. Zadora-Rio
+ *  Description: https://simfeodal.github.io/
+ *  Repository : https://github.com/SimFeodal/SimFeodal
+ *  Version : 6.3
+ *  Run with : Gama 1.8 (git) (1.7.0.201903051304)
  */
-model t8
+
+model simfeodal
 
 import "init.gaml"
 import "Agents/Agregats.gaml"

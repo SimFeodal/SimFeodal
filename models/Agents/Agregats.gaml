@@ -1,10 +1,13 @@
 /**
- *  T8
- *  Author: Robin
- *  Description: Les agglomérations sont des agents "persistants", mais dont on vérifie l'existence à chaque pas de temps.
+ *  SimFeodal
+ *  Author: R. Cura, C. Tannier, S. Leturcq, E. Zadora-Rio
+ *  Description: https://simfeodal.github.io/
+ *  Repository : https://github.com/SimFeodal/SimFeodal
+ *  Version : 6.3
+ *  Run with : Gama 1.8 (git) (1.7.0.201903051304)
  */
 
-model t8
+model simfeodal
 
 import "../init.gaml"
 import "../global.gaml"

@@ -1,13 +1,13 @@
 /**
  *  SimFeodal
- *  Author: Robin
- *  Description: Modelisation de la transition 800-1100
- * Version 6.0 (ex 5.1 après renommage)
- * Run with : gama 1.8 git : commit : a6aa46d9c
- * (Gama 1.8 git 2018-12-18)
+ *  Author: R. Cura, C. Tannier, S. Leturcq, E. Zadora-Rio
+ *  Description: https://simfeodal.github.io/
+ *  Repository : https://github.com/SimFeodal/SimFeodal
+ *  Version : 6.3
+ *  Run with : Gama 1.8 (git) (1.7.0.201903051304)
  */
 
-model t8
+model simfeodal
 
 import "run.gaml"	
 	
