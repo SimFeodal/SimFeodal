@@ -55,8 +55,8 @@ global {
 	
 	action promouvoir_paroisses {
 		string typePromo <- "nil";
-		ask Paroisses {
-			if (Satisfaction_Paroisse = 1.0){
+		list<Paroisses> toutes_paroisses <- shuffle(Paroisses where (each.Satisfaction_Paroisse = 0.0));
+		ask toutes_paroisses{
 				bool eglise_batie <- false ;
 				
 				Eglises paroisse_a_creer <- nil ;
@@ -101,8 +101,6 @@ global {
 							set mode_promotion <- typePromo;
 					}
 				}
-
-			}
 		}
 	
 	}

@@ -198,3 +198,22 @@ experiment Exp_6_2_Scenario_SeuilParoisseAgregat type: batch repeat: 2 keep_seed
 	parameter 'croissance_demo' var: croissance_demo init: 0.142;
 	// 4 experiments * 20 replications
 }
+
+experiment Exp_6_2_BLOB type: gui repeat: 1 keep_seed: false benchmark: false until: (annee >= fin_simulation){
+	parameter 'save_outputs' var: save_outputs init: false;
+	parameter 'prefix' var: prefix_output init: "Exp_6_2_BLOB";
+	parameter 'experimentType' var: experimentType init: "gui";
+	parameter "init_nb_agglos" var: init_nb_agglos init: 8; // Nouvelle base
+	parameter 'croissance_demo' var: croissance_demo init: 0.0;
+}
+
+experiment Exp_6_3_Debug type: gui repeat: 1 keep_seed: false benchmark: true until: (annee >= fin_simulation){
+	parameter 'save_outputs' var: save_outputs init: false;
+	parameter "summarised_outputs" var: summarised_outputs init: false;
+	parameter 'prefix' var: prefix_output init: "6_3_Debug";
+	parameter 'experimentType' var: experimentType init: "gui";
+	parameter "init_nb_agglos" var: init_nb_agglos init: 8; // Nouvelle base
+	parameter 'init_nb_total_fp' var: init_nb_total_fp init: 4000;
+	parameter 'croissance_demo' var: croissance_demo init: 0.0;
+	// 1 experiment
+}
