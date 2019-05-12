@@ -203,6 +203,12 @@ ponderation_proba_chateau_ps // TODO : A ajouter dans SimEDB
 			int nb_chateaux_proprio <- Chateaux count (each.proprietaire = self);
 			int nb_chateaux_gardien <- Chateaux count (each.gardien = self);
 			int nb_fp_assujettis <- length(FP_assujettis);
+			int nb_fp_foncier <- length(FP_foncier);
+			int nb_fp_foncier_garde <- length(FP_foncier_garde);
+			int nb_fp_haute_justice <- length(FP_haute_justice);
+			int nb_fp_haute_justice_garde <- length(FP_haute_justice_garde);
+			int nb_fp_autres_droits <- length(FP_autres_droits);
+			int nb_fp_autres_droits_garde <- length(FP_autres_droits_garde);
 			int monagregat <- (monAgregat != nil) ? int(replace(monAgregat.name, 'Agregats', '')) : -1;
 			string geom <- world.enquote(location with_precision 2);
 
@@ -210,7 +216,11 @@ ponderation_proba_chateau_ps // TODO : A ajouter dans SimEDB
 				seed, sim_name,annee,id_seigneur, 
 				type, date_apparition, puissance,
 				nb_chateaux_proprio, nb_chateaux_gardien,
-				nb_fp_assujettis, monagregat, geom
+				nb_fp_assujettis,
+				nb_fp_foncier, nb_fp_foncier_garde,
+				nb_fp_haute_justice, nb_fp_haute_justice_garde,
+				nb_fp_autres_droits, nb_fp_autres_droits_garde,
+				monagregat, geom
 				]
 			to: (output_folder_path + sim_name +"_results_seigneurs.csv") type: "csv" header: true rewrite: false;
 		}
