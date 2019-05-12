@@ -44,7 +44,10 @@ global {
     		}
     	}
 		
-		list<list> poles_uniques <- simple_clustering_by_distance((eglises_dans_poles + chateaux_dans_poles + (agregats_dans_poles where each.communaute)) of_generic_species Attracteurs, 200);
+		list<list> poles_uniques <- simple_clustering_by_distance((eglises_dans_poles + 
+																   chateaux_dans_poles +
+																  (agregats_dans_poles where each.communaute)
+		) of_generic_species Attracteurs, 200);
 
 		loop currentPole over: poles_uniques {
 			create Poles number: 1 {

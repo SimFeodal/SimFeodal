@@ -88,7 +88,7 @@ global {
 					list<geometry> triangles_Delaunay <- triangulate((Eglises where !(each.eglise_paroissiale)) collect each.location);
 					// On ne peut pas faire de overlap parce qu'une paroisse peut être en dehors de la triangulation Delaunay
 					geometry monTriangle <- triangles_Delaunay closest_to location;
-					set paroisse_a_creer <- shuffle(Eglises) first_with (location = (monTriangle farthest_point_to location));
+					set paroisse_a_creer <- shuffle(eglises_dans_polygone) first_with (location = (monTriangle farthest_point_to location));
 					set typePromo <- "promotion isole";
 				}
 				if (paroisse_a_creer != nil){
