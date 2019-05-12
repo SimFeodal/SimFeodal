@@ -34,7 +34,8 @@ global {
 		do save_poles(currentPrefix);
 		do save_paroisses(currentPrefix);
 		do save_chateaux(currentPrefix);
-		do save_FP(currentPrefix);
+		//do save_FP(currentPrefix); : Changement en 6.3
+		do save_FP_summary(currentPrefix);
 	}
 	
 	action save_summarised_data {
@@ -273,6 +274,120 @@ ponderation_proba_chateau_ps // TODO : A ajouter dans SimEDB
 				deplacement_from, deplacement_to,
 				redevances_acquittees, geom
 			] to: (output_folder_path + sim_name +"_results_FP.csv") type: "csv" header: true rewrite: false;
+		}
+
+	}
+	
+	action save_FP_summary(string sim_name) {
+		string seed <- enquote(seed);
+		int nb_fp <- length(Foyers_Paysans);
+		
+		float deplacement_fixe <- (Foyers_Paysans count (each.type_deplacement = "fixe")) / nb_fp;
+		float deplacement_lointain <- (Foyers_Paysans count (each.type_deplacement = "lointain")) / nb_fp;
+		float deplacement_local <- (Foyers_Paysans count (each.type_deplacement = "local")) / nb_fp;
+				
+		//	"pole local avec agregat" / "pole local avec agregat plus attractif"
+		float from_isole_to_agregat_local <- (Foyers_Paysans count (each.deplacement_from = "isole" and
+			(each.deplacement_to = "pole local avec agregat" or  each.deplacement_to = "pole local avec agregat plus attractif")
+		)) / nb_fp;
+		// "agregat lointain unique" / "agregat lointain attractif"
+		float from_isole_to_agregat_lointain <- (Foyers_Paysans count (each.deplacement_from = "isole" and 
+			(each.deplacement_to = "agregat lointain unique" or  each.deplacement_to = "agregat lointain attractif")
+		)) / nb_fp;
+		// "pole local sans agregat" / "pole local sans agregat plus attractif"
+		float from_isole_to_pole_local_hors_agregat <- (Foyers_Paysans count (each.deplacement_from = "isole" and
+			(each.deplacement_to = "pole local sans agregat" or  each.deplacement_to = "pole local sans agregat plus attractif")
+		)) / nb_fp;
+
+		//	"pole local avec agregat" / "pole local avec agregat plus attractif"
+		float from_agregat_to_agregat_local <- (Foyers_Paysans count (each.deplacement_from = "agregat" and
+			(each.deplacement_to = "pole local avec agregat" or  each.deplacement_to = "pole local avec agregat plus attractif")
+		)) / nb_fp;
+		// "agregat lointain unique" / "agregat lointain attractif"
+		float from_agregat_to_agregat_lointain <- (Foyers_Paysans count (each.deplacement_from = "agregat" and 
+			(each.deplacement_to = "agregat lointain unique" or  each.deplacement_to = "agregat lointain attractif")
+		)) / nb_fp;
+		// "pole local sans agregat" / "pole local sans agregat plus attractif"
+		float from_agregat_to_pole_local_hors_agregat <- (Foyers_Paysans count (each.deplacement_from = "agregat" and
+			(each.deplacement_to = "pole local sans agregat" or  each.deplacement_to = "pole local sans agregat plus attractif")
+		)) / nb_fp;
+		
+		float taux_fp_isoles <- (Foyers_Paysans count (each.monAgregat = nil)) / nb_fp;
+		
+		float deci_0_satis <- (Foyers_Paysans count (each.satisfaction >= 0.0 and each.satisfaction < 0.1)) / nb_fp;
+		float deci_1_satis <- (Foyers_Paysans count (each.satisfaction >= 0.1 and each.satisfaction < 0.2)) / nb_fp;
+		float deci_2_satis <- (Foyers_Paysans count (each.satisfaction >= 0.2 and each.satisfaction < 0.3)) / nb_fp;
+		float deci_3_satis <- (Foyers_Paysans count (each.satisfaction >= 0.3 and each.satisfaction < 0.4)) / nb_fp;
+		float deci_4_satis <- (Foyers_Paysans count (each.satisfaction >= 0.4 and each.satisfaction < 0.5)) / nb_fp;
+		float deci_5_satis <- (Foyers_Paysans count (each.satisfaction >= 0.5 and each.satisfaction < 0.6)) / nb_fp;
+		float deci_6_satis <- (Foyers_Paysans count (each.satisfaction >= 0.6 and each.satisfaction < 0.7)) / nb_fp;
+		float deci_7_satis <- (Foyers_Paysans count (each.satisfaction >= 0.7 and each.satisfaction < 0.8)) / nb_fp;
+		float deci_8_satis <- (Foyers_Paysans count (each.satisfaction >= 0.8 and each.satisfaction < 0.9)) / nb_fp;
+		float deci_9_satis <- (Foyers_Paysans count (each.satisfaction >= 0.9 and each.satisfaction <= 1.0)) / nb_fp;
+		
+		float deci_0_srel <- (Foyers_Paysans count (each.s_religieuse >= 0.0 and each.s_religieuse < 0.1)) / nb_fp;
+		float deci_1_srel <- (Foyers_Paysans count (each.s_religieuse >= 0.1 and each.s_religieuse < 0.2)) / nb_fp;
+		float deci_2_srel <- (Foyers_Paysans count (each.s_religieuse >= 0.2 and each.s_religieuse < 0.3)) / nb_fp;
+		float deci_3_srel <- (Foyers_Paysans count (each.s_religieuse >= 0.3 and each.s_religieuse < 0.4)) / nb_fp;
+		float deci_4_srel <- (Foyers_Paysans count (each.s_religieuse >= 0.4 and each.s_religieuse < 0.5)) / nb_fp;
+		float deci_5_srel <- (Foyers_Paysans count (each.s_religieuse >= 0.5 and each.s_religieuse < 0.6)) / nb_fp;
+		float deci_6_srel <- (Foyers_Paysans count (each.s_religieuse >= 0.6 and each.s_religieuse < 0.7)) / nb_fp;
+		float deci_7_srel <- (Foyers_Paysans count (each.s_religieuse >= 0.7 and each.s_religieuse < 0.8)) / nb_fp;
+		float deci_8_srel <- (Foyers_Paysans count (each.s_religieuse >= 0.8 and each.s_religieuse < 0.9)) / nb_fp;
+		float deci_9_srel <- (Foyers_Paysans count (each.s_religieuse >= 0.9 and each.s_religieuse <= 1.0)) / nb_fp;
+		
+		float deci_0_smat <- (Foyers_Paysans count (each.s_materielle >= 0.0 and each.s_materielle < 0.1)) / nb_fp;
+		float deci_1_smat <- (Foyers_Paysans count (each.s_materielle >= 0.1 and each.s_materielle < 0.2)) / nb_fp;
+		float deci_2_smat <- (Foyers_Paysans count (each.s_materielle >= 0.2 and each.s_materielle < 0.3)) / nb_fp;
+		float deci_3_smat <- (Foyers_Paysans count (each.s_materielle >= 0.3 and each.s_materielle < 0.4)) / nb_fp;
+		float deci_4_smat <- (Foyers_Paysans count (each.s_materielle >= 0.4 and each.s_materielle < 0.5)) / nb_fp;
+		float deci_5_smat <- (Foyers_Paysans count (each.s_materielle >= 0.5 and each.s_materielle < 0.6)) / nb_fp;
+		float deci_6_smat <- (Foyers_Paysans count (each.s_materielle >= 0.6 and each.s_materielle < 0.7)) / nb_fp;
+		float deci_7_smat <- (Foyers_Paysans count (each.s_materielle >= 0.7 and each.s_materielle < 0.8)) / nb_fp;
+		float deci_8_smat <- (Foyers_Paysans count (each.s_materielle >= 0.8 and each.s_materielle < 0.9)) / nb_fp;
+		float deci_9_smat <- (Foyers_Paysans count (each.s_materielle >= 0.9 and each.s_materielle <= 1.0)) / nb_fp;
+		
+		float deci_0_sprot <- (Foyers_Paysans count (each.s_protection >= 0.0 and each.s_protection < 0.1)) / nb_fp;
+		float deci_1_sprot <- (Foyers_Paysans count (each.s_protection >= 0.1 and each.s_protection < 0.2)) / nb_fp;
+		float deci_2_sprot <- (Foyers_Paysans count (each.s_protection >= 0.2 and each.s_protection < 0.3)) / nb_fp;
+		float deci_3_sprot <- (Foyers_Paysans count (each.s_protection >= 0.3 and each.s_protection < 0.4)) / nb_fp;
+		float deci_4_sprot <- (Foyers_Paysans count (each.s_protection >= 0.4 and each.s_protection < 0.5)) / nb_fp;
+		float deci_5_sprot <- (Foyers_Paysans count (each.s_protection >= 0.5 and each.s_protection < 0.6)) / nb_fp;
+		float deci_6_sprot <- (Foyers_Paysans count (each.s_protection >= 0.6 and each.s_protection < 0.7)) / nb_fp;
+		float deci_7_sprot <- (Foyers_Paysans count (each.s_protection >= 0.7 and each.s_protection < 0.8)) / nb_fp;
+		float deci_8_sprot <- (Foyers_Paysans count (each.s_protection >= 0.8 and each.s_protection < 0.9)) / nb_fp;
+		float deci_9_sprot <- (Foyers_Paysans count (each.s_protection >= 0.9 and each.s_protection <= 1.0)) / nb_fp;
+		
+		
+		list<int> list_redevances_acquittees <- Foyers_Paysans collect each.redevances_acquittees;
+		float q1_redevances_acquittees <- list_redevances_acquittees quantile 0.25;
+		float med_redevances_acquittees <- list_redevances_acquittees quantile 0.5;
+		float q3_redevances_acquittees <- list_redevances_acquittees quantile 0.75;
+		
+		
+		ask Foyers_Paysans {
+			
+			save [
+				seed, sim_name, annee, nb_fp,taux_fp_isoles,
+				deplacement_fixe, deplacement_lointain, deplacement_local,
+				from_isole_to_agregat_local, from_isole_to_agregat_lointain, from_isole_to_pole_local_hors_agregat,
+				from_agregat_to_agregat_local, from_agregat_to_agregat_lointain, from_agregat_to_pole_local_hors_agregat,
+				q1_redevances_acquittees, med_redevances_acquittees, q3_redevances_acquittees,
+				
+				deci_0_satis,deci_1_satis,deci_2_satis,deci_3_satis,deci_4_satis,
+				deci_5_satis,deci_6_satis,deci_7_satis,deci_8_satis,deci_9_satis,
+				
+				deci_0_srel,deci_1_srel,deci_2_srel,deci_3_srel,deci_4_srel,
+				deci_5_srel,deci_6_srel,deci_7_srel,deci_8_srel,deci_9_srel,
+				
+				deci_0_smat,deci_1_smat,deci_2_smat,deci_3_smat,deci_4_smat,
+				deci_5_smat,deci_6_smat,deci_7_smat,deci_8_smat,deci_9_smat,
+
+				deci_0_sprot,deci_1_sprot,deci_2_sprot,deci_3_sprot,deci_4_sprot,
+				deci_5_sprot,deci_6_sprot,deci_7_sprot,deci_8_sprot,deci_9_sprot
+				
+				
+			] to: (output_folder_path + sim_name +"_results_FP_summarised.csv") type: "csv" header: true rewrite: false;
 		}
 
 	}
