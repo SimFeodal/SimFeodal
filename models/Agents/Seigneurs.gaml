@@ -182,7 +182,8 @@ species Seigneurs schedules: [] {
 	action construction_chateaux {	
 		bool is_gs <- (self.type = "Grand Seigneur");
 		
-		float proba_creer_chateau <- (is_gs) ? (self.puissance / somme_puissance) * ponderation_proba_chateau_gs : (self.puissance / somme_puissance) * ponderation_proba_chateau_ps;
+		float ponderation_proba <- (is_gs) ? ponderation_proba_chateau_gs : ponderation_proba_chateau_ps;
+		float proba_creer_chateau <- (self.puissance / somme_puissance) * ponderation_proba ;
 		int  nb_chateaux_potentiels <- (is_gs) ? nb_max_chateaux_par_tour_gs : nb_max_chateaux_par_tour_ps;
 			
 		float maxPuissance <- max(Seigneurs collect each.puissance) ;
@@ -200,14 +201,15 @@ species Seigneurs schedules: [] {
 				geometry espace_disponible <- espace_dispo_chateaux;				
 				
 
-				geometry espace_disponible_seigneur <- (is_gs) ? espace_dispo_chateaux : espace_dispo_chateaux - (rayon_voisinage_ps around self);
+				geometry espace_disponible_seigneur <- (is_gs) ? espace_dispo_chateaux : espace_dispo_chateaux inter (rayon_voisinage_ps around self);
 				list<Agregats> agregats_possibles <- (is_gs) ? agregats_loins_chateaux : distinct(agregats_loins_chateaux inside espace_disponible_seigneur);
 				
 				Chateaux ceChateau;
+				// FIXME : espace_diponible_seigneur buggait pour les PS : corrigé mais vérifier que ça fonctionne correctement
 				if (flip(proba_chateau_agregat) and length(agregats_possibles) > 0){
 					// Construction dans agrégat
 					Agregats agregat_choisi <- one_of(agregats_possibles);
-					point choix_location <- any_location_in(espace_disponible_seigneur - agregat_choisi.shape); 
+					point choix_location <- any_location_in(espace_disponible_seigneur inter agregat_choisi.shape);
 					set ceChateau <- creer_chateau(location_chateau: choix_location, rayon_zp_associees: rayon_zp, seigneur_chatelain: self, agregat_chateau: agregat_choisi);
 				} else {
 					// Construction dans zone quelconque

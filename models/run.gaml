@@ -26,7 +26,7 @@ global schedules: shuffle(Attracteurs) + shuffle(Poles) + shuffle(Agregats) + sh
     
 	init {
 		gama.pref_errors_warnings_errors <- false; // Les warnings ne doivent pas stopper le modèle
-		// gama.pref_errors_warnings_errors <- true; // Pour debug
+		//gama.pref_errors_warnings_errors <- true; // Pour debug
 		do generer_monde;
 		set espace_dispo_chateaux <- worldextent - 3 #km;
 	}
@@ -149,10 +149,6 @@ global schedules: shuffle(Attracteurs) + shuffle(Poles) + shuffle(Agregats) + sh
 		set agregats_loins_chateaux <- Agregats inside espace_dispo_chateaux;
 		if (espace_dispo_chateaux != nil){
 			
-//			ask Seigneurs{
-//				if (espace_dispo_chateaux != nil){do construction_chateaux;}
-//			}
-			
 			set somme_puissance <- sum(Seigneurs collect each.puissance);
 			ask Seigneurs{
 				if (espace_dispo_chateaux != nil){do construction_chateaux;}
@@ -187,6 +183,12 @@ global schedules: shuffle(Attracteurs) + shuffle(Poles) + shuffle(Agregats) + sh
 	reflex save_summarised_outputs when: summarised_outputs{
 		do save_summarised_data;
 	}
+	
+//	reflex print_zp {
+//write "Foncier : " + Zones_Prelevement count (each.type_droit = "foncier");
+//write "Haute-Justice : "+ Zones_Prelevement count (each.type_droit = "haute_justice"); 
+//write "Autres : " + Zones_Prelevement count (each.type_droit = "autres_droits"); 
+//	}
 	
 	reflex fin_simulation {
 		set nb_chateaux <- length(Chateaux);
