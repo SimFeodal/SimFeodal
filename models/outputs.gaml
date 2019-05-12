@@ -374,32 +374,25 @@ ponderation_proba_chateau_ps // TODO : A ajouter dans SimEDB
 		float med_redevances_acquittees <- list_redevances_acquittees quantile 0.5;
 		float q3_redevances_acquittees <- list_redevances_acquittees quantile 0.75;
 		
-		
-		ask Foyers_Paysans {
+		save [
+			seed, sim_name, annee, nb_fp,taux_fp_isoles,
+			deplacement_fixe, deplacement_lointain, deplacement_local,
+			from_isole_to_agregat_local, from_isole_to_agregat_lointain, from_isole_to_pole_local_hors_agregat,
+			from_agregat_to_agregat_local, from_agregat_to_agregat_lointain, from_agregat_to_pole_local_hors_agregat,
+			q1_redevances_acquittees, med_redevances_acquittees, q3_redevances_acquittees,
 			
-			save [
-				seed, sim_name, annee, nb_fp,taux_fp_isoles,
-				deplacement_fixe, deplacement_lointain, deplacement_local,
-				from_isole_to_agregat_local, from_isole_to_agregat_lointain, from_isole_to_pole_local_hors_agregat,
-				from_agregat_to_agregat_local, from_agregat_to_agregat_lointain, from_agregat_to_pole_local_hors_agregat,
-				q1_redevances_acquittees, med_redevances_acquittees, q3_redevances_acquittees,
-				
-				deci_0_satis,deci_1_satis,deci_2_satis,deci_3_satis,deci_4_satis,
-				deci_5_satis,deci_6_satis,deci_7_satis,deci_8_satis,deci_9_satis,
-				
-				deci_0_srel,deci_1_srel,deci_2_srel,deci_3_srel,deci_4_srel,
-				deci_5_srel,deci_6_srel,deci_7_srel,deci_8_srel,deci_9_srel,
-				
-				deci_0_smat,deci_1_smat,deci_2_smat,deci_3_smat,deci_4_smat,
-				deci_5_smat,deci_6_smat,deci_7_smat,deci_8_smat,deci_9_smat,
+			deci_0_satis,deci_1_satis,deci_2_satis,deci_3_satis,deci_4_satis,
+			deci_5_satis,deci_6_satis,deci_7_satis,deci_8_satis,deci_9_satis,
+			
+			deci_0_srel,deci_1_srel,deci_2_srel,deci_3_srel,deci_4_srel,
+			deci_5_srel,deci_6_srel,deci_7_srel,deci_8_srel,deci_9_srel,
+			
+			deci_0_smat,deci_1_smat,deci_2_smat,deci_3_smat,deci_4_smat,
+			deci_5_smat,deci_6_smat,deci_7_smat,deci_8_smat,deci_9_smat,
 
-				deci_0_sprot,deci_1_sprot,deci_2_sprot,deci_3_sprot,deci_4_sprot,
-				deci_5_sprot,deci_6_sprot,deci_7_sprot,deci_8_sprot,deci_9_sprot
-				
-				
-			] to: (output_folder_path + sim_name +"_results_FP_summarised.csv") type: "csv" header: true rewrite: false;
-		}
-
+			deci_0_sprot,deci_1_sprot,deci_2_sprot,deci_3_sprot,deci_4_sprot,
+			deci_5_sprot,deci_6_sprot,deci_7_sprot,deci_8_sprot,deci_9_sprot
+		] to: (output_folder_path + sim_name +"_results_FP_summarised.csv") type: "csv" header: true rewrite: false;
 	}
 	
 		action save_paroisses(string sim_name) {
