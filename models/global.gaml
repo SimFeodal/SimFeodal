@@ -142,6 +142,10 @@ global torus: false{
 	float autres_droits_zp_cession <- 0.35;
 	float ponderation_proba_chateau_gs <- 1.25;
 	float ponderation_proba_chateau_ps <- 7.0;
+		// Seigneurs (mécanisme) //
+	bool construction_chateau_alternate <- false;
+	int nb_tirages_chateaux_ps <- 1;
+	int nb_tirages_chateaux_gs <- 1;
 	
 	
 	////////////////////////

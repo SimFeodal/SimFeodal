@@ -1,6 +1,6 @@
 #!/bin/bash
 cd /home/robin/gama_git/headless/
-experimentPath="/home/robin/SimFeodal/experiments/expe_6_3_Obj50k.xml"
+experimentPath="/home/robin/SimFeodal/experiments/expe_6_4_chateaux.xml"
 outputPath="/home/robin/myOutputs/sim"
 # Cluster got 24 cores, we use 20
 # We launch each simulation on 2 cores, so, 10 simulations

@@ -169,7 +169,10 @@ droits_fonciers_zp_cession,
 autres_droits_zp,
 autres_droits_zp_cession,
 ponderation_proba_chateau_gs, // TODO : A ajouter dans SimEDB
-ponderation_proba_chateau_ps // TODO : A ajouter dans SimEDB		
+ponderation_proba_chateau_ps, // TODO : A ajouter dans SimEDB		
+construction_chateau_alternate,
+nb_tirages_chateaux_ps,
+nb_tirages_chateaux_gs
 			] to: (output_folder_path + sim_name +"_parameters.csv") type: "csv" header: true rewrite: false;
 	}
 	

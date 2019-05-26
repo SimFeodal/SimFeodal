@@ -60,3 +60,42 @@ experiment Exp_6_3_Obj50k_5 type: batch repeat: 2 keep_seed: false benchmark: fa
 	parameter 'init_nb_total_fp' var: init_nb_total_fp init: 50000;
 	parameter 'croissance_demo' var: croissance_demo init: 0.0;
 }
+
+experiment Exp_6_4_Debug type: gui repeat: 1 keep_seed: false benchmark: false until: (annee >= fin_simulation){
+	parameter 'save_outputs' var: save_outputs init: false;
+	parameter 'prefix' var: prefix_output init: "6_4_Debug";
+	parameter 'experimentType' var: experimentType init: "gui";
+	parameter 'init_nb_total_fp' var: init_nb_total_fp init: 4000;
+	parameter 'croissance_demo' var: croissance_demo init: 0.1422;
+	
+	parameter 'construction_chateau_alternate' var: construction_chateau_alternate init: true;
+	parameter 'nb_tirages_chateaux_ps' var: nb_tirages_chateaux_ps init: 5;
+	parameter 'nb_tirages_chateaux_gs' var: nb_tirages_chateaux_gs init: 2;
+	// 1 experiment
+}
+
+experiment Exp_6_4_PopGrowth type: batch repeat: 2 keep_seed: false benchmark: false until: (annee >= fin_simulation){
+	parameter 'save_outputs' var: save_outputs init: true;
+	parameter 'prefix' var: prefix_output init: "6_4_chateaux";
+	parameter 'experimentType' var: experimentType init: "batch";
+	parameter 'init_nb_total_fp' var: init_nb_total_fp init: 4000;
+	parameter 'croissance_demo' var: croissance_demo init: 0.1422;
+	
+	parameter 'construction_chateau_alternate' var: construction_chateau_alternate init: true;
+	parameter 'nb_tirages_chateaux_ps' var: nb_tirages_chateaux_ps among: [1,3,5,7,10];
+	parameter 'nb_tirages_chateaux_gs' var: nb_tirages_chateaux_gs among: [1,2,5];
+	// 1 experiment
+}
+
+experiment Exp_6_4_PopInit type: gui repeat: 2 keep_seed: false benchmark: false until: (annee >= fin_simulation){
+	parameter 'save_outputs' var: save_outputs init: true;
+	parameter 'prefix' var: prefix_output init: "6_4_chateaux";
+	parameter 'experimentType' var: experimentType init: "batch";
+	parameter 'init_nb_total_fp' var: init_nb_total_fp init: 50000;
+	parameter 'croissance_demo' var: croissance_demo init: 0.0;
+	
+	parameter 'construction_chateau_alternate' var: construction_chateau_alternate init: true;
+	parameter 'nb_tirages_chateaux_ps' var: nb_tirages_chateaux_ps among: [1,3,5,7,10];
+	parameter 'nb_tirages_chateaux_gs' var: nb_tirages_chateaux_gs among: [1,2,5];
+	// 1 experiment
+}

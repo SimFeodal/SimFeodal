@@ -150,9 +150,16 @@ global schedules: shuffle(Attracteurs) + shuffle(Poles) + shuffle(Agregats) + sh
 		if (espace_dispo_chateaux != nil){
 			
 			set somme_puissance <- sum(Seigneurs collect each.puissance);
-			ask Seigneurs{
-				if (espace_dispo_chateaux != nil){do construction_chateaux;}
+			if (!construction_chateau_alternate){
+				ask Seigneurs where (each.puissance > 0){
+					if (espace_dispo_chateaux != nil){do construction_chateaux;}
+				}
+			} else {
+				ask Seigneurs where (each.puissance > 0) {
+					if (espace_dispo_chateaux != nil){do construction_chateaux_alternate;}
+				}
 			}
+
 			
 		}
 	}
@@ -194,6 +201,7 @@ global schedules: shuffle(Attracteurs) + shuffle(Poles) + shuffle(Agregats) + sh
 		set nb_chateaux <- length(Chateaux);
 		if (annee >= fin_simulation) {
 			write 'Durée simulation : ' + total_duration;
+			 write "Nb châteaux :  GS :" + string(length(Chateaux where (each.proprietaire.type = "Grand Seigneur"))) + " / PS : " + string(length(Chateaux where (each.proprietaire.type != "Grand Seigneur")));
 			if (experimentType = "batch"){
 				do halt;
 			} else {
