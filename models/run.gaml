@@ -147,21 +147,17 @@ global schedules: shuffle(Attracteurs) + shuffle(Poles) + shuffle(Agregats) + sh
 	
 	reflex Constructions_chateaux when: annee >= debut_construction_chateaux{
 		set agregats_loins_chateaux <- Agregats inside espace_dispo_chateaux;
-		if (espace_dispo_chateaux != nil){
-			
-			set somme_puissance <- sum(Seigneurs collect each.puissance);
-			if (!construction_chateau_alternate){
-				ask Seigneurs where (each.puissance > 0){
-					if (espace_dispo_chateaux != nil){do construction_chateaux;}
-				}
-			} else {
-				ask Seigneurs where (each.puissance > 0) {
-					if (espace_dispo_chateaux != nil){do construction_chateaux_alternate;}
-				}
-			}
-
-			
+		// Pour les GS
+		ask Seigneurs where (each.type = "Grand Seigneur"){
+			if (espace_dispo_chateaux != nil){do construction_chateaux;}
 		}
+		// Pour les PS
+		bool construction_chateau_ps <- flip(proba_construction_chateau_ps);
+		if (espace_dispo_chateaux != nil and construction_chateau_ps){
+			list<Seigneurs> tousPS <- (Seigneurs where (each.type != "Grand Seigneur" and each.puissance > 0)) sort_by (each);
+			Seigneurs seigneurConstructeur <- tousPS at rnd_choice(tousPS collect (each.puissance));
+			ask seigneurConstructeur {do construction_chateaux;}
+		}			
 	}
 	
 	reflex MaJ_Agregats{

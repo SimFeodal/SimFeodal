@@ -179,12 +179,84 @@ species Seigneurs schedules: [] {
 		return(ceChateau);
 	}
 	
+//	action construction_chateaux {	
+//		bool is_gs <- (self.type = "Grand Seigneur");
+//		
+//		float ponderation_proba <- (is_gs) ? ponderation_proba_chateau_gs : ponderation_proba_chateau_ps;
+//		float proba_creer_chateau <- (self.puissance / somme_puissance) * ponderation_proba ;
+//		int  nb_chateaux_potentiels <- (is_gs) ? nb_max_chateaux_par_tour_gs : nb_max_chateaux_par_tour_ps;
+//			
+//		float maxPuissance <- max(Seigneurs collect each.puissance) ;
+//		float minPuissance <- min(Seigneurs collect each.puissance) ;
+//		int rayon_zp <- int(max([
+//			rayon_min_zp_chateau, min([
+//				rayon_max_zp_chateau,
+//				( maxPuissance / (maxPuissance - minPuissance) )- (self.puissance / (maxPuissance - minPuissance))
+//				])])
+//		);
+//		
+//		loop times: nb_chateaux_potentiels {
+//			if (espace_dispo_chateaux != nil and flip(proba_creer_chateau)){
+//				// Si création tirée
+//				geometry espace_disponible <- espace_dispo_chateaux;				
+//				
+//
+//				geometry espace_disponible_seigneur <- (is_gs) ? espace_dispo_chateaux : espace_dispo_chateaux inter (rayon_voisinage_ps around self);
+//				list<Agregats> agregats_possibles <- (is_gs) ? agregats_loins_chateaux : distinct(agregats_loins_chateaux inside espace_disponible_seigneur);
+//				
+//				Chateaux ceChateau;
+//				// FIXME : espace_diponible_seigneur buggait pour les PS : corrigé mais vérifier que ça fonctionne correctement
+//				if (flip(proba_chateau_agregat) and length(agregats_possibles) > 0){
+//					// Construction dans agrégat
+//					Agregats agregat_choisi <- one_of(agregats_possibles);
+//					point choix_location <- any_location_in(espace_disponible_seigneur inter agregat_choisi.shape);
+//					set ceChateau <- creer_chateau(location_chateau: choix_location, rayon_zp_associees: rayon_zp, seigneur_chatelain: self, agregat_chateau: agregat_choisi);
+//				} else {
+//					// Construction dans zone quelconque
+//					point choix_location <- any_location_in(espace_disponible_seigneur);
+//					set ceChateau <- creer_chateau(location_chateau: choix_location, rayon_zp_associees: rayon_zp, seigneur_chatelain: self, agregat_chateau: nil);			
+//				}
+//				
+//				geometry espace_affecte <- dist_min_entre_chateaux around ceChateau.location;
+//				set espace_dispo_chateaux <- espace_dispo_chateaux - espace_affecte;
+//				list<Agregats> agregats_dans_espace_affecte <- distinct(Agregats inside espace_affecte);
+//				set agregats_loins_chateaux <- distinct(agregats_loins_chateaux - agregats_dans_espace_affecte);
+//				set chatelain <- true;
+//				
+//				// MaJ droits haute_justice PS :
+//				if (!is_gs and !droits_haute_justice and proba_gain_haute_justice_chateau_ps_actuel > 0.0){
+//					set droits_haute_justice <- flip(proba_gain_haute_justice_chateau_ps_actuel);
+//					if (droits_haute_justice){
+//						Seigneurs ceSeigneur <- self;
+//						ask Chateaux where (each.proprietaire = ceSeigneur) {
+//							Chateaux ceChateau <- self;
+//							ask world {
+//								do creer_zone_prelevement (centre_zone: ceChateau.location, rayon: ceChateau.rayon_zp_chateau, proprio: ceSeigneur, typeDroit: "haute_justice", txPrelev: taux_prelevement_zp_chateau, chateau_zp: ceChateau);
+//							}
+//						}
+//					}
+//				}
+//				
+//				// Construction ZPs
+//				Seigneurs ceSeigneur <- self;
+//				ask world {
+//					do creer_zone_prelevement (centre_zone: ceChateau.location, rayon: rayon_zp, proprio: ceSeigneur, typeDroit: "foncier", txPrelev: taux_prelevement_zp_chateau, chateau_zp: ceChateau);
+//					do creer_zone_prelevement (centre_zone: ceChateau.location, rayon: rayon_zp, proprio: ceSeigneur, typeDroit: "autres_droits", txPrelev: taux_prelevement_zp_chateau, chateau_zp: ceChateau);
+//				}
+//				if (droits_haute_justice){
+//					ask world {
+//						do creer_zone_prelevement (centre_zone: ceChateau.location, rayon: rayon_zp, proprio: ceSeigneur, typeDroit: "haute_justice", txPrelev: taux_prelevement_zp_chateau, chateau_zp: ceChateau);
+//					}
+//				}	
+//			}	
+//		}
+//	}
+	
 	action construction_chateaux {	
 		bool is_gs <- (self.type = "Grand Seigneur");
-		
-		float ponderation_proba <- (is_gs) ? ponderation_proba_chateau_gs : ponderation_proba_chateau_ps;
-		float proba_creer_chateau <- (self.puissance / somme_puissance) * ponderation_proba ;
-		int  nb_chateaux_potentiels <- (is_gs) ? nb_max_chateaux_par_tour_gs : nb_max_chateaux_par_tour_ps;
+		float somme_puissance_gs <- sum(Seigneurs where (each.type = "Grand Seigneur") collect (each.puissance));
+		float proba_creer_chateau <- (is_gs) ? (self.puissance / somme_puissance_gs) : 1.0;
+		//int  nb_chateaux_potentiels <- (is_gs) ? nb_max_chateaux_par_tour_gs : nb_max_chateaux_par_tour_ps;
 			
 		float maxPuissance <- max(Seigneurs collect each.puissance) ;
 		float minPuissance <- min(Seigneurs collect each.puissance) ;
@@ -195,7 +267,8 @@ species Seigneurs schedules: [] {
 				])])
 		);
 		
-		loop times: nb_chateaux_potentiels {
+		int nb_tirages <- (is_gs) ? rnd(nb_max_chateaux_par_tour_gs, nb_max_chateaux_par_tour_gs + 1, 1) : nb_max_chateaux_par_tour_ps;
+		loop times: nb_tirages {
 			if (espace_dispo_chateaux != nil and flip(proba_creer_chateau)){
 				// Si création tirée
 				geometry espace_disponible <- espace_dispo_chateaux;				
@@ -252,85 +325,85 @@ species Seigneurs schedules: [] {
 		}
 	}
 	
-	action construction_chateaux_alternate {	
-		bool is_gs <- (self.type = "Grand Seigneur");
-		
-		float ponderation_proba <- (is_gs) ? ponderation_proba_chateau_gs : ponderation_proba_chateau_ps;
-		list liste_seigneurs_puissance <- reverse(Seigneurs sort_by (each.puissance));
-		int rang_kp1 <- index_of(liste_seigneurs_puissance, self) + 1;
-		float somme_puissance_kp1 <- sum(first(rang_kp1, liste_seigneurs_puissance) collect (each.puissance));
-		float proba_creer_chateau <- self.puissance / somme_puissance_kp1;
-		
-		int  nb_chateaux_potentiels <- (is_gs) ? nb_max_chateaux_par_tour_gs : nb_max_chateaux_par_tour_ps;
-			
-		float maxPuissance <- max(Seigneurs collect each.puissance) ;
-		float minPuissance <- min(Seigneurs collect each.puissance) ;
-		int rayon_zp <- int(max([
-			rayon_min_zp_chateau, min([
-				rayon_max_zp_chateau,
-				( maxPuissance / (maxPuissance - minPuissance) )- (self.puissance / (maxPuissance - minPuissance))
-				])])
-		);
-		
-		loop times: nb_chateaux_potentiels {
-			int nb_tirages_construction <- (is_gs) ? nb_tirages_chateaux_gs : nb_tirages_chateaux_ps;
-			list tirages_construction_chateau <- list_with(nb_tirages_construction, flip(proba_creer_chateau));
-			bool construire_chateau <- tirages_construction_chateau contains_any [true];
-			if (espace_dispo_chateaux != nil and construire_chateau){
-				// Si création tirée
-				geometry espace_disponible <- espace_dispo_chateaux;				
-				
-
-				geometry espace_disponible_seigneur <- (is_gs) ? espace_dispo_chateaux : espace_dispo_chateaux inter (rayon_voisinage_ps around self);
-				list<Agregats> agregats_possibles <- (is_gs) ? agregats_loins_chateaux : distinct(agregats_loins_chateaux inside espace_disponible_seigneur);
-				
-				Chateaux ceChateau;
-				// FIXME : espace_diponible_seigneur buggait pour les PS : corrigé mais vérifier que ça fonctionne correctement
-				if (flip(proba_chateau_agregat) and length(agregats_possibles) > 0){
-					// Construction dans agrégat
-					Agregats agregat_choisi <- one_of(agregats_possibles);
-					point choix_location <- any_location_in(espace_disponible_seigneur inter agregat_choisi.shape);
-					set ceChateau <- creer_chateau(location_chateau: choix_location, rayon_zp_associees: rayon_zp, seigneur_chatelain: self, agregat_chateau: agregat_choisi);
-				} else {
-					// Construction dans zone quelconque
-					point choix_location <- any_location_in(espace_disponible_seigneur);
-					set ceChateau <- creer_chateau(location_chateau: choix_location, rayon_zp_associees: rayon_zp, seigneur_chatelain: self, agregat_chateau: nil);			
-				}
-				
-				geometry espace_affecte <- dist_min_entre_chateaux around ceChateau.location;
-				set espace_dispo_chateaux <- espace_dispo_chateaux - espace_affecte;
-				list<Agregats> agregats_dans_espace_affecte <- distinct(Agregats inside espace_affecte);
-				set agregats_loins_chateaux <- distinct(agregats_loins_chateaux - agregats_dans_espace_affecte);
-				set chatelain <- true;
-				
-				// MaJ droits haute_justice PS :
-				if (!is_gs and !droits_haute_justice and proba_gain_haute_justice_chateau_ps_actuel > 0.0){
-					set droits_haute_justice <- flip(proba_gain_haute_justice_chateau_ps_actuel);
-					if (droits_haute_justice){
-						Seigneurs ceSeigneur <- self;
-						ask Chateaux where (each.proprietaire = ceSeigneur) {
-							Chateaux ceChateau <- self;
-							ask world {
-								do creer_zone_prelevement (centre_zone: ceChateau.location, rayon: ceChateau.rayon_zp_chateau, proprio: ceSeigneur, typeDroit: "haute_justice", txPrelev: taux_prelevement_zp_chateau, chateau_zp: ceChateau);
-							}
-						}
-					}
-				}
-				
-				// Construction ZPs
-				Seigneurs ceSeigneur <- self;
-				ask world {
-					do creer_zone_prelevement (centre_zone: ceChateau.location, rayon: rayon_zp, proprio: ceSeigneur, typeDroit: "foncier", txPrelev: taux_prelevement_zp_chateau, chateau_zp: ceChateau);
-					do creer_zone_prelevement (centre_zone: ceChateau.location, rayon: rayon_zp, proprio: ceSeigneur, typeDroit: "autres_droits", txPrelev: taux_prelevement_zp_chateau, chateau_zp: ceChateau);
-				}
-				if (droits_haute_justice){
-					ask world {
-						do creer_zone_prelevement (centre_zone: ceChateau.location, rayon: rayon_zp, proprio: ceSeigneur, typeDroit: "haute_justice", txPrelev: taux_prelevement_zp_chateau, chateau_zp: ceChateau);
-					}
-				}	
-			}	
-		}
-	}
+//	action construction_chateaux_alternate {	
+//		bool is_gs <- (self.type = "Grand Seigneur");
+//		
+//		float ponderation_proba <- (is_gs) ? ponderation_proba_chateau_gs : ponderation_proba_chateau_ps;
+//		list liste_seigneurs_puissance <- reverse(Seigneurs sort_by (each.puissance));
+//		int rang_kp1 <- index_of(liste_seigneurs_puissance, self) + 1;
+//		float somme_puissance_kp1 <- sum(first(rang_kp1, liste_seigneurs_puissance) collect (each.puissance));
+//		float proba_creer_chateau <- self.puissance / somme_puissance_kp1;
+//		
+//		int  nb_chateaux_potentiels <- (is_gs) ? nb_max_chateaux_par_tour_gs : nb_max_chateaux_par_tour_ps;
+//			
+//		float maxPuissance <- max(Seigneurs collect each.puissance) ;
+//		float minPuissance <- min(Seigneurs collect each.puissance) ;
+//		int rayon_zp <- int(max([
+//			rayon_min_zp_chateau, min([
+//				rayon_max_zp_chateau,
+//				( maxPuissance / (maxPuissance - minPuissance) )- (self.puissance / (maxPuissance - minPuissance))
+//				])])
+//		);
+//		
+//		loop times: nb_chateaux_potentiels {
+//			int nb_tirages_construction <- (is_gs) ? nb_tirages_chateaux_gs : nb_tirages_chateaux_ps;
+//			list tirages_construction_chateau <- list_with(nb_tirages_construction, flip(proba_creer_chateau));
+//			bool construire_chateau <- tirages_construction_chateau contains_any [true];
+//			if (espace_dispo_chateaux != nil and construire_chateau){
+//				// Si création tirée
+//				geometry espace_disponible <- espace_dispo_chateaux;				
+//				
+//
+//				geometry espace_disponible_seigneur <- (is_gs) ? espace_dispo_chateaux : espace_dispo_chateaux inter (rayon_voisinage_ps around self);
+//				list<Agregats> agregats_possibles <- (is_gs) ? agregats_loins_chateaux : distinct(agregats_loins_chateaux inside espace_disponible_seigneur);
+//				
+//				Chateaux ceChateau;
+//				// FIXME : espace_diponible_seigneur buggait pour les PS : corrigé mais vérifier que ça fonctionne correctement
+//				if (flip(proba_chateau_agregat) and length(agregats_possibles) > 0){
+//					// Construction dans agrégat
+//					Agregats agregat_choisi <- one_of(agregats_possibles);
+//					point choix_location <- any_location_in(espace_disponible_seigneur inter agregat_choisi.shape);
+//					set ceChateau <- creer_chateau(location_chateau: choix_location, rayon_zp_associees: rayon_zp, seigneur_chatelain: self, agregat_chateau: agregat_choisi);
+//				} else {
+//					// Construction dans zone quelconque
+//					point choix_location <- any_location_in(espace_disponible_seigneur);
+//					set ceChateau <- creer_chateau(location_chateau: choix_location, rayon_zp_associees: rayon_zp, seigneur_chatelain: self, agregat_chateau: nil);			
+//				}
+//				
+//				geometry espace_affecte <- dist_min_entre_chateaux around ceChateau.location;
+//				set espace_dispo_chateaux <- espace_dispo_chateaux - espace_affecte;
+//				list<Agregats> agregats_dans_espace_affecte <- distinct(Agregats inside espace_affecte);
+//				set agregats_loins_chateaux <- distinct(agregats_loins_chateaux - agregats_dans_espace_affecte);
+//				set chatelain <- true;
+//				
+//				// MaJ droits haute_justice PS :
+//				if (!is_gs and !droits_haute_justice and proba_gain_haute_justice_chateau_ps_actuel > 0.0){
+//					set droits_haute_justice <- flip(proba_gain_haute_justice_chateau_ps_actuel);
+//					if (droits_haute_justice){
+//						Seigneurs ceSeigneur <- self;
+//						ask Chateaux where (each.proprietaire = ceSeigneur) {
+//							Chateaux ceChateau <- self;
+//							ask world {
+//								do creer_zone_prelevement (centre_zone: ceChateau.location, rayon: ceChateau.rayon_zp_chateau, proprio: ceSeigneur, typeDroit: "haute_justice", txPrelev: taux_prelevement_zp_chateau, chateau_zp: ceChateau);
+//							}
+//						}
+//					}
+//				}
+//				
+//				// Construction ZPs
+//				Seigneurs ceSeigneur <- self;
+//				ask world {
+//					do creer_zone_prelevement (centre_zone: ceChateau.location, rayon: rayon_zp, proprio: ceSeigneur, typeDroit: "foncier", txPrelev: taux_prelevement_zp_chateau, chateau_zp: ceChateau);
+//					do creer_zone_prelevement (centre_zone: ceChateau.location, rayon: rayon_zp, proprio: ceSeigneur, typeDroit: "autres_droits", txPrelev: taux_prelevement_zp_chateau, chateau_zp: ceChateau);
+//				}
+//				if (droits_haute_justice){
+//					ask world {
+//						do creer_zone_prelevement (centre_zone: ceChateau.location, rayon: rayon_zp, proprio: ceSeigneur, typeDroit: "haute_justice", txPrelev: taux_prelevement_zp_chateau, chateau_zp: ceChateau);
+//					}
+//				}	
+//			}	
+//		}
+//	}
 	
 	action update_agregats_seigneurs {
 		set monAgregat <- nil;

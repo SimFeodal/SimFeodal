@@ -140,12 +140,15 @@ global torus: false{
 	float droits_fonciers_zp_cession <- 1.25;
 	float autres_droits_zp <- 0.25;
 	float autres_droits_zp_cession <- 0.35;
+	// Seigneurs (mécanisme) //
+	// A supprimer
 	float ponderation_proba_chateau_gs <- 1.25;
 	float ponderation_proba_chateau_ps <- 7.0;
-		// Seigneurs (mécanisme) //
 	bool construction_chateau_alternate <- false;
 	int nb_tirages_chateaux_ps <- 1;
 	int nb_tirages_chateaux_gs <- 1;
+	// Nouveau
+	float proba_construction_chateau_ps <- 0.7;
 	
 	
 	////////////////////////
@@ -191,7 +194,6 @@ global torus: false{
 	
 	geometry espace_dispo_chateaux <- nil;
 	list<Agregats> agregats_loins_chateaux <- nil;
-	int somme_puissance;
 	
 
 	
