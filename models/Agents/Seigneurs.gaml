@@ -254,10 +254,13 @@ species Seigneurs schedules: [] {
 	
 	action construction_chateaux {	
 		bool is_gs <- (self.type = "Grand Seigneur");
+		
+		int nb_tirages <- (is_gs) ? nb_tirages_chateaux_gs : nb_tirages_chateaux_ps;
 		float somme_puissance_gs <- sum(Seigneurs where (each.type = "Grand Seigneur") collect (each.puissance));
 		float proba_creer_chateau <- (is_gs) ? (self.puissance / somme_puissance_gs) : 1.0;
 		//int  nb_chateaux_potentiels <- (is_gs) ? nb_max_chateaux_par_tour_gs : nb_max_chateaux_par_tour_ps;
 			
+		// Pour le rayon des ZP	
 		float maxPuissance <- max(Seigneurs collect each.puissance) ;
 		float minPuissance <- min(Seigneurs collect each.puissance) ;
 		int rayon_zp <- int(max([
@@ -267,7 +270,7 @@ species Seigneurs schedules: [] {
 				])])
 		);
 		
-		int nb_tirages <- (is_gs) ? rnd(nb_max_chateaux_par_tour_gs, nb_max_chateaux_par_tour_gs + 1, 1) : nb_max_chateaux_par_tour_ps;
+		
 		loop times: nb_tirages {
 			if (espace_dispo_chateaux != nil and flip(proba_creer_chateau)){
 				// Si création tirée
