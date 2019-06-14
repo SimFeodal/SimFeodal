@@ -1,3 +1,9 @@
+### SimFeodal 6.4.3 (2019-06-14) - 040c855
+
+* On teste avec :
+	- `nb_tirages_chateaux_gs` = 3 (produit entre 35 et 50 châteaux de GS)
+	- `proba_construction_chateau_ps` dans \[0.4, 0.5, 0.6, 0.7, 0.8\] (0.8 produit \~10 châteaux de PS)
+
 ### SimFeodal 6.4.2 (2019-06-13) - ea2e37e
 
 * Modification construction château :

@@ -189,3 +189,28 @@ experiment Exp_6_4_2_PopInit type: batch repeat: 2 keep_seed: false benchmark: f
 	// 5 experiments
 }
 
+
+experiment Exp_6_4_3_PopGrowth type: batch repeat: 2 keep_seed: false benchmark: false until: (annee >= fin_simulation){
+	parameter 'save_outputs' var: save_outputs init: true;
+	parameter 'prefix' var: prefix_output init: "6_4_3";
+	parameter 'experimentType' var: experimentType init: "batch";
+	parameter 'init_nb_total_fp' var: init_nb_total_fp init: 4000;
+	parameter 'croissance_demo' var: croissance_demo init: 0.1422;
+	
+	parameter "proba_construction_chateau_ps" var: proba_construction_chateau_ps among: [0.4, 0.5, 0.6, 0.7, 0.8] ;
+	parameter "nb_tirages_chateaux_gs" var: nb_tirages_chateaux_gs init: 3;
+	// 5 experiments
+}
+
+experiment Exp_6_4_3_PopInit type: batch repeat: 2 keep_seed: false benchmark: false until: (annee >= fin_simulation){
+	parameter 'save_outputs' var: save_outputs init: true;
+	parameter 'prefix' var: prefix_output init: "6_4_3";
+	parameter 'experimentType' var: experimentType init: "batch";
+	parameter 'init_nb_total_fp' var: init_nb_total_fp init: 50000;
+	parameter 'croissance_demo' var: croissance_demo init: 0.0;
+	
+	parameter "proba_construction_chateau_ps" var: proba_construction_chateau_ps among: [0.4, 0.5, 0.6, 0.7, 0.8] ;
+	parameter "nb_tirages_chateaux_gs" var: nb_tirages_chateaux_gs init: 3;
+	// 5 experiments
+}
+
