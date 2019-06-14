@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Experiment_plan>
+<Simulation id="1" sourcePath="../models/GUI_6_3.gaml" finalstep="20" experiment="Exp_6_4_2_PopGrowth_fix">
+	<Parameters>
+	</Parameters>
+</Simulation>
+</Experiment_plan>
