@@ -1,3 +1,16 @@
+### SimFeodal 6.5 (2019-07-04) - c546d92
+
+* Calibration châteaux finie :
+	- `nb_tirages_chateaux_gs` = 3
+	- `proba_construction_chateau_ps` = 0.5
+* Test de nouveaux scénarios :
+	- Exp_6_5_Obj40k : Objectif 40k FP en fin de simulation, avec 3 variantes
+		- init_nb_total_fp = 40 000 et croissance_demo = 0 (population stable, arrivée = 40k) 
+		- init_nb_total_fp = 13 500 et croissance_demo = 5.89% (triplement population, arrivée \~40.1k)
+ 		- init_nb_total_fp = 4 000 et croissance_demo =  12.89% (décuplement population, arrivée \~ 40)
+	- Exp_6_5_Obj50k : Objectif 50k FP en fin de simulation, 1 variante :
+		- init_nb_total_fp = 17 000 et croissance_demo = 5.85% (triplement population, arrivée \~50.1k)
+
 ### SimFeodal 6.4.3 (2019-06-14) - 040c855
 
 * On teste avec :

@@ -146,9 +146,9 @@ global torus: false{
 	float ponderation_proba_chateau_ps <- 7.0;
 	bool construction_chateau_alternate <- false;
 	int nb_tirages_chateaux_ps <- 1;
-	int nb_tirages_chateaux_gs <- 1;
+	int nb_tirages_chateaux_gs <- 3;
 	// Nouveau
-	float proba_construction_chateau_ps <- 0.7;
+	float proba_construction_chateau_ps <- 0.5;
 	
 	
 	////////////////////////

@@ -214,3 +214,54 @@ experiment Exp_6_4_3_PopInit type: batch repeat: 2 keep_seed: false benchmark: f
 	// 5 experiments
 }
 
+experiment Exp_6_5_Obj40k_Stable type: batch repeat: 2 keep_seed: false benchmark: false until: (annee >= fin_simulation){
+	parameter 'save_outputs' var: save_outputs init: true;
+	parameter 'prefix' var: prefix_output init: "6_5";
+	parameter 'experimentType' var: experimentType init: "batch";
+	
+	parameter "proba_construction_chateau_ps" var: proba_construction_chateau_ps init: 0.5 ;
+	parameter "nb_tirages_chateaux_gs" var: nb_tirages_chateaux_gs init: 3;
+	
+	parameter 'init_nb_total_fp' var: init_nb_total_fp init: 40000;
+	parameter 'croissance_demo' var: croissance_demo init: 0.0;
+	// 1 experiments
+}
+
+experiment Exp_6_5_Obj40k_Triple type: batch repeat: 2 keep_seed: false benchmark: false until: (annee >= fin_simulation){
+	parameter 'save_outputs' var: save_outputs init: true;
+	parameter 'prefix' var: prefix_output init: "6_5";
+	parameter 'experimentType' var: experimentType init: "batch";
+	
+	parameter "proba_construction_chateau_ps" var: proba_construction_chateau_ps init: 0.5 ;
+	parameter "nb_tirages_chateaux_gs" var: nb_tirages_chateaux_gs init: 3;
+	
+	parameter 'init_nb_total_fp' var: init_nb_total_fp init: 13500;
+	parameter 'croissance_demo' var: croissance_demo init: 0.0589;
+	// 1 experiments
+}
+
+experiment Exp_6_5_Obj40k_Decuple type: batch repeat: 2 keep_seed: false benchmark: false until: (annee >= fin_simulation){
+	parameter 'save_outputs' var: save_outputs init: true;
+	parameter 'prefix' var: prefix_output init: "6_5";
+	parameter 'experimentType' var: experimentType init: "batch";
+	
+	parameter "proba_construction_chateau_ps" var: proba_construction_chateau_ps init: 0.5 ;
+	parameter "nb_tirages_chateaux_gs" var: nb_tirages_chateaux_gs init: 3;
+	
+	parameter 'init_nb_total_fp' var: init_nb_total_fp init: 4000;
+	parameter 'croissance_demo' var: croissance_demo init: 0.1289;
+	// 1 experiments
+}
+
+experiment Exp_6_5_Obj50k_Triple type: batch repeat: 2 keep_seed: false benchmark: false until: (annee >= fin_simulation){
+	parameter 'save_outputs' var: save_outputs init: true;
+	parameter 'prefix' var: prefix_output init: "6_5";
+	parameter 'experimentType' var: experimentType init: "batch";
+	
+	parameter "proba_construction_chateau_ps" var: proba_construction_chateau_ps init: 0.5 ;
+	parameter "nb_tirages_chateaux_gs" var: nb_tirages_chateaux_gs init: 3;
+	
+	parameter 'init_nb_total_fp' var: init_nb_total_fp init: 17000;
+	parameter 'croissance_demo' var: croissance_demo init: 0.0585;
+	// 1 experiments
+}
