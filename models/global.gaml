@@ -87,7 +87,7 @@ global torus: false{
 	map<int,int> dist_max_eglise <- [800::25000,960::10000,1060::5000]; 
 	int dist_min_chateau <- 1500;
 	int dist_max_chateau <- 5000;
-	int rayon_migration_locale_fp <- 2500;
+	map<int,int> rayon_migration_locale_fp <- [800::2500];
 	float prop_migration_lointaine_fp <- 0.2;
 		// AGREGATS //
 	int nb_min_fp_agregat <- 5;
@@ -173,6 +173,7 @@ global torus: false{
 	int dist_min_eglise_actuel;
 	int dist_max_eglise_actuel;
 	float puissance_communautes_actuel;
+	int rayon_migration_locale_fp_actuel;
 
 	/////////////
 	// OUTPUTS //
@@ -205,6 +206,7 @@ global torus: false{
 		set dist_min_eglise_actuel <- (dist_min_eglise.keys contains annee) ? dist_min_eglise at annee : dist_min_eglise_actuel;
 		set dist_max_eglise_actuel <- (dist_max_eglise.keys contains annee) ? dist_max_eglise at annee : dist_max_eglise_actuel;
 		set puissance_communautes_actuel <- (puissance_communautes.keys contains annee) ? puissance_communautes at annee : puissance_communautes_actuel;
+		set rayon_migration_locale_fp_actuel <- (rayon_migration_locale_fp.keys contains annee) ? rayon_migration_locale_fp at annee : rayon_migration_locale_fp_actuel;
 	}
 	
 

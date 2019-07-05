@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Experiment_plan>
+<Simulation id="1" sourcePath="../models/GUI_6_5.gaml" finalstep="20" experiment="Exp_6_5_1_Obj50k_Stable">
+	<Parameters>
+	</Parameters>
+</Simulation>
+<Simulation id="2" sourcePath="../models/GUI_6_5.gaml" finalstep="20" experiment="Exp_6_5_1_Obj50k_Decuple">
+	<Parameters>
+	</Parameters>
+</Simulation>
+<Simulation id="3" sourcePath="../models/GUI_6_5.gaml" finalstep="20" experiment="Exp_6_5_1_RayonLocal_40k_Stable">
+	<Parameters>
+	</Parameters>
+</Simulation>
+<Simulation id="4" sourcePath="../models/GUI_6_5.gaml" finalstep="20" experiment="Exp_6_5_1_RayonLocal_40k_Decuple">
+	<Parameters>
+	</Parameters>
+</Simulation>
+<Simulation id="5" sourcePath="../models/GUI_6_5.gaml" finalstep="20" experiment="Exp_6_5_1_RayonLocal_50k_Stable">
+	<Parameters>
+	</Parameters>
+</Simulation>
+<Simulation id="6" sourcePath="../models/GUI_6_5.gaml" finalstep="20" experiment="Exp_6_5_1_RayonLocal_50k_Decuple">
+	<Parameters>
+	</Parameters>
+</Simulation>
+</Experiment_plan>
