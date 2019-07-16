@@ -81,15 +81,7 @@ species Foyers_Paysans schedules: [] {
 		int nb_seigneurs <- foncier + haute_justice + autres_droits;
 		set redevances_acquittees <- nb_seigneurs;
 		float S_redevances <- max([1 - (redevances_acquittees * (1 / coef_redevances)), 0.0]);
-		float S_contributions <- 0.0;
-		if (self.monAgregat = nil)
-		{
-			set S_contributions <- 0.0;
-		} else
-		{
-			set S_contributions <- (self.appartenance_communaute ? puissance_communautes_actuel : 0);
-		}
-
+		float S_contributions <- (self.monAgregat = nil) ? 0.0 : (self.appartenance_communaute ? puissance_communautes_actuel : 0);
 		set s_materielle <- ((S_redevances) ^ (1 - S_contributions)) with_precision 2;
 	}
 
