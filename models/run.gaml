@@ -128,10 +128,13 @@ global schedules: shuffle(Attracteurs) + shuffle(Poles) + shuffle(Agregats) + sh
 	reflex Constructions_chateaux when: annee >= debut_construction_chateaux{
 		set agregats_loins_chateaux <- Agregats inside espace_dispo_chateaux;
 		// Pour les GS
+		// Chacun des GS execute le mécanisme de construction de châteaux
 		ask Seigneurs where (each.type = "Grand Seigneur"){
 			if (espace_dispo_chateaux != nil){do construction_chateaux;}
 		}
 		// Pour les PS
+		// On teste si les PS peuvent créer un château
+		// Si oui, un des PS (lotterie pondérée sur la puissance) execute le mécanisme de construction de châteaux
 		bool construction_chateau_ps <- flip(proba_construction_chateau_ps);
 		if (espace_dispo_chateaux != nil and construction_chateau_ps){
 			list<Seigneurs> tousPS <- (Seigneurs where (each.type != "Grand Seigneur" and each.puissance > 0)) sort_by (each);

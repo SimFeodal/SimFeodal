@@ -182,8 +182,13 @@ species Seigneurs schedules: [] {
 	action construction_chateaux {	
 		bool is_gs <- (self.type = "Grand Seigneur");
 		
+		// Si c'est un GS, le nombre de tirages vaut nb_tirages_chateaux_gs, soit 3
+		// Si c'est un PS, un seul tirage
 		int nb_tirages <- (is_gs) ? nb_tirages_chateaux_gs : nb_tirages_chateaux_ps;
 		float somme_puissance_gs <- sum(Seigneurs where (each.type = "Grand Seigneur") collect (each.puissance));
+		
+		// Pour les GS, la proba de construire un chateau vaut puissance/sumPuissance
+		// Pour les PS, elle vaut 1 (le tirage sur proba_construction_chateau_ps a eu lieu dans le run.gaml)
 		float proba_creer_chateau <- (is_gs) ? (self.puissance / somme_puissance_gs) : 1.0;
 		// Pour le rayon des ZP	
 		float maxPuissance <- max(Seigneurs collect each.puissance) ;
@@ -195,7 +200,9 @@ species Seigneurs schedules: [] {
 				])])
 		);
 		
-		
+		// On boucle pour nb_tirages :
+		// Pour chaque GS, on boucle donc 3 fois.
+		// Pour l'ensemble des PS, on execute une seule fois.
 		loop times: nb_tirages {
 			if (espace_dispo_chateaux != nil and flip(proba_creer_chateau)){
 				// Si création tirée
