@@ -93,8 +93,6 @@ global torus: false{
 	int nb_min_fp_agregat <- 5;
 	int distance_detection_agregat <- 100;
 		// SEIGNEURS //
-	int nb_max_chateaux_par_tour_gs <- 2;
-	int nb_max_chateaux_par_tour_ps <- 1;
 	float proba_collecter_foncier_ps <- 0.1;
 	float proba_creation_zp_autres_droits_ps <- 0.15;
 	int rayon_min_zp_ps <- 1000;
@@ -142,9 +140,6 @@ global torus: false{
 	float autres_droits_zp_cession <- 0.35;
 	// Seigneurs (mécanisme) //
 	// A supprimer
-	float ponderation_proba_chateau_gs <- 1.25;
-	float ponderation_proba_chateau_ps <- 7.0;
-	bool construction_chateau_alternate <- false;
 	int nb_tirages_chateaux_ps <- 1;
 	int nb_tirages_chateaux_gs <- 3;
 	// Nouveau

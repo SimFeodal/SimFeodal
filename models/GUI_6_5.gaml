@@ -18,7 +18,7 @@ experiment Exp_6_5_debug type: gui repeat: 1 keep_seed: false benchmark: false u
 	parameter 'experimentType' var: experimentType init: "gui";
 	parameter 'init_nb_total_fp' var: init_nb_total_fp init: 4000;
 	parameter 'croissance_demo' var: croissance_demo init: 0.0;
-	parameter "nb_max_chateaux_par_tour_gs" var: proba_construction_chateau_ps init: 0.5;
+	parameter "proba_construction_chateau_ps" var: proba_construction_chateau_ps init: 0.5;
 	parameter "nb_tirages_chateaux_gs" var: nb_tirages_chateaux_gs init: 3;
 	
 	// 1 experiment
