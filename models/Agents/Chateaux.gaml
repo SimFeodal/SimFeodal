@@ -3,8 +3,8 @@
  *  Author: R. Cura, C. Tannier, S. Leturcq, E. Zadora-Rio
  *  Description: https://simfeodal.github.io/
  *  Repository : https://github.com/SimFeodal/SimFeodal
- *  Version : 6.3
- *  Run with : Gama 1.8 (git) (1.7.0.201903051304)
+ *  Version : 6.5
+ *  Run with : Gama 1.8 (git) (1.7.0.201906131338)
  */
 
 model simfeodal

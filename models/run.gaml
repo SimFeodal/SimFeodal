@@ -3,8 +3,8 @@
  *  Author: R. Cura, C. Tannier, S. Leturcq, E. Zadora-Rio
  *  Description: https://simfeodal.github.io/
  *  Repository : https://github.com/SimFeodal/SimFeodal
- *  Version : 6.3
- *  Run with : Gama 1.8 (git) (1.7.0.201903051304)
+ *  Version : 6.5
+ *  Run with : Gama 1.8 (git) (1.7.0.201906131338)
  */
 
 model simfeodal
@@ -52,27 +52,7 @@ global schedules: shuffle(Attracteurs) + shuffle(Poles) + shuffle(Agregats) + sh
 	reflex MaJ_poles {
 		do update_poles;
 	}
-	
-//	reflex MaJ_satisfaction_FP_bis {		
-//		// Tous les FP d'un agrégat auront les mêmes satis religieuses et protection
-//		ask Agregats {
-//			do update_satisfaction_religieuse_fp;
-//			do update_satisfaction_protection_fp;
-//		}
-//		
-//		ask Foyers_Paysans {
-//			do update_satisfaction_materielle;
-//			if (self.monAgregat = nil){
-//				do update_satisfaction_religieuse;
-//				do update_satisfaction_protection;
-//				set Satisfaction <- 0.75 * min([satisfaction_religieuse, satisfaction_protection,  satisfaction_materielle]);
-//			} else {
-//				set Satisfaction <- 0.75 * min([satisfaction_religieuse, satisfaction_protection,  satisfaction_materielle]);
-//				set Satisfaction <- (self.monAgregat.communaute) ? Satisfaction + 0.25 : Satisfaction;
-//			}
-//		}
-//	}
-	
+		
 	reflex MaJ_satisfaction_FP {
 		ask  Foyers_Paysans {
 			do update_satisfaction_materielle;
@@ -186,12 +166,6 @@ global schedules: shuffle(Attracteurs) + shuffle(Poles) + shuffle(Agregats) + sh
 	reflex save_summarised_outputs when: summarised_outputs{
 		do save_summarised_data;
 	}
-	
-//	reflex print_zp {
-//write "Foncier : " + Zones_Prelevement count (each.type_droit = "foncier");
-//write "Haute-Justice : "+ Zones_Prelevement count (each.type_droit = "haute_justice"); 
-//write "Autres : " + Zones_Prelevement count (each.type_droit = "autres_droits"); 
-//	}
 	
 	reflex fin_simulation {
 		set nb_chateaux <- length(Chateaux);

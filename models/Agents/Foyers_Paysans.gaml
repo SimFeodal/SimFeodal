@@ -3,8 +3,8 @@
  *  Author: R. Cura, C. Tannier, S. Leturcq, E. Zadora-Rio
  *  Description: https://simfeodal.github.io/
  *  Repository : https://github.com/SimFeodal/SimFeodal
- *  Version : 6.3
- *  Run with : Gama 1.8 (git) (1.7.0.201903051304)
+ *  Version : 6.5
+ *  Run with : Gama 1.8 (git) (1.7.0.201906131338)
  */
 
 model simfeodal
@@ -19,10 +19,8 @@ import "Attracteurs.gaml"
 import "Zones_Prelevement.gaml"
 
 
-global
-{
-	action renouvellement_FP
-	{
+global {
+	action renouvellement_FP {
 		int nb_fp_total <- length(Foyers_Paysans);
 		int attractivite_totale <- nb_fp_total;
 		int nb_FP_impactes <- round(taux_renouvellement_fp * length(Foyers_Paysans));
@@ -50,12 +48,10 @@ global
 			set mobile <- flip((1 - proba_fp_dependant));
 			set s_religieuse <- 1.0 with_precision 2; // Comme ça, ne concerne que les nouveaux arrivants
 		}
-
 	}
 }
 
-species Foyers_Paysans schedules: []
-{
+species Foyers_Paysans schedules: [] {
 	bool appartenance_communaute <- false;
 	Agregats monAgregat <- nil;
 	float s_materielle;
@@ -72,15 +68,13 @@ species Foyers_Paysans schedules: []
 	string deplacement_from <- nil update: nil; //	"isole", "agregat"
 	string deplacement_to <- nil update: nil; // "pole local avec agregat", "pole local sans agregat", "pole local avec agregat plus attractif", "pole local sans agregat plus attractif", "agregat lointain unique", "agregat lointain attractif"
 	
-	action reset_preleveurs
-	{
+	action reset_preleveurs {
 		set seigneur_foncier <- nil;
 		set seigneur_haute_justice <- nil;
 		set seigneurs_autres_droits <- [];
 	}
 
-	action update_satisfaction_materielle
-	{
+	action update_satisfaction_materielle {
 		int foncier <- (self.seigneur_foncier != nil) ? 1 : 0;
 		int haute_justice <- (self.seigneur_haute_justice != nil) ? 1 : 0;
 		int autres_droits <- length(self.seigneurs_autres_droits);
@@ -99,20 +93,15 @@ species Foyers_Paysans schedules: []
 		set s_materielle <- ((S_redevances) ^ (1 - S_contributions)) with_precision 2;
 	}
 
-	action update_satisfaction_religieuse
-	{
-	//float distance_eglise <- self distance_to eglise_paroissiale_proche;
+	action update_satisfaction_religieuse {
 		list<Eglises> eglises_paroissiales <- (Eglises where (each.eglise_paroissiale));
-		float distance_eglise <- min(eglises_paroissiales collect (each distance_to self)); // self distance_to eglise_paroissiale_proche;
-		// Longer but more explicit
+		float distance_eglise <- min(eglises_paroissiales collect (each distance_to self));
 		float satisfaction_religieuse_raw <- (dist_max_eglise_actuel - distance_eglise) / (dist_max_eglise_actuel - dist_min_eglise_actuel);
 		float satisfaction_religieuse_min <- min([1.0, satisfaction_religieuse_raw]);
 		set s_religieuse <- max([0.0, satisfaction_religieuse_min]) with_precision 2;
-		
 	}
 
-	action update_satisfaction_protection
-	{
+	action update_satisfaction_protection {
 		Chateaux plusProcheChateau <- Chateaux with_min_of (self distance_to each);
 		float satisfaction_distance <- nil;
 
@@ -122,14 +111,11 @@ species Foyers_Paysans schedules: []
 		} else
 		{
 			float distance_chateau <- plusProcheChateau distance_to self;
-			// Longer but more explicit
 			float satisfaction_distance_raw <- (dist_max_chateau - distance_chateau) / (dist_max_chateau - dist_min_chateau);
 			float satisfaction_distance_min <- min([1.0, satisfaction_distance_raw]);
 			set satisfaction_distance <- max([min_s_distance_chateau, satisfaction_distance_min]); // min_S_distance_chateau = 0 (default) or 0.01 (v5.1)
-			// satisfaction_distance in [0.0 -> 1.0] (default) or [0.01 -> 1.0] (v5.1)
 		}
 			set s_protection <- (satisfaction_distance ^ (besoin_protection_fp_actuel)) with_precision 2;
-
 	}
 
 	action deplacement {
@@ -143,12 +129,8 @@ species Foyers_Paysans schedules: []
 	}
 	
 	action deplacement_avec_pole_agregat(point oldLoc) {
-		// Poles meilleurPole <- (Poles at_distance rayon_migration_locale_fp_actuel) with_max_of (each.attractivite);
-		// remplacement du at_distance buggé et lent
 		Foyers_Paysans moi <- self;
 		list<Poles> poles_locaux <- Poles overlapping (rayon_migration_locale_fp_actuel around moi.location);
-		
-//		write "deplacement_avec_pole_agregat : " + string(length(poles_locaux));
 		Poles meilleurPole <- poles_locaux with_max_of (each.attractivite);
 		if (meilleurPole != nil and monAgregat.monPole.attractivite >= meilleurPole.attractivite) { //  Si le pole de mon agrégat a une attractivié > attrac des  poles du voisinage
 		// Alors la proba de deplacement local vaut 0 et donc je m'en remet au depl. lointain sous condition etc;
@@ -196,8 +178,7 @@ species Foyers_Paysans schedules: []
 		}	
 	}
 	
-	action deplacement_serfs
-	{
+	action deplacement_serfs {
 		point oldLoc <- location;
 		set deplacement_from <- monAgregat != nil ? "agregat" : "isole";
 			if (monAgregat != nil and monAgregat.monPole != nil){ // Si dans un agrégat doté de pôle
@@ -208,9 +189,6 @@ species Foyers_Paysans schedules: []
 	}
 	
 	action deplacement_avec_pole_agregat_serfs(point oldLoc) {
-		
-		//Poles meilleurPole <- (Poles at_distance rayon_migration_locale_fp_actuel) with_max_of (each.attractivite);
-		// remplacement du at_distance buggé et lent
 		Foyers_Paysans moi <- self;
 		Poles meilleurPole <- (Poles overlapping (rayon_migration_locale_fp_actuel around moi.location)) with_max_of (each.attractivite);
 		if (meilleurPole != nil and monAgregat.monPole.attractivite >= meilleurPole.attractivite) {
@@ -242,14 +220,10 @@ species Foyers_Paysans schedules: []
 		}	
 	}
 
-	point deplacement_local
-	{
+	point deplacement_local {
 		point point_local <- nil;
-		//list<Poles> polesLocaux <- Poles at_distance rayon_migration_locale_fp_actuel;
-		// remplacement du at_distance buggé et lent
 		Foyers_Paysans moi <- self;
 		list<Poles> polesLocaux <- Poles inside (rayon_migration_locale_fp_actuel around moi.location);
-//		write "deplacement local : " + string(length(polesLocaux));
 		if (empty(polesLocaux))
 		{ // Si pas de pole, on reste sur place
 			set point_local <- location;
@@ -272,8 +246,6 @@ species Foyers_Paysans schedules: []
 		point point_lointain <- nil;
 		list<Poles> agregatsPolarisants <- Poles where (each.monAgregat != nil);
 		// Uniquement les poles qui ne sont pas dans le rayon local
-		//list<Poles> agregatsPolarisantsLointains <- agregatsPolarisants - (agregatsPolarisants at_distance rayon_migration_locale_fp_actuel);
-		// remplacement du at_distance lent et buggé
 		Foyers_Paysans moi <- self;
 		list<Poles> agregatsPolarisantsLointains <- agregatsPolarisants - (agregatsPolarisants overlapping (rayon_migration_locale_fp_actuel around moi.location));
 		if (empty(agregatsPolarisantsLointains))

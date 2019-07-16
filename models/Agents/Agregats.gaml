@@ -3,8 +3,8 @@
  *  Author: R. Cura, C. Tannier, S. Leturcq, E. Zadora-Rio
  *  Description: https://simfeodal.github.io/
  *  Repository : https://github.com/SimFeodal/SimFeodal
- *  Version : 6.3
- *  Run with : Gama 1.8 (git) (1.7.0.201903051304)
+ *  Version : 6.5
+ *  Run with : Gama 1.8 (git) (1.7.0.201906131338)
  */
 
 model simfeodal
@@ -21,7 +21,6 @@ import "Zones_Prelevement.gaml"
 global {
     
      action update_agregats {
-     	
      	// On crée un graphe de distance sur FP + Chateaux + eglises paroissiales
     	list<Eglises> eglises_paroissiales <- Eglises where (each.eglise_paroissiale);
     	list<container<agent>> agregats_detectes <- simple_clustering_by_distance((Foyers_Paysans + Chateaux + eglises_paroissiales), distance_detection_agregat);
@@ -47,21 +46,20 @@ global {
 
 		loop cetAgregat over: tmpAgregats {
 			if (!dead(cetAgregat)){
-			list<tmpAgregats> autresAgregats <- list(tmpAgregats) - cetAgregat;
-			loop autreAgregat over: autresAgregats {
-				if (autreAgregat.shape intersects cetAgregat.shape){
-					set cetAgregat.shape <- cetAgregat.shape + autreAgregat.shape;
-					set cetAgregat.mesAgents <- distinct(cetAgregat.mesAgents + autreAgregat.mesAgents);
-					set cetAgregat.mesFP <- distinct(cetAgregat.mesFP + autreAgregat.mesFP);
-					set cetAgregat.mesEglisesParoissiales <- distinct(cetAgregat.mesEglisesParoissiales + autreAgregat.mesEglisesParoissiales);
-					set cetAgregat.mesChateaux <- distinct(cetAgregat.mesChateaux + autreAgregat.mesChateaux);
-					ask autreAgregat {
-						do die;
+				list<tmpAgregats> autresAgregats <- list(tmpAgregats) - cetAgregat;
+				loop autreAgregat over: autresAgregats {
+					if (autreAgregat.shape intersects cetAgregat.shape) {
+						set cetAgregat.shape <- cetAgregat.shape + autreAgregat.shape;
+						set cetAgregat.mesAgents <- distinct(cetAgregat.mesAgents + autreAgregat.mesAgents);
+						set cetAgregat.mesFP <- distinct(cetAgregat.mesFP + autreAgregat.mesFP);
+						set cetAgregat.mesEglisesParoissiales <- distinct(cetAgregat.mesEglisesParoissiales + autreAgregat.mesEglisesParoissiales);
+						set cetAgregat.mesChateaux <- distinct(cetAgregat.mesChateaux + autreAgregat.mesChateaux);
+						ask autreAgregat {
+							do die;
+						}
 					}
 				}
 			}
-			}
-
 		}
 			
 		ask tmpAgregats {
@@ -99,9 +97,6 @@ global {
 				set shape <- myShape;
 				set mesParoisses <- cesParoisses;
 				set monPole <- cePole ;
-				
-				//list<Chateaux> chateaux_proches <- Chateaux at_distance 2000;
-				// at_distance est extrêmement lent et renvoie des résultats étranges
 				list<Chateaux> chateaux_proches <- Chateaux inside (self.shape + 2000);
 				geometry maGeom <- shape + 200;
 				
@@ -128,27 +123,7 @@ global {
 			}
 			if (proba_institution_communaute > 0.0){do update_communaute;}
 		}
- 	}
-    
-    action update_agregats_fp {
-    	
-    	ask Foyers_Paysans {
-    		set monAgregat <- nil;
-    	}
-    	
-    	ask Agregats {
-    		set fp_agregat <- Foyers_Paysans overlapping self;
-    		ask fp_agregat {
-    			set monAgregat <- myself;
-    		}
-    		
-    		
-    	}
-    	ask Foyers_Paysans where (each.monAgregat = nil){
-    	}
-    	
-    }
-    
+ 	}    
 }
 	
 	species tmpAgregats schedules: []{

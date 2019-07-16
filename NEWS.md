@@ -12,7 +12,7 @@ Commit : [2227c25](https://github.com/SimFeodal/SimFeodal/commit/2227c25)
 		- `init_nb_total_fp` = 50 000 et `croissance_demo` = 0 (population stable, arrivée = 50k) 
 		- `init_nb_total_fp` = 4 000 et `croissance_demo` =  14.22% (décuplement population, arrivée \~ 50k)
 	- Exp\_6\_5\_1\_RayonLocal : Objectifs 40 et 50k en fin de simulation, avec (x10) et sans croissance, variation `rayon_migration_locale_fp`, 4 variantes :
-		- init_nb_total_fp = 40 000 et `croissance_demo` = 0 (population stable, arrivée = 40k) + `rayon_migration_locale_fp` = [800::2500,900::4000,1000::6000]
+		- `init_nb_total_fp` = 40 000 et `croissance_demo` = 0 (population stable, arrivée = 40k) + `rayon_migration_locale_fp` = [800::2500,900::4000,1000::6000]
 		- `init_nb_total_fp` = 4 000 et `croissance_demo` =  12.89% (décuplement population, arrivée ~ 40k) + `rayon_migration_locale_fp` = [800::2500,900::4000,1000::6000]
 		- `init_nb_total_fp` = 50 000 et `croissance_demo` = 0% (population stable, arrivée ~50.1k) + `rayon_migration_locale_fp` = [800::2500,900::4000,1000::6000]
 		- `init_nb_total_fp` = 4 000 et `croissance_demo` = 14.22% (décuplement population, arrivée ~50.1k) + `rayon_migration_locale_fp` = [800::2500,900::4000,1000::6000]

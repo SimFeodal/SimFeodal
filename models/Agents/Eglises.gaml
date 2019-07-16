@@ -3,8 +3,8 @@
  *  Author: R. Cura, C. Tannier, S. Leturcq, E. Zadora-Rio
  *  Description: https://simfeodal.github.io/
  *  Repository : https://github.com/SimFeodal/SimFeodal
- *  Version : 6.3
- *  Run with : Gama 1.8 (git) (1.7.0.201903051304)
+ *  Version : 6.5
+ *  Run with : Gama 1.8 (git) (1.7.0.201906131338)
  */
 
 model simfeodal
@@ -123,7 +123,6 @@ species Paroisses {
 	action update_satisfaction {
 		if length(mesFideles) > 0 {
 			set nb_paroissiens_insatisfaits <- mesFideles count (each.s_religieuse = 0.0);
-			// write string(self) + " : Nb Paroissiens : " + string(length(mesFideles)) + " / Mecontents : "+ string(nb_paroissiens_mecontents);
 			if nb_paroissiens_insatisfaits > seuil_nb_paroissiens_insatisfaits {
 				set Satisfaction_Paroisse <- 0.0;
 			} else {
