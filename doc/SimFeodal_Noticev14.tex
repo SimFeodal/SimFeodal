@@ -1,0 +1,418 @@
+\documentclass[a4paper,11pt]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8x]{inputenc}
+\usepackage{lmodern}
+%\usepackage[français]{babel}
+\usepackage{amsmath}
+\usepackage{graphicx}
+\usepackage[hidelinks]{hyperref}
+\usepackage{listings}
+
+
+%%%%%%%%%%%%%%%%
+% Commentaires %
+%%%%%%%%%%%%%%%%
+\setlength{\marginparwidth}{3.5cm} % Pour des commentaires plus grands
+\usepackage[colorinlistoftodos,prependcaption,textsize=tiny]{todonotes}
+\usepackage{soul}
+\newcommand{\hlc}[2][yellow]{ {\sethlcolor{#1} \hl{#2}} }
+\definecolor{fluorescentorange}{rgb}{1.0, 0.75, 0.0}
+\definecolor{lightred}{rgb}{1, 0.4, 0.4}
+
+
+\makeatletter
+\if@todonotes@disabled
+\newcommand{\todohl}[2]{#1}
+\else
+\newcommand{\todohl}[2]{\texthl{#1}\todo{#2}}
+\fi
+\makeatother
+%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%
+
+
+\title{\textbf{SimFeodal}\\Fixation, polarisation et hiérarchisation de l'habitat rural en Europe du Nord-Ouest entre 800 et 1200}
+\author{Robin Cura \\\textit{UMR Géographie-cités - Université Paris 1} \\ Cécile Tannier \\ \textit{UMR ThéMA - CNRS et Université Bourgogne Franche-Comté}}
+\date{Documentation : Version 14 (2019-07-17)\linebreak
+	Modèle : Version 6.5.1 (Commit : 8c5a52a)
+}
+
+
+\begin{document}
+
+\maketitle
+\tableofcontents
+
+\section{Notes introductives}
+Cette version du modèle est développée sur la plate-forme GAMA, dans sa version 1.8 (1.7.0 2019-03-05).
+
+
+\section{Situation initiale}
+Une simulation démarre en l'an 800 (paramètre \textit{debut\_simulation}) et se termine en 1200 (paramètre \textit{fin\_simulation}). Un pas de temps de simulation (i.e. une itération du modèle) représente une durée de 20 ans par défaut (paramètre \textit{duree\_step}), ce qui correspond approximativement à la durée de vie d'une génération à l'époque médiévale. Le nombre de pas de temps d'une simulation est donc égal à : (\textit{fin\_simulation} - \textit{debut\_simulation}) / \textit{duree\_step}).
+
+\subsection{L'environnement}
+L'espace modélisé est une zone carrée de $79 \times 79$ kilomètres (paramètre \textit{taille\_cote\_monde}) représentant de manière simplifiée une région de l'Europe du Nord-Ouest en 800.
+
+\subsection{Les foyers paysans}
+\begin{sloppypar}
+À l'initialisation, il y a par défaut 4000 foyers paysans (paramètre \textit{init\_nb\_total\_fp}), répartis dans l'espace du modèle. Une certaine proportion des foyers paysans sont dans une dépendance telle vis-à-vis de leur seigneur qu'ils ne peuvent pas quitter ses terres. A sa création, chaque foyer paysan a une probabilité \textit{proba\_fp\_dependant} (valeur par défaut égale à 0.2) d'être dans une telle dépendance.
+\end{sloppypar}
+
+\begin{sloppypar}
+\paragraph{Création des foyers paysans dans des petites villes}. À l'initialisation, par défaut, 8 petites villes (agglomérations secondaires antiques) pré-existent (paramètre \textit{init\_nb\_agglos}). Ces agglomérations consistent, dans le modèle, en des agrégats de 30 foyers paysans (paramètre \textit{init\_nb\_fp\_agglo}) dont chacun est espacé au plus de 100 m. par défaut (paramètre \textit{distance\_detection\_agregat}) de son plus proche voisin. Le fait qu'une agglomération secondaire antique comporte aussi des artisans (et sans doute des prêtres, magistrats...) n'est pas modélisé.
+\end{sloppypar}
+
+La création des petites villes se fait ainsi :
+\begin{sloppypar}
+\begin{itemize}
+  \item On crée \textit{init\_nb\_agglos} foyers paysans dans l'espace du modèle raccourci de 1 km de chaque côté.
+  \item A proximité de chacun de ces foyers paysans, on crée 29 (soit \textit{init\_nb\_agglos} - 1) autres foyers paysans situés à moins de \textit{distance\_detection\_agregat} m. les uns des autres. Le nombre total de foyers paysans localisés dans une agglomération antique est donc de \textit{init\_nb\_agglos} $\times$ \textit{init\_nb\_fp\_agglo}.
+\end{itemize}
+\end{sloppypar}
+
+\paragraph{Création des foyers paysans dans des villages}. À l'initialisation, par défaut, 20 villages pré-existent (paramètre \textit{init\_nb\_villages}). Un village est défini comme un petit agrégat de foyers paysans, c'est-à-dire comportant par défaut 10 foyers paysans (paramètre \textit{init\_nb\_fp\_village}) espacés au plus de \textit{distance\_detection\_agregat} m. les uns des autres.
+
+Règle de création : identique à celle de création des petites villes.
+
+\paragraph{Création des foyers paysans dispersés}.
+\begin{sloppypar}
+On répartit ensuite le reste des foyers paysans (\textit{init\_nb\_total\_fp} $-$ ((\textit{init\_nb\_fp\_village} $\times$ \textit{init\_nb\_villages}) $+$ (\textit{init\_nb\_fp\_agglo} $\times$ \textit{init\_nb\_agglos})) de manière aléatoire dans l'emprise spatiale du modèle.
+\end{sloppypar}
+
+\subsection{Les églises}
+\begin{sloppypar}
+Initialement, dans l'espace du modèle de $79 \times 79$ km, on place aléatoirement, par défaut, $150$ églises (paramètre \textit{init\_nb\_eglises}). Certaines d'entre elles tirées aléatoirement ont des droits paroissiaux (paramètre \textit{init\_nb\_eglises\_paroissiales} - valeur par défaut égale à 50).
+\end{sloppypar}
+
+\subsection{Les seigneurs}
+On distingue deux types de seigneurs :
+\begin{itemize}
+\item Les \textit{petits seigneurs} : à l'initialisation, il y en a 18 par défaut (paramètre \textit{init\_nb\_ps}). Ils sont localisés dans un agrégat de foyers paysans. Ils collectent un loyer pour la terre auprès de chaque foyer paysan qui leur est assujetti. Les foyers paysans qui leur sont assujettis sont localisés dans leur voisinage, i.e. une zone de prélèvement de rayon tiré aléatoirement dans l'intervalle \textit{rayon\_min\_zp\_ps} (1000 m. par défaut) et \textit{rayon\_max\_zp\_ps} (5000 m. par défaut). Dans cette zone de prélèvement, seule une certaine proportion de foyers paysans s'acquittent de droits fonciers. Cette proportion est tirée aléatoirement dans l'intervalle \textit{min\_taux\_prelevement\_zp\_ps} (0.05 par défaut) et \textit{max\_taux\_prelevement\_zp\_ps} (0.25 par défaut).
+
+\item Les \textit{grands seigneurs} : il y en a \textit{init\_nb\_gs} (2 par défaut). Ils n'ont pas d'existence spatiale propre dans le modèle, c'est-à-dire qu'ils sont extérieurs à l'espace modélisé dans lequel ils interviennent. Leur puissance relative (\textit{puissance\_grand\_seigneur1 et 2}) vaut 0.5 chacun. À  l'initialisation, ils détiennent chacun de nombreuses terres et collectent un loyer pour la terre auprès des foyers paysans qui leur sont assujettis. Chaque grand seigneur se voit attribuer une part des foyers paysans qui ne paient pas déjà un loyer à un petit seigneur. Cette part correspond à sa part de puissance.
+\end{itemize}
+
+\subsection{Les châteaux}
+L'espace modélisé au départ de la simulation ne comporte aucun château. Les grandes enceintes collectives (castra) qui existent à l'époque ne sont pas représentées dans le modèle.
+
+
+\section[Attributs et règles]{Attributs et règles de comportement des agents}
+
+\subsection{Les agrégats de foyers paysans}
+
+Les agrégats de foyers paysans sont identifiés (détectés) à la fin de chaque pas de simulation. L'évolution de chacun en cours de simulation n'est pas enregistrée (absence de suivi de chaque agrégat d'un pas de simulation à un autre).
+
+\paragraph{Détection}
+Un agrégat de foyers paysans est défini comme un ensemble d'au moins \textit{nb\_min\_fp\_agregat} foyers paysans (par défaut, 5 foyers paysans). On détecte ces agrégats au moyen d'une agrégation de proche en proche :
+\begin{itemize}
+  \item (1) un agrégat rassemble les foyers paysans et les attracteurs (églises paroissiales, châteaux et communautés) espacés les uns des autres de \textit{distance\_detection\_agregat} (100 m. par défaut) au maximum.
+  \item (2) On crée l'enveloppe convexe de chaque agrégat ainsi détecté que l'on élargit de \textit{distance\_fusion\_agregat} (100 m. par défaut).
+  \item (3) Puis on fusionne les agrégats détectés élargis qui s'intersectent. On obtient ainsi la liste finale des agrégats.
+\end{itemize}
+
+\paragraph{Représentation}
+Chaque agrégat est représenté sous forme polygonale, laquelle est constituée par l'enveloppe convexe élargie de 100 m. des foyers paysans la composant.
+
+\paragraph{Attributs}
+Les agrégats ont des attributs : présence ou non d'une communauté, nombre d'églises paroissiales, présence d'un château (dans ou à moins de 200 m. de l'agrégat), nombre de foyers paysans. Ils héritent de la communauté d'un agrégat existant au pas de simulation précédent, dont l'enveloppe convexe les intersecte. Quand un agrégat intersecte celle de plusieurs agrégats pré-existants, l'agrégat hérite des attributs de l'un des agrégats pré-existants tiré au hasard.
+
+\paragraph{Apparition de communautés villageoises}
+\begin{sloppypar}
+A chaque pas de temps, chaque agrégat a une certaine probabilité (paramètre \textit{proba\_institution\_communaute}), égale à 0.2 par défaut, de voir émerger une communauté villageoise institutionnalisée en son sein. Une fois qu'un agrégat possède une communauté institutionnelle, il ne peut la perdre.  L'ensemble des foyers paysans d'un agrégat ayant une communauté font partie de ladite communauté.
+\end{sloppypar}
+
+Une communauté peut être plus ou moins puissante (paramètre {\textit{puissance\_communaute}). Cette puissance peut varier d'une simulation à une autre mais est identique pour toutes les communautés d'une simulation donnée.
+
+\subsection{Seigneurs}
+
+\subsubsection{Apparition de nouveaux petits seigneurs}
+
+Des petits seigneurs apparaissent petit à petit au cours de la simulation : on définit le nombre de seigneurs que l'on souhaite obtenir en fin de simulation, (\textit{objectif\_nombre\_seigneurs}), on soustrait à ce nombre les seigneurs (grands et petits) créés à l'initialisation de la simulation, et on divise le nombre de seigneurs à créer (\textit{objectif\_nombre\_seigneurs}) par le nombre de pas de temps afin d'obtenir un nombre moyen (entier) de petits seigneurs à  créer à chaque pas de temps (\textit{nb\_moyen\_petits\_seigneurs\_par\_tour}).
+A chaque pas de temps, le nombre de petits seigneurs créés est un nombre aléatoire dont la moyenne est \textit{nb\_moyen\_petits\_seigneurs\_par\_tour} et qui s'écarte au maximum d'un tiers de cette valeur. Ces seigneurs sont localisés dans un agrégat choisi aléatoirement.
+
+
+\subsubsection{Prélèvement des redevances et droits seigneuriaux}
+
+Le prélèvement des redevances et droits seigneuriaux se fait au sein de zones de prélèvement, dont les attributs sont le détenteur (seigneur qui l'a créée), le rayon et le taux de prélèvement. Trois types de zones de prélèvements existent :
+\begin{itemize}
+  \item prélèvement de droits fonciers,
+  \item prélèvement de droits de haute justice,
+  \item prélèvement d'autres droits : droits secondaires (droits locaux, justice mineure) et droits banaux.
+\end{itemize}
+
+\bigskip
+\textbf{Prélèvement de droits fonciers}
+\begin{sloppypar}
+Les petits seigneurs apparaissant en cours de simulation bénéficient pour certains, à leur création, d'une zone de prélèvement de droits fonciers selon une probabilité de 0.1 (paramètre \textit{proba\_collecte\_foncier\_ps}). Le taux de prélèvement est tiré aléatoirement entre :
+
+5\% (paramètre \textit{min\_taux\_prelevement\_zp\_ps})
+
+et 25\% (paramètre \textit{max\_taux\_prelevement\_zp\_ps}).
+
+Le rayon est aléatoirement tiré entre \textit{rayon\_min\_zp\_ps} et \textit{rayon\_max\_zp\_ps}. Quand un seigneur (petit ou grand) obtient une zone de prélèvement de droits fonciers (liée ou non à un château), il "retire" de fait à un des grands seigneurs une part des foyers paysans que celui-ci prélevait hors zone de prélèvement. Ainsi, au fur et à mesure de l'avancement de la simulation, les grands seigneurs perdent une part des droits fonciers qu'ils collectaient auprès des foyers paysans initialement localisés hors zone de prélèvement et qui sont de plus en plus nombreux à être situés au sein d'une zone de prélèvement puisque celles-ci recouvrent de plus en plus le territoire modélisé. Cependant, comme les plus grandes zones de prélèvement de droits fonciers qui émergent en cours de simulation sont liées à des châteaux (cf. ci-après) et que la plupart des châteaux sont détenus par les grands seigneurs, ceux-ci ne perdent pas de revenus.
+\end{sloppypar}
+
+% Additionnellement, on remarque qu'au départ d'une simulation, le prélèvement de droits par les grands seigneurs auprès des foyers paysans se fait hors zone de prélèvement. Au cours de la simulation, au fur et à mesure de la création de châteaux, le prélèvement de droits est de plus en plus associé aux châteaux.
+
+% \begin{sloppypar} % Meilleure gestion des césures
+% TTT \\
+% \end{sloppypar}
+
+\bigskip
+\textbf{Prélèvement de droits de haute justice}
+
+A partir de 900, les grands seigneurs peuvent gagner des droits de haute justice (\textit{proba\_gain\_haute\_justice\_gs}) qui s'exercent sur tous les foyers paysans auprès desquels ils prélèvent des droits fonciers (hors zone de prélèvement ou bien via les zones de prélèvement associées au(x) château(x) qu'il possède). Une fois qu'un grand seigneur a acquis des droits de haute justice, tous les châteaux qu'il créera ou qu'il possède déjà se voient attribuer une zone de prélèvement de haute justice.
+
+A partir de 1000, les petits seigneurs possédant un château (en propriété ou bien en garde) ont eux aussi une certaine probabilité d'acquérir des droits de haute justice (\textit{proba\_gain\_haute\_justice\_chateau\_ps} - valeur par défaut égale à 0.2). Cette probabilité est tirée uniquement au moment de la construction d'un château.
+
+\bigskip
+\textbf{Prélèvement d'autres droits}
+
+Dès 800, les petits seigneurs peuvent créer des zones de prélèvement d'autres droits (\textit{proba\_creation\_zp\_autres\_droits\_ps} - valeur par défaut égale à 0.15). Ainsi, dès le début d'une simulation, les seigneurs commencent à s'arroger de nouveaux droits ou accaparer des droits publics mais ce processus met un certain temps à avoir une importance notable.
+
+
+\subsubsection{Création de châteaux}
+
+\begin{sloppypar}
+A partir de 940 (paramètre \textit{debut\_construction\_chateaux}) et au fur et à mesure de la simulation, des châteaux sont créés par les seigneurs. Chaque château nouvellement créé doit être éloigné d'au moins \textit{dist\_min\_entre\_chateaux} (valeur par défaut 3000 m.).
+
+\bigskip
+A chaque pas de simulation, une certaine probabilité (\textit{proba\_construction\_chateau\_ps} égale à 0.5 par défaut) existe qu'un des petits seigneurs parmi ceux ayant une puissance supérieure à 0 crée un château. Si cette probabilité se réalise, le petit seigneur qui construira le château est choisi suivant un mécanisme de loterie pondérée par la puissance relative de chaque petit seigneur.
+\end{sloppypar}
+
+\bigskip
+Les grands seigneurs ont davantage de chances que les petits seigneurs de créer un château à chaque pas de simulation. On considère la probabilité suivante :
+\begin{small}
+\begin{equation}
+proba\_creer\_chateau = \frac{puissance}{\sum(puissances\_gs)}
+\end{equation}
+\end{small}
+
+Cette probabilité est tirée pour chaque grand seigneur, indépendamment les uns des autres. Si elle se réalise, le grand seigneur concerné par le tirage construit un château. Cette probabilité \textit{proba\_creer\_chateau} est tirée successivement autant de fois que déterminées par le paramètre \textit{nb\_tirages\_chateaux\_gs}, égal à 3 par défaut.
+
+\bigskip
+Les grands seigneurs peuvent créer des châteaux n'importe où dans l'espace du modèle tandis que les petits seigneurs les créent dans leur voisinage, dont le rayon est de taille \textit{rayon\_voisinage\_ps} (5000 m. par défaut). Chaque château est créé au sein d'un agrégat selon la probabilité \textit{proba\_chateau\_agregat} (valeur par défaut égale à 0.5).
+
+\bigskip
+\begin{sloppypar}
+Au moment de la création d'un château sont automatiquement créées deux zones de prélèvement ayant le même rayon, l'une pour le prélèvement des droits fonciers et l'autre pour le prélèvement d'autres droits. Le rayon des zones de prélèvement autour des châteaux varie entre entre 2km (rayon\_min\_zp\_chateau) et 15km (rayon\_max\_zp\_chateau). Par défaut, leur taux de prélèvement est égal à 1 (100\%) (paramètre \textit{taux\_prelevement\_zp\_chateau}).
+Ces deux zones de prélèvement sont créées au pas de simulation suivant la construction du château.
+\end{sloppypar}
+
+\bigskip
+Entre 940 et 1040 inclus (paramètre \textit{periode\_promotion\_chateaux}), certains châteaux appartenant à un pôle peuvent devenir de gros châteaux selon la probabilité \textit{proba\_promotion\_chateau\_pole}, égale à 0.8 par défaut.
+
+
+\subsubsection{Cession de droits}
+\begin{sloppypar}
+A partir \textit{debut\_cession\_droits\_seigneurs} (880 par défaut), les petits seigneurs peuvent céder leurs droits à d'autres petits seigneurs, sur chacune de leurs zones de prélèvement (droits fonciers et autres droits, hors châteaux), indépendamment les unes des autres. Cette cession s'effectue selon une probabilité \textit{proba\_cession\_droits\_zp} égale à 0.33 par défaut. La cession se fait le plus souvent (\textit{proba\_cession\_locale} égale à 0.8 par défaut) en direction d'un seigneur localisé dans le voisinage du donateur (\textit{rayon\_voisinage\_ps}). Lors d'une cession, la totalité des droits sur la zone de prélèvement est cédée.
+
+La cession de droits des grands seigneurs vers les petits seigneurs se produit uniquement via le don de châteaux en gardiennage.
+\end{sloppypar}
+
+\subsubsection{Dons de châteaux en gardiennage}
+
+A partir de 960 (paramètre \textit{debut\_garde\_chateaux\_seigneurs}), à chaque pas de simulation, un grand seigneur peut donner chacun de ses châteaux en garde à un petit seigneur selon une probabilité \textit{proba\_don\_chateau} égale à 0.5 par défaut. Lors du don en garde d'un château, la totalité des droits est cédée au seigneur récipiendaire du don.
+
+\subsubsection{Montant des redevances perçues}
+\begin{sloppypar}
+Pour chaque foyer paysan assujetti, le seigneur perçoit :
+\begin{itemize}
+	\item Droits de haute justice : $2$ (\textit{droits\_haute\_justice\_zp}) et $2.5$ quand les droits ont été cédés à un autre seigneur (\textit{droits\_haute\_justice\_zp\_cession}).
+	\item Droits fonciers : $1$ (\textit{droits\_fonciers\_zp}) et $1.25$ quand les droits ont été cédés à un autre seigneur (\textit{droits\_fonciers\_zp\_cession}).
+	\item Autres droits : $0.25$ (\textit{autres\_droits\_zp}) et $0.35$ quand les droits ont été cédés à un autre seigneur (\textit{autres\_droits\_zp\_cession}).
+\end{itemize}
+\end{sloppypar}
+
+\subsubsection{Calcul de la puissance des seigneurs}
+
+La puissance d'un seigneur est calculée par le modèle à chaque pas de simulation. Elle se présente sous deux formes. 
+\begin{itemize}
+\item Puissance issue des redevances perçues (paramètre \textit{puissance}) : somme des redevances perçues.
+\item Puissance armée d'un seigneur : nombre total de foyers paysans qui lui sont assujettis (quels que soient les droits concernés et que ce soit via une zone de prélèvement dont il est détenteur ou récipiendaire).
+\end{itemize}
+
+
+\subsection{Églises paroissiales}
+
+Les polygones de Thiessen permettent de découper l'espace du modèle de telle sorte que chaque église paroissiale soit au centre d'une zone définie comme étant son aire de desserte (i.e. son ressort paroissial en fin de période de simulation). 
+
+A chaque pas de simulation, de nouvelles églises paroissiales apparaissent dans ou à proximité d'agrégats de foyers paysans, selon une probabilité égale à :
+\begin{small}
+\begin{equation}
+\begin{gathered}
+proba\_creation\_paroisse =\\
+\left( \frac{1}{ponderation\_creation\_paroisse\_agregat}\right) \times \left( \frac{nb\_fp\_agregat}{nb\_paroisses\_agregat} \right)
+\end{gathered}
+\end{equation}
+\end{small}
+
+\begin{sloppypar}
+Le terme \textit{nb\_fp\_agregat} correspond au nombre de foyers paysans dans l'agrégat et le terme \textit{nb\_paroisses\_agregat} au nombre de ressorts paroissiaux inclus dans, ou intersectant l'agrégat entouré d'une zone tampon de 200 m de large. La valeur du paramètre \textit{ponderation\_creation\_paroisse\_agregat} est fixée par défaut à 2000.
+
+Une fois ces nouvelles églises paroissiales créées, l'espace du modèle fait l'objet d'un nouveau découpage afin d'actualiser les contours des ressorts paroissiaux.
+
+Ensuite, au sein de chaque ressort paroissial, on calcule la satisfaction religieuse de chaque foyer paysan. Si le nombre de foyers paysans de la paroisse ayant une satisfaction religieuse égale à 0 (paramètre \textit{nb\_paroissiens\_insatisfaits}) est supérieur à un nombre requis de foyers paysans insatisfaits (paramètre \textit{seuil\_nb\_paroissiens\_insatisfaits}, d'une valeur par défaut égale à 20), une nouvelle paroisse est créée selon les règles suivantes, dépendant du nombre d'églises non paroissiales dans le ressort :
+	\begin{itemize}
+\item supérieur à 3 : la plus éloignée d'entre elles de l'église paroissiale existante devient paroissiale (application d'une triangulation de Delaunay aux églises non paroissiales de l'espace du modèle ; sélection des trois églises appartenant au triangle le plus proche de l'église paroissiale existante ; parmi celles-ci, sélection de celle qui est la plus éloignée de l'église paroissiale existante) ;
+\item entre 1 et 3 : l'une d'entre elles (au hasard) devient paroissiale ;
+\item égal à 0 : s'il en existe à moins de 2 km alentours, l'une d'entre elles (au hasard) devient paroissiale ;
+\item dans les autres cas, une église paroissiale est créée dans le ressort paroissial, au sommet du polygone de Thiessen le plus éloigné de l'église paroissiale existante.
+	\end{itemize}
+	
+L'espace du modèle fait alors l'objet d'un nouveau découpage afin d'actualiser les contours des ressorts paroissiaux et de tenir compte des nouvelles paroisses lors du calcul de la satisfaction religieuse des foyers paysans.
+\end{sloppypar}
+
+
+\subsection{Pôles d'attraction}
+
+Un pôle d'attraction est constitué d'un ou plusieurs attracteurs proches les uns des autres de 200 m. On crée l'enveloppe convexe de chaque pôle que l'on élargit de 200 m. Dans le cas où un ou plusieurs pôles intersectent un agrégat, on effectue l'union géométrique de l'enveloppe du ou des pôles (fusionnés alors en un seul pôle) et de l'agrégat.
+
+\bigskip
+Les attracteurs considérés dans le modèle sont les châteaux, les églises paroissiales et les communautés (représentées par le centroïde de l'agrégat dont elles relèvent).
+\begin{itemize}
+	\item Valeur d'attraction d'un petit château : $0.15$
+	\item Valeur d'attraction d'un gros château : $0.25$.
+	\item Valeur d'attraction d'une église : $0.15$
+	\item Valeur d'attraction de deux églises : $0.25$
+	\item Valeur d'attraction de trois églises : $0.50$
+	\item Valeur d'attraction de quatre églises et plus : $0.60$
+	\item Valeur d'attraction d'une communauté : $0.15$
+\end{itemize}
+
+La valeur d'attraction d'un pôle sur un foyer paysan est comprise entre $0$ et $1$ et correspond à la somme des valeurs d'attraction des attracteurs du pôle.
+
+\subsection{Foyers Paysans}
+
+\subsubsection{Disparition et Apparition}
+A chaque pas de temps, chaque foyer paysan a une probabilité égale à 0.05 par défaut (paramètre \textit{taux\_renouvellement\_fp}) de disparaître. Le même nombre de foyers paysans est recréé. 
+
+En parallèle, le nombre de foyers paysans augmente en cours de simulation. Le taux de croissance (paramètre \textit{croissance\_demo}) par défaut est de 14.22\%, avec lequel on aboutit à environ 49 855 foyers paysans en fin de simulation.
+
+Les foyers paysans apparaissant en cours de simulation (par croissance ou renouvellement démographique) sont placés dans un agrégat choisi suivant un tirage aléatoire pondéré par le nombre de foyers paysans présents dans chaque agrégat. Ils ont chacun une probabilité \textit{proba\_fp\_dependant} (valeur par défaut égale à 0.2) d'être dans dépendance telle vis-à-vis de leur seigneur qu'ils ne peuvent pas entreprendre de migrations lointaines.
+
+\subsubsection{Satisfaction}
+\begin{sloppypar}
+La satisfaction d'un foyer paysan conditionne son éventuelle migration locale ou lointaine. La satisfaction consiste en l'agrégation de trois valeurs de satisfaction intermédiaires (satisfaction matérielle, satisfaction religieuse et satisfaction protection). Ces trois critères de satisfaction (matérielle, religieuse et de protection) ne se compensent pas les uns les autres.
+\begin{small}
+\begin{equation}
+\begin{gathered}
+satisfaction =\\0.75 \times [MIN (s_{mat\acute{e}rielle} ; s_ {religieuse}; s_{protection})] +\\0.25 \times [appartenance\_communaut\acute{e}]
+\end{gathered}
+\end{equation}
+\end{small}
+
+Avec $appartenance\_communaut\acute{e}$ égale à 0 (quand le foyer paysan n'appartient pas à une communauté) ou 1 (si appartenance).
+
+\begin{enumerate}
+  \item \textbf{Satisfaction matérielle.} 
+  C'est une fonction $[0;1]$ des redevances dont doit s'acquitter le foyer paysan (plus le foyer paysan doit s'acquitter de redevances, moins il est satisfait) (variable $s_{redevance}$) et de l'appartenance ou non du foyer paysan à une communauté (paramètre $puissance\_communaute$) : un foyer paysan est davantage satisfait quand il appartient à une communauté, et d'autant plus satisfait que la communauté à laquelle il appartient est puissante).
+
+\begin{small}
+\begin{equation}\label{eq:Smat}
+\begin{gathered}
+s_{mat\acute{e}rielle} =\lbrack s_{redevance}\rbrack^{(1-puissance\_communaute)}
+\end{gathered}
+\end{equation}
+
+\begin{equation}
+\begin{gathered}
+s_{redevance} =\\ MAX [ (1- (redevances\_acquittees / coef\_redevances)) ; 0]
+\end{gathered}
+\end{equation}
+\end{small}
+
+avec le paramètre \textit{coef\_redevances} égal à 15 pour la Touraine et la variable \textit{redevances\_acquittées} $∈ [0,n]$.
+
+\bigskip
+
+  \item \textbf{Satisfaction religieuse.} Elle représente la plus ou moins grande facilité pour le foyer paysan à effectuer la pratique religieuse obligatoire.
+  
+C'est une fonction $[0;1]$ de la distance aux églises paroissiales (satisfaction inversement proportionnelle à la distance à parcourir). Les règles d'évaluation de la distance aux églises paroissiales varient au cours du temps.
+
+% Ici, j'ai modifié l'équation : chiffre de 1 remplacé par chiffre de 0.
+\begin{small}
+\begin{equation}
+\begin{gathered}
+s_{religieuse} = MAX \left \lbrack \frac{(distance\_max\_eglise - distance\_eglise)}{(distance\_max\_eglise -distance\_min\_eglise)}; 0 \right \rbrack
+\end{gathered}
+\end{equation}
+
+avec
+\begin{itemize}
+	\item avant 950 : $distance\_min\_eglise$ = 5 km et $distance\_max\_eglise$ =  25 km
+	\item de 950 à 1050 : $distance\_min\_eglise$ = 3 km et $distance\_max\_eglise$ =  10 km
+	\item après 1050 : $distance\_min\_eglise$ = 1,5 km et $distance\_max\_eglise$ =  5 km
+\end{itemize}
+
+\end{small}
+
+\bigskip
+  
+  \item \textbf{Satisfaction protection.} Elle est fonction de la distance entre le foyer paysan et le château le plus proche ($distance\_chateau$) et du besoin de protection ressenti par le foyer paysan ($besoin\_protection$).
+
+\begin{equation}
+s_{protection} = [s_{distance\_chateau}]^{(besoin\_protection)}
+\end{equation}
+
+avec
+\begin{itemize}
+	\item avant 960 : $besoin\_protection$ = 0
+	\item de 960 à 1020 : $besoin\_protection$ $= 0.2 ; 0.4 ; 0.6 ; 0.8$
+	\item $besoin\_protection$ = $1$
+\end{itemize}
+
+et
+
+% Ici, j'ai modifié l'équation : la formule + chiffre de 0.01.
+\begin{small}
+\begin{equation}
+\begin{gathered}
+s_{distance\_chateau} = MAX \left \lbrack \frac{(dist\_max\_chateau - distance\_chateau)}{(dist\_max\_chateau - dist\_min\_chateau)}; 0.01 \right \rbrack
+\end{gathered}
+\end{equation}
+
+avec $dist\_min\_chateau$ = 1,5 km et $dist\_max\_chateau$ = 5 km.
+
+\end{small}
+\end{enumerate}
+\end{sloppypar}
+
+
+\subsubsection{Migration}
+\begin{sloppypar}
+A chaque pas de temps, le foyer paysan à une certaine probabilité de migrer localement, dans un rayon inférieur ou égal à \textit{rayon\_migration\_locale\_fp} (valeur par défaut égale à 2500 m.).
+
+\begin{small}
+\begin{equation}
+proba\_migration\_locale = 1 - satisfaction
+\end{equation}
+\end{small}
+
+Si la probabilité de migration locale ($proba\_migration\_locale$) se réalise, un tirage aléatoire pondéré par les attractivités respectives des pôles d'attraction locaux va détermine où le foyer paysan va s'implanter. S'il n'existe pas de pôle d'attraction dans un rayon de distance au plus égal à \textit{rayon\_migration\_locale\_fp} m. autour du foyer paysan, celui-ci ne se déplace pas.
+
+\bigskip
+S'il n'effectue pas de migration locale et qu'il est en mesure d'effectuer une migration lointaine ($ mobile = true $), un foyer paysan a une certaine probabilité ($proba\_migration\_lointaine\_fp$) que la migration effectuée soit lointaine dans la région modélisée, c'est-à-dire à une distance supérieure à \textit{rayon\_migration\_locale\_fp} de la localisation actuelle.
+
+\begin{small}
+\begin{equation}
+\begin{gathered}
+proba\_migration\_lointaine =  \\
+(prop\_migration\_lointaine\_fp) \times (1 - satisfaction)
+\end{gathered}
+\end{equation}
+\end{small}
+
+où \textit{prop\_migration\_lointaine\_fp} est la propension qu'a un foyer paysan mobile d'entreprendre une migration lointaine.
+
+Les destinations possibles d'une migration lointaine sont (uniquement) les pôles localisés dans ou à proximité d'un agrégat. Si la probabilité de migration lointaine ($proba\_migration\_lointaine)$) se réalise, un tirage aléatoire pondéré par les attractivités respectives des pôles d'attraction lointains détermine où le foyer paysan va s'implanter.
+\end{sloppypar}
+
+
+
+%\begin{lstlisting}
+%Exemple de  code
+%\end{lstlisting}
+
+
+\end{document}
