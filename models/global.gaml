@@ -144,6 +144,7 @@ global torus: false{
 	int nb_tirages_chateaux_gs <- 3;
 	// Nouveau
 	float proba_construction_chateau_ps <- 0.5;
+	float charge_fiscale_debut <- 1.0;
 	
 	
 	////////////////////////

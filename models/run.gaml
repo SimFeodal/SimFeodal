@@ -170,16 +170,26 @@ global schedules: shuffle(Attracteurs) + shuffle(Poles) + shuffle(Agregats) + sh
 		do save_summarised_data;
 	}
 	
-	reflex fin_simulation {
-		set nb_chateaux <- length(Chateaux);
-		if (annee >= fin_simulation) {
-			write 'Durée simulation : ' + total_duration;
-			 write "Nb châteaux :  GS :" + string(length(Chateaux where (each.proprietaire.type = "Grand Seigneur"))) + " / PS : " + string(length(Chateaux where (each.proprietaire.type != "Grand Seigneur")));
-			if (experimentType = "batch"){
-				do halt;
-			} else {
-				do pause;
-			}	
-		}
+	reflex update_charge_fiscale_debut when: (annee = 820){
+		set charge_fiscale_debut <- mean(Foyers_Paysans collect float(each.redevances_acquittees));
 	}
+	
+//	reflex save_sensibility_outputs when: sensibility_analysis {
+//		if (annee >= fin_simulation) {
+//			do save_sensibility_data;
+//		}
+//	}
+	
+//	reflex fin_simulation {
+//		set nb_chateaux <- length(Chateaux);
+//		if (annee >= fin_simulation) {
+//			write 'Durée simulation : ' + total_duration;
+//			//write "Nb châteaux :  GS :" + string(length(Chateaux where (each.proprietaire.type = "Grand Seigneur"))) + " / PS : " + string(length(Chateaux where (each.proprietaire.type != "Grand Seigneur")));
+//			if (experimentType = "batch"){
+//				do halt;
+//			} else {
+//				do pause;
+//			}	
+//		}
+//	}
 }

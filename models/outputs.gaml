@@ -431,4 +431,27 @@ proba_construction_chateau_ps
 				] to: (output_folder_path + sim_name +"_results_chateaux.csv") type: "csv" header: true rewrite: false;
 				}
 			}
+			
+//			action save_sensibility_data(string sim_name) {
+//				int nb_chateaux <- length(Chateaux);
+//				int nb_grands_chateaux <- Chateaux count (each.type = "Grand Chateau");
+//				int nb_eglises <- length(Eglises);
+//				int nb_eglises_paroissiales <-  Eglises count (each.eglise_paroissiale);
+//				int nb_agregats <- length(Agregats);
+//				int nb_fp <- length(Foyers_Paysans);
+//				
+//				string seed <- world.enquote(seed);
+//				
+//				save [
+//						seed, sim_name, annee,
+//						nb_fp, nb_agregats,
+//						nb_chateaux, nb_grands_chateaux,
+//						nb_eglises, nb_eglises_paroissiales,
+//						distance_eglises, distance_eglises_paroissiales,
+//						prop_fp_isoles, charge_fiscale, dist_ppv_agregat,
+//						total_duration,
+//						sensibility_parameter,sensibility_value
+//						
+//					] to: (output_folder_path + sim_name +"_results_global.csv") type: "csv" header: true rewrite: false;
+//				}
 }	
