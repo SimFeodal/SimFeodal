@@ -62,7 +62,7 @@ global torus: false{
 	// CONTEXTE //
 	//////////////
 		// FOYERS PAYSANS //
-	float croissance_demo <- 0.1422;
+	float croissance_demo <- 0.0;
 	float taux_renouvellement_fp <- 0.05;
 	float proba_fp_dependant <- 0.2;
 	map<int,float> besoin_protection_fp <- [800::0.0,960::0.2,980::0.4,1000::0.6,1020::0.8,1040::1.0];
