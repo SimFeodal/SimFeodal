@@ -162,13 +162,13 @@ global schedules: shuffle(Attracteurs) + shuffle(Poles) + shuffle(Agregats) + sh
 		write "Seed : " + seed + " / Annee : " + annee + " / Nb Agregats : " + length(Agregats) + " / TxIsoles : " + prop_fp_isoles;
 	}
 	
-	reflex save_data when: save_outputs {
-		do save_outputs_data;
-	}
-	
-	reflex save_summarised_outputs when: summarised_outputs{
-		do save_summarised_data;
-	}
+//	reflex save_data when: save_outputs {
+//		do save_outputs_data;
+//	}
+//	
+//	reflex save_summarised_outputs when: summarised_outputs{
+//		do save_summarised_data;
+//	}
 	
 	reflex update_charge_fiscale_debut when: (annee = 820){
 		set charge_fiscale_debut <- mean(Foyers_Paysans collect float(each.redevances_acquittees));

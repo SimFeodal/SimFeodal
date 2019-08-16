@@ -14,8 +14,9 @@ import "run.gaml"
 experiment AnaSensi_Base type: batch repeat: 2 keep_seed: false benchmark: false until:  (annee >= fin_simulation){
 	parameter 'save_outputs' var: save_outputs init: false;
 	parameter 'experimentType' var: experimentType init: "batch";
+	parameter 'prefix_output' var: prefix_output init: "base";
 	
-	parameter 'init_nb_total_fp' var: init_nb_total_fp init: 4000;
+	parameter 'init_nb_total_fp' var: init_nb_total_fp init: 40000;
 	
 	parameter 'sensibility_parameter' var: sensibility_parameter init: "nb_tirages_chateaux_gs";
 
@@ -68,15 +69,15 @@ experiment AnaSensi_Base type: batch repeat: 2 keep_seed: false benchmark: false
 					distance_eglises_sensib, distance_eglises_paroissiales_sensib,
 					prop_fp_isoles_sensib, ratio_charge_fiscale_sensib,
 					sensibility_parameter,sensibility_value
-				] to: "/home/robin/analyse_sensibilite_test1.csv" type: "csv" header: true rewrite: false;
-
+				] to: ("/home/robin/analyse_sensibilite_" + prefix_output +".csv") type: "csv" header: true rewrite: false;
 			do die;
 		}
 	}
 }
 	
 
-experiment Exp_6_5_1_AnaSensi_Base_TiragesChateaux parent: AnaSensi_Base type: batch repeat: 2 keep_seed: false benchmark: false until: (annee >= fin_simulation){
+experiment AnaSensi_TiragesChateaux parent: AnaSensi_Base type: batch repeat: 2 keep_seed: false benchmark: false until: (annee >= fin_simulation){
+	parameter 'prefix_output' var: prefix_output init: "nb_tirages_chateaux_gs";
 	parameter 'sensibility_parameter' var: sensibility_parameter init: "nb_tirages_chateaux_gs";
-	parameter "nb_tirages_chateaux_gs" var: nb_tirages_chateaux_gs among: [1,2];
+	parameter "nb_tirages_chateaux_gs" var: nb_tirages_chateaux_gs among: [1,2,3,4,5];
 }
