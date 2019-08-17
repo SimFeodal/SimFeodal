@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Experiment_plan>
+<Simulation id="1" sourcePath="../models/AnaSensib_6_5.gaml" finalstep="20" experiment="AnaSensi_Inputs_taille">
+	<Parameters>
+	</Parameters>
+</Simulation>
+<Simulation id="2" sourcePath="../models/AnaSensib_6_5.gaml" finalstep="20" experiment="AnaSensi_Inputs_init_nb_total_fp">
+	<Parameters>
+	</Parameters>
+</Simulation>
+<Simulation id="3" sourcePath="../models/AnaSensib_6_5.gaml" finalstep="20" experiment="AnaSensi_Inputs_init_nb_agglos">
+	<Parameters>
+	</Parameters>
+</Simulation>
+<Simulation id="4" sourcePath="../models/AnaSensib_6_5.gaml" finalstep="20" experiment="AnaSensi_Inputs_init_nb_fp_agglo">
+	<Parameters>
+	</Parameters>
+</Simulation>
+<Simulation id="5" sourcePath="../models/AnaSensib_6_5.gaml" finalstep="20" experiment="AnaSensi_Inputs_init_nb_villages">
+	<Parameters>
+	</Parameters>
+</Simulation>
+<Simulation id="6" sourcePath="../models/AnaSensib_6_5.gaml" finalstep="20" experiment="AnaSensi_Inputs_init_nb_fp_village">
+	<Parameters>
+	</Parameters>
+</Simulation>
+<Simulation id="7" sourcePath="../models/AnaSensib_6_5.gaml" finalstep="20" experiment="AnaSensi_Inputs_puissance_grand_seigneur1">
+	<Parameters>
+	</Parameters>
+</Simulation>
+<Simulation id="8" sourcePath="../models/AnaSensib_6_5.gaml" finalstep="20" experiment="AnaSensi_Inputs_init_nb_ps">
+	<Parameters>
+	</Parameters>
+</Simulation>
+<Simulation id="9" sourcePath="../models/AnaSensib_6_5.gaml" finalstep="20" experiment="AnaSensi_Inputs_init_nb_eglises">
+	<Parameters>
+	</Parameters>
+</Simulation>
+<Simulation id="10" sourcePath="../models/AnaSensib_6_5.gaml" finalstep="20" experiment="AnaSensi_Inputs_init_nb_eglises_paroissiales">
+	<Parameters>
+	</Parameters>
+</Simulation>
+</Experiment_plan>

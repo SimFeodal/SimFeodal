@@ -75,9 +75,80 @@ experiment AnaSensi_Base type: batch repeat: 2 keep_seed: false benchmark: false
 	}
 }
 	
-
+// TEST
 experiment AnaSensi_TiragesChateaux parent: AnaSensi_Base type: batch repeat: 2 keep_seed: false benchmark: false until: (annee >= fin_simulation){
 	parameter 'prefix_output' var: prefix_output init: "nb_tirages_chateaux_gs";
 	parameter 'sensibility_parameter' var: sensibility_parameter init: "nb_tirages_chateaux_gs";
 	parameter "nb_tirages_chateaux_gs" var: nb_tirages_chateaux_gs among: [1,2,3,4,5];
+}
+
+
+///////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////
+//////////////////////     INPUTS     /////////////////////////
+///////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////
+
+////
+//// 10 paramètres * 5 valeurs * 20 réplications = 1000 simulations
+////
+
+experiment AnaSensi_Inputs_taille parent: AnaSensi_Base type: batch repeat: 2 keep_seed: false benchmark: false until: (annee >= fin_simulation) {
+	parameter 'prefix_output' var: prefix_output init: "inputs";
+	parameter 'sensibility_parameter' var: sensibility_parameter init: "taille_cote_monde";
+	parameter "taille_cote_monde" var: taille_cote_monde among: [50, 75, 100, 125, 150];
+}
+
+experiment AnaSensi_Inputs_init_nb_total_fp parent: AnaSensi_Base type: batch repeat: 2 keep_seed: false benchmark: false until: (annee >= fin_simulation) {
+	parameter 'prefix_output' var: prefix_output init: "inputs";
+	parameter 'sensibility_parameter' var: sensibility_parameter init: "init_nb_total_fp";
+	parameter "init_nb_total_fp" var: init_nb_total_fp among: [10000, 25000, 40000, 55000, 70000];
+}
+
+experiment AnaSensi_Inputs_init_nb_agglos parent: AnaSensi_Base type: batch repeat: 2 keep_seed: false benchmark: false until: (annee >= fin_simulation) {
+	parameter 'prefix_output' var: prefix_output init: "inputs";
+	parameter 'sensibility_parameter' var: sensibility_parameter init: "init_nb_agglos";
+	parameter "init_nb_agglos" var: init_nb_agglos among: [2, 5, 8, 10, 15];
+}
+
+experiment AnaSensi_Inputs_init_nb_fp_agglo parent: AnaSensi_Base type: batch repeat: 2 keep_seed: false benchmark: false until: (annee >= fin_simulation) {
+	parameter 'prefix_output' var: prefix_output init: "inputs";
+	parameter 'sensibility_parameter' var: sensibility_parameter init: "init_nb_fp_agglo";
+	parameter "init_nb_fp_agglo" var: init_nb_fp_agglo among: [10, 20, 30, 40, 50];
+}
+
+experiment AnaSensi_Inputs_init_nb_villages parent: AnaSensi_Base type: batch repeat: 2 keep_seed: false benchmark: false until: (annee >= fin_simulation) {
+	parameter 'prefix_output' var: prefix_output init: "inputs";
+	parameter 'sensibility_parameter' var: sensibility_parameter init: "init_nb_villages";
+	parameter "init_nb_villages" var: init_nb_villages among: [5, 10, 20, 30, 50];
+}
+
+experiment AnaSensi_Inputs_init_nb_fp_village parent: AnaSensi_Base type: batch repeat: 2 keep_seed: false benchmark: false until: (annee >= fin_simulation) {
+	parameter 'prefix_output' var: prefix_output init: "inputs";
+	parameter 'sensibility_parameter' var: sensibility_parameter init: "init_nb_fp_village";
+	parameter "init_nb_fp_village" var: init_nb_fp_village among: [5, 10, 15, 20, 25];
+}
+
+experiment AnaSensi_Inputs_puissance_grand_seigneur1 parent: AnaSensi_Base type: batch repeat: 2 keep_seed: false benchmark: false until: (annee >= fin_simulation) {
+	parameter 'prefix_output' var: prefix_output init: "inputs";
+	parameter 'sensibility_parameter' var: sensibility_parameter init: "puissance_grand_seigneur1";
+	parameter "puissance_grand_seigneur1" var: puissance_grand_seigneur1 among: [0.1, 0.2, 0.3, 0.4, 0.5];
+}
+
+experiment AnaSensi_Inputs_init_nb_ps parent: AnaSensi_Base type: batch repeat: 2 keep_seed: false benchmark: false until: (annee >= fin_simulation) {
+	parameter 'prefix_output' var: prefix_output init: "inputs";
+	parameter 'sensibility_parameter' var: sensibility_parameter init: "init_nb_ps";
+	parameter "init_nb_ps" var: init_nb_ps among: [5, 10, 15, 20, 25];
+}
+
+experiment AnaSensi_Inputs_init_nb_eglises parent: AnaSensi_Base type: batch repeat: 2 keep_seed: false benchmark: false until: (annee >= fin_simulation) {
+	parameter 'prefix_output' var: prefix_output init: "inputs";
+	parameter 'sensibility_parameter' var: sensibility_parameter init: "init_nb_eglises";
+	parameter "init_nb_eglises" var: init_nb_eglises among: [5, 10, 15, 20, 25];
+}
+
+experiment AnaSensi_Inputs_init_nb_eglises_paroissiales parent: AnaSensi_Base type: batch repeat: 2 keep_seed: false benchmark: false until: (annee >= fin_simulation) {
+	parameter 'prefix_output' var: prefix_output init: "inputs";
+	parameter 'sensibility_parameter' var: sensibility_parameter init: "init_nb_eglises_paroissiales";
+	parameter "init_nb_eglises_paroissiales" var: init_nb_eglises_paroissiales among: [5, 10, 15, 20, 25];
 }

@@ -1,7 +1,7 @@
 #!/bin/bash
 cd /home/robin/gama_git/headless/
 #cd /home/robin/repositories/gama/ummisco.gama.product/target/products/ummisco.gama.application.product/linux/gtk/x86_64/headless/
-experimentPath="/home/robin/SimFeodal/experiments/AnaSensi.xml"
+experimentPath="/home/robin/SimFeodal/experiments/AnaSensi_inputs.xml"
 outputPath="/home/robin/myOutputs/sim"
 # Cluster got 24 cores, we use 20
 # We launch each simulation on 2 cores, so, 10 simulations
