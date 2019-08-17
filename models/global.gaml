@@ -43,7 +43,7 @@ global torus: false{
 		// ESPACE DU MODELE //
 	int taille_cote_monde <- 80; // km
 		// FOYERS PAYSANS //
-	int init_nb_total_fp <- 4000;
+	int init_nb_total_fp <- 40000;
 		// AGREGATS //
 	int init_nb_agglos <- 8;
 	int init_nb_fp_agglo <- 30;
@@ -93,6 +93,7 @@ global torus: false{
 	int nb_min_fp_agregat <- 5;
 	int distance_detection_agregat <- 100;
 		// SEIGNEURS //
+	float proba_construction_chateau_ps <- 0.5;
 	float proba_collecter_foncier_ps <- 0.1;
 	float proba_creation_zp_autres_droits_ps <- 0.15;
 	int rayon_min_zp_ps <- 1000;
@@ -138,13 +139,12 @@ global torus: false{
 	float droits_fonciers_zp_cession <- 1.25;
 	float autres_droits_zp <- 0.25;
 	float autres_droits_zp_cession <- 0.35;
-	// Seigneurs (mécanisme) //
-	// A supprimer
-	int nb_tirages_chateaux_ps <- 1;
 	int nb_tirages_chateaux_gs <- 3;
+	int nb_tirages_chateaux_ps <- 1;
+
 	// Nouveau
-	float proba_construction_chateau_ps <- 0.5;
-	float charge_fiscale_debut <- 1.0;
+
+	
 	
 	
 	////////////////////////
@@ -182,12 +182,13 @@ global torus: false{
 	float dist_ppv_agregat <- 0.0;
 	list<int> Chateaux_chatelains <- [];
 	list<int> reseaux_chateaux <- [];
-		// FP //
+	float charge_fiscale_debut <- 1.0;
+	// FP //
 	int nb_demenagement_local update: 0; // le update remet à 0 au début de chaque nouveau step
 	int nb_demenagement_lointain update: 0;
-		// CHATEAUX //
-	int nb_chateaux ;	
-		// FOYERS_PAYSANS //
+	// CHATEAUX //
+	int nb_chateaux ;
+
 	
 	geometry espace_dispo_chateaux <- nil;
 	list<Agregats> agregats_loins_chateaux <- nil;
