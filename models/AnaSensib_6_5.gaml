@@ -144,11 +144,13 @@ experiment AnaSensi_Inputs_init_nb_ps parent: AnaSensi_Base type: batch repeat: 
 experiment AnaSensi_Inputs_init_nb_eglises parent: AnaSensi_Base type: batch repeat: 2 keep_seed: false benchmark: false until: (annee >= fin_simulation) {
 	parameter 'prefix_output' var: prefix_output init: "inputs";
 	parameter 'sensibility_parameter' var: sensibility_parameter init: "init_nb_eglises";
-	parameter "init_nb_eglises" var: init_nb_eglises among: [5, 10, 15, 20, 25];
+	parameter "init_nb_eglises" var: init_nb_eglises among: [50,100,150,200,250];
 }
 
 experiment AnaSensi_Inputs_init_nb_eglises_paroissiales parent: AnaSensi_Base type: batch repeat: 2 keep_seed: false benchmark: false until: (annee >= fin_simulation) {
 	parameter 'prefix_output' var: prefix_output init: "inputs";
 	parameter 'sensibility_parameter' var: sensibility_parameter init: "init_nb_eglises_paroissiales";
-	parameter "init_nb_eglises_paroissiales" var: init_nb_eglises_paroissiales among: [5, 10, 15, 20, 25];
+	parameter "init_nb_eglises_paroissiales" var: init_nb_eglises_paroissiales among: [10, 30, 50, 70, 90];
+}
+
 }
