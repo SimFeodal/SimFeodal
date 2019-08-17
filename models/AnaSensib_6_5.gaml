@@ -58,9 +58,6 @@ experiment AnaSensi_Base type: batch repeat: 2 keep_seed: false benchmark: false
 			set sensibility_value <- world.enquote(string(eval_gaml(sensibility_parameter)));
 			string annee_sensib <- world.enquote(annee);
 
-			
-			
-			
 			save [
 					seed_sensib, sim_name, annee_sensib,
 					nb_fp, nb_agregats,
@@ -153,4 +150,119 @@ experiment AnaSensi_Inputs_init_nb_eglises_paroissiales parent: AnaSensi_Base ty
 	parameter "init_nb_eglises_paroissiales" var: init_nb_eglises_paroissiales among: [10, 30, 50, 70, 90];
 }
 
+///////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////
+//////////////////////     CONTEXTE     ///////////////////////
+///////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////
+
+////
+//// 12 paramètres * 5 valeurs * 20 réplications = 1200 simulations
+////
+
+experiment AnaSensi_Contexte_taux_renouvellement_fp parent: AnaSensi_Base type: batch repeat: 2 keep_seed: false benchmark: false until: (annee >= fin_simulation){
+	parameter 'prefix_output' var: prefix_output init: "contexte";
+	parameter 'sensibility_parameter' var: sensibility_parameter init: "taux_renouvellement_fp";
+	parameter "taux_renouvellement_fp" var: taux_renouvellement_fp among: [0, 0.025, 0.05, 0.075, 0.1];
+}
+
+experiment AnaSensi_Contexte_proba_fp_dependant parent: AnaSensi_Base type: batch repeat: 2 keep_seed: false benchmark: false until: (annee >= fin_simulation){
+	parameter 'prefix_output' var: prefix_output init: "contexte";
+	parameter 'sensibility_parameter' var: sensibility_parameter init: "proba_fp_dependant";
+	parameter "proba_fp_dependant" var: proba_fp_dependant among: [0, 0.1, 0.2, 0.35, 0.5];
+}
+
+experiment AnaSensi_Contexte_besoin_protection_fp parent: AnaSensi_Base type: batch repeat: 2 keep_seed: false benchmark: false until: (annee >= fin_simulation){
+	parameter 'prefix_output' var: prefix_output init: "contexte";
+	parameter 'sensibility_parameter' var: sensibility_parameter init: "besoin_protection_fp";
+	// BASE : [800::0.0,960::0.2,980::0.4,1000::0.6,1020::0.8,1040::1.0]
+	parameter "besoin_protection_fp" var: besoin_protection_fp among: [
+		[800::0.0],
+		[800::1.0],
+		[800::0.0,1000::1.0],
+		[800::0.5,1000::1.0],
+		[800::0.0,960::0.2,980::0.4,1000::0.6,1020::0.8,1040::1.0]
+	];
+}
+
+experiment AnaSensi_Contexte_puissance_communaute parent: AnaSensi_Base type: batch repeat: 2 keep_seed: false benchmark: false until: (annee >= fin_simulation){
+	parameter 'prefix_output' var: prefix_output init: "contexte";
+	parameter 'sensibility_parameter' var: sensibility_parameter init: "puissance_communautes";
+	// BASE : [800::0.2,1060::0.3,1100::0.4,1160::0.5]
+	parameter "puissance_communautes" var: puissance_communautes among: [
+		[800::0.0],
+		[800::0.5],
+		[800::0.0, 1040::0.5],
+		[800::0.5, 1040::1.0],
+		[800::0.2, 1060::0.3,1100::0.4, 1160::0.5]
+	];
+}
+
+experiment AnaSensi_Contexte_proba_institution_communaute parent: AnaSensi_Base type: batch repeat: 2 keep_seed: false benchmark: false until: (annee >= fin_simulation){
+	parameter 'prefix_output' var: prefix_output init: "contexte";
+	parameter 'sensibility_parameter' var: sensibility_parameter init: "proba_institution_communaute";
+	parameter "proba_institution_communaute" var: proba_institution_communaute among: [0, 0.1, 0.2, 0.35, 0.5];
+}
+
+experiment AnaSensi_Contexte_objectif_nombre_seigneurs parent: AnaSensi_Base type: batch repeat: 2 keep_seed: false benchmark: false until: (annee >= fin_simulation){
+	parameter 'prefix_output' var: prefix_output init: "contexte";
+	parameter 'sensibility_parameter' var: sensibility_parameter init: "objectif_nombre_seigneurs";
+	parameter "objectif_nombre_seigneurs" var: objectif_nombre_seigneurs among: [100, 150, 200, 250, 300];
+}
+
+experiment AnaSensi_Contexte_proba_gain_haute_justice_gs parent: AnaSensi_Base type: batch repeat: 2 keep_seed: false benchmark: false until: (annee >= fin_simulation){
+	parameter 'prefix_output' var: prefix_output init: "contexte";
+	parameter 'sensibility_parameter' var: sensibility_parameter init: "proba_gain_haute_justice_gs";
+	// BASE : [800::0.0,900::0.2,1000::1.0]
+	parameter "proba_gain_haute_justice_gs" var: proba_gain_haute_justice_gs among: [
+		[800::0.0],
+		[800::1.0],
+		[800::0.0, 900::0.2, 1000::1.0],
+		[800::0.0, 900::0.1, 920::0.2, 940::0.3, 960::0.4, 980::0.5, 1000::0.6, 1020::0.7, 1040::0.8, 1060::0.8, 1080::0.9, 1100::1.0],
+		[800::0.0, 1000::0.5]
+	];
+}
+
+experiment AnaSensi_Contexte_proba_gain_haute_justice_chateau_ps parent: AnaSensi_Base type: batch repeat: 2 keep_seed: false benchmark: false until: (annee >= fin_simulation){
+	parameter 'prefix_output' var: prefix_output init: "contexte";
+	parameter 'sensibility_parameter' var: sensibility_parameter init: "proba_gain_haute_justice_chateau_ps";
+	// BASE : [800::0.0, 1000::0.2]
+	parameter "proba_gain_haute_justice_chateau_ps" var: proba_gain_haute_justice_chateau_ps among: [
+		[800::0.0],
+		[800::0.2],
+		[800::0.0, 1000::0.5],
+		[800::0.5],
+		[800::0.0, 1000::0.2]
+	];
+}
+
+experiment AnaSensi_Contexte_debut_cession_droits_seigneurs parent: AnaSensi_Base type: batch repeat: 2 keep_seed: false benchmark: false until: (annee >= fin_simulation){
+	parameter 'prefix_output' var: prefix_output init: "contexte";
+	parameter 'sensibility_parameter' var: sensibility_parameter init: "debut_cession_droits_seigneurs";
+	parameter "debut_cession_droits_seigneurs" var: debut_cession_droits_seigneurs among: [820, 860, 880, 920, 1000];
+}
+
+experiment AnaSensi_Contexte_debut_garde_chateaux_seigneurs parent: AnaSensi_Base type: batch repeat: 2 keep_seed: false benchmark: false until: (annee >= fin_simulation){
+	parameter 'prefix_output' var: prefix_output init: "contexte";
+	parameter 'sensibility_parameter' var: sensibility_parameter init: "debut_garde_chateaux_seigneurs";
+	parameter "debut_garde_chateaux_seigneurs" var: debut_garde_chateaux_seigneurs among: [940, 1000, 1060, 1120, 1200];
+}
+
+experiment AnaSensi_Contexte_debut_construction_chateaux parent: AnaSensi_Base type: batch repeat: 2 keep_seed: false benchmark: false until: (annee >= fin_simulation){
+	parameter 'prefix_output' var: prefix_output init: "contexte";
+	parameter 'sensibility_parameter' var: sensibility_parameter init: "debut_construction_chateaux";
+	parameter "debut_construction_chateaux" var: debut_construction_chateaux among: [820, 880, 940, 1000, 1060];
+}
+
+experiment AnaSensi_Contexte_periode_promotion_chateaux parent: AnaSensi_Base type: batch repeat: 2 keep_seed: false benchmark: false until: (annee >= fin_simulation){
+	parameter 'prefix_output' var: prefix_output init: "contexte";
+	parameter 'sensibility_parameter' var: sensibility_parameter init: "periode_promotion_chateaux";
+	// BASE : [800::false,940::true,1060::false]
+	parameter "periode_promotion_chateaux" var: periode_promotion_chateaux among: [
+		[800::false,940::true,1060::false],
+		[800::false,940::true],
+		[800::false,1100::true],
+		[800::false,1000::true,1120::false],
+		[800::false,940::true,1020::false]
+	];
 }

@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Experiment_plan>
+<Simulation id="11" sourcePath="../models/AnaSensib_6_5.gaml" finalstep="20" experiment="AnaSensi_Contexte_taux_renouvellement_fp">
+	<Parameters>
+	</Parameters>
+</Simulation>
+<Simulation id="12" sourcePath="../models/AnaSensib_6_5.gaml" finalstep="20" experiment="AnaSensi_Contexte_proba_fp_dependant">
+	<Parameters>
+	</Parameters>
+</Simulation>
+<Simulation id="13" sourcePath="../models/AnaSensib_6_5.gaml" finalstep="20" experiment="AnaSensi_Contexte_besoin_protection_fp">
+	<Parameters>
+	</Parameters>
+</Simulation>
+<Simulation id="14" sourcePath="../models/AnaSensib_6_5.gaml" finalstep="20" experiment="AnaSensi_Contexte_puissance_communaute">
+	<Parameters>
+	</Parameters>
+</Simulation>
+<Simulation id="15" sourcePath="../models/AnaSensib_6_5.gaml" finalstep="20" experiment="AnaSensi_Contexte_proba_institution_communaute">
+	<Parameters>
+	</Parameters>
+</Simulation>
+<Simulation id="16" sourcePath="../models/AnaSensib_6_5.gaml" finalstep="20" experiment="AnaSensi_Contexte_objectif_nombre_seigneurs">
+	<Parameters>
+	</Parameters>
+</Simulation>
+<Simulation id="17" sourcePath="../models/AnaSensib_6_5.gaml" finalstep="20" experiment="AnaSensi_Contexte_proba_gain_haute_justice_gs">
+	<Parameters>
+	</Parameters>
+</Simulation>
+<Simulation id="18" sourcePath="../models/AnaSensib_6_5.gaml" finalstep="20" experiment="AnaSensi_Contexte_proba_gain_haute_justice_chateau_ps">
+	<Parameters>
+	</Parameters>
+</Simulation>
+<Simulation id="19" sourcePath="../models/AnaSensib_6_5.gaml" finalstep="20" experiment="AnaSensi_Contexte_debut_cession_droits_seigneurs">
+	<Parameters>
+	</Parameters>
+</Simulation>
+<Simulation id="20" sourcePath="../models/AnaSensib_6_5.gaml" finalstep="20" experiment="AnaSensi_Contexte_debut_garde_chateaux_seigneurs">
+	<Parameters>
+	</Parameters>
+</Simulation>
+<Simulation id="21" sourcePath="../models/AnaSensib_6_5.gaml" finalstep="20" experiment="AnaSensi_Contexte_debut_construction_chateaux">
+	<Parameters>
+	</Parameters>
+</Simulation>
+<Simulation id="22" sourcePath="../models/AnaSensib_6_5.gaml" finalstep="20" experiment="AnaSensi_Contexte_periode_promotion_chateaux">
+	<Parameters>
+	</Parameters>
+</Simulation>
+</Experiment_plan>
