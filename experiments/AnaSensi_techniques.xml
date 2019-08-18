@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Experiment_plan>
+<Simulation id="100" sourcePath="../models/AnaSensib_6_5.gaml" finalstep="20" experiment="AnaSensi_Technique_coef_redevances">
+	<Parameters>
+	</Parameters>
+</Simulation>
+<Simulation id="101" sourcePath="../models/AnaSensib_6_5.gaml" finalstep="20" experiment="AnaSensi_Technique_min_s_distance_chateau">
+	<Parameters>
+	</Parameters>
+</Simulation>
+<Simulation id="102" sourcePath="../models/AnaSensib_6_5.gaml" finalstep="20" experiment="AnaSensi_Technique_distance_fusion_agregat">
+	<Parameters>
+	</Parameters>
+</Simulation>
+<Simulation id="103" sourcePath="../models/AnaSensib_6_5.gaml" finalstep="20" experiment="AnaSensi_Technique_droits_haute_justice_zp">
+	<Parameters>
+	</Parameters>
+</Simulation>
+<Simulation id="104" sourcePath="../models/AnaSensib_6_5.gaml" finalstep="20" experiment="AnaSensi_Technique_droits_haute_justice_zp_cession">
+	<Parameters>
+	</Parameters>
+</Simulation>
+<Simulation id="105" sourcePath="../models/AnaSensib_6_5.gaml" finalstep="20" experiment="AnaSensi_Technique_droits_fonciers_zp">
+	<Parameters>
+	</Parameters>
+</Simulation>
+<Simulation id="106" sourcePath="../models/AnaSensib_6_5.gaml" finalstep="20" experiment="AnaSensi_Technique_droits_fonciers_zp_cession">
+	<Parameters>
+	</Parameters>
+</Simulation>
+<Simulation id="107" sourcePath="../models/AnaSensib_6_5.gaml" finalstep="20" experiment="AnaSensi_Technique_autres_droits_zp">
+	<Parameters>
+	</Parameters>
+</Simulation>
+<Simulation id="108" sourcePath="../models/AnaSensib_6_5.gaml" finalstep="20" experiment="AnaSensi_Technique_autres_droits_zp_cession">
+	<Parameters>
+	</Parameters>
+</Simulation>
+<Simulation id="109" sourcePath="../models/AnaSensib_6_5.gaml" finalstep="20" experiment="AnaSensi_Technique_nb_tirages_chateaux_gs">
+	<Parameters>
+	</Parameters>
+</Simulation>
+<Simulation id="110" sourcePath="../models/AnaSensib_6_5.gaml" finalstep="20" experiment="AnaSensi_Technique_nb_tirages_chateaux_ps">
+	<Parameters>
+	</Parameters>
+</Simulation>
+</Experiment_plan>

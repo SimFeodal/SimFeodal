@@ -266,3 +266,82 @@ experiment AnaSensi_Contexte_periode_promotion_chateaux parent: AnaSensi_Base ty
 		[800::false,940::true,1020::false]
 	];
 }
+
+
+
+///////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////
+/////////////////////     TECHNIQUES     //////////////////////
+///////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////
+
+////
+//// 11 paramètres * 5 valeurs * 20 réplications = 1100 simulations
+////
+
+experiment AnaSensi_Technique_coef_redevances parent: AnaSensi_Base type: batch repeat: 2 keep_seed: false benchmark: false until: (annee >= fin_simulation){
+	parameter 'prefix_output' var: prefix_output init: "technique";
+	parameter 'sensibility_parameter' var: sensibility_parameter init: "coef_redevances";
+	parameter "coef_redevances" var: coef_redevances among: [5, 10, 15, 20, 25];
+}
+
+experiment AnaSensi_Technique_min_s_distance_chateau parent: AnaSensi_Base type: batch repeat: 2 keep_seed: false benchmark: false until: (annee >= fin_simulation){
+	parameter 'prefix_output' var: prefix_output init: "technique";
+	parameter 'sensibility_parameter' var: sensibility_parameter init: "min_s_distance_chateau";
+	parameter "min_s_distance_chateau" var: min_s_distance_chateau among: [0.0, 0.001, 0.01, 0.05, 0.1];
+
+}
+
+experiment AnaSensi_Technique_distance_fusion_agregat parent: AnaSensi_Base type: batch repeat: 2 keep_seed: false benchmark: false until: (annee >= fin_simulation){
+	parameter 'prefix_output' var: prefix_output init: "technique";
+	parameter 'sensibility_parameter' var: sensibility_parameter init: "distance_fusion_agregat";
+	parameter "distance_fusion_agregat" var: distance_fusion_agregat among: [50, 100, 150, 200, 500];
+}
+
+experiment AnaSensi_Technique_droits_haute_justice_zp parent: AnaSensi_Base type: batch repeat: 2 keep_seed: false benchmark: false until: (annee >= fin_simulation){
+	parameter 'prefix_output' var: prefix_output init: "technique";
+	parameter 'sensibility_parameter' var: sensibility_parameter init: "droits_haute_justice_zp";
+	parameter "droits_haute_justice_zp" var: droits_haute_justice_zp among: [0.0, 1.0, 2.0, 3.0, 4.0];
+}
+
+experiment AnaSensi_Technique_droits_haute_justice_zp_cession parent: AnaSensi_Base type: batch repeat: 2 keep_seed: false benchmark: false until: (annee >= fin_simulation){
+	parameter 'prefix_output' var: prefix_output init: "technique";
+	parameter 'sensibility_parameter' var: sensibility_parameter init: "droits_haute_justice_zp_cession";
+	parameter "droits_haute_justice_zp_cession" var: droits_haute_justice_zp_cession among: [0.0, 1.0, 2.5, 3.5, 5.0];
+}
+
+experiment AnaSensi_Technique_droits_fonciers_zp parent: AnaSensi_Base type: batch repeat: 2 keep_seed: false benchmark: false until: (annee >= fin_simulation){
+	parameter 'prefix_output' var: prefix_output init: "technique";
+	parameter 'sensibility_parameter' var: sensibility_parameter init: "droits_fonciers_zp";
+	parameter "droits_fonciers_zp" var: droits_fonciers_zp among: [0, 0.5, 1.0, 1.5, 2.0];
+}
+
+experiment AnaSensi_Technique_droits_fonciers_zp_cession parent: AnaSensi_Base type: batch repeat: 2 keep_seed: false benchmark: false until: (annee >= fin_simulation){
+	parameter 'prefix_output' var: prefix_output init: "technique";
+	parameter 'sensibility_parameter' var: sensibility_parameter init: "droits_fonciers_zp_cession";
+	parameter "droits_fonciers_zp_cession" var: droits_fonciers_zp_cession among: [0.0, 0.5, 1.25, 2.0, 2.5];
+}
+
+experiment AnaSensi_Technique_autres_droits_zp parent: AnaSensi_Base type: batch repeat: 2 keep_seed: false benchmark: false until: (annee >= fin_simulation){
+	parameter 'prefix_output' var: prefix_output init: "technique";
+	parameter 'sensibility_parameter' var: sensibility_parameter init: "autres_droits_zp";
+	parameter "autres_droits_zp" var: autres_droits_zp among: [0.0, 0.15, 0.25, 0.5, 1.0];
+}
+
+experiment AnaSensi_Technique_autres_droits_zp_cession parent: AnaSensi_Base type: batch repeat: 2 keep_seed: false benchmark: false until: (annee >= fin_simulation){
+	parameter 'prefix_output' var: prefix_output init: "technique";
+	parameter 'sensibility_parameter' var: sensibility_parameter init: "autres_droits_zp_cession";
+	parameter "autres_droits_zp_cession" var: autres_droits_zp_cession among: [0.0, 0.2, 0.35, 0.5, 1.0];
+}
+
+experiment AnaSensi_Technique_nb_tirages_chateaux_gs parent: AnaSensi_Base type: batch repeat: 2 keep_seed: false benchmark: false until: (annee >= fin_simulation){
+	parameter 'prefix_output' var: prefix_output init: "technique";
+	parameter 'sensibility_parameter' var: sensibility_parameter init: "nb_tirages_chateaux_gs";
+	parameter "nb_tirages_chateaux_gs" var: nb_tirages_chateaux_gs among: [1, 2, 3, 4, 5];
+}
+
+experiment AnaSensi_Technique_nb_tirages_chateaux_ps parent: AnaSensi_Base type: batch repeat: 2 keep_seed: false benchmark: false until: (annee >= fin_simulation){
+	parameter 'prefix_output' var: prefix_output init: "technique";
+	parameter 'sensibility_parameter' var: sensibility_parameter init: "nb_tirages_chateaux_ps";
+	parameter "nb_tirages_chateaux_ps" var: nb_tirages_chateaux_ps among: [0, 1, 2, 3, 4];
+}
