@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Experiment_plan>
+<Simulation id="200" sourcePath="../models/AnaSensib_6_5.gaml" finalstep="20" experiment="AnaSensi_Meca_rayon_migration_locale_fp">
+	<Parameters>
+	</Parameters>
+</Simulation>
+<Simulation id="201" sourcePath="../models/AnaSensib_6_5.gaml" finalstep="20" experiment="AnaSensi_Meca_prop_migration_lointaine_fp">
+	<Parameters>
+	</Parameters>
+</Simulation>
+<Simulation id="202" sourcePath="../models/AnaSensib_6_5.gaml" finalstep="20" experiment="AnaSensi_Meca_nb_min_fp_agregat">
+	<Parameters>
+	</Parameters>
+</Simulation>
+<Simulation id="203" sourcePath="../models/AnaSensib_6_5.gaml" finalstep="20" experiment="AnaSensi_Meca_distance_detection_agregat">
+	<Parameters>
+	</Parameters>
+</Simulation>
+<Simulation id="204" sourcePath="../models/AnaSensib_6_5.gaml" finalstep="20" experiment="AnaSensi_Meca_proba_construction_chateau_ps">
+	<Parameters>
+	</Parameters>
+</Simulation>
+<Simulation id="205" sourcePath="../models/AnaSensib_6_5.gaml" finalstep="20" experiment="AnaSensi_Meca_proba_collecter_foncier_ps">
+	<Parameters>
+	</Parameters>
+</Simulation>
+<Simulation id="206" sourcePath="../models/AnaSensib_6_5.gaml" finalstep="20" experiment="AnaSensi_Meca_proba_creation_zp_autres_droits_ps">
+	<Parameters>
+	</Parameters>
+</Simulation>
+<Simulation id="207" sourcePath="../models/AnaSensib_6_5.gaml" finalstep="20" experiment="AnaSensi_Meca_taux_prelevement_zp_chateau">
+	<Parameters>
+	</Parameters>
+</Simulation>
+<Simulation id="208" sourcePath="../models/AnaSensib_6_5.gaml" finalstep="20" experiment="AnaSensi_Meca_proba_cession_droits_zp">
+	<Parameters>
+	</Parameters>
+</Simulation>
+<Simulation id="209" sourcePath="../models/AnaSensib_6_5.gaml" finalstep="20" experiment="AnaSensi_Meca_rayon_voisinage_ps">
+	<Parameters>
+	</Parameters>
+</Simulation>
+<Simulation id="210" sourcePath="../models/AnaSensib_6_5.gaml" finalstep="20" experiment="AnaSensi_Meca_proba_cession_locale">
+	<Parameters>
+	</Parameters>
+</Simulation>
+<Simulation id="211" sourcePath="../models/AnaSensib_6_5.gaml" finalstep="20" experiment="AnaSensi_Meca_proba_don_chateau">
+	<Parameters>
+	</Parameters>
+</Simulation>
+<Simulation id="212" sourcePath="../models/AnaSensib_6_5.gaml" finalstep="20" experiment="AnaSensi_Meca_dist_min_entre_chateaux">
+	<Parameters>
+	</Parameters>
+</Simulation>
+<Simulation id="213" sourcePath="../models/AnaSensib_6_5.gaml" finalstep="20" experiment="AnaSensi_Meca_proba_chateau_agregat">
+	<Parameters>
+	</Parameters>
+</Simulation>
+<Simulation id="214" sourcePath="../models/AnaSensib_6_5.gaml" finalstep="20" experiment="AnaSensi_Meca_proba_promotion_chateau_pole">
+	<Parameters>
+	</Parameters>
+</Simulation>
+<Simulation id="215" sourcePath="../models/AnaSensib_6_5.gaml" finalstep="20" experiment="AnaSensi_Meca_ponderation_creation_paroisse_agregat">
+	<Parameters>
+	</Parameters>
+</Simulation>
+<Simulation id="216" sourcePath="../models/AnaSensib_6_5.gaml" finalstep="20" experiment="AnaSensi_Meca_seuil_nb_paroissiens_insatisfaits">
+	<Parameters>
+	</Parameters>
+</Simulation>
+</Experiment_plan>

@@ -268,6 +268,124 @@ experiment AnaSensi_Contexte_periode_promotion_chateaux parent: AnaSensi_Base ty
 }
 
 
+///////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////
+/////////////////     MÉCANISMES (FACILE)    //////////////////
+///////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////
+
+////
+//// 17 paramètres * 5 valeurs * 20 réplications = 1700 simulations
+////
+
+experiment AnaSensi_Meca_rayon_migration_locale_fp parent: AnaSensi_Base type: batch repeat: 2 keep_seed: false benchmark: false until: (annee >= fin_simulation){
+	parameter 'prefix_output' var: prefix_output init: "mecanisme1";
+	parameter 'sensibility_parameter' var: sensibility_parameter init: "rayon_migration_locale_fp";
+	parameter "rayon_migration_locale_fp" var: rayon_migration_locale_fp among: [
+		[800::1000],
+		[800::2500, 1000::5000],
+		[800::2500],
+		[800::5000, 1000::10000],
+		[800::1000, 1000::2500]
+	];
+}
+
+experiment AnaSensi_Meca_prop_migration_lointaine_fp parent: AnaSensi_Base type: batch repeat: 2 keep_seed: false benchmark: false until: (annee >= fin_simulation){
+	parameter 'prefix_output' var: prefix_output init: "mecanisme1";
+	parameter 'sensibility_parameter' var: sensibility_parameter init: "prop_migration_lointaine_fp";
+	parameter "prop_migration_lointaine_fp" var: prop_migration_lointaine_fp among: [0.0, 0.1, 0.2, 0.35, 0.5];
+}
+
+experiment AnaSensi_Meca_nb_min_fp_agregat parent: AnaSensi_Base type: batch repeat: 2 keep_seed: false benchmark: false until: (annee >= fin_simulation){
+	parameter 'prefix_output' var: prefix_output init: "mecanisme1";
+	parameter 'sensibility_parameter' var: sensibility_parameter init: "nb_min_fp_agregat";
+	parameter "nb_min_fp_agregat" var: nb_min_fp_agregat among: [3, 5, 7, 10, 15];
+}
+
+experiment AnaSensi_Meca_distance_detection_agregat parent: AnaSensi_Base type: batch repeat: 2 keep_seed: false benchmark: false until: (annee >= fin_simulation){
+	parameter 'prefix_output' var: prefix_output init: "mecanisme1";
+	parameter 'sensibility_parameter' var: sensibility_parameter init: "distance_detection_agregat";
+	parameter "distance_detection_agregat" var: distance_detection_agregat among: [50, 100, 150, 200, 500];
+}
+
+experiment AnaSensi_Meca_proba_construction_chateau_ps parent: AnaSensi_Base type: batch repeat: 2 keep_seed: false benchmark: false until: (annee >= fin_simulation){
+	parameter 'prefix_output' var: prefix_output init: "mecanisme1";
+	parameter 'sensibility_parameter' var: sensibility_parameter init: "proba_construction_chateau_ps";
+	parameter "proba_construction_chateau_ps" var: proba_construction_chateau_ps among: [0.0, 0.25, 0.5, 0.75, 1.0];
+}
+
+experiment AnaSensi_Meca_proba_collecter_foncier_ps parent: AnaSensi_Base type: batch repeat: 2 keep_seed: false benchmark: false until: (annee >= fin_simulation){
+	parameter 'prefix_output' var: prefix_output init: "mecanisme1";
+	parameter 'sensibility_parameter' var: sensibility_parameter init: "proba_collecter_foncier_ps";
+	parameter "proba_collecter_foncier_ps" var: proba_collecter_foncier_ps among: [0.0, 0.05, 0.1, 0.25, 0.5];
+}
+
+experiment AnaSensi_Meca_proba_creation_zp_autres_droits_ps parent: AnaSensi_Base type: batch repeat: 2 keep_seed: false benchmark: false until: (annee >= fin_simulation){
+	parameter 'prefix_output' var: prefix_output init: "mecanisme1";
+	parameter 'sensibility_parameter' var: sensibility_parameter init: "proba_creation_zp_autres_droits_ps";
+	parameter "proba_creation_zp_autres_droits_ps" var: proba_creation_zp_autres_droits_ps among: [0.0, 0.05, 0.15, 0.25, 0.35];
+}
+
+experiment AnaSensi_Meca_taux_prelevement_zp_chateau parent: AnaSensi_Base type: batch repeat: 2 keep_seed: false benchmark: false until: (annee >= fin_simulation){
+	parameter 'prefix_output' var: prefix_output init: "mecanisme1";
+	parameter 'sensibility_parameter' var: sensibility_parameter init: "taux_prelevement_zp_chateau";
+	parameter "taux_prelevement_zp_chateau" var: taux_prelevement_zp_chateau among: [0.0, 0.25, 0.5, 0.75, 1.0];
+}
+
+experiment AnaSensi_Meca_proba_cession_droits_zp parent: AnaSensi_Base type: batch repeat: 2 keep_seed: false benchmark: false until: (annee >= fin_simulation){
+	parameter 'prefix_output' var: prefix_output init: "mecanisme1";
+	parameter 'sensibility_parameter' var: sensibility_parameter init: "proba_cession_droits_zp";
+	parameter "proba_cession_droits_zp" var: proba_cession_droits_zp among: [0.0, 0.15, 0.33, 0.5, 0.75];
+}
+
+experiment AnaSensi_Meca_rayon_voisinage_ps parent: AnaSensi_Base type: batch repeat: 2 keep_seed: false benchmark: false until: (annee >= fin_simulation){
+	parameter 'prefix_output' var: prefix_output init: "mecanisme1";
+	parameter 'sensibility_parameter' var: sensibility_parameter init: "rayon_voisinage_ps";
+	parameter "rayon_voisinage_ps" var: rayon_voisinage_ps among: [1000, 2500, 5000, 7500, 10000];
+}
+
+experiment AnaSensi_Meca_proba_cession_locale parent: AnaSensi_Base type: batch repeat: 2 keep_seed: false benchmark: false until: (annee >= fin_simulation){
+	parameter 'prefix_output' var: prefix_output init: "mecanisme1";
+	parameter 'sensibility_parameter' var: sensibility_parameter init: "proba_cession_locale";
+	parameter "proba_cession_locale" var: proba_cession_locale among: [0.0, 0.25, 0.5, 0.75, 1.0];
+}
+
+experiment AnaSensi_Meca_proba_don_chateau parent: AnaSensi_Base type: batch repeat: 2 keep_seed: false benchmark: false until: (annee >= fin_simulation){
+	parameter 'prefix_output' var: prefix_output init: "mecanisme1";
+	parameter 'sensibility_parameter' var: sensibility_parameter init: "proba_don_chateau";
+	parameter "proba_don_chateau" var: proba_don_chateau among: [0.0, 0.25, 0.5, 0.75, 1.0];
+}
+
+experiment AnaSensi_Meca_dist_min_entre_chateaux parent: AnaSensi_Base type: batch repeat: 2 keep_seed: false benchmark: false until: (annee >= fin_simulation){
+	parameter 'prefix_output' var: prefix_output init: "mecanisme1";
+	parameter 'sensibility_parameter' var: sensibility_parameter init: "dist_min_entre_chateaux";
+	parameter "dist_min_entre_chateaux" var: dist_min_entre_chateaux among: [0, 1500, 3000, 5000, 7500];
+}
+
+experiment AnaSensi_Meca_proba_chateau_agregat parent: AnaSensi_Base type: batch repeat: 2 keep_seed: false benchmark: false until: (annee >= fin_simulation){
+	parameter 'prefix_output' var: prefix_output init: "mecanisme1";
+	parameter 'sensibility_parameter' var: sensibility_parameter init: "proba_chateau_agregat";
+	parameter "proba_chateau_agregat" var: proba_chateau_agregat among: [0.0, 0.25, 0.5, 0.75, 1.0];
+}
+
+experiment AnaSensi_Meca_proba_promotion_chateau_pole parent: AnaSensi_Base type: batch repeat: 2 keep_seed: false benchmark: false until: (annee >= fin_simulation){
+	parameter 'prefix_output' var: prefix_output init: "mecanisme1";
+	parameter 'sensibility_parameter' var: sensibility_parameter init: "proba_promotion_chateau_pole";
+	parameter "proba_promotion_chateau_pole" var: proba_promotion_chateau_pole among: [0.0, 0.25, 0.5, 0.75, 1.0];
+}
+
+experiment AnaSensi_Meca_ponderation_creation_paroisse_agregat parent: AnaSensi_Base type: batch repeat: 2 keep_seed: false benchmark: false until: (annee >= fin_simulation){
+	parameter 'prefix_output' var: prefix_output init: "mecanisme1";
+	parameter 'sensibility_parameter' var: sensibility_parameter init: "ponderation_creation_paroisse_agregat";
+	parameter "ponderation_creation_paroisse_agregat" var: ponderation_creation_paroisse_agregat among: [500, 1000, 2000, 3000, 5000];
+}
+
+experiment AnaSensi_Meca_seuil_nb_paroissiens_insatisfaits parent: AnaSensi_Base type: batch repeat: 2 keep_seed: false benchmark: false until: (annee >= fin_simulation){
+	parameter 'prefix_output' var: prefix_output init: "mecanisme1";
+	parameter 'sensibility_parameter' var: sensibility_parameter init: "seuil_nb_paroissiens_insatisfaits";
+	parameter "seuil_nb_paroissiens_insatisfaits" var: seuil_nb_paroissiens_insatisfaits among: [5, 10, 20, 30, 50];
+}
+
 
 ///////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////

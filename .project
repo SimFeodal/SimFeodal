@@ -15,4 +15,11 @@
 		<nature>org.eclipse.xtext.ui.shared.xtextNature</nature>
 		<nature>msi.gama.application.gamaNature</nature>
 	</natures>
+	<linkedResources>
+		<link>
+			<name>external/test_gama.csv</name>
+			<type>1</type>
+			<location>/home/robin/test_gama.csv</location>
+		</link>
+	</linkedResources>
 </projectDescription>
