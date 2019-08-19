@@ -142,7 +142,16 @@ global torus: false{
 	int nb_tirages_chateaux_gs <- 3;
 	int nb_tirages_chateaux_ps <- 1;
 
-	// Nouveau
+	///////////////////////////
+	//  ANALYSE SENSIBILITE  //
+	//   PARAMS DIFFICILES   //
+	///////////////////////////
+	string dist_minmax_eglise;
+	string dist_minmax_chateau;
+	string rayon_minmax_zp_ps;
+	string minmax_taux_prelevement_zp_ps;
+	string rayon_minmax_zp_chateau;
+	string attractivite_amenites;
 
 	
 	

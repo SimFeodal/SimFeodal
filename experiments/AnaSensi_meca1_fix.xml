@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Experiment_plan>
+<Simulation id="303" sourcePath="../models/AnaSensib_6_5.gaml" finalstep="20" experiment="AnaSensi_Meca_distance_detection_agregat_fix">
+	<Parameters>
+	</Parameters>
+</Simulation>
+</Experiment_plan>

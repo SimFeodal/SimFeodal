@@ -308,6 +308,12 @@ experiment AnaSensi_Meca_distance_detection_agregat parent: AnaSensi_Base type: 
 	parameter "distance_detection_agregat" var: distance_detection_agregat among: [50, 100, 150, 200, 500];
 }
 
+experiment AnaSensi_Meca_distance_detection_agregat_fix parent: AnaSensi_Base type: batch repeat: 2 keep_seed: false benchmark: false until: (annee >= fin_simulation){
+	parameter 'prefix_output' var: prefix_output init: "mecanisme1_fix";
+	parameter 'sensibility_parameter' var: sensibility_parameter init: "distance_detection_agregat";
+	parameter "distance_detection_agregat" var: distance_detection_agregat init: 300;
+}
+
 experiment AnaSensi_Meca_proba_construction_chateau_ps parent: AnaSensi_Base type: batch repeat: 2 keep_seed: false benchmark: false until: (annee >= fin_simulation){
 	parameter 'prefix_output' var: prefix_output init: "mecanisme1";
 	parameter 'sensibility_parameter' var: sensibility_parameter init: "proba_construction_chateau_ps";
@@ -386,6 +392,291 @@ experiment AnaSensi_Meca_seuil_nb_paroissiens_insatisfaits parent: AnaSensi_Base
 	parameter "seuil_nb_paroissiens_insatisfaits" var: seuil_nb_paroissiens_insatisfaits among: [5, 10, 20, 30, 50];
 }
 
+///////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////
+///////////////     MÉCANISMES (DIFFICILES)    ////////////////
+///////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////
+
+////
+//// 6 paramètres * 5 valeurs * 20 réplications = 600 simulations
+////
+
+experiment AnaSensi_Meca_dist_minmax_eglise_1 parent: AnaSensi_Base type: batch repeat: 2 keep_seed: false benchmark: false until: (annee >= fin_simulation){
+	parameter 'prefix_output' var: prefix_output init: "mecanisme2";
+	parameter 'sensibility_parameter' var: sensibility_parameter init: "dist_minmax_eglise";
+	parameter 'dist_minmax_eglise' var: dist_minmax_eglise init: "base"; 
+	
+	parameter "dist_min_eglise" var: dist_min_eglise init: [800::5000, 960::3000, 1060::1500];
+	parameter "dist_max_eglise" var: dist_max_eglise init: [800::25000, 960::10000, 1060::5000];
+}
+experiment AnaSensi_Meca_dist_minmax_eglise_2 parent: AnaSensi_Base type: batch repeat: 2 keep_seed: false benchmark: false until: (annee >= fin_simulation){
+	parameter 'prefix_output' var: prefix_output init: "mecanisme2";
+	parameter 'sensibility_parameter' var: sensibility_parameter init: "dist_minmax_eglise";
+	parameter 'dist_minmax_eglise' var: dist_minmax_eglise init: "statique_large"; 
+	
+	parameter "dist_min_eglise" var: dist_min_eglise init: [800::5000];
+	parameter "dist_max_eglise" var: dist_max_eglise init: [800::25000];
+}
+experiment AnaSensi_Meca_dist_minmax_eglise_3 parent: AnaSensi_Base type: batch repeat: 2 keep_seed: false benchmark: false until: (annee >= fin_simulation){
+	parameter 'prefix_output' var: prefix_output init: "mecanisme2";
+	parameter 'sensibility_parameter' var: sensibility_parameter init: "dist_minmax_eglise";
+	parameter 'dist_minmax_eglise' var: dist_minmax_eglise init: "dynamique_reduit"; 
+	
+	parameter "dist_min_eglise" var: dist_min_eglise init: [800::1500, 960::1000, 1060::500];
+	parameter "dist_max_eglise" var: dist_max_eglise init: [800::5000, 960::3000, 1060::1500];
+}
+experiment AnaSensi_Meca_dist_minmax_eglise_4 parent: AnaSensi_Base type: batch repeat: 2 keep_seed: false benchmark: false until: (annee >= fin_simulation){
+	parameter 'prefix_output' var: prefix_output init: "mecanisme2";
+	parameter 'sensibility_parameter' var: sensibility_parameter init: "dist_minmax_eglise";
+	parameter 'dist_minmax_eglise' var: dist_minmax_eglise init: "dynamique_large"; 
+	
+	parameter "dist_min_eglise" var: dist_min_eglise init: [800::25000, 960::10000, 1060::5000];
+	parameter "dist_max_eglise" var: dist_max_eglise init: [800::50000, 960::25000, 1060::10000];
+}
+experiment AnaSensi_Meca_dist_minmax_eglise_5 parent: AnaSensi_Base type: batch repeat: 2 keep_seed: false benchmark: false until: (annee >= fin_simulation){
+	parameter 'prefix_output' var: prefix_output init: "mecanisme2";
+	parameter 'sensibility_parameter' var: sensibility_parameter init: "dist_minmax_eglise";
+	parameter 'dist_minmax_eglise' var: dist_minmax_eglise init: "statique_reduit"; 
+	
+	parameter "dist_min_eglise" var: dist_min_eglise init: [800::1500];
+	parameter "dist_max_eglise" var: dist_max_eglise init: [800::5000];
+}
+
+
+experiment AnaSensi_Meca_dist_minmax_chateau_1 parent: AnaSensi_Base type: batch repeat: 2 keep_seed: false benchmark: false until: (annee >= fin_simulation){
+	parameter 'prefix_output' var: prefix_output init: "mecanisme2";
+	parameter 'sensibility_parameter' var: sensibility_parameter init: "dist_minmax_chateau";
+	parameter "dist_minmax_chateau" var: dist_minmax_chateau init: "base";
+	
+	parameter "dist_min_chateau" var: dist_min_chateau init: 1500;
+	parameter "dist_max_chateau" var: dist_max_chateau init: 5000;
+}
+experiment AnaSensi_Meca_dist_minmax_chateau_2 parent: AnaSensi_Base type: batch repeat: 2 keep_seed: false benchmark: false until: (annee >= fin_simulation){
+	parameter 'prefix_output' var: prefix_output init: "mecanisme2";
+	parameter 'sensibility_parameter' var: sensibility_parameter init: "dist_minmax_chateau";
+	parameter "dist_minmax_chateau" var: dist_minmax_chateau init: "deplacement_negatif";
+	
+	parameter "dist_min_chateau" var: dist_min_chateau init: 500;
+	parameter "dist_max_chateau" var: dist_max_chateau init: 4000;
+}
+experiment AnaSensi_Meca_dist_minmax_chateau_3 parent: AnaSensi_Base type: batch repeat: 2 keep_seed: false benchmark: false until: (annee >= fin_simulation){
+	parameter 'prefix_output' var: prefix_output init: "mecanisme2";
+	parameter 'sensibility_parameter' var: sensibility_parameter init: "dist_minmax_chateau";
+	parameter "dist_minmax_chateau" var: dist_minmax_chateau init: "deplacement_positif";
+	
+	parameter "dist_min_chateau" var: dist_min_chateau init: 5000;
+	parameter "dist_max_chateau" var: dist_max_chateau init: 8500;
+}
+experiment AnaSensi_Meca_dist_minmax_chateau_4 parent: AnaSensi_Base type: batch repeat: 2 keep_seed: false benchmark: false until: (annee >= fin_simulation){
+	parameter 'prefix_output' var: prefix_output init: "mecanisme2";
+	parameter 'sensibility_parameter' var: sensibility_parameter init: "dist_minmax_chateau";
+	parameter "dist_minmax_chateau" var: dist_minmax_chateau init: "reduction_max";
+	
+	parameter "dist_min_chateau" var: dist_min_chateau init: 1500;
+	parameter "dist_max_chateau" var: dist_max_chateau init: 3000;
+}
+experiment AnaSensi_Meca_dist_minmax_chateau_5 parent: AnaSensi_Base type: batch repeat: 2 keep_seed: false benchmark: false until: (annee >= fin_simulation){
+	parameter 'prefix_output' var: prefix_output init: "mecanisme2";
+	parameter 'sensibility_parameter' var: sensibility_parameter init: "dist_minmax_chateau";
+	parameter "dist_minmax_chateau" var: dist_minmax_chateau init: "augmentation_min";
+	
+	parameter "dist_min_chateau" var: dist_min_chateau init: 3000;
+	parameter "dist_max_chateau" var: dist_max_chateau init: 5000;
+}
+
+
+experiment AnaSensi_Meca_rayon_minmax_zp_ps_1 parent: AnaSensi_Base type: batch repeat: 2 keep_seed: false benchmark: false until: (annee >= fin_simulation){
+	parameter 'prefix_output' var: prefix_output init: "mecanisme2";
+	parameter 'sensibility_parameter' var: sensibility_parameter init: "rayon_minmax_zp_ps";
+	parameter "rayon_minmax_zp_ps" var: rayon_minmax_zp_ps init: "base";
+	
+	parameter "rayon_min_zp_ps" var: rayon_min_zp_ps init: 1000;
+	parameter "rayon_max_zp_ps" var: rayon_max_zp_ps init: 5000;
+}
+experiment AnaSensi_Meca_rayon_minmax_zp_ps_2 parent: AnaSensi_Base type: batch repeat: 2 keep_seed: false benchmark: false until: (annee >= fin_simulation){
+	parameter 'prefix_output' var: prefix_output init: "mecanisme2";
+	parameter 'sensibility_parameter' var: sensibility_parameter init: "rayon_minmax_zp_ps";
+	parameter "rayon_minmax_zp_ps" var: rayon_minmax_zp_ps init: "deplacement_negatif";
+	
+	parameter "rayon_min_zp_ps" var: rayon_min_zp_ps init: 500;
+	parameter "rayon_max_zp_ps" var: rayon_max_zp_ps init: 4500;
+}
+experiment AnaSensi_Meca_rayon_minmax_zp_ps_3 parent: AnaSensi_Base type: batch repeat: 2 keep_seed: false benchmark: false until: (annee >= fin_simulation){
+	parameter 'prefix_output' var: prefix_output init: "mecanisme2";
+	parameter 'sensibility_parameter' var: sensibility_parameter init: "rayon_minmax_zp_ps";
+	parameter "rayon_minmax_zp_ps" var: rayon_minmax_zp_ps init: "deplacement_positif";
+	
+	parameter "rayon_min_zp_ps" var: rayon_min_zp_ps init: 5000;
+	parameter "rayon_max_zp_ps" var: rayon_max_zp_ps init: 9000;
+}
+experiment AnaSensi_Meca_rayon_minmax_zp_ps_4 parent: AnaSensi_Base type: batch repeat: 2 keep_seed: false benchmark: false until: (annee >= fin_simulation){
+	parameter 'prefix_output' var: prefix_output init: "mecanisme2";
+	parameter 'sensibility_parameter' var: sensibility_parameter init: "rayon_minmax_zp_ps";
+	parameter "rayon_minmax_zp_ps" var: rayon_minmax_zp_ps init: "reduction_max";
+	
+	parameter "rayon_min_zp_ps" var: rayon_min_zp_ps init: 1000;
+	parameter "rayon_max_zp_ps" var: rayon_max_zp_ps init: 3000;
+}
+experiment AnaSensi_Meca_rayon_minmax_zp_ps_5 parent: AnaSensi_Base type: batch repeat: 2 keep_seed: false benchmark: false until: (annee >= fin_simulation){
+	parameter 'prefix_output' var: prefix_output init: "mecanisme2";
+	parameter 'sensibility_parameter' var: sensibility_parameter init: "rayon_minmax_zp_ps";
+	parameter "rayon_minmax_zp_ps" var: rayon_minmax_zp_ps init: "augmentation_min";
+	
+	parameter "rayon_min_zp_ps" var: rayon_min_zp_ps init: 3000;
+	parameter "rayon_max_zp_ps" var: rayon_max_zp_ps init: 5000;
+}
+
+
+experiment AnaSensi_Meca_minmax_taux_prelevement_zp_ps_1 parent: AnaSensi_Base type: batch repeat: 2 keep_seed: false benchmark: false until: (annee >= fin_simulation){
+	parameter 'prefix_output' var: prefix_output init: "mecanisme2";
+	parameter 'sensibility_parameter' var: sensibility_parameter init: "minmax_taux_prelevement_zp_ps";
+	parameter "minmax_taux_prelevement_zp_ps" var: minmax_taux_prelevement_zp_ps init: "base";
+	
+	parameter "min_taux_prelevement_zp_ps" var: min_taux_prelevement_zp_ps init: 0.05;
+	parameter "max_taux_prelevement_zp_ps" var: max_taux_prelevement_zp_ps init: 0.25;
+}
+experiment AnaSensi_Meca_minmax_taux_prelevement_zp_ps_2 parent: AnaSensi_Base type: batch repeat: 2 keep_seed: false benchmark: false until: (annee >= fin_simulation){
+	parameter 'prefix_output' var: prefix_output init: "mecanisme2";
+	parameter 'sensibility_parameter' var: sensibility_parameter init: "minmax_taux_prelevement_zp_ps";
+	parameter "minmax_taux_prelevement_zp_ps" var: minmax_taux_prelevement_zp_ps init: "deplacement_negatif";
+	
+	parameter "min_taux_prelevement_zp_ps" var: min_taux_prelevement_zp_ps init: 0.0;
+	parameter "max_taux_prelevement_zp_ps" var: max_taux_prelevement_zp_ps init: 0.2;
+}
+experiment AnaSensi_Meca_minmax_taux_prelevement_zp_ps_3 parent: AnaSensi_Base type: batch repeat: 2 keep_seed: false benchmark: false until: (annee >= fin_simulation){
+	parameter 'prefix_output' var: prefix_output init: "mecanisme2";
+	parameter 'sensibility_parameter' var: sensibility_parameter init: "minmax_taux_prelevement_zp_ps";
+	parameter "minmax_taux_prelevement_zp_ps" var: minmax_taux_prelevement_zp_ps init: "deplacement_positif";
+	
+	parameter "min_taux_prelevement_zp_ps" var: min_taux_prelevement_zp_ps init: 0.25;
+	parameter "max_taux_prelevement_zp_ps" var: max_taux_prelevement_zp_ps init: 0.5;
+}
+experiment AnaSensi_Meca_minmax_taux_prelevement_zp_ps_4 parent: AnaSensi_Base type: batch repeat: 2 keep_seed: false benchmark: false until: (annee >= fin_simulation){
+	parameter 'prefix_output' var: prefix_output init: "mecanisme2";
+	parameter 'sensibility_parameter' var: sensibility_parameter init: "minmax_taux_prelevement_zp_ps";
+	parameter "minmax_taux_prelevement_zp_ps" var: minmax_taux_prelevement_zp_ps init: "reduction_max";
+	
+	parameter "min_taux_prelevement_zp_ps" var: min_taux_prelevement_zp_ps init: 0.05;
+	parameter "max_taux_prelevement_zp_ps" var: max_taux_prelevement_zp_ps init: 0.15;
+}
+experiment AnaSensi_Meca_minmax_taux_prelevement_zp_ps_5 parent: AnaSensi_Base type: batch repeat: 2 keep_seed: false benchmark: false until: (annee >= fin_simulation){
+	parameter 'prefix_output' var: prefix_output init: "mecanisme2";
+	parameter 'sensibility_parameter' var: sensibility_parameter init: "minmax_taux_prelevement_zp_ps";
+	parameter "minmax_taux_prelevement_zp_ps" var: minmax_taux_prelevement_zp_ps init: "augmentation_min";
+	
+	parameter "min_taux_prelevement_zp_ps" var: min_taux_prelevement_zp_ps init: 0.15;
+	parameter "max_taux_prelevement_zp_ps" var: max_taux_prelevement_zp_ps init: 0.25;
+}
+
+
+experiment AnaSensi_Meca_rayon_minmax_zp_chateau_1 parent: AnaSensi_Base type: batch repeat: 2 keep_seed: false benchmark: false until: (annee >= fin_simulation){
+	parameter 'prefix_output' var: prefix_output init: "mecanisme2";
+	parameter 'sensibility_parameter' var: sensibility_parameter init: "rayon_minmax_zp_chateau";
+	parameter "rayon_minmax_zp_chateau" var: rayon_minmax_zp_chateau init: "base";
+	
+	parameter "rayon_min_zp_chateau" var: rayon_min_zp_chateau init: 2000;
+	parameter "rayon_max_zp_chateau" var: rayon_max_zp_chateau init: 15000;
+}
+experiment AnaSensi_Meca_rayon_minmax_zp_chateau_2 parent: AnaSensi_Base type: batch repeat: 2 keep_seed: false benchmark: false until: (annee >= fin_simulation){
+	parameter 'prefix_output' var: prefix_output init: "mecanisme2";
+	parameter 'sensibility_parameter' var: sensibility_parameter init: "rayon_minmax_zp_chateau";
+	parameter "rayon_minmax_zp_chateau" var: rayon_minmax_zp_chateau init: "deplacement_negatif";
+	
+	parameter "rayon_min_zp_chateau" var: rayon_min_zp_chateau init: 500;
+	parameter "rayon_max_zp_chateau" var: rayon_max_zp_chateau init: 10000;
+}
+experiment AnaSensi_Meca_rayon_minmax_zp_chateau_3 parent: AnaSensi_Base type: batch repeat: 2 keep_seed: false benchmark: false until: (annee >= fin_simulation){
+	parameter 'prefix_output' var: prefix_output init: "mecanisme2";
+	parameter 'sensibility_parameter' var: sensibility_parameter init: "rayon_minmax_zp_chateau";
+	parameter "rayon_minmax_zp_chateau" var: rayon_minmax_zp_chateau init: "deplacement_positif";
+	
+	parameter "rayon_min_zp_chateau" var: rayon_min_zp_chateau init: 5000;
+	parameter "rayon_max_zp_chateau" var: rayon_max_zp_chateau init: 20000;
+}
+experiment AnaSensi_Meca_rayon_minmax_zp_chateau_4 parent: AnaSensi_Base type: batch repeat: 2 keep_seed: false benchmark: false until: (annee >= fin_simulation){
+	parameter 'prefix_output' var: prefix_output init: "mecanisme2";
+	parameter 'sensibility_parameter' var: sensibility_parameter init: "rayon_minmax_zp_chateau";
+	parameter "rayon_minmax_zp_chateau" var: rayon_minmax_zp_chateau init: "reduction_max";
+	
+	parameter "rayon_min_zp_chateau" var: rayon_min_zp_chateau init: 2000;
+	parameter "rayon_max_zp_chateau" var: rayon_max_zp_chateau init: 5000;
+}
+experiment AnaSensi_Meca_rayon_minmax_zp_chateau_5 parent: AnaSensi_Base type: batch repeat: 2 keep_seed: false benchmark: false until: (annee >= fin_simulation){
+	parameter 'prefix_output' var: prefix_output init: "mecanisme2";
+	parameter 'sensibility_parameter' var: sensibility_parameter init: "rayon_minmax_zp_chateau";
+	parameter "rayon_minmax_zp_chateau" var: rayon_minmax_zp_chateau init: "augmentation_min";
+	
+	parameter "rayon_min_zp_chateau" var: rayon_min_zp_chateau init: 5000;
+	parameter "rayon_max_zp_chateau" var: rayon_max_zp_chateau init: 15000;
+}
+
+
+experiment AnaSensi_Meca_attractivite_amenites_1 parent: AnaSensi_Base type: batch repeat: 2 keep_seed: false benchmark: false until: (annee >= fin_simulation){
+	parameter 'prefix_output' var: prefix_output init: "mecanisme2";
+	parameter 'sensibility_parameter' var: sensibility_parameter init: "attractivite_amenites";
+	parameter "attractivite_amenites" var: attractivite_amenites init: "base";
+	
+	parameter "attractivite_petit_chateau" var: attractivite_petit_chateau init: 0.15;
+	parameter "attractivite_gros_chateau" var: attractivite_gros_chateau init: 0.25;
+	parameter "attractivite_1_eglise" var: attractivite_1_eglise init: 0.15;
+	parameter "attractivite_2_eglise" var: attractivite_2_eglise init: 0.25;
+	parameter "attractivite_3_eglise" var: attractivite_3_eglise init: 0.5;
+	parameter "attractivite_4_eglise" var: attractivite_4_eglise init: 0.6;
+	parameter "attractivite_communaute" var: attractivite_communaute init: 0.15;
+}
+experiment AnaSensi_Meca_attractivite_amenites_2 parent: AnaSensi_Base type: batch repeat: 2 keep_seed: false benchmark: false until: (annee >= fin_simulation){
+	parameter 'prefix_output' var: prefix_output init: "mecanisme2";
+	parameter 'sensibility_parameter' var: sensibility_parameter init: "attractivite_amenites";
+	parameter "attractivite_amenites" var: attractivite_amenites init: "renforce_chateaux";
+	
+	parameter "attractivite_petit_chateau" var: attractivite_petit_chateau init: 0.25;
+	parameter "attractivite_gros_chateau" var: attractivite_gros_chateau init: 0.5;
+	parameter "attractivite_1_eglise" var: attractivite_1_eglise init: 0.05;
+	parameter "attractivite_2_eglise" var: attractivite_2_eglise init: 0.1;
+	parameter "attractivite_3_eglise" var: attractivite_3_eglise init: 0.25;
+	parameter "attractivite_4_eglise" var: attractivite_4_eglise init: 0.35;
+	parameter "attractivite_communaute" var: attractivite_communaute init: 0.15;
+}
+experiment AnaSensi_Meca_attractivite_amenites_3 parent: AnaSensi_Base type: batch repeat: 2 keep_seed: false benchmark: false until: (annee >= fin_simulation){
+	parameter 'prefix_output' var: prefix_output init: "mecanisme2";
+	parameter 'sensibility_parameter' var: sensibility_parameter init: "attractivite_amenites";
+	parameter "attractivite_amenites" var: attractivite_amenites init: "renforce_eglises";
+	
+	parameter "attractivite_petit_chateau" var: attractivite_petit_chateau init: 0.05;
+	parameter "attractivite_gros_chateau" var: attractivite_gros_chateau init: 0.15;
+	parameter "attractivite_1_eglise" var: attractivite_1_eglise init: 0.2;
+	parameter "attractivite_2_eglise" var: attractivite_2_eglise init: 0.4;
+	parameter "attractivite_3_eglise" var: attractivite_3_eglise init: 0.6;
+	parameter "attractivite_4_eglise" var: attractivite_4_eglise init: 0.7;
+	parameter "attractivite_communaute" var: attractivite_communaute init: 0.15;
+}
+experiment AnaSensi_Meca_attractivite_amenites_4 parent: AnaSensi_Base type: batch repeat: 2 keep_seed: false benchmark: false until: (annee >= fin_simulation){
+	parameter 'prefix_output' var: prefix_output init: "mecanisme2";
+	parameter 'sensibility_parameter' var: sensibility_parameter init: "attractivite_amenites";
+	parameter "attractivite_amenites" var: attractivite_amenites init: "renforce_communaute";
+	
+	parameter "attractivite_petit_chateau" var: attractivite_petit_chateau init: 0.1;
+	parameter "attractivite_gros_chateau" var: attractivite_gros_chateau init: 0.2;
+	parameter "attractivite_1_eglise" var: attractivite_1_eglise init: 0.1;
+	parameter "attractivite_2_eglise" var: attractivite_2_eglise init: 0.2;
+	parameter "attractivite_3_eglise" var: attractivite_3_eglise init: 0.35;
+	parameter "attractivite_4_eglise" var: attractivite_4_eglise init: 0.5;
+	parameter "attractivite_communaute" var: attractivite_communaute init: 0.3;
+}
+experiment AnaSensi_Meca_attractivite_amenites_5 parent: AnaSensi_Base type: batch repeat: 2 keep_seed: false benchmark: false until: (annee >= fin_simulation){
+	parameter 'prefix_output' var: prefix_output init: "mecanisme2";
+	parameter 'sensibility_parameter' var: sensibility_parameter init: "attractivite_amenites";
+	parameter "attractivite_amenites" var: attractivite_amenites init: "renforce_hierarchie";
+	
+	parameter "attractivite_petit_chateau" var: attractivite_petit_chateau init: 0.1;
+	parameter "attractivite_gros_chateau" var: attractivite_gros_chateau init: 0.3;
+	parameter "attractivite_1_eglise" var: attractivite_1_eglise init: 0.05;
+	parameter "attractivite_2_eglise" var: attractivite_2_eglise init: 0.15;
+	parameter "attractivite_3_eglise" var: attractivite_3_eglise init: 0.35;
+	parameter "attractivite_4_eglise" var: attractivite_4_eglise init: 0.6;
+	parameter "attractivite_communaute" var: attractivite_communaute init: 0.1;
+}
 
 ///////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////
