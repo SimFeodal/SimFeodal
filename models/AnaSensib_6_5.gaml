@@ -268,6 +268,52 @@ experiment AnaSensi_Contexte_periode_promotion_chateaux parent: AnaSensi_Base ty
 }
 
 
+////
+//// FIX POP GROWTH
+////
+
+experiment AnaSensi_Contexte_croissance_demo_1 parent: AnaSensi_Base type: batch repeat: 2 keep_seed: false benchmark: false until: (annee >= fin_simulation){
+	parameter 'prefix_output' var: prefix_output init: "contexte_fix";
+	parameter 'sensibility_parameter' var: sensibility_parameter init: "croissance_demo";
+
+	parameter "croissance_demo" var: croissance_demo init: 0.0;
+	parameter "init_nb_total_fp" var: init_nb_total_fp init: 40000;
+}
+
+experiment AnaSensi_Contexte_croissance_demo_2 parent: AnaSensi_Base type: batch repeat: 2 keep_seed: false benchmark: false until: (annee >= fin_simulation){
+	parameter 'prefix_output' var: prefix_output init: "contexte_fix";
+	parameter 'sensibility_parameter' var: sensibility_parameter init: "croissance_demo";
+
+	parameter "croissance_demo" var: croissance_demo init: 0.1289;
+	parameter "init_nb_total_fp" var: init_nb_total_fp init: 4000;
+}
+
+experiment AnaSensi_Contexte_croissance_demo_3 parent: AnaSensi_Base type: batch repeat: 2 keep_seed: false benchmark: false until: (annee >= fin_simulation){
+	parameter 'prefix_output' var: prefix_output init: "contexte_fix";
+	parameter 'sensibility_parameter' var: sensibility_parameter init: "croissance_demo";
+
+	parameter "croissance_demo" var: croissance_demo init: 0.0589;
+	parameter "init_nb_total_fp" var: init_nb_total_fp init: 13500;
+}
+
+experiment AnaSensi_Contexte_croissance_demo_4 parent: AnaSensi_Base type: batch repeat: 2 keep_seed: false benchmark: false until: (annee >= fin_simulation){
+	parameter 'prefix_output' var: prefix_output init: "contexte_fix";
+	parameter 'sensibility_parameter' var: sensibility_parameter init: "croissance_demo";
+
+	parameter "croissance_demo" var: croissance_demo init: 0.0372;
+	parameter "init_nb_total_fp" var: init_nb_total_fp init: 20000;
+}
+
+experiment AnaSensi_Contexte_croissance_demo_5 parent: AnaSensi_Base type: batch repeat: 2 keep_seed: false benchmark: false until: (annee >= fin_simulation){
+	parameter 'prefix_output' var: prefix_output init: "contexte_fix";
+	parameter 'sensibility_parameter' var: sensibility_parameter init: "croissance_demo";
+
+	parameter "croissance_demo" var: croissance_demo init: 0.0153;
+	parameter "init_nb_total_fp" var: init_nb_total_fp init: 30000;
+}
+
+
+
 ///////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////
 /////////////////     MÉCANISMES (FACILE)    //////////////////
