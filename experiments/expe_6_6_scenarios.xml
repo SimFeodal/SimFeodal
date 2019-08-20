@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Experiment_plan>
+<Simulation id="1000" sourcePath="../models/GUI_6_6_scenarios.gaml" finalstep="20" experiment="Exp_6_6_base">
+	<Parameters>
+	</Parameters>
+</Simulation>
+<Simulation id="1001" sourcePath="../models/GUI_6_6_scenarios.gaml" finalstep="20" experiment="Exp_6_6_A">
+	<Parameters>
+	</Parameters>
+</Simulation>
+<Simulation id="1002" sourcePath="../models/GUI_6_6_scenarios.gaml" finalstep="20" experiment="Exp_6_6_B">
+	<Parameters>
+	</Parameters>
+</Simulation>
+<Simulation id="1003" sourcePath="../models/GUI_6_6_scenarios.gaml" finalstep="20" experiment="Exp_6_6_C">
+	<Parameters>
+	</Parameters>
+</Simulation>
+<Simulation id="1004" sourcePath="../models/GUI_6_6_scenarios.gaml" finalstep="20" experiment="Exp_6_6_D">
+	<Parameters>
+	</Parameters>
+</Simulation>
+<Simulation id="1005" sourcePath="../models/GUI_6_6_scenarios.gaml" finalstep="20" experiment="Exp_6_6_E">
+	<Parameters>
+	</Parameters>
+</Simulation>
+<Simulation id="1006" sourcePath="../models/GUI_6_6_scenarios.gaml" finalstep="20" experiment="Exp_6_6_F">
+	<Parameters>
+	</Parameters>
+</Simulation>
+<Simulation id="1007" sourcePath="../models/GUI_6_6_scenarios.gaml" finalstep="20" experiment="Exp_6_6_G">
+	<Parameters>
+	</Parameters>
+</Simulation>
+</Experiment_plan>
