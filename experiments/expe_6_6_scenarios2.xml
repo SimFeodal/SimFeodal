@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Experiment_plan>
+<Simulation id="10000" sourcePath="../models/GUI_6_6_scenarios.gaml" finalstep="20" experiment="Exp_6_6_D_extra1">
+	<Parameters>
+	</Parameters>
+</Simulation>
+<Simulation id="10001" sourcePath="../models/GUI_6_6_scenarios.gaml" finalstep="20" experiment="Exp_6_6_D_extra2">
+	<Parameters>
+	</Parameters>
+</Simulation>
+</Experiment_plan>

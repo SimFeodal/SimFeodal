@@ -94,3 +94,23 @@ experiment Exp_6_6_G type: batch repeat: 2 keep_seed: false benchmark: false unt
 	parameter 'rayon_migration_locale_fp' var: rayon_migration_locale_fp init: [800::2500, 900::4000, 1000::6000];
 	// 1 experiment
 }
+
+experiment Exp_6_6_D_extra1 type: batch repeat: 2 keep_seed: false benchmark: false until: (annee >= fin_simulation){
+	parameter 'save_outputs' var: save_outputs init: true;
+	parameter 'prefix' var: prefix_output init: "6_6_Scenarios";
+	parameter 'experimentType' var: experimentType init: "batch";
+	
+	parameter 'init_nb_total_fp' var: init_nb_total_fp init: 20000;
+	parameter 'croissance_demo' var: croissance_demo init: 0.0372;
+	// 1 experiment
+}
+
+experiment Exp_6_6_D_extra2 type: batch repeat: 2 keep_seed: false benchmark: false until: (annee >= fin_simulation){
+	parameter 'save_outputs' var: save_outputs init: true;
+	parameter 'prefix' var: prefix_output init: "6_6_Scenarios";
+	parameter 'experimentType' var: experimentType init: "batch";
+	
+	parameter 'init_nb_total_fp' var: init_nb_total_fp init: 4000;
+	parameter 'croissance_demo' var: croissance_demo init: 0.0;
+	// 1 experiment
+}
