@@ -2,3 +2,6 @@ models/exports/*
 outputs/*
 .Rproj.user
 models/benchmarks/*
+.gitsum
+/gitsum/*
+*.RDS
