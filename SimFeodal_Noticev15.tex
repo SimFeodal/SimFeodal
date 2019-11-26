@@ -1,0 +1,411 @@
+\documentclass[a4paper,11pt]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8x]{inputenc}
+\usepackage{lmodern}
+%\usepackage[français]{babel}
+\usepackage{amsmath}
+\usepackage{graphicx}
+\usepackage[hidelinks]{hyperref}\bigskip
+\usepackage{listings}
+
+
+%%%%%%%%%%%%%%%%
+% Commentaires %
+%%%%%%%%%%%%%%%%
+\setlength{\marginparwidth}{3.5cm} % Pour des commentaires plus grands
+\usepackage[colorinlistoftodos,prependcaption,textsize=tiny]{todonotes}
+\usepackage{soul}
+\newcommand{\hlc}[2][yellow]{ {\sethlcolor{#1} \hl{#2}} }
+\definecolor{fluorescentorange}{rgb}{1.0, 0.75, 0.0}
+\definecolor{lightred}{rgb}{1, 0.4, 0.4}
+
+
+\makeatletter
+\if@todonotes@disabled
+\newcommand{\todohl}[2]{#1}
+\else
+\newcommand{\todohl}[2]{\texthl{#1}\todo{#2}}
+\fi
+\makeatother
+%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%
+
+
+\title{\textbf{SimFeodal}\\Agent-based modelling of the emergence of an enduring hierarchical settlement pattern \\ in a rural region of North-Western Europe \\ during the Middle Ages \\ (800 CE to 1200 CE)}
+\author{Robin Cura \\\ \small{ \textit{Géographie-cités (CNRS - University Paris 1)}}  \bigskip \\\ Cécile Tannier \\ \small{ \textit{ThéMA (CNRS - University Bourgogne Franche-Comté)}}}
+\date{Model: version 6.6\linebreak
+	Description: version 15 (2019-11-20)}
+
+
+\begin{document}
+
+\maketitle
+
+
+\paragraph{Note}
+This version of the model has been created with GAMA 1.8 (1.7.0 2019-03-05) - https://gama-platform.github.io/.
+
+
+\section{Initial situation}
+A simulation begins in 800 (parameter \textit{debut\_simulation}) and ends in 1200 (parameter \textit{fin\_simulation}). A simulation step represents a time length of twenty years (parameter \textit{duree\_step}), which corresponds more or less to the average life duration of a generation at the time period under consideration. The number of time steps of a simulation is: (\textit{fin\_simulation} - \textit{debut\_simulation}) / \textit{duree\_step}).
+
+\subsection{Environment}
+\begin{sloppypar}
+The width of the simulated region is \textit{taille\_cote\_monde} (default value: 80 km). A buffer zone of 1 km is removed from the calculation in order to avoid boundary effects. Thus if \textit{taille\_cote\_monde} is equal to 80 km, the study area is a square of 79 km width ($6241$ $km^2$) . 
+\end{sloppypar}
+
+\subsection{Peasant households}
+\begin{sloppypar}
+The initial number of peasant households is set to \textit{init\_nb\_total\_fp} (default value: 4000) spatially distributed in the modelled region. A given part of those peasant households (parameter \textit{proba\_fp\_dependant} - default value equal to 0.2) are so highly dependent on their lord that they can not leave his grounds (serfs, slaves).
+\end{sloppypar}
+
+\begin{sloppypar}
+\paragraph{Creation of peasant households in small towns} At the beginning of a simulation, a given number of small towns already exist (parameter \textit{init\_nb\_agglos} - default value: 8). A small town is a population cluster having about \textit{init\_nb\_fp\_agglo} peasant households (default value: 30) distant from one another of less than \textit{distance\_detection\_agregat} (default value: 100 m). The fact that small towns often have craftpersons, priests, magistrates, etc is not modelled.
+\end{sloppypar}
+\bigskip
+The creation of small towns is as follows:
+\begin{sloppypar}
+\begin{itemize}
+  \item A given number of peasant households corresponding to the number of small towns (\textit{init\_nb\_agglos}) are created and randomly spatially distributed in the modelled region.
+  \item A given number of peasant households (\textit{init\_nb\_fp\_agglo} - 1) are created close to each peasant household previously created. The newly created peasant householdsare located at less than \textit{distance\_detection\_agregat} m. from one another.
+  \item Thus the total number of peasant households in small towns is: \textit{init\_nb\_agglos} $\times$ \textit{init\_nb\_fp\_agglo}.
+\end{itemize}
+\end{sloppypar}
+
+\paragraph{Creation of peasant households in villages} At the beginning of a simulation, a given number of villages already exist (parameter \textit{init\_nb\_villages} - default value: 20). A village is a small population cluster having about \textit{init\_nb\_fp\_village} peasant households (default value: 10) distant from one another of less than \textit{distance\_detection\_agregat} m. (default value: 100 m). The creation rule of villages is identical to the creation rule of small towns.
+
+\paragraph{Creation of dispersed peasant households}
+\begin{sloppypar}
+The remaining number of peasant households is: \textit{init\_nb\_total\_fp} $-$ ((\textit{init\_nb\_fp\_village} $\times$ \textit{init\_nb\_villages}) $+$ (\textit{init\_nb\_fp\_agglo} $\times$ \textit{init\_nb\_agglos}). Those peasant households are randomly spatially distributed in the modelled region.
+\end{sloppypar}
+
+\subsection{Churches}
+\begin{sloppypar}
+At the beginning of a simulation, a given number of churches (parameter \textit{init\_nb\_eglises} - default value: 150) are placed randomly in the modelled region. Some of them (parameter \textit{init\_nb\_eglises\_paroissiales} - default value: 50) randomly chosen have parochial rights.
+\end{sloppypar}
+
+\subsection{Lords}
+Lords represent the charges they hold but not the persons themselves. Lay lords and ecclesiastical lords are not differentiated.
+\begin{itemize}
+\item \textit{Small lords (castellans, knights, etc)}: at the beginning of a simulation, the modelled region contains a given number of small lords (parameter \textit{init\_nb\_ps} - default value: 18). They are located in a population cluster. They collect rents to all peasant households located within their taxing area, whose size is comprised between \textit{rayon\_min\_zp\_ps} (default value: 1000 m) and \textit{rayon\_max\_zp\_ps} (default value: 5000 m), random draw within this interval.
+\item \textit{Overlords (princes, counts)}: they are not located and can act in any place of the modelled region. The number of overlords is \textit{init\_nb\_gs} (2 by default). Their power is \textit{puissance\_grand\_seigneur1} and \textit{puissance\_grand\_seigneur2} comprised between $0$ and $1$ (default value: 0.5). Each overlord collects rents to the peasant households located outside the taxing areas of small lords according to his power.
+\end{itemize}
+
+\subsection{Castles}
+At the beginning of a simulation, the number of castles is set to zero because only lineage castles are represented in SimFeodal (their construction begins in the middle of the 10 th century) but not large collective enclosures (strongholds, castra) that exist in 800.
+
+
+\section{Attributes and behaviour rules of the agents}
+
+\subsection{Population clusters}
+
+Population clusters are identified at the end of each simulation step. Their evolution in the course of a simulation is not recorded.
+
+\begin{sloppypar}
+\paragraph{Detection}
+A population cluster is defined as a set of at least \textit{nb\_min\_fp\_agregat} peasant households (default value: 5). Population clusters are identified and delineated according to the following process.
+\begin{itemize}
+  \item (1) A population cluster gathers peasant households and attractive points (parish churches, castles, and village communities) distant from one another of less than \textit{distance\_detection\_agregat} (default value: 100 m).
+  \item (2) The convex hull of each cluster is created and then enlarged by \textit{distance\_fusion\_agregat} (default value: 100 m).
+  \item (3) Enlarged clusters that intersect each others are merged and the final list of population clusters is thus obtained.
+\end{itemize}
+\end{sloppypar}
+
+\paragraph{Representation}
+Each population cluster is represented by a polygon.
+
+\paragraph{Attributes}
+Population clusters have a series of attributes: presence or not of a village community, number of parish churches, presence of a castle located at less than 200 m from the cluster, number of peasant households. They inherit the village community from a cluster that exists at the previous simulation step and whose convex hull intersects them. If several clusters existing at the previous simulation step intersect a newly created cluster, this cluster inherits the community from one of the pre-existing clusters chosen randomly.
+
+\paragraph{Emergence of village communities}
+At each simulation step, a population cluster has a given chance that a village community emerges (parameter \textit{proba\_institution\_communaute} - default value: 0.2). One a population cluster has a community, it can not loose it and all peasant households that belong to the cluster belong also to the community. Communities can be more or less powerful (parameter {\textit{puissance\_communaute}). Their power can varies according to the simulation. Yet it is identical for all communities of a given simulation.
+
+
+\subsection{Lords}
+
+\subsubsection{Appearance of new small lords}
+
+New small lords appear in the course of a simulation. They are located within a population cluster chosen at random. The targeted number of small lords at the end of a simulation is set: \textit{objectif\_nombre\_seigneurs}. The total number of lords (small lords and overlords) existing at the beginning of the simulation is substracted from this number. Then this new number is divided by the number of simulation steps in order to obtain the mean number of small lords that appear at each simulation step  (variable \textit{nb\_moyen\_petits\_seigneurs\_par\_tour} - an integer). The number of small lords that appear at each simulation step is chosen randomly around the mean number \textit{nb\_moyen\_petits\_seigneurs\_par\_tour} plus or minus $1/3$.
+
+
+\subsubsection{Collect of rents and other seigniorial rights}
+
+Collect of rents and other seigniorial rights is done within taking areas, whose attributes are the holder (i. e. the lord who created it), the radius, and the taxing rate. Three types of taxing areas exist: rents, high justice rights, other rights (usage rights, minor justice).
+
+\paragraph{Rents and other rights}
+\begin{sloppypar}
+The taxing rate is randomly chosen within the interval:
+\begin{itemize}
+  \item \textit{min\_taux\_prelevement\_zp\_ps} (default value: 5\%)
+  \item \textit{max\_taux\_prelevement\_zp\_ps} (default value: 25\%).
+\end{itemize}
+The radius of each taxing area is randomly drawn within:
+\begin{itemize}
+  \item \textit{rayon\_min\_zp\_ps} (default value: 1000 m)
+  \item   \textit{rayon\_max\_zp\_ps} (default value: 5000 m).
+\end{itemize}
+Each small lord can create a new taxing area for collecting other rights in his neighbourhood at each simulation step according to the probability:
+\textit{proba\_creation\_zp\_autres\_droits\_ps} (default value: 0.15). Thus since the beginning of a simulation, the lords begin to take new rights over or to take up public rights but the effect of this process is very gradual. Small lords that appear in the course of the simulation can have, when they are created, a taxing area for rents according to the probability:
+\textit{proba\_collecte\_foncier\_ps} (default value: 0.1). By doing this, the small lords take away a part of the peasant households that were before taxed by the overlords.
+\end{sloppypar}
+
+% \begin{sloppypar} % Meilleure gestion des césures
+% TTT \\
+% \end{sloppypar}
+
+\paragraph{High justice rights}
+\begin{sloppypar}
+From 900, overlords can gain high justice rights according to the probability \textit{proba\_gain\_haute\_justice\_gs} (default values: 0.2 between 900 and 980; 1 from 1000). Those rights apply to all peasant households who pay a rent to the lord outside any taxing area or via the taxing area of the castles. Once an overlord has gained high justice rights, a taxing area for those rights is created around all the castles he has built or he will build.
+
+From 1000, small lords who have a castle (property or oversight) can gain high justice rights according to the probability \textit{proba\_gain\_haute\_justice\_chateau\_ps} (default value: 0.2). This probability applies only when a castle is built by a small lord.
+\end{sloppypar}
+
+
+\subsubsection{Creation of castles}
+
+\begin{sloppypar}
+From 940 (parameter \textit{debut\_construction\_chateaux}), new castles are built by the lords at each simulation step. The minimum distance between a newly created castle and the existing castles is \textit{dist\_min\_entre\_chateaux} (default value: 3000 m.).
+
+\bigskip
+At each simulation step, one among the small lords whose power is higher than $0$ can build a new castle according to the probability \textit{proba\_construction\_chateau\_ps} (default value: 0.5). 
+If this probability is realised, one small lord is chosen to build the castle using a lottery weighted by the relative power of each lord.
+
+At each simulation step, a castle that belongs to an attraction centre can become a big castle according to the probability \textit{proba\_promotion\_chateau\_pole} (default value: 0.8).
+\end{sloppypar}
+
+\bigskip
+Overlords have much more chance to build a castle than small lords. Their probability (\textit{proba\_creer\_chateau} is calculated as follows:
+\begin{small}
+\begin{equation}
+proba\_creer\_chateau = \frac{puissance}{\sum(puissances\_gs)}
+\end{equation}
+\end{small}
+where \textit{puissance} is the power of the lord under consideration.
+
+This probability is drawn for each overlord independently from the other. If the probability is realised, the lord builds a castle. The probability \textit{proba\_creer\_chateau} is drawn successively as many times as set by the parameter \textit{nb\_tirages\_chateaux\_gs} (default value: 3).
+
+\bigskip
+Overlords can build a castle everywhere in the modelled region whereas small lords build castles only within their neighbourhood, whose radius size is \textit{rayon\_voisinage\_ps} (default value: 5000 m.). Each new castle has a probability \textit{proba\_chateau\_agregat} (default value: 0.5) to be built in a population cluster.
+
+\bigskip
+\begin{sloppypar}
+The creation of a new castle implies the creation of two taxing areas around it, one taxing area for collecting rents and another taxing area for collecting other rights. Both have the same radius drawn randomly within the interval \textit{rayon\_min\_zp\_chateau} (default value: 2 km) and \textit{rayon\_max\_zp\_chateau} (default value: 15 km). Their taxing rate is set by the parameter \textit{taux\_prelevement\_zp\_chateau} (default value: 1 (100\%)). The two taxing areas are created at the simulation step that follows the creation of the castle.
+\end{sloppypar}
+
+\bigskip
+From 940 to 1040 included (parameter \textit{periode\_promotion\_chateaux}), at each simulation step, a castle that belongs to an attractive centre can become a big castle according to the probability  \textit{proba\_promotion\_chateau\_pole} (default value: 0.8).
+
+\paragraph{Remark}
+When a small lord or an overlord creates a taxing area for rents (linked or not to a castle), he withdraws some peasant households from the stock of peasant households taxed by the overlords outside any taxing area. Yet, as 1) the larger taxing areas for rents created in the course of the simulation are linked to the castles and 2) most of the castles are possessed by the overlords, the property rights (and the revenue) of the overlords do not decrease.
+
+
+\subsubsection{Passing of rights}
+\begin{sloppypar}
+
+From \textit{debut\_cession\_droits\_seigneurs} (default value: 880), small lords can pass some of their rights on each of their taxing area for rents and other rights on to other small lords. Similarly, a lord can pass the oversight of his castle to another lord, who becomes then a castellan. Through this process of transfer of rights, some small lords can gain a large amount of power. Thus they possibly build castles and earn high justice rights. For each taxing area, the probability to be given up is \textit{proba\_cession\_droits\_zp} (default value: 0.33). If this probability is realised, all the rights collected via the taxing area are passed on to the recipient lord. A lord passes his rights on to another lord located in his neighbourhood (parameter \textit{rayon\_voisinage\_ps} - default value: 5000 m) according to the probability \textit{proba\_cession\_locale} (default value: 0.8).
+
+Overlords give up some of their rights on to small lords only via passing to them the oversight of their castles.
+\end{sloppypar}
+
+\subsubsection{Oversight of castles}
+
+From 960 (parameter \textit{debut\_garde\_chateaux\_seigneurs}), at each simulation step, an overlord can pass the oversight of his castle to a small lord according to the probability \textit{proba\_don\_chateau} (default value: 0.5). If this probability is realised, all the rights collected via all the taxing areas around the castle are passed on to the recipient lord.
+
+\subsubsection{Amount of collected fees}
+\begin{sloppypar}
+Lords receive for each taxed peasant households:
+\begin{itemize}
+	\item high justice rights: $2$ (parameter \textit{droits\_haute\_justice\_zp}).
+	\item rents: $1$ (parameter \textit{droits\_fonciers\_zp}).
+	\item other rights: $0.25$ (parameter \textit{autres\_droits\_zp}).
+\end{itemize}
+A lord who has passed his rights on a taxing area earns more power than he would obtain by simply collecting the corresponding fees. For each taxed peasant households, when the rights have been passed on to another lord, he receives:
+\begin{itemize}
+	\item high justice rights: $2.5$ (parameter \textit{droits\_haute\_justice\_zp\_cession}).
+	\item rents: $1.25$ (parameter \textit{droits\_fonciers\_zp\_cession}).
+	\item other rights: $0.35$ (parameter \textit{autres\_droits\_zp\_cession}).
+\end{itemize}
+\end{sloppypar}
+
+The power of each lord at each simulation step is the sum of all received fees.
+
+
+\subsection{Parish churches}
+
+A Voronoi tessellation is used to delimit the catchment area of each parish church. 
+
+At each simulation step, new parish churches appear within or close to the population clusters according to a probability \textit{proba\_creation\_paroisse} equal to:
+\begin{small}
+\begin{equation}
+\begin{gathered}
+proba\_creation\_paroisse =\\
+\left( \frac{1}{ponderation\_creation\_paroisse\_agregat}\right) \times \left( \frac{nb\_fp\_agregat}{nb\_paroisses\_agregat} \right)
+\end{gathered}
+\end{equation}
+\end{small}
+
+\begin{sloppypar}
+where \textit{nb\_fp\_agregat} is the number of peasant households in a given population cluster and \textit{nb\_paroisses\_agregat} is the number of catchment areas of parish churches included in or intersecting the cluster enlarged by a buffer zone of 200 m width length. Default value of parameter \textit{ponderation\_creation\_paroisse\_agregat} is set to 2000.
+
+Once these new parish churches have been created, a new Voronoi tessellation is applied in order to update the catchment areas of all churches.
+
+Then the easiness to fulfil the religious obligations of each peasant household is calculated (see section 2.5.2). A peasant household is considered to be unsatisfied if its value $s_{religieuse}$ is equal to $0$. When the number of unsatisfied peasant households within a parish (variable \textit{nb\_paroissiens\_insatisfaits}) is higher than \textit{seuil\_nb\_paroissiens\_insatisfaits} (default value: 20), a new parish is created according to the following rules:
+	\begin{itemize}
+\item if the number of churches having no parochial rights is higher than 3 in the parish under consideration: the church being the farthest away from the parish church becomes a parish church. To this end, a Delaunay triangulation is applied to all churches having no parochial rights. The three churches that belong to the triangle closest to the parish church under consideration are then selected.  Among them, the church that is the farthest away from the parish church under consideration becomes a parish church;
+\item if the number of churches having no parochial rights is comprised between 1 and 3 in the parish under consideration: one church chosen randomly among them becomes a parish church;
+\item if the number of churches having no parochial rights is equal to 0 in the parish under consideration and if some churches having no parochial rights exist within a buffer zone of 2 km around the parish: one church chosen randomly among them becomes a parish church;
+\item in other cases, a new parish church is created in the parish under consideration at the vertex of the Thiessen polygon that is the farthest away from the parich church.
+	\end{itemize}
+	
+A Voronoi tessellation is then one more time applied in order to update the catchment areas of the churches.
+\end{sloppypar}
+
+
+\subsection{Attraction centres}
+
+An attraction centre is made up of attractive points distant from each other of less than 200 m. The spatial extent of an attraction centre is its convex hull enlarged by a buffer zone of 200 m width. If several attraction centres intersect the same population cluster, all centres are merged into one polygon.
+
+Attractive points are the castles, the parish churches, and the village communities (represented by the centroid of the population cluster to which they belong).
+\begin{itemize}
+	\item Attractiveness value of a small castle: $0.15$
+	\item Attractiveness value of a big castle: $0.25$.
+	\item Attractiveness value of a parish church: $0.15$
+	\item Attractiveness value of two parish churches: $0.25$
+	\item Attractiveness value of three parish churches: $0.50$
+	\item Attractiveness value of four or more parish churches: $0.60$
+	\item Attractiveness value of a village community: $0.15$
+\end{itemize}
+
+The attractiveness of an attraction centre corresponds to the sum of the attractiveness values of all attractive points. It is comprised between $0$ and $1$.
+
+\subsection{Peasant households}
+
+\subsubsection{Appearance and disappearance}
+Each peasant households has a probability \textit{taux\_renouvellement\_fp} (default value: 0.05) to disappear at each simulation step. The same proportion of peasant households appear at each simulation step.
+
+Concomitantly, the number of peasant households can increase in the course of the simulation according to the parameter \textit{croissance\_demo} (default value: 14.22\%). With this growth rate and starting from 4000 peasant households in 800, the number of peasant households at the end of a simulation is 49 855.
+
+Peasant households that appear are placed in a population cluster chosen according to a probabilistic lottery weighted by the number of peasant households in each cluster. A given part of those peasant households (parameter \textit{proba\_fp\_dependant} - default value equal to 0.2) are so highly dependent on their lord that they can not leave his grounds (serfs, slaves).
+
+\subsubsection{Satisfaction}
+\begin{sloppypar}
+The relocation of a peasant household depends on both its dissatisfaction with respect to its current location and the attractiveness of other possible locations. Three variables are involved in the
+evaluation of the overall dissatisfaction level of a peasant household: the easiness to fulfil the religious obligation ($s_ {religieuse}$), the satisfaction of the need for protection ($s_{protection}$), and the satisfaction of material needs ($s_{mat\acute{e}rielle}$).
+
+\begin{small}
+\begin{equation}
+\begin{gathered}
+satisfaction =\\0.75 \times [MIN (s_{mat\acute{e}rielle} ; s_ {religieuse}; s_{protection})] +\\0.25 \times [appartenance\_communaut\acute{e}]
+\end{gathered}
+\end{equation}
+\end{small}
+
+$appartenance\_communaut\acute{e}$ can be equal to 0 (when the peasant household does not belong to a village community) or equal to 1 (when the peasant household belongs to a village community).
+
+\begin{enumerate}
+  \item \textbf{Satisfaction of material needs.} 
+Its is a function $[0;1]$ of both fees paid by the peasant households to the lords (peasant households are all the less satisfied as the fees are high) (variable $s_{redevance}$) and the belonging or not belonging to a village community (parameter $puissance\_communaute$) (peasant households are more sastisfied when they belong to a community, especially if the communities are powerful).
+
+\begin{small}
+\begin{equation}
+\begin{gathered}
+s_{mat\acute{e}rielle} =\lbrack s_{redevance}\rbrack^{(1-puissance\_communaute)}
+\end{gathered}
+\end{equation}
+
+\begin{equation}
+\begin{gathered}
+s_{redevance} =\\ MAX [ (1- (redevances\_acquittees / coef\_redevances)) ; 0]
+\end{gathered}
+\end{equation}
+\end{small}
+
+with parameter \textit{coef\_redevances} equal to 15 by default and variable \textit{redevances\_acquittées} $∈ [0,n]$.
+
+\bigskip
+
+  \item \textbf{Easiness to fulfil the religious obligations.} It is represented by a function $[0;1]$ of the distance to the closest parish church (satisfaction inversely proportional to the distance).
+
+\begin{small}
+\begin{equation}
+\begin{gathered}
+s_{religieuse} =\\ MAX \left \lbrack \frac{(distance\_max\_eglise - distance\_eglise)}{(distance\_max\_eglise -distance\_min\_eglise)}; 0 \right \rbrack
+\end{gathered}
+\end{equation}
+
+The evaluation of the distance to the closest parish church varies in the course of time.
+\begin{itemize}
+	\item before 950: $distance\_min\_eglise$ = 5 km and $distance\_max\_eglise$ =  25 km
+	\item from 950 to 1050: $distance\_min\_eglise$ = 3 km and $distance\_max\_eglise$ =  10 km
+	\item after 1050: $distance\_min\_eglise$ = 1,5 km and $distance\_max\_eglise$ =  5 km
+\end{itemize}
+
+\end{small}
+
+\bigskip
+  
+  \item \textbf{Satisfaction of the need for protection.} It is a function of the distance between the peasant household and the closest castle ($distance\_chateau$), and the need for protection ($besoin\_protection$).
+
+\begin{equation}
+s_{protection} = [s_{distance\_chateau}]^{(besoin\_protection)}
+\end{equation}
+
+with
+\begin{itemize}
+	\item before 960: $besoin\_protection$ = 0
+	\item from 960 to 1020: $besoin\_protection$ $= 0.2 ; 0.4 ; 0.6 ; 0.8$
+	\item $besoin\_protection$ = $1$
+\end{itemize}
+
+and
+
+\begin{small}
+\begin{equation}
+\begin{gathered}
+s_{distance\_chateau} =\\ MAX \left \lbrack \frac{(dist\_max\_chateau - distance\_chateau)}{(dist\_max\_chateau - dist\_min\_chateau)}; 0.01 \right \rbrack
+\end{gathered}
+\end{equation}
+
+with $dist\_min\_chateau$ = 1,5 km and $dist\_max\_chateau$ = 5 km.
+
+\end{small}
+\end{enumerate}
+\end{sloppypar}
+
+
+\subsubsection{Migration}
+\begin{sloppypar}
+At each simulation step, a peasant household can move locally within a distance radius equal to or lower than \textit{rayon\_migration\_locale\_fp} (default value: 2500 m). The probability of a local move (\textit{proba\_migration\_locale}) is:
+
+\begin{small}
+\begin{equation}
+proba\_migration\_locale = 1 - satisfaction
+\end{equation}
+\end{small}
+
+If the probability ($proba\_migration\_locale$) is realised, a random draw weighted by the relative attractiveness of local attraction centres determines where the peasant household will settle. In case of the absence of an attraction centre within \textit{rayon\_migration\_locale\_fp} m around the peasant household, it does not move.
+
+If a peasant household does not move locally, it will undertake a long-distance move, if it can (parameter $ mobile = true $), with a probability equal to ($proba\_migration\_lointaine\_fp$).
+
+\begin{small}
+\begin{equation}
+\begin{gathered}
+proba\_migration\_lointaine =  \\
+(prop\_migration\_lointaine\_fp) \times (1 - satisfaction)
+\end{gathered}
+\end{equation}
+\end{small}
+
+where \textit{prop\_migration\_lointaine\_fp} is the propensity to undertake a long-distance move.
+
+Possibles destinations of a long-distance move are only the attraction centres located in or close to a population cluster. If the probability $proba\_migration\_lointaine)$ is realised, a random draw weighted by the relative attractiveness of attraction centres located at a distance longer than \textit{rayon\_migration\_locale\_fp} determines where the peasant household will settle.
+\end{sloppypar}
+
+
+
+%\begin{lstlisting}
+%Exemple de  code
+%\end{lstlisting}
+
+
+\end{document}
