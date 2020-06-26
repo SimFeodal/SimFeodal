@@ -95,7 +95,7 @@ experiment Exp_6_6_G type: batch repeat: 2 keep_seed: false benchmark: false unt
 	// 1 experiment
 }
 
-experiment Exp_6_6_D_extra1 type: batch repeat: 2 keep_seed: false benchmark: false until: (annee >= fin_simulation){
+experiment Exp_6_6_D_extra1 type: batch repeat: 10 keep_seed: false benchmark: false until: (annee >= fin_simulation){
 	parameter 'save_outputs' var: save_outputs init: true;
 	parameter 'prefix' var: prefix_output init: "6_6_Scenarios";
 	parameter 'experimentType' var: experimentType init: "batch";
@@ -105,7 +105,7 @@ experiment Exp_6_6_D_extra1 type: batch repeat: 2 keep_seed: false benchmark: fa
 	// 1 experiment
 }
 
-experiment Exp_6_6_D_extra2 type: batch repeat: 2 keep_seed: false benchmark: false until: (annee >= fin_simulation){
+experiment Exp_6_6_D_extra2 type: batch repeat: 10 keep_seed: false benchmark: false until: (annee >= fin_simulation){
 	parameter 'save_outputs' var: save_outputs init: true;
 	parameter 'prefix' var: prefix_output init: "6_6_Scenarios";
 	parameter 'experimentType' var: experimentType init: "batch";

@@ -10,7 +10,7 @@ for var in 8 10 12 14 16 18 20 22 24 26; do
 # Local
 # for var in 0 2; do
     var2=$(($var + 1))
-    echo taskset -c $var,$var2 bash gama-headless.sh $experimentPath $outputPath$var
-	taskset -c $var,$var2 bash gama-headless.sh $experimentPath $outputPath$var &
+    echo taskset -c $var,$var2 bash gama-headless.sh -m 2500m -hpc 2 $experimentPath $outputPath$var
+	  taskset -c $var,$var2 bash gama-headless.sh -m 2500m -hpc 2 $experimentPath $outputPath$var &
 done 
 exit 0
