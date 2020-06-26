@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Experiment_plan>
+<Simulation id="10505" sourcePath="../models/GUI_6_6_scenarios2.gaml" finalstep="20" experiment="Exp_6_6_scenario_droits_fonciers">
+	<Parameters>
+	</Parameters>
+</Simulation>
+<Simulation id="10506" sourcePath="../models/GUI_6_6_scenarios2.gaml" finalstep="20" experiment="Exp_6_6_scenario_dist_minmax_eglise">
+	<Parameters>
+	</Parameters>
+</Simulation>
+</Experiment_plan>

@@ -28,7 +28,7 @@ global torus: false{
 	float seed <- seed;
 	bool save_outputs <- false;
 	string prefix_output <- "6";
-	string output_folder_path <- "/home/robin/SimFeodal/outputs/";
+	string output_folder_path <- "/data/user/c/rcura/SimFeodal/outputs/";
 	int debut_simulation <- 800;
 	int fin_simulation <- 1200;
 	int duree_step <- 20;
