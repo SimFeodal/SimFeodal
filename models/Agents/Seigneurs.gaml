@@ -189,7 +189,13 @@ species Seigneurs schedules: [] {
 		
 		// Pour les GS, la proba de construire un chateau vaut puissance/sumPuissance
 		// Pour les PS, elle vaut 1 (le tirage sur proba_construction_chateau_ps a eu lieu dans le run.gaml)
-		float proba_creer_chateau <- (is_gs) ? (self.puissance / somme_puissance_gs) : 1.0;
+		float proba_creer_chateau <- 0.0;
+		if (somme_puissance_gs > 0){
+			proba_creer_chateau <- (is_gs) ? (self.puissance / somme_puissance_gs) : 1.0;
+		} else {
+			proba_creer_chateau <- (is_gs) ? 0.0 : 1.0;
+		}
+		
 		// Pour le rayon des ZP	
 		float maxPuissance <- max(Seigneurs collect each.puissance) ;
 		float minPuissance <- min(Seigneurs collect each.puissance) ;
