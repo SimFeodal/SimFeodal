@@ -13,9 +13,9 @@
 | Tax area  | Rents | Spatial | Passive | Micro-geographic |
 | Tax area  | High justice rights | Spatial | Passive | Micro-geographic |
 | Tax area  | Other rights (usage rights, low justice rights) | Spatial | Passive | Micro-geographic |
-| Attractive point  | Parish churches |  Socio-spatial | Active | Micro-geographic |
+| Attractive point  | Parish church |  Socio-spatial | Active | Micro-geographic |
 | Attractive point  | Castle |  Spatial | Passive | Micro-geographic |
 | Attractive point  | Village community |  Spatial | Passive | Micro-geographic |
-| Population cluster  | Village |  Spatial | Passive | Meso-geographic |
+| Population cluster  | Village, hamlet |  Spatial | Passive | Meso-geographic |
 | Population cluster  | Agglomeration (market town, small town) |  Spatial | Passive | Meso-geographic |
 | Attraction centre  |  |  Spatial | Passive | Meso-geographic |
